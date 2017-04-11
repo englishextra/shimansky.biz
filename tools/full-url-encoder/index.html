@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="keywords" content="">
+		<meta name="description" content="Full URL Encoder">
+		<title>Full URL Encoder | SecurityWire</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-9 middle" id="content">
+					<p>
+						<strong>Full URL Encoder</strong>
+					</p>
+					<p>
+						This will URL encode&nbsp;the full input.
+					</p>
+					<p>
+						Input:
+						<br/>
+						<textarea cols="70" rows="8" id="intext"></textarea>
+						<br/>
+						<input type="button" onclick="urlencode()" value="Fully URL Encode"/>
+						<br/>
+						Output:
+						<br/>
+						<textarea cols="70" rows="8" id="outtext"></textarea>
+					</p>
+				</div>
+			</div>
+		</div>
+		<script>
+			function urlencode() {
+				var intext = document.getElementById("intext").value;
+				var newString = "";
+				for ( i = 0; i < intext.length; i++) {
+					newString += "%" + intext.charCodeAt(i).toString(16);
+				}
+				var outtext = document.getElementById("outtext");
+				outtext.value = newString;
+			}
+		</script>
+	</body>
+</html>
