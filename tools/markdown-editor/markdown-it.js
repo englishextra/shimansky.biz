@@ -4372,7 +4372,7 @@ module.exports = Token;
 },{}],51:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
-;(function(root) {
+(function(root) {
 	/** Detect free variables */
 	var freeExports = typeof exports == 'object' && exports;
 	var freeModule = typeof module == 'object' && module &&

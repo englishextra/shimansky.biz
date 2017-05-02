@@ -683,7 +683,7 @@ template {
 
 .btn-share-buttons:active {
 	color: #191919;
-	background-color: #F03B4C;
+	background-color: #DA353C;
 }
 
 .btn-share-buttons:before {
@@ -975,7 +975,7 @@ template {
 
 .ui-totop:active {
 	color: #191919;
-	background-color: #F03B4C;
+	background-color: #DA353C;
 }
 
 /*! @import "irregular-verbs-with-shower-main"; */
@@ -1081,12 +1081,12 @@ u,
 
 ::-moz-selection {
 	color: rgba(255, 255, 255, 0.9);
-	background-color: rgba(99, 170, 244, 0.9);
+	background-color: rgba(0, 99, 177, 0.9);
 }
 
 ::selection {
 	color: rgba(255, 255, 255, 0.9);
-	background-color: rgba(99, 170, 244, 0.9);
+	background-color: rgba(0, 99, 177, 0.9);
 }
 
 ::-webkit-input-placeholder {
@@ -1198,7 +1198,7 @@ u,
 
 .btn-nav-menu:active {
 	color: #191919;
-	background-color: #F03B4C;
+	background-color: #DA353C;
 }
 
 .holder-btn-nav-menu {

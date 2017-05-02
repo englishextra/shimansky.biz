@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Percentage Calculator</title>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="keywords" content="percentage calculator"/>
+		<link rel="stylesheet" href="./percentagecalculator.css"/>
+	</head>
+	<body id="home">
+		<section class="section" id="main">
+			<p id="intro">
+				Percentage Calculator is a free online tool to calculate percentages.
+			</p>
+			<form action="#" method="post" id="f1">
+				<fieldset>
+					What is
+					<input type="text" size="3"/>
+					% of
+					<input type="text" size="7"/>
+					?
+				</fieldset>
+				<fieldset class="total">
+					<input type="submit" value="Calculate"/>
+					<input type="text" size="7" readonly="readonly"/>
+					<span class="remove">%</span>
+				</fieldset>
+			</form>
+			<form action="#" method="post" id="f2">
+				<fieldset>
+					<input type="text" size="5"/>
+					is what percent of
+					<input type="text" size="5"/>
+					?
+				</fieldset>
+				<fieldset class="total">
+					<input type="submit" value="Calculate"/>
+					<input type="text" size="7" readonly="readonly"/>
+					<span>%</span>
+				</fieldset>
+			</form>
+			<form action="#" method="post" id="f3">
+				<fieldset>
+					What is the percentage increase/decrease
+					<br/>
+					from
+					<input type="text" size="6"/>
+					to
+					<input type="text" size="6"/>
+					?
+				</fieldset>
+				<fieldset class="total">
+					<br/>
+					<input type="submit" value="Calculate"/>
+					<input type="text" size="7" readonly="readonly"/>
+					<span>%</span>
+				</fieldset>
+			</form>
+			<p id="tips">
+				<strong>Tips:</strong> Use tab to move to the next field. Use shift-tab to move to the previous field. Press enter to calculate.
+			</p>
+		</section>
+		<footer class="footer" id="footer">
+			<div>
+				&copy; 2007 - 2017 <a href="https://jarijokinen.com/">Jari Jokinen</a>
+			</div>
+			<nav class="nav">
+				<ul>
+					<li>
+						<a href="/help">Help</a>
+					</li>
+					<li>
+						<a href="/privacy">Privacy</a>
+					</li>
+				</ul>
+			</nav>
+		</footer>
+		<script src="./percentagecalculator.js"></script>
+	</body>
+</html>

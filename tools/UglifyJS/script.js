@@ -41,7 +41,6 @@ function $(id) {
 
 window.console = window.console || { log: function () {}, error: function () {} };
 
-
 // Handle the UI
 
 var uglify_options;
@@ -54,7 +53,6 @@ var $body = document.body;
 var $btn_options = $('btn-options');
 var $cb_as_i_type = $('cb-as-i-type');
 
-
 $('header-link').onclick = go_to_start;
 $('btn-go').onclick = go;
 $btn_options.onclick = toggle_options;
@@ -66,7 +64,6 @@ $out.onfocus = select_text;
 
 var default_options_text;
 set_options_initial();
-
 
 function is_visible(class_name) {
 	return (' ' + $body.className + ' ').indexOf(' ' + class_name + ' ') >= 0;

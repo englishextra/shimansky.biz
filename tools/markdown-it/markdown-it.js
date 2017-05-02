@@ -4601,7 +4601,7 @@ module.exports = Token;
 },{}],52:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.4.1 by @mathias */
-;(function(root) {
+(function(root) {
 	/** Detect free variables */
 	var freeExports = typeof exports == 'object' && exports &&
 		!exports.nodeType && exports;

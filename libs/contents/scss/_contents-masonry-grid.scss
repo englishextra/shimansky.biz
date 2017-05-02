@@ -33,26 +33,35 @@
 
 .masonry-grid-wrapper .holder-contents-select select {
 	display: inline-block;
-	width: 91%;
+	width: 100%;
 	max-width: 17.000rem;
 	height: 2.250rem;
 	font-family: sans-serif;
 	font-size: 0.875rem;
 	color: inherit;
 	background-color: #FFFFFF;
-	border: 0.063rem solid #FFFFFF;
+	appearance: none;
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
 	margin: 0;
-	padding: 0;
+	padding: 0 0 0 0.250rem;
+}
+
+.masonry-grid-wrapper .holder-contents-select select::-ms-expand {
+	display: none;
+}
+
+.masonry-grid-wrapper .holder-contents-select select::-ms-value {
+    background: none;
+	color: inherit;
 }
 
 .masonry-grid-wrapper .holder-contents-select select optgroup {
 	font-style: normal;
-	padding-left: 0.188rem;
+	padding-left: 0.250rem;
 }
 
-/**
+/*!
  * fix select border for electron and nw
  */
 
@@ -117,7 +126,7 @@
 
 .masonry-grid-item-content {
 	background-color: #FFFFFF;
-	padding: 1.000em;
+	padding: 1.000rem;
 }
 
 .masonry-grid-item-content h2 {

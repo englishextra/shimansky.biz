@@ -65,7 +65,7 @@ var crel=(function(){if("undefined"==typeof window||!("document"in window)){retu
  * source: github.com/GianlucaGuarini/Tocca.js/blob/master/Tocca.js
  * passes jshint
  */
-;(function(doc,win){'use strict';if(typeof doc.createEvent!=='function')return false;var pointerEventSupport=function(type){var lo=type.toLowerCase(),ms='MS'+type;return navigator.msPointerEnabled?ms:window.PointerEvent?lo:false;},defaults={useJquery:!win.IGNORE_JQUERY&&typeof jQuery!=='undefined',swipeThreshold:win.SWIPE_THRESHOLD||100,tapThreshold:win.TAP_THRESHOLD||150,dbltapThreshold:win.DBL_TAP_THRESHOLD||200,longtapThreshold:win.LONG_TAP_THRESHOLD||1000,tapPrecision:win.TAP_PRECISION/2||60/2,justTouchEvents:win.JUST_ON_TOUCH_DEVICES},wasTouch=false,touchevents={touchstart:pointerEventSupport('PointerDown')||'touchstart',touchend:pointerEventSupport('PointerUp')||'touchend',touchmove:pointerEventSupport('PointerMove')||'touchmove'},isTheSameFingerId=function(e){return!e.pointerId||typeof pointerId==='undefined'||e.pointerId===pointerId;},setListener=function(elm,events,callback){var eventsArray=events.split(' '),i=eventsArray.length;while(i--){elm.addEventListener(eventsArray[i],callback,false);}},getPointerEvent=function(event){return event.targetTouches?event.targetTouches[0]:event;},getTimestamp=function(){return new Date().getTime();},sendEvent=function(elm,eventName,originalEvent,data){var customEvent=doc.createEvent('Event');customEvent.originalEvent=originalEvent;data=data||{};data.x=currX;data.y=currY;data.distance=data.distance;if(defaults.useJquery){customEvent=jQuery.Event(eventName,{originalEvent:originalEvent});jQuery(elm).trigger(customEvent,data);}if(customEvent.initEvent){for(var key in data){if(data.hasOwnProperty(key)){customEvent[key]=data[key];}}customEvent.initEvent(eventName,true,true);elm.dispatchEvent(customEvent);}while(elm){if(elm['on'+eventName])elm['on'+eventName](customEvent);elm=elm.parentNode;}},onTouchStart=function(e){if(!isTheSameFingerId(e))return;pointerId=e.pointerId;if(e.type!=='mousedown')wasTouch=true;if(e.type==='mousedown'&&wasTouch)return;var pointer=getPointerEvent(e);cachedX=currX=pointer.pageX;cachedY=currY=pointer.pageY;longtapTimer=setTimeout(function(){sendEvent(e.target,'longtap',e);target=e.target;},defaults.longtapThreshold);timestamp=getTimestamp();tapNum++;},onTouchEnd=function(e){if(!isTheSameFingerId(e))return;pointerId=undefined;if(e.type==='mouseup'&&wasTouch){wasTouch=false;return;}var eventsArr=[],now=getTimestamp(),deltaY=cachedY-currY,deltaX=cachedX-currX;clearTimeout(dblTapTimer);clearTimeout(longtapTimer);if(deltaX<=-defaults.swipeThreshold)eventsArr.push('swiperight');if(deltaX>=defaults.swipeThreshold)eventsArr.push('swipeleft');if(deltaY<=-defaults.swipeThreshold)eventsArr.push('swipedown');if(deltaY>=defaults.swipeThreshold)eventsArr.push('swipeup');if(eventsArr.length){for(var i=0;i<eventsArr.length;i++){var eventName=eventsArr[i];sendEvent(e.target,eventName,e,{distance:{x:Math.abs(deltaX),y:Math.abs(deltaY)}});}tapNum=0;}else{if(cachedX>=currX-defaults.tapPrecision&&cachedX<=currX+defaults.tapPrecision&&cachedY>=currY-defaults.tapPrecision&&cachedY<=currY+defaults.tapPrecision){if(timestamp+defaults.tapThreshold-now>=0){sendEvent(e.target,tapNum>=2&&target===e.target?'dbltap':'tap',e);target=e.target;}}dblTapTimer=setTimeout(function(){tapNum=0;},defaults.dbltapThreshold);}},onTouchMove=function(e){if(!isTheSameFingerId(e))return;if(e.type==='mousemove'&&wasTouch)return;var pointer=getPointerEvent(e);currX=pointer.pageX;currY=pointer.pageY;},tapNum=0,pointerId,currX,currY,cachedX,cachedY,timestamp,target,dblTapTimer,longtapTimer;setListener(doc,touchevents.touchstart+(defaults.justTouchEvents?'':' mousedown'),onTouchStart);setListener(doc,touchevents.touchend+(defaults.justTouchEvents?'':' mouseup'),onTouchEnd);setListener(doc,touchevents.touchmove+(defaults.justTouchEvents?'':' mousemove'),onTouchMove);win.tocca=function(options){for(var opt in options){if(options.hasOwnProperty(opt)){defaults[opt]=options[opt];}}return defaults;};}(document,window));
+(function(doc,win){'use strict';if(typeof doc.createEvent!=='function')return false;var pointerEventSupport=function(type){var lo=type.toLowerCase(),ms='MS'+type;return navigator.msPointerEnabled?ms:window.PointerEvent?lo:false;},defaults={useJquery:!win.IGNORE_JQUERY&&typeof jQuery!=='undefined',swipeThreshold:win.SWIPE_THRESHOLD||100,tapThreshold:win.TAP_THRESHOLD||150,dbltapThreshold:win.DBL_TAP_THRESHOLD||200,longtapThreshold:win.LONG_TAP_THRESHOLD||1000,tapPrecision:win.TAP_PRECISION/2||60/2,justTouchEvents:win.JUST_ON_TOUCH_DEVICES},wasTouch=false,touchevents={touchstart:pointerEventSupport('PointerDown')||'touchstart',touchend:pointerEventSupport('PointerUp')||'touchend',touchmove:pointerEventSupport('PointerMove')||'touchmove'},isTheSameFingerId=function(e){return!e.pointerId||typeof pointerId==='undefined'||e.pointerId===pointerId;},setListener=function(elm,events,callback){var eventsArray=events.split(' '),i=eventsArray.length;while(i--){elm.addEventListener(eventsArray[i],callback,false);}},getPointerEvent=function(event){return event.targetTouches?event.targetTouches[0]:event;},getTimestamp=function(){return new Date().getTime();},sendEvent=function(elm,eventName,originalEvent,data){var customEvent=doc.createEvent('Event');customEvent.originalEvent=originalEvent;data=data||{};data.x=currX;data.y=currY;data.distance=data.distance;if(defaults.useJquery){customEvent=jQuery.Event(eventName,{originalEvent:originalEvent});jQuery(elm).trigger(customEvent,data);}if(customEvent.initEvent){for(var key in data){if(data.hasOwnProperty(key)){customEvent[key]=data[key];}}customEvent.initEvent(eventName,true,true);elm.dispatchEvent(customEvent);}while(elm){if(elm['on'+eventName])elm['on'+eventName](customEvent);elm=elm.parentNode;}},onTouchStart=function(e){if(!isTheSameFingerId(e))return;pointerId=e.pointerId;if(e.type!=='mousedown')wasTouch=true;if(e.type==='mousedown'&&wasTouch)return;var pointer=getPointerEvent(e);cachedX=currX=pointer.pageX;cachedY=currY=pointer.pageY;longtapTimer=setTimeout(function(){sendEvent(e.target,'longtap',e);target=e.target;},defaults.longtapThreshold);timestamp=getTimestamp();tapNum++;},onTouchEnd=function(e){if(!isTheSameFingerId(e))return;pointerId=undefined;if(e.type==='mouseup'&&wasTouch){wasTouch=false;return;}var eventsArr=[],now=getTimestamp(),deltaY=cachedY-currY,deltaX=cachedX-currX;clearTimeout(dblTapTimer);clearTimeout(longtapTimer);if(deltaX<=-defaults.swipeThreshold)eventsArr.push('swiperight');if(deltaX>=defaults.swipeThreshold)eventsArr.push('swipeleft');if(deltaY<=-defaults.swipeThreshold)eventsArr.push('swipedown');if(deltaY>=defaults.swipeThreshold)eventsArr.push('swipeup');if(eventsArr.length){for(var i=0;i<eventsArr.length;i++){var eventName=eventsArr[i];sendEvent(e.target,eventName,e,{distance:{x:Math.abs(deltaX),y:Math.abs(deltaY)}});}tapNum=0;}else{if(cachedX>=currX-defaults.tapPrecision&&cachedX<=currX+defaults.tapPrecision&&cachedY>=currY-defaults.tapPrecision&&cachedY<=currY+defaults.tapPrecision){if(timestamp+defaults.tapThreshold-now>=0){sendEvent(e.target,tapNum>=2&&target===e.target?'dbltap':'tap',e);target=e.target;}}dblTapTimer=setTimeout(function(){tapNum=0;},defaults.dbltapThreshold);}},onTouchMove=function(e){if(!isTheSameFingerId(e))return;if(e.type==='mousemove'&&wasTouch)return;var pointer=getPointerEvent(e);currX=pointer.pageX;currY=pointer.pageY;},tapNum=0,pointerId,currX,currY,cachedX,cachedY,timestamp,target,dblTapTimer,longtapTimer;setListener(doc,touchevents.touchstart+(defaults.justTouchEvents?'':' mousedown'),onTouchStart);setListener(doc,touchevents.touchend+(defaults.justTouchEvents?'':' mouseup'),onTouchEnd);setListener(doc,touchevents.touchmove+(defaults.justTouchEvents?'':' mousemove'),onTouchMove);win.tocca=function(options){for(var opt in options){if(options.hasOwnProperty(opt)){defaults[opt]=options[opt];}}return defaults;};}(document,window));
 /*!
  * modified routie - a tiny hash router - v0.3.2
  * github.com/jgallen23/routie/blob/master/dist/routie.js
@@ -130,7 +130,27 @@ var Cookies=(function(){function extend(){var i=0;var result={};for(;i<arguments
  * source: github.com/ryanve/verge/blob/master/verge.js
  * passes jshint
  */
-;(function(root,name,make){root[name]=make();}("undefined"!==typeof window?window:this,"verge",function(){var xports={},win=typeof window!="undefined"&&window,doc=typeof document!="undefined"&&document,docElem=doc&&doc.documentElement,matchMedia=win.matchMedia||win.msMatchMedia,mq=matchMedia?function(q){return!!matchMedia.call(win,q).matches;}:function(){return false;},viewportW=xports.viewportW=function(){var a=docElem.clientWidth,b=win.innerWidth;return a<b?b:a;},viewportH=xports.viewportH=function(){var a=docElem.clientHeight,b=win.innerHeight;return a<b?b:a;};xports.mq=mq;xports.matchMedia=matchMedia?function(){return matchMedia.apply(win,arguments);}:function(){return{};};function viewport(){return{"width":viewportW(),"height":viewportH()};}xports.viewport=viewport;xports.scrollX=function(){return win.pageXOffset||docElem.scrollLeft;};xports.scrollY=function(){return win.pageYOffset||docElem.scrollTop;};function calibrate(coords,cushion){var o={};cushion=+cushion||0;o.width=(o.right=coords.right+cushion)-(o.left=coords.left-cushion);o.height=(o.bottom=coords.bottom+cushion)-(o.top=coords.top-cushion);return o;}function rectangle(el,cushion){el=el&&!el.nodeType?el[0]:el;if(!el||1!==el.nodeType)return false;return calibrate(el.getBoundingClientRect(),cushion);}xports.rectangle=rectangle;function aspect(o){o=null===o?viewport():1===o.nodeType?rectangle(o):o;var h=o.height,w=o.width;h=typeof h=="function"?h.call(o):h;w=typeof w=="function"?w.call(o):w;return w/h;}xports.aspect=aspect;xports.inX=function(el,cushion){var r=rectangle(el,cushion);return!!r&&r.right>=0&&r.left<=viewportW()&&(0!==el.offsetHeight);};xports.inY=function(el,cushion){var r=rectangle(el,cushion);return!!r&&r.bottom>=0&&r.top<=viewportH()&&(0!==el.offsetHeight);};xports.inViewport=function(el,cushion){var r=rectangle(el,cushion);return!!r&&r.bottom>=0&&r.right>=0&&r.top<=viewportH()&&r.left<=viewportW()&&(0!==el.offsetHeight);};return xports;}));
+(function(root,name,make){root[name]=make();}("undefined"!==typeof window?window:this,"verge",function(){var xports={},win=typeof window!="undefined"&&window,doc=typeof document!="undefined"&&document,docElem=doc&&doc.documentElement,matchMedia=win.matchMedia||win.msMatchMedia,mq=matchMedia?function(q){return!!matchMedia.call(win,q).matches;}:function(){return false;},viewportW=xports.viewportW=function(){var a=docElem.clientWidth,b=win.innerWidth;return a<b?b:a;},viewportH=xports.viewportH=function(){var a=docElem.clientHeight,b=win.innerHeight;return a<b?b:a;};xports.mq=mq;xports.matchMedia=matchMedia?function(){return matchMedia.apply(win,arguments);}:function(){return{};};function viewport(){return{"width":viewportW(),"height":viewportH()};}xports.viewport=viewport;xports.scrollX=function(){return win.pageXOffset||docElem.scrollLeft;};xports.scrollY=function(){return win.pageYOffset||docElem.scrollTop;};function calibrate(coords,cushion){var o={};cushion=+cushion||0;o.width=(o.right=coords.right+cushion)-(o.left=coords.left-cushion);o.height=(o.bottom=coords.bottom+cushion)-(o.top=coords.top-cushion);return o;}function rectangle(el,cushion){el=el&&!el.nodeType?el[0]:el;if(!el||1!==el.nodeType)return false;return calibrate(el.getBoundingClientRect(),cushion);}xports.rectangle=rectangle;function aspect(o){o=null===o?viewport():1===o.nodeType?rectangle(o):o;var h=o.height,w=o.width;h=typeof h=="function"?h.call(o):h;w=typeof w=="function"?w.call(o):w;return w/h;}xports.aspect=aspect;xports.inX=function(el,cushion){var r=rectangle(el,cushion);return!!r&&r.right>=0&&r.left<=viewportW()&&(0!==el.offsetHeight);};xports.inY=function(el,cushion){var r=rectangle(el,cushion);return!!r&&r.bottom>=0&&r.top<=viewportH()&&(0!==el.offsetHeight);};xports.inViewport=function(el,cushion){var r=rectangle(el,cushion);return!!r&&r.bottom>=0&&r.right>=0&&r.top<=viewportH()&&r.left<=viewportW()&&(0!==el.offsetHeight);};return xports;}));
+/*!
+ * return image is loaded promise
+ * jsfiddle.net/englishextra/56pavv7d/
+ * @param {String|Object} s image path string or HTML DOM Image Object
+ * var m = document.querySelector("img") || "";
+ * var s = m.src || "";
+ * imagePromise(m).then(function (r) {
+ * alert(r);
+ * }).catch (function (err) {
+ * alert(err);
+ * });
+ * imagePromise(s).then(function (r) {
+ * alert(r);
+ * }).catch (function (err) {
+ * alert(err);
+ * });
+ * @see {@link https://gist.github.com/englishextra/3e95d301d1d47fe6e26e3be198f0675e}
+ * passes jshint
+ */
+(function(){"use strict";var imagePromise=function(s){if(window.Promise){return new Promise(function(y,n){var f=function(e,p){e.onload=function(){y(p);};e.onerror=function(){n(p);};e.src=p;};if("string"===typeof s){var a=new Image();f(a,s);}else{if("IMG"!==s.tagName){return Promise.reject();}else{if(s.src){f(s,s.src);}}}});}else{throw new Error("Promise is not in window");}};("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window).imagePromise=imagePromise;}());
 /*!
  * safe way to handle console.log():
  * sitepoint.com/safe-console-log/
@@ -146,8 +166,7 @@ if ("undefined" === typeof console) {
 /*!
  * add js class to html element
  */
-;(function setJsClassToDocumentElement(a){if(a){a.classList.add("js");}}(document.documentElement||""));
-/* jshint ignore:end */
+(function setJsClassToDocumentElement(a){if(a){a.classList.add("js");}}(document.documentElement||""));
 /*!
  * detect Node.js
  * github.com/lyrictenor/node-is-nwjs/blob/master/is-nodejs.js
@@ -344,7 +363,7 @@ var evento=(function(){return function(){if("undefined"==typeof window||!("docum
  * source: gist.github.com/pranksinatra/a4e57e586249dc3833e4
  * passes jshint
  */
-;(function(){function exec(options){if("string"===typeof options){options={url:options};}if(!options.url&&!options.text){throw new Error("must provide a url or text to load");}var head=document.getElementsByTagName("head")[0]||document.documentElement;var script=document.createElement("script");script.charset=options.charset||"utf-8";script.type=options.type||"text/javascript";script.async=!!options.async;if(options.hasOwnProperty("id")){script.id=options.id;}if(options.url){script.src=options.url;return loadScript(head,script);}else{script.text=options.text;return runScript(head,script);}}function runScript(head,script){head.appendChild(script);return Promise.resolve(script);}function loadScript(head,script){return new Promise(function(resolve){var done=false;script.onload=script.onreadystatechange=function(){if(!done&&(!this.readyState||this.readyState==="loaded"||this.readyState==="complete")){done=true;script.onload=script.onreadystatechange=null;if(head&&script.parentNode){head.removeChild(script);}resolve(script);}};head.appendChild(script);});}var promiseLoadJS=function(items){return items instanceof Array?Promise.all(items.map(exec)):exec(items);};("undefined"!==typeof window?window:this).promiseLoadJS=promiseLoadJS;}());
+(function(){function exec(options){if("string"===typeof options){options={url:options};}if(!options.url&&!options.text){throw new Error("must provide a url or text to load");}var head=document.getElementsByTagName("head")[0]||document.documentElement;var script=document.createElement("script");script.charset=options.charset||"utf-8";script.type=options.type||"text/javascript";script.async=!!options.async;if(options.hasOwnProperty("id")){script.id=options.id;}if(options.url){script.src=options.url;return loadScript(head,script);}else{script.text=options.text;return runScript(head,script);}}function runScript(head,script){head.appendChild(script);return Promise.resolve(script);}function loadScript(head,script){return new Promise(function(resolve){var done=false;script.onload=script.onreadystatechange=function(){if(!done&&(!this.readyState||this.readyState==="loaded"||this.readyState==="complete")){done=true;script.onload=script.onreadystatechange=null;if(head&&script.parentNode){head.removeChild(script);}resolve(script);}};head.appendChild(script);});}var promiseLoadJS=function(items){return items instanceof Array?Promise.all(items.map(exec)):exec(items);};("undefined"!==typeof window?window:this).promiseLoadJS=promiseLoadJS;}());
 /*!
  * How can I check if a JS file has been included already?
  * gist.github.com/englishextra/403a0ca44fc5f495400ed0e20bc51d47
@@ -365,7 +384,7 @@ var scriptIsLoaded=function(s){for(var b=document.getElementsByTagName("script")
  * @param {Object} [e] on error callback function
  * ajaxLoadTriggerJS(u,f,e)
  */
-;(function(){var ajaxLoadTriggerJS=function(u,f,e){var w=window,x=w.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");x.overrideMimeType("application/javascript;charset=utf-8");x.open("GET",u,!0);x.withCredentials=!1;x.onreadystatechange=function(){if(x.status=="404"){if(e&&"function"===typeof e){e();}console.log("Error XMLHttpRequest-ing file",x.status);return!1;}else if(x.readyState==4&&x.status==200&&x.responseText){try{var Fn=Function;new Fn(""+x.responseText).call("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window);}catch(m){throw new Error("Error evaluating file. "+m);}if(f&&"function"===typeof f){f(x.responseText);}}};x.send(null);};("undefined"!==typeof window?window:this).ajaxLoadTriggerJS=ajaxLoadTriggerJS;}());
+(function(){var ajaxLoadTriggerJS=function(u,f,e){var w=window,x=w.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");x.overrideMimeType("application/javascript;charset=utf-8");x.open("GET",u,!0);x.withCredentials=!1;x.onreadystatechange=function(){if(x.status=="404"){if(e&&"function"===typeof e){e();}console.log("Error XMLHttpRequest-ing file",x.status);return!1;}else if(x.readyState==4&&x.status==200&&x.responseText){try{var Fn=Function;new Fn(""+x.responseText).call("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window);}catch(m){throw new Error("Error evaluating file. "+m);}if(f&&"function"===typeof f){f(x.responseText);}}};x.send(null);};("undefined"!==typeof window?window:this).ajaxLoadTriggerJS=ajaxLoadTriggerJS;}());
 /*!
  * Load .json file, but don't JSON.parse it
  * modified JSON with JS.md
@@ -948,7 +967,7 @@ var highlightSidepanelItem = function () {
 		k();
 	}
 };
-evento.add(window, "load", highlightSidepanelItem);
+docReady(highlightSidepanelItem);
 evento.add(window, "hashchange", highlightSidepanelItem);
 /*!
  * init menumore btn
@@ -1182,7 +1201,6 @@ var manageDataTargetLinks = function (ctx) {
 		k();
 	}
 };
-evento.add(window, "load", manageDataTargetLinks.bind(null, ""));
 /*!
  * manage data lightbox img links
  */
@@ -1208,7 +1226,16 @@ var handleImgLightboxLinks = function (_this, ev) {
 		if (parseLink(_href).isAbsolute && !parseLink(_href).hasHTTP) {
 			_href = _href.replace(/^/, getHTTP(!0) + ":");
 		}
-		m.src = _href;
+		if (w.Promise) {
+			imagePromise(_href).then(function (r) {
+				m.src = _href;
+				console.log("manageDataSrcImg => imagePromise: loaded image:", r);
+			}).catch (function (err) {
+				console.log("manageDataSrcImg => imagePromise: cannot load image:", err);
+			});
+		} else {
+			m.src = _href;
+		}
 		evento.add(c, "click", handleImgLightboxContainer);
 		evento.add(w, "keyup", handleImgLightboxWindow);
 		setStyleDisplayBlock(c);
@@ -1309,7 +1336,6 @@ manageImgLightboxLinks = function (ctx) {
 		}
 	}
 };
-evento.add(window, "load", manageImgLightboxLinks.bind(null, ""));
 /*!
  * replace img src with data-src
  * @param {Object} [ctx] context HTML Element
@@ -1331,7 +1357,7 @@ var manageDataSrcImg = function (ctx) {
 				_src = e[ds].src;
 			}
 			if (!e[cL].contains(is_active)) {
-				/* if (w.Promise) {
+				if (w.Promise) {
 					imagePromise(_src).then(function (r) {
 						e.src = _src;
 						console.log("manageDataSrcImg => imagePromise: loaded image:", r);
@@ -1340,14 +1366,17 @@ var manageDataSrcImg = function (ctx) {
 					});
 				} else {
 					e.src = _src;
-				} */
-				e.src = _src;
+				}
 				e[cL].add(is_active);
 			}
 		}
 	},
 	g = function (e) {
-		if (verge.inY(e)/* && 0 !== e.offsetHeight */) {
+		/*!
+		 * true if elem is in same y-axis as the viewport or within 100px of it
+		 * github.com/ryanve/verge
+		 */
+		if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
 			k(e);
 		}
 	};
@@ -1375,7 +1404,6 @@ var manageDataSrcImg = function (ctx) {
 		});
 	}
 };
-evento.add(window, "load", manageDataSrcImg.bind(null, ""));
 /*!
  * replace img src with data-src
  * @param {Object} [ctx] context HTML Element
@@ -1437,17 +1465,17 @@ var manageDataQrcodeImg = function (ctx) {
 		}
 	}
 },
-loadManageDataQrcodeImg = function () {
+loadManageDataQrcodeImg = function (ctx) {
 	"use strict";
+	ctx = ctx || "";
 	var w = window,
 	js = "../cdn/qrjs2/0.1.2/js/qrjs2.fixed.min.js";
 	if (!scriptIsLoaded(js)) {
 		loadJS(js, manageDataQrcodeImg.bind(null, ""));
 	} else {
-		manageDataQrcodeImg();
+		manageDataQrcodeImg(ctx);
 	}
 };
-evento.add(window, "load", loadManageDataQrcodeImg);
 /*!
  * add smooth scroll or redirection to static select options
  * @param {Object} [ctx] context HTML Element
@@ -1467,7 +1495,7 @@ var handleStaticSelect = function (_this) {
 manageStaticSelect = function (ctx) {
 	"use strict";
 	ctx = ctx || "";
-	var cls = "#pages_select",
+	var cls = "#pages-select",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
 	k = function () {
 		evento.add(a, "change", handleStaticSelect.bind(null, a));
@@ -1477,7 +1505,6 @@ manageStaticSelect = function (ctx) {
 		k();
 	}
 };
-evento.add(window, "load", manageStaticSelect.bind(null, ""));
 /*!
  * manage search input
  */
@@ -1540,7 +1567,6 @@ manageExpandingLayers = function (ctx) {
 		q();
 	}
 };
-evento.add(window, "load", manageExpandingLayers.bind(null, ""));
 /*!
  * init col debug btn
  */
@@ -1578,9 +1604,8 @@ showDebugGridMesage = function () {
 		"days": 0
 	});
 },
-manageDebugGridButton = function (ctx) {
+manageDebugGridButton = function () {
 	"use strict";
-	ctx = ctx || "";
 	var w = window,
 	c = BALA.one(".container") || "",
 	btn = ".btn-toggle-col-debug",
@@ -1608,7 +1633,7 @@ manageDebugGridButton = function (ctx) {
 		}
 	}
 };
-evento.add(window, "load", manageDebugGridButton.bind(null, ""));
+evento.add(window, "load", manageDebugGridButton);
 /*!
  * init qr-code
  * stackoverflow.com/questions/12777622/how-to-use-enquire-js
@@ -1846,11 +1871,13 @@ var loadRefreshDisqus = function () {
 	p = w.location.href || "",
 	cL = "classList",
 	ds = "dataset",
+	pN = "parentNode",
 	n = c ? (c[ds].shortname || "") : "",
 	js = getHTTP(!0) + "://" + n + ".disqus.com/embed.js",
 	g = function () {
-		setStyleDisplayNone(btn);
 		c[cL].add(is_active);
+		setStyleDisplayNone(btn);
+		LoadingSpinner.hide();
 	},
 	k = function () {
 		try {
@@ -1873,11 +1900,12 @@ var loadRefreshDisqus = function () {
 		removeChildren(c);
 		appendFragment(crel("p", "Комментарии доступны только в веб версии этой страницы."), c);
 		c.removeAttribute("id");
-		setStyleDisplayNone(btn.parentNode);
+		setStyleDisplayNone(btn[pN]);
 	};
 	if (c && btn && n && p) {
 		console.log("triggered function: loadRefreshDisqus");
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
+			LoadingSpinner.show();
 			if (scriptIsLoaded(js)) {
 				k();
 			} else {
@@ -1887,11 +1915,8 @@ var loadRefreshDisqus = function () {
 			z();
 		}
 	}
-};
-/*!
- * manage Disqus Button
- */
-var manageDisqusButton = function () {
+},
+manageDisqusButton = function () {
 	"use strict";
 	var c = BALA.one("#disqus_thread") || "",
 	e = c ? (BALA.one(".btn-show-disqus") || "") : "",
@@ -1907,12 +1932,12 @@ var manageDisqusButton = function () {
 		evento.add(e, "click", h_e);
 	}
 };
-evento.add(window, "load", manageDisqusButton);
 /*!
  * load Yandex map
  * tech.yandex.ru/maps/jsbox/2.1/mapbasics
  */
-var initYandexMap = function (a) {
+var myMap,
+initYandexMap = function (a) {
 	"use strict";
 	var c = BALA.one(a) || "",
 	is_active = "is-active",
@@ -1923,26 +1948,28 @@ var initYandexMap = function (a) {
 	z = c ? (c[ds].zoom || "") : "",
 	b_s = c ? (BALA.one(c[ds].btnShow) || "") : "",
 	b_d = c ? (BALA.one(c[ds].btnDestroy) || "") : "",
-	js = getHTTP(!0) + "://api-maps.yandex.ru/2.1/?lang=ru_RU",
-	myMap,
+	js = getHTTP(!0) + "://api-maps.yandex.ru/2.1/?lang=ru_RU",	
 	init = function () {
+		if (myMap) {
+			myMap.destroy();
+		}
 		try {
 			myMap = new ymaps.Map(c.id, {
 					center : JSON.parse(f),
 					zoom : z
 				});
-			LoadingSpinner.hide();
 		} catch (e) {
 			setStyleDisplayBlock(b_s);
 		}
 	},
 	g = function () {
-		ymaps.ready(init);
 		c[pN][cL].add(is_active);
 		setStyleDisplayNone(b_s);
+		LoadingSpinner.hide();
 	},
 	k = function () {
 		try {
+			ymaps.ready(init);
 			g();
 		} catch(e) {
 			setStyleDisplayBlock(b_s);
@@ -1961,7 +1988,9 @@ var initYandexMap = function (a) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		evento.remove(b_d, "click", h_b_d);
-		myMap.destroy();
+		if (myMap) {
+			myMap.destroy();
+		}
 	};
 	if (c && f && z && b_s) {
 		console.log("triggered function: initYandexMap");
@@ -1979,11 +2008,8 @@ var initYandexMap = function (a) {
 			q();
 		}
 	}
-};
-/*!
- * manage Yandex Map Button
- */
-var manageYandexMapButton = function (a) {
+},
+manageYandexMapButton = function (a) {
 	"use strict";
 	var c = BALA.one(a) || "",
 	ds = "dataset",
@@ -2000,7 +2026,6 @@ var manageYandexMapButton = function (a) {
 		evento.add(e, "click", h_e);
 	}
 };
-evento.add(window, "load", manageYandexMapButton.bind(null, "#ymap"));
 /*!
  * init Pages Kamil autocomplete
  * github.com/oss6/kamil/wiki/Example-with-label:link-json-and-typo-correct-suggestion
@@ -2122,7 +2147,7 @@ var initContentsKamil = function () {
 			 */
 			ac.on("kamilselect", function (e) {
 				var p = e.item.link || "",
-				si = function () {
+				sm = function () {
 					e.inputElement.value = "";
 					changeLocation(p);
 				};
@@ -2130,8 +2155,8 @@ var initContentsKamil = function () {
 					/*!
 					 * nwjs wont like setImmediate here
 					 */
-					/* setImmediate(si); */
-					si();
+					/* setImmediate(sm); */
+					sm();
 				}
 			});
 		}
@@ -2314,9 +2339,7 @@ var insertExternalHTML = function (a, u, f) {
 	c = BALA.one(a) || "",
 	g = function (t, s) {
 		var q = function () {
-			if (s && "function" === typeof s) {
-				s();
-			}
+			return s && "function" === typeof s && s();
 		};
 		insertTextAsFragment(t, c, q);
 	},
@@ -2361,10 +2384,11 @@ var insertExternalHTML = function (a, u, f) {
  * init routie
  * @param {String} ctx HTML id string
  */
-var initRoutie = function (ctx) {
+var initRoutie = function () {
 	"use strict";
-	ctx = ctx || "";
-	var appContent = BALA.one(ctx) || "",
+	var appContentId = "#app-content",
+	appContent = BALA.one(appContentId) || "",
+	pN = "parentNode",
 	loadVirtualPage = function (c, h, f) {
 		if (c && h) {
 			LoadingSpinner.show();
@@ -2379,6 +2403,16 @@ var initRoutie = function (ctx) {
 		 */
 		LoadingSpinner.hide(scrollToTop);
 		d.title = initialDocumentTitle + "" + t + userBrowsingDetails;
+		manageYandexMapButton("#ymap");
+		manageDisqusButton(appContent[pN]);
+		manageExternalLinks(appContent[pN]);
+		manageLocalLinks(appContent[pN]);
+		manageDataTargetLinks(appContent[pN]);
+		manageImgLightboxLinks(appContent[pN]);
+		manageDataSrcImg(appContent[pN]);
+		manageDataQrcodeImg(appContent[pN]);
+		manageStaticSelect(appContent[pN]);
+		manageExpandingLayers(appContent[pN]);
 	},
 	loadNotFoundPage = function (a) {
 		var c = BALA.one(a) || "",
@@ -2424,19 +2458,14 @@ var initRoutie = function (ctx) {
 				redirectToDefaultPage("/home");
 			},
 			"/home": function () {
-				loadVirtualPage(ctx, "./includes/home.html", function () {
+				loadVirtualPage(appContentId, "./includes/home.html", function () {
 					reinitVirtualPage(" - Начало");
 				});
 			},
-			/* "/feedback": function () {
-				loadVirtualPage(ctx, "./includes/feedback.html", function () {
-					reinitVirtualPage(" - Напишите мне");
-				});
-			}, */
 			"/schedule": function () {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
 					if ("undefined" !== typeof isOldOpera && !isOldOpera) {
-						loadVirtualPage(ctx, "./includes/schedule.html", function () {
+						loadVirtualPage(appContentId, "./includes/schedule.html", function () {
 							reinitVirtualPage(" - Расписание");
 						});
 					}
@@ -2445,44 +2474,44 @@ var initRoutie = function (ctx) {
 			"/map": function () {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
 					if ("undefined" !== typeof isOldOpera && !isOldOpera) {
-						loadVirtualPage(ctx, "./includes/map.html", function () {
+						loadVirtualPage(appContentId, "./includes/map.html", function () {
 							reinitVirtualPage(" - Карта");
 						});
 					}
 				}
 			},
 			"/level_test": function () {
-				loadVirtualPage(ctx, "./includes/level_test.html", function () {
+				loadVirtualPage(appContentId, "./includes/level_test.html", function () {
 					reinitVirtualPage(" - Уровневый тест");
 				});
 			},
 			"/common_mistakes": function () {
-				loadVirtualPage(ctx, "./includes/common_mistakes.html", function () {
+				loadVirtualPage(appContentId, "./includes/common_mistakes.html", function () {
 					reinitVirtualPage(" - Распространенные ошибки");
 				});
 			},
 			"/demo_ege": function () {
-				loadVirtualPage(ctx, "./includes/demo_ege.html", function () {
+				loadVirtualPage(appContentId, "./includes/demo_ege.html", function () {
 					reinitVirtualPage(" - Демо-вариант ЕГЭ-11 АЯ (ПЧ)");
 				});
 			},
 			"/demo_ege_speaking": function () {
-				loadVirtualPage(ctx, "./includes/demo_ege_speaking.html", function () {
+				loadVirtualPage(appContentId, "./includes/demo_ege_speaking.html", function () {
 					reinitVirtualPage(" - Демо-вариант ЕГЭ-11 АЯ (УЧ)");
 				});
 			},
 			"/previous_ege_analysis": function () {
-				loadVirtualPage(ctx, "./includes/previous_ege_analysis.html", function () {
+				loadVirtualPage(appContentId, "./includes/previous_ege_analysis.html", function () {
 					reinitVirtualPage(" - ЕГЭ: разбор ошибок");
 				});
 			},
 			"/*": function () {
-				loadNotFoundPage(ctx);
+				loadNotFoundPage(appContentId);
 			}
 		});
 	}
 };
-docReady(initRoutie.bind(null, "#app-content"));
+docReady(initRoutie);
 /*!
  * observe mutations
  * bind functions only for inserted DOM
@@ -2491,26 +2520,26 @@ docReady(initRoutie.bind(null, "#app-content"));
 var observeMutations = function (ctx) {
 	"use strict";
 	ctx = ctx || "";
-	var w = window,
-	c = BALA.one(ctx) || "";
-	if (c) {
+	var w = window;
+	if (ctx) {
 		var g = function (e) {
 			var f = function (m) {
 				console.log("mutations observer: " + m.type);
+				console.log(m.type, "target: " + m.target.tagName + ("." + m.target.className || "#" + m.target.id || ""));
 				console.log(m.type, "added: " + m.addedNodes.length + " nodes");
 				console.log(m.type, "removed: " + m.removedNodes.length + " nodes");
 				if ("childList" === m.type || "subtree" === m.type) {
 					mo.disconnect();
-					manageYandexMapButton("#ymap");
-					manageDisqusButton();
-					manageExternalLinks(c);
-					manageLocalLinks(c);
-					manageDataTargetLinks(c);
-					manageImgLightboxLinks(c);
-					manageDataSrcImg(c);
-					manageDataQrcodeImg(c);
-					manageStaticSelect(c);
-					manageExpandingLayers(c);
+					/* manageYandexMapButton("#ymap");
+					manageDisqusButton(ctx);
+					manageExternalLinks(ctx);
+					manageLocalLinks(ctx);
+					manageDataTargetLinks(ctx);
+					manageImgLightboxLinks(ctx);
+					manageDataSrcImg(ctx);
+					manageDataQrcodeImg(ctx);
+					manageStaticSelect(ctx);
+					manageExpandingLayers(ctx); */
 				}
 			};
 			/* e.forEach(f); */
@@ -2525,7 +2554,7 @@ var observeMutations = function (ctx) {
 			}
 		},
 		mo = new MutationObserver(g);
-		mo.observe(c, {
+		mo.observe(ctx, {
 			childList: !0,
 			subtree: !0,
 			attributes: !1,
@@ -2541,13 +2570,19 @@ var updateInsertedDom = function () {
 	var w = window,
 	h = w.location.hash || "",
 	pN = "parentNode",
-	c = BALA.one("#app-content")[pN] || "";
-	if (c && h) {
+	/*!
+	 * because replace child is used in the first place
+	 * to insert new content, and if parent node doesnt exist
+	 * inner html method is applied,
+	 * the parent node should be observed, not the target
+	 * node for the insertion
+	 */
+	ctx = BALA.one("#app-content")[pN] || "";
+	if (ctx && h) {
 		console.log("triggered function: updateInsertedDom");
-		observeMutations(c);
+		observeMutations(ctx);
 	}
 };
-evento.add(window, "load", updateInsertedDom);
 evento.add(window, "hashchange", updateInsertedDom);
 /*!
  * init manUP.js
@@ -2574,9 +2609,9 @@ var showPageFinishProgress = function () {
 	k = function () {
 		var si = requestInterval(function () {
 				console.log("function showPageFinishProgress => started Interval");
-				if (imagesPreloaded) {
+				if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
 					clearRequestInterval(si);
-					console.log("function showPageFinishProgress => si=" + si + "; imagesPreloaded=" + imagesPreloaded);
+					console.log("function showPageFinishProgress => si=" + si.value + "; imagesPreloaded=" + imagesPreloaded);
 					g();
 				}
 			}, 100);
