@@ -3,7 +3,7 @@
  width: 100%;
  z-index: 9999;
  /* flexbox setup */
- 
+
 }
 
 .grid
@@ -42,12 +42,12 @@
  overflow-y:hidden;
  */
 cursor: pointer;
--webkit-transform: scale(1); 
- -moz-transform: scale(1); 
- -o-transform: scale(1); 
- transform: scale(1); 
- -webkit-box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2); 
- -moz-box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2); 
+-webkit-transform: scale(1);
+ -moz-transform: scale(1);
+ -o-transform: scale(1);
+ transform: scale(1);
+ -webkit-box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
+ -moz-box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2);
- 
+
 }

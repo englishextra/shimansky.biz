@@ -593,7 +593,7 @@ function GradientBackgroundSetting(elementName, getUpdateBoxDelegate, afterUpdat
 				mozTo += " " + toPosition + "%";
 			var mozColors = mozFrom + ", " + mozTo;
 			
-			var webkitColors = "color-stop(" + percentToScale(fromPosition) + ", " + fromColor + 
+			var webkitColors = "color-stop(" + percentToScale(fromPosition) + ", " + fromColor +
 				"), color-stop(" + percentToScale(toPosition) + ", " + toColor + ")";
 			
 			switch (dir.selectedIndex) {
@@ -858,11 +858,11 @@ function Box() {
 	if (!hasTouchSupport) {
 		var resizeDiv = div.childNodes[div.childNodes.length-1];
 		resizeDiv.style.visibility = "hidden";
-		dojo.connect(this.Element, "onmouseover", function() { 
+		dojo.connect(this.Element, "onmouseover", function() {
 			var resizeDiv = div.childNodes[div.childNodes.length-1];
 			resizeDiv.style.visibility = "visible";
 		});
-		dojo.connect(this.Element, "onmouseout", function() { 
+		dojo.connect(this.Element, "onmouseout", function() {
 			var resizeDiv = div.childNodes[div.childNodes.length-1];
 			resizeDiv.style.visibility = "hidden";
 		});
@@ -906,7 +906,7 @@ function setupSlider(baseName, minValue, maxValue, updateFunc) {
 				if (value >= slider.attr("minimum") && value <= slider.attr("maximum"))
 					slider.attr("value", value);
 				updateFunc();
-			} 
+			}
 		}
 	});
 	

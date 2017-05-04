@@ -1,7 +1,7 @@
 /**
  * Tag-closer extension for CodeMirror.
  *
- * This extension adds a "closeTag" utility function that can be used with key bindings to 
+ * This extension adds a "closeTag" utility function that can be used with key bindings to
  * insert a matching end tag after the ">" character of a start tag has been typed. It can
  * also complete "</" if a matching start tag is found. It will correctly ignore signal
  * characters for empty tags, comments, CDATA, etc.
@@ -12,7 +12,7 @@
  * - xml
  *
  * See demos/closetag.html for a usage example.
- * 
+ *
  * @author Nathan Williams <nathan@nlwillia.net>
  * Contributed under the same license terms as CodeMirror.
  */
@@ -52,7 +52,7 @@
 		 * 			context
 		 * 				tagName
 		 * 		mode
-		 * 
+		 *
 		 * xml
 		 * 	className
 		 * 	state

@@ -55,9 +55,9 @@ var ZeroClipboard = {
 	getDOMObjectPosition: function(obj, stopObj) {
 		// get absolute coordinates for dom element
 		var info = {
-			left: 0, 
-			top: 0, 
-			width: obj.width ? obj.width : obj.offsetWidth, 
+			left: 0,
+			top: 0,
+			width: obj.width ? obj.width : obj.offsetWidth,
 			height: obj.height ? obj.height : obj.offsetHeight
 		};
 		while (obj && (obj != stopObj)) {
@@ -140,8 +140,8 @@ ZeroClipboard.Client.prototype = {
 	getHTML: function(width, height) {
 		// return HTML for movie
 		var html = '';
-		var flashvars = 'id=' + this.id + 
-			'&width=' + width + 
+		var flashvars = 'id=' + this.id +
+			'&width=' + width +
 			'&height=' + height;
 			
 		if (navigator.userAgent.match(/MSIE/)) {

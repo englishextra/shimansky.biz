@@ -347,7 +347,7 @@ $page_title = 'Шифрование';
 			/*!
 			 * bootstrap top-link-block
 			 */
-			if ("undefined" !== typeof window.jQuery && "function" === typeof $.fn.affix) { 
+			if ("undefined" !== typeof window.jQuery && "function" === typeof $.fn.affix) {
 				if (($(window).height() + 100) < $(document).height()) {
 					$('#top-link-block').removeClass('hidden').affix({
 						offset : {

@@ -23,7 +23,7 @@ window.Modernizr = (function( window, document, undefined ) {
  attrs = {},
  classes = [],
  slice = classes.slice,
- featureName, 
+ featureName,
  injectElementWithStyles = function( rule, callback, nodes, testnames ) {
  var style, ret, node, docOverflow,
  div = document.createElement('div'),
@@ -91,7 +91,7 @@ window.Modernizr = (function( window, document, undefined ) {
  };
  }
  else {
- hasOwnProp = function (object, property) { 
+ hasOwnProp = function (object, property) {
  return ((property in object) && is(object.constructor.prototype[property], 'undefined'));
  };
  }
@@ -425,7 +425,7 @@ window.Modernizr = (function( window, document, undefined ) {
  }
  Modernizr[feature] = test;
  }
- return Modernizr; 
+ return Modernizr;
  };
  setCss('');
  modElem = inputElem = null;

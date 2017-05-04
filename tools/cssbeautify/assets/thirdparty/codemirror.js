@@ -1688,7 +1688,7 @@ window.CodeMirror = (function() {
  input.style.cssText = oldCSS;
  if (ie_lt9) scrollbar.scrollTop = scrollPos;
  slowPoll();
- // Try to detect the user choosing select-all 
+ // Try to detect the user choosing select-all
  if (input.selectionStart != null) {
  clearTimeout(detectingSelectAll);
  var extval = input.value = " " + (posEq(sel.from, sel.to) ? "" : input.value), i = 0;

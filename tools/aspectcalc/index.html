@@ -232,35 +232,35 @@ var fadeTimer;
 */
 function fadeIt(el, color) {
  var diffs;
- 
+
  color = color || { r : 242, g : 206, b : 68 }; // yellow
  diffs = {
  r : Math.ceil((255 - color.r) / 10),
  g : Math.ceil((255 - color.g) / 10),
  b : Math.ceil((255 - color.b) / 10)
  };
- 
+
  function color2rgb(color) {
  return 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
  }
- 
+
  function setColor(rgb) {
  $(el).css({ background : rgb });
  }
- 
+
  function fade(color) {
  clearTimeout(fadeTimer);
- 
+
  color.r += diffs.r;
  color.g += diffs.g;
  color.b += diffs.b;
- 
+
  if (color.r > 255) color.r = 255;
  if (color.g > 255) color.g = 255;
  if (color.b > 255) color.b = 255;
- 
+
  setColor(color2rgb(color));
- 
+
  if (color.r < 255 || color.g < 255 || color.b < 255) {
  fadeTimer = setTimeout(function () {
  fade(color);
@@ -268,7 +268,7 @@ function fadeIt(el, color) {
  }, 50);
  }
  }
- 
+
  setColor(color2rgb(color));
  fade(color);
 }
@@ -298,7 +298,7 @@ function fadeIt(el, color) {
  function reduceRatio(numerator, denominator) {
  var gcd, temp, divisor;
  // from: http://pages.pacificcoast.net/~cazelais/euclid.html
- gcd = function (a, b) { 
+ gcd = function (a, b) {
  if (b === 0) return a;
  return gcd(b, a % b);
  }

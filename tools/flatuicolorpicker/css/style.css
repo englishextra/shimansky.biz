@@ -1,5 +1,5 @@
-/* CSS Document 
-		 HOMEPAGE THEME 
+/* CSS Document
+		 HOMEPAGE THEME
 		 Theme Name: Flat UI Color Picker
 		 Theme URI: www.flatuicolorpicker
 		 Description: A Theme for FlatUI
@@ -13,7 +13,7 @@
 	#Page Styles
 	#Media Queries
 /* -----------------------------------------
- navigation 
+ navigation
 ----------------------------------------- */
 .navigation {clear:both; text-transform:uppercase; position:relative;height: 55px;right: 0;width: 100%;text-align: right;margin-right:25px;top:0;z-index: 9999;}
 
@@ -23,7 +23,7 @@
 
 .navigation li a {display:inline; margin:0; padding:5px 10px; font-size:1em; line-height:1em; text-decoration:none; color:#444; text-align:right; }
 
-.navigation li a:hover {color:#696969; text-decoration:none;} 
+.navigation li a:hover {color:#696969; text-decoration:none;}
 .current-menu-item {background-color:#95A5A1; line-height:32px;}
 
 #social {display: inline; left: 30px; position: relative; }
@@ -45,7 +45,7 @@
 .item-grey{color:#333;}
 
 /* -----------------------------------------
- footer 
+ footer
 ----------------------------------------- */
 .footer{bottom: 0; display: block;left: 0;position: fixed;width: 100%;
 background-color: rgba(255, 255, 255, 0.2);
@@ -56,11 +56,11 @@ padding:30px;
 ================================================== */
 	/* Smaller than standard 960 (devices and browsers) */
 			
-	@media only screen and (max-width: 959px) 
+	@media only screen and (max-width: 959px)
 	{}
 
 	/* Tablet Portrait size to standard 960 (devices and browsers) */
-	@media only screen and (min-width: 768px) and (max-width: 959px) 
+	@media only screen and (min-width: 768px) and (max-width: 959px)
 	{
 		.grid{width: 50%;color: #FFF;position: relative;top:45px;margin:0;}
 
@@ -73,7 +73,7 @@ padding:30px;
 	}
 
 	/* All Mobile Sizes (devices and browser) */
-	@media only screen and (max-width: 767px) 
+	@media only screen and (max-width: 767px)
 	{
 		.navigation {clear:both; text-transform:uppercase; position:relative; height: 55px;right: 0;width: 100%;text-align: right;margin-right:25px;top:0;z-index: 9999;}
 
@@ -83,10 +83,10 @@ padding:30px;
 
 		.navigation li a {display:inline; margin:0; padding:5px 2px; font-size:1em; line-height:1em; text-decoration:none; color:#444; text-align:right; }
 
-		.navigation li a:hover {color:#696969; text-decoration:none;} 
+		.navigation li a:hover {color:#696969; text-decoration:none;}
 		.current-menu-item {background-color:#95A5A1; line-height:32px;}
 
-		 
+		
 		.grid{width: 50%;color: #FFF;position: relative;top:45px;margin:0;}
 
 		.item{position: absolute; margin:0;left: 0;right: 0;top:0;bottom: 0; text-align: center;text-transform: uppercase;padding: 8%;font-size: 0.750em;}
@@ -98,7 +98,7 @@ padding:30px;
 	}
 
 	/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
-	@media only screen and (min-width: 480px) and (max-width: 767px) 
+	@media only screen and (min-width: 480px) and (max-width: 767px)
 	{
 	.item{position: absolute; margin:0;left: 0;right: 0;top:0;bottom: 0; text-align: center;text-transform: uppercase;padding: 5%;font-size: 0.750em;}
 
@@ -112,7 +112,7 @@ padding:30px;
 
 	
 	/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
-	@media only screen and (max-width: 479px) 
+	@media only screen and (max-width: 479px)
 	{	
 		.grid{width: 50%;padding-bottom: 18%; color: #FFF; position: relative;float: left;top:45px;bottom:0;margin:0;}
 

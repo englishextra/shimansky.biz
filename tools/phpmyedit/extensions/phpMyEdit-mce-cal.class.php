@@ -25,7 +25,7 @@
  * http://platon.sk/projects/phpMyEdit/
  */
 /* $Platon: phpMyEdit/extensions/phpMyEdit-mce-cal.class.php,v 1.6 2006-09-16 18:43:47 nepto Exp $ */
- 
+
 /*
     OVERVIEW
     --------
@@ -40,7 +40,7 @@
     The requirement is a properly installed jsCalendar and TinyMCE script.
     All browsers supported by these scripts are supported by this
     extension. Note that version 1.44 or later for TinyMCE is required.
-    
+
     USAGE
     -----
 	For both features:
@@ -151,7 +151,7 @@
 	CALENDAR
     This extension enables the display of a popup calendar selection
     against selected fields.
-    
+
     In order to use it, you should:
     1. Load the jsCalendar scripts in the <head>...</head> section of
        your phpMyEdit calling program, substituting the correct paths:
@@ -162,7 +162,7 @@
        documentation) and add the following in the <head>...</head>
        section of your phpMyEdit calling program, substituting the
        correct path:
-        
+
         <link rel="stylesheet" media="screen"
                 href="js/jscalendar/calendar-system.css" />
     3. Add 'calendar' parameter to the field definitions where you
@@ -178,15 +178,15 @@
        This is will display a button next to the field which pops up
        a calendar when clicked. If that field has a 'strftimemask'
        parameter set, it will use this for the date format.
-        
+
        For more advanced usage, you can set the 'calendar' parameter
        to an array of valid jsCalendar Calendar.setup options
        (see jSCalendar document for details). Note that not all
        of these options make sense to use in phpMyEdit, and some
        of them will actively break the function.
-        
+
        Example:
-        
+
        $opts['fdd']['col_name'] = array(
          'name'     => 'Column',
          'select'   => 'T',
@@ -214,7 +214,7 @@
        is currently empty, use the phpMyEdit 'default' option.
     2. Only the options listed above may be set by the user, any other
        options will be ignored.
-       
+
 	3. The 'label' option can contain HTML markup which will be displayed as
 	   the button/clickable area to pull up the calendar
     SEARCH KEYWORD

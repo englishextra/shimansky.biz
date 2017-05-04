@@ -41,7 +41,7 @@ function TouchScroller(mainElement, excludedClassNames) {
 			if (parentEl.tagName && (parentEl.tagName=="INPUT" || parentEl.tagName=="TEXTAREA" || parentEl.tagName=="SELECT" || parentEl.tagName=="LABEL")) {
 				return true;
 			}
-			if (_excludedClassNames!=null && typeof(parentEl.className)!="undefined" && parentEl.className 
+			if (_excludedClassNames!=null && typeof(parentEl.className)!="undefined" && parentEl.className
 				&& TouchHelpers.IsAnyMatch(parentEl.className.split(" "), _excludedClassNames)) {
 				return true;
 			}
@@ -176,13 +176,13 @@ function TouchProxy(mainElement, proxiedClassNames) {
 		switch(event.type)
 		{
 			case "touchstart": type = "mousedown"; break;
-			case "touchmove": type = "mousemove"; break; 
+			case "touchmove": type = "mousemove"; break;
 			case "touchend": type = "mouseup"; break;
 			default: return;
 		}
 		
 		var simulatedEvent = document.createEvent("MouseEvent");
-		simulatedEvent.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY, 
+		simulatedEvent.initMouseEvent(type, true, true, window, 1, first.screenX, first.screenY, first.clientX, first.clientY,
 			false, false, false, false, 0, null);
 		first.target.dispatchEvent(simulatedEvent);
 		event.preventDefault();

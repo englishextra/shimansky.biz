@@ -4,21 +4,21 @@
 // And including a special span.CodeMirror-matchhighlight css class (also optionally a separate one for .CodeMirror-focused -- see demo matchhighlighter.html)
 (function() {
  var DEFAULT_MIN_CHARS = 2;
- 
+
  function MatchHighlightState() {
 	this.marked = [];
  }
  function getMatchHighlightState(cm) {
 	return cm._matchHighlightState || (cm._matchHighlightState = new MatchHighlightState());
  }
- 
+
  function clearMarks(cm) {
 	var state = getMatchHighlightState(cm);
 	for (var i = 0; i < state.marked.length; ++i)
 		state.marked[i].clear();
 	state.marked = [];
  }
- 
+
  function markDocument(cm, className, minChars) {
  clearMarks(cm);
 	minChars = (typeof minChars !== 'undefined' ? minChars : DEFAULT_MIN_CHARS);

@@ -30,7 +30,7 @@ CodeMirror.runMode = function(string, modespec, callback, options) {
  pos = idx + 1;
  }
  }
- if (style) 
+ if (style)
  accum.push("<span class=\"cm-" + esc(style) + "\">" + escaped + "</span>");
  else
  accum.push(escaped);

@@ -59,11 +59,11 @@ dojo.addOnLoad(function () {
 	if (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) {
 		ZeroClipboard.setMoviePath("zeroclipboard/ZeroClipboard.swf");
 		var clip = new ZeroClipboard.Client();
-		clip.addEventListener("mouseDown", function(client) { 
+		clip.addEventListener("mouseDown", function(client) {
 		 clip.setText(styleSource);
 	 });
 		clip.glue("CopyToClipboard");
-		dojo.connect(window, "onresize", function() { 
+		dojo.connect(window, "onresize", function() {
 			clip.reposition();
 		});
 		var clipFlash = dojo.byId("ZeroClipboardMovie_1");
@@ -167,17 +167,17 @@ function Flash(box) {
 	runningOpacityAnimation = true;
 	if (currentOpacity==1.0) {
 		el.style.opacity = 0.5;
-		dojo.animateProperty({ node: el, properties: { opacity: 1.0 }, duration: 500, 
+		dojo.animateProperty({ node: el, properties: { opacity: 1.0 }, duration: 500,
 			onEnd: function() { runningOpacityAnimation = false; el.style.opacity = null; } }).play();
 	}
 	else if (currentOpacity < 0.5) {
 		el.style.opacity = 1.0;
-		dojo.animateProperty({ node: el, properties: { opacity: currentOpacity }, duration: 500, 
+		dojo.animateProperty({ node: el, properties: { opacity: currentOpacity }, duration: 500,
 			onEnd: function() { runningOpacityAnimation = false; } }).play();
 	}
 	else {
 		el.style.opacity = 0.0;
-		dojo.animateProperty({ node: el, properties: { opacity: currentOpacity }, duration: 500, 
+		dojo.animateProperty({ node: el, properties: { opacity: currentOpacity }, duration: 500,
 			onEnd: function() { runningOpacityAnimation = false; } }).play();
 	}
 }

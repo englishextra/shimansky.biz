@@ -235,7 +235,7 @@ class phpMyEdit_report extends phpMyEdit
 			$css_class_name = $this->getCSSclass('input', null, true, $css_postfix);
 			$varname        = 'have_'.$key;
 			$value          = $this->get_cgi_cookie_var($varname);
-			$checked        = @$value ? ' checked' : ''; 
+			$checked        = @$value ? ' checked' : '';
 			echo '<tr class="',$this->getCSSclass('row', null, 'next', $css_postfix),'">',"\n";
 			echo '<td class="',$this->getCSSclass('key', null, true, $css_postfix),'">';
 			echo $this->fdd[$i]['name'],'</td>',"\n";

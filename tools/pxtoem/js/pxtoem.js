@@ -70,7 +70,7 @@ $(function () {
  return;
  }
  };
- 
+
  $base_table.find('tbody').html(build_table(base)).on('click', 'tr', function (e) {
  e.preventDefault();
  var $el = $(this);
