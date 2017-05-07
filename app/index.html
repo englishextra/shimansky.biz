@@ -20,6 +20,14 @@
 	<body>
 		<svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg">
 			<defs>
+				<symbol id="ui-icon-Cancel" viewBox="0 0 32 32">
+					<title>Cancel</title>
+					<path d="M28.203 5.203l-10.781 10.797 10.781 10.797-1.406 1.406-10.797-10.781-10.797 10.781-1.406-1.406 10.781-10.797-10.781-10.797 1.406-1.406 10.797 10.781 10.797-10.781 1.406 1.406z"></path>
+				</symbol>
+				<symbol id="ui-icon-Search" viewBox="0 0 32 32">
+					<title>Search</title>
+					<path d="M21 0q1.516 0 2.922 0.391t2.625 1.109 2.227 1.727 1.727 2.227 1.109 2.625 0.391 2.922-0.391 2.922-1.109 2.625-1.727 2.227-2.227 1.727-2.625 1.109-2.922 0.391q-1.953 0-3.742-0.656t-3.289-1.891l-12.266 12.25q-0.297 0.297-0.703 0.297t-0.703-0.297-0.297-0.703 0.297-0.703l12.25-12.266q-1.234-1.5-1.891-3.289t-0.656-3.742q0-1.516 0.391-2.922t1.109-2.625 1.727-2.227 2.227-1.727 2.625-1.109 2.922-0.391zM21 20q1.859 0 3.5-0.711t2.859-1.93 1.93-2.859 0.711-3.5-0.711-3.5-1.93-2.859-2.859-1.93-3.5-0.711-3.5 0.711-2.859 1.93-1.93 2.859-0.711 3.5 0.711 3.5 1.93 2.859 2.859 1.93 3.5 0.711z"></path>
+				</symbol>
 				<symbol id="ui-icon-ChevronDown" viewBox="0 0 32 32">
 					<title>ChevronDown</title>
 					<path d="M16 21.85l14.568-14.564 1.432 1.432-16 15.996-16-15.996 1.432-1.432 14.568 14.564z"></path>
@@ -73,27 +81,27 @@
 				<div class="holder-navbar">
 					<ul class="navbar" data-function="navbar">
 						<li>
-							<a href="#/home" title="Home / Начало">
+							<a href="#/home" title="Начало">
 							<svg class="navbar-icon logo">
 								<use xlink:href="#ui-icon-englishextra"></use>
 							</svg> </a>
 						</li>
 						<li>
-							<a href="#/contents" title="Содержание">Сontent</a>
+							<a href="#/contents">Содержание</a>
 							<!-- <a href="#/contents">
 							<svg class="navbar-icon logo">
 								<use xlink:href="#ui-icon-GlobalNavButton"></use>
 							</svg> </a> -->
 						</li>
 						<li>
-							<a href="javascript:void(0);" title="Популярные">Popular&#160;
+							<a href="javascript:void(0);">Популярные&#160;
 							<svg class="navbar-icon pointer baseline">
 								<use xlink:href="#ui-icon-ChevronDownSmall"></use>
 							</svg> </a>
 							<ul id="render_navbar_popular"></ul>
 						</li>
 						<li>
-							<a href="javascript:void(0);" title="More / Еще">
+							<a href="javascript:void(0);" title="Еще">
 							<svg class="navbar-icon logo">
 								<use xlink:href="#ui-icon-More"></use>
 							</svg> </a>
@@ -124,6 +132,28 @@
 							</ul> -->
 						</li>
 					</ul>
+					<div class="holder-search-form">
+						<!-- <form action="javascript:void(0);" class="search-form" onsubmit="return!1" method="get" enctype="application/x-www-form-urlencoded">
+							<div class="form-group">
+								<p>
+									<span class="holder-search-text"><input type="text" name="text" id="text" autocomplete="off" placeholder="Поиск" /></span>
+								</p>
+							</div>
+						</form> -->
+						<form action="//yandex.ru/sitesearch" class="search-form" target="_blank" method="get" enctype="application/x-www-form-urlencoded">
+							<div class="form-group">
+								<p>
+									<span class="holder-search-text"><input type="text" name="text" id="text" autocomplete="off" placeholder="Поиск" /><button type="submit" />
+									<svg class="ui-icon">
+										<use xlink:href="#ui-icon-Search"></use>
+									</svg></button></span>
+									<input name="searchid" id="searchid" value="2192588" type="hidden" />
+									<input name="web" id="web" value="1" type="hidden" />
+								</p>
+							</div>
+						</form>
+						<!-- <div class="ya-site-form ya-site-form_inited_no"><form action="https://yandex.com/search/site/" method="get" target="_blank"><input type="hidden" name="searchid" value="2192588"/><input type="hidden" name="l10n" value="en"/><input type="hidden" name="reqenc" value=""/><input type="search" name="text" id="text" value=""/><input type="submit" value="Search"/></form></div> -->
+					</div>
 				</div>
 			</div>
 			<div class="container" id="container" role="main">
@@ -138,7 +168,7 @@
 						<form method="get" action="#">
 							<div>
 								<select class="contents-select" id="render_contents_select" tabindex="2">
-									<option value="#a0" disabled="" selected="">Быстрый переход к&#160;страницам&#8230;</option>
+									<option value="" disabled="" selected="">Быстрый переход к&#160;страницам&#8230;</option>
 								</select>
 							</div>
 						</form>
@@ -174,19 +204,19 @@
 		<template id="template_navbar_popular">
 			{{@navbar_popular}}
 			<li>
-				<a href="{{%_val.href}}">{{=_val.title}}</a>
+				<a href="{{%_val.href}}" title="{{%_val.title}}">{{=_val.title}}</a>
 			</li>
 			{{/@navbar_popular}}
 		</template>
 		<template id="template_navbar_more">
 			{{@navbar_more}}
 			<li>
-				<a href="{{%_val.href}}">{{=_val.title}}</a>
+				<a href="{{%_val.href}}" title="{{%_val.title}}">{{=_val.title}}</a>
 			</li>
 			{{/@navbar_more}}
 		</template>
 		<template id="template_contents_select">
-			<option value="#a0" disabled="" selected="">Быстрый переход к&#160;страницам&#8230;</option>
+			<option value="" disabled="" selected="">Быстрый переход к&#160;страницам&#8230;</option>
 			{{@hashes}}
 			<option value="{{%_val.href}}" title="{{%_val.title}}">{{=_val.title}}</option>
 			{{/@hashes}}
@@ -212,7 +242,7 @@
 			{{/@items}}
 		</template>
 		<template id="template_bottom_nav_btns">
-			<a href="{{%_val.next_href}}" class="btn-larger btn-primary fit-half-width">Следующая</a><a href="#/contents" class="btn-larger btn-secondary fit-half-width">Содержание</a>
+			<a href="{{%next_href}}" class="btn-larger btn-primary fit-half-width">Следующая</a><a href="#/contents" class="btn-larger btn-secondary fit-half-width">Содержание</a>
 		</template>
 		<script>
 			(function(){var loadJS=function(_src,callback){"use strict";var ref=document.getElementsByTagName("script")[0];var script=document.createElement("script");script.src=_src;script.async=true;ref.parentNode.insertBefore(script,ref);if(callback&&"function"===typeof callback){script.onload=callback;}return script;};("undefined"!==typeof window?window:this).loadJS=loadJS;}());

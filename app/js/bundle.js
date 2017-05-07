@@ -16,7 +16,7 @@
  * source: github.com/loele/t.js/blob/2b3ab7039353cc365fb3463f6df08fd00eb3eb3d/t.js
  * passes jshint
  */
-(function(){var blockregex=/\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g,valregex=/\{\{([=%])(.+?)\}\}/g;function t(template){this.t=template;}function scrub(val){return new Option(val).text.replace(/"/g,"&quot;");}function get_value(vars,key){var parts=key.split('.');while(parts.length){if(!(parts[0]in vars)){return false;}vars=vars[parts.shift()];}return vars;}function render(fragment,vars){return fragment.replace(blockregex,function(_,__,meta,key,inner,if_true,has_else,if_false){var val=get_value(vars,key),temp="",i;if(!val){if(meta=='!'){return render(inner,vars);}if(has_else){return render(if_false,vars);}return"";}if(!meta){return render(if_true,vars);}if(meta=='@'){_=vars._key;__=vars._val;for(i in val){if(val.hasOwnProperty(i)){vars._key=i;vars._val=val[i];temp+=render(inner,vars);}}vars._key=_;vars._val=__;return temp;}}).replace(valregex,function(_,meta,key){var val=get_value(vars,key);if(val||val===0){return meta=='%'?scrub(val):val;}return"";});}t.prototype.render=function(vars){return render(this.t,vars);};("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window).t=t;})();
+(function(){var blockregex=/\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g,valregex=/\{\{([=%])(.+?)\}\}/g;function t(template){this.t=template;}function scrub(val){return new Option(val).text.replace(/"/g,"&quot;");}function get_value(vars,key){var parts=key.split('.');while(parts.length){if(!(parts[0]in vars)){return false;}vars=vars[parts.shift()];}return vars;}function render(fragment,vars){return fragment.replace(blockregex,function(_,__,meta,key,inner,if_true,has_else,if_false){var val=get_value(vars,key),temp="",i;if(!val){if(meta=='!'){return render(inner,vars);}if(has_else){return render(if_false,vars);}return"";}if(!meta){return render(if_true,vars);}if(meta=='@'){_=vars._key;__=vars._val;for(i in val){if(val.hasOwnProperty(i)){vars._key=i;vars._val=val[i];temp+=render(inner,vars);}}vars._key=_;vars._val=__;return temp;}}).replace(valregex,function(_,meta,key){var val=get_value(vars,key);if(val||val===0){return meta=='%'?scrub(val):val;}return"";});}t.prototype.render=function(vars){return render(this.t,vars);};("object"===typeof window&&window||"object"===typeof self&&self||"object"===typeof global&&global||{}).t=t;})();
 /*!
  * modified verge 1.9.1+201402130803
  * github.com/ryanve/verge
@@ -44,19 +44,19 @@
  * @see {@link https://github.com/thednp/navbar.js/blob/master/navbar.js}
  * passes jshint
  */
-(function(){"use strict";var w=window,d=document,qS="querySelector",gEBTN="getElementsByTagName",aEL="addEventListener",cL="classList",rootStyle=d.documentElement.style||"",supportTransitions=function(){return"WebkitTransition"in rootStyle||"transition"in rootStyle||"OTransition"in rootStyle||"MsTransition"in rootStyle||"MozTransition"in rootStyle?!0:!1;}(),on=function(element,eventName,handler){element[aEL](eventName,handler,false);},openClass="is-open",isPositioned="is-repositioned",close=function(element){if(element[cL].contains(openClass)){element[cL].remove(openClass);setTimeout(function(){element[cL].remove(isPositioned);},(supportTransitions?200:0));}},Navbar=function(el,outsideClass){var menu=(typeof el==="object")?el:d[qS](el);if(menu){var items=menu[gEBTN]("li")||"";if(items){var enterHandler=function(){var that=this;clearTimeout(that.timer);if(!that[cL].contains(openClass)){that.timer=setTimeout(function(){that[cL].add(openClass);that[cL].add(isPositioned);var siblings=that.parentNode[gEBTN]("li");for(var h=0;h<siblings.length;h++){if(siblings[h]!==that){close(siblings[h]);}}},100);}},closeHandler=function(){for(var i=0,itemsLength=items.length;i<itemsLength;i++){if(items[i][gEBTN]("ul").length){close(items[i]);}}};for(var i=0,itemsLength=items.length;i<itemsLength;i++){if(items[i][gEBTN]("ul").length){on(items[i],"click",enterHandler);}}w[aEL]("hashchange",closeHandler);var outside=d[qS](outsideClass)||"";if(outside){outside[aEL]("click",closeHandler);}}}};("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window).Navbar=Navbar;}());
+(function(){"use strict";var w=window,d=document,qS="querySelector",gEBTN="getElementsByTagName",aEL="addEventListener",cL="classList",rootStyle=d.documentElement.style||"",supportTransitions=function(){return"WebkitTransition"in rootStyle||"transition"in rootStyle||"OTransition"in rootStyle||"MsTransition"in rootStyle||"MozTransition"in rootStyle?!0:!1;}(),on=function(element,eventName,handler){element[aEL](eventName,handler,false);},openClass="is-open",isPositioned="is-repositioned",close=function(element){if(element[cL].contains(openClass)){element[cL].remove(openClass);setTimeout(function(){element[cL].remove(isPositioned);},(supportTransitions?200:0));}},Navbar=function(el,outsideClass){var menu=(typeof el==="object")?el:d[qS](el);if(menu){var items=menu[gEBTN]("li")||"";if(items){var enterHandler=function(){var that=this;clearTimeout(that.timer);if(!that[cL].contains(openClass)){that.timer=setTimeout(function(){that[cL].add(openClass);that[cL].add(isPositioned);var siblings=that.parentNode[gEBTN]("li");for(var h=0;h<siblings.length;h++){if(siblings[h]!==that){close(siblings[h]);}}},100);}},closeHandler=function(){for(var i=0,itemsLength=items.length;i<itemsLength;i++){if(items[i][gEBTN]("ul").length){close(items[i]);}}};for(var i=0,itemsLength=items.length;i<itemsLength;i++){if(items[i][gEBTN]("ul").length){on(items[i],"click",enterHandler);}}w[aEL]("hashchange",closeHandler);var outside=d[qS](outsideClass)||"";if(outside){outside[aEL]("click",closeHandler);}}}};("object"===typeof window&&window||"object"===typeof self&&self||"object"===typeof global&&global||{}).Navbar=Navbar;}());
 /*!
  * Carousel v1.0
  * @see {@link https://habrahabr.ru/post/327246/}
  * @see {@link https://codepen.io/iGetPass/pen/apZPMo}
  */
-(function(){"use strict";var d=document,qS="querySelector",aEL="addEventListener";var Carousel=function(setting){var _this=this;if(d[qS](setting.wrap)===null){console.error("Carousel not fount selector "+setting.wrap);return;}var privates={};this.prev_slide=function(){--privates.opt.position;if(privates.opt.position<0){privates.opt.position=privates.opt.max_position-1;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};this.next_slide=function(){++privates.opt.position;if(privates.opt.position>=privates.opt.max_position){privates.opt.position=0;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};privates.setting=setting;privates.sel={"main":d[qS](privates.setting.main),"wrap":d[qS](privates.setting.wrap),"children":d[qS](privates.setting.wrap).children,"prev":d[qS](privates.setting.prev),"next":d[qS](privates.setting.next)};privates.opt={"position":0,"max_position":d[qS](privates.setting.wrap).children.length};if(privates.sel.prev!==null){privates.sel.prev[aEL]("click",function(){_this.prev_slide();});}if(privates.sel.next!==null){privates.sel.next[aEL]("click",function(){_this.next_slide();});}};("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window).Carousel=Carousel;}());
+(function(){"use strict";var d=document,qS="querySelector",aEL="addEventListener";var Carousel=function(setting){var _this=this;if(d[qS](setting.wrap)===null){console.error("Carousel not fount selector "+setting.wrap);return;}var privates={};this.prev_slide=function(){--privates.opt.position;if(privates.opt.position<0){privates.opt.position=privates.opt.max_position-1;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};this.next_slide=function(){++privates.opt.position;if(privates.opt.position>=privates.opt.max_position){privates.opt.position=0;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};privates.setting=setting;privates.sel={"main":d[qS](privates.setting.main),"wrap":d[qS](privates.setting.wrap),"children":d[qS](privates.setting.wrap).children,"prev":d[qS](privates.setting.prev),"next":d[qS](privates.setting.next)};privates.opt={"position":0,"max_position":d[qS](privates.setting.wrap).children.length};if(privates.sel.prev!==null){privates.sel.prev[aEL]("click",function(){_this.prev_slide();});}if(privates.sel.next!==null){privates.sel.next[aEL]("click",function(){_this.next_slide();});}};("object"===typeof window&&window||"object"===typeof self&&self||"object"===typeof global&&global||{}).Carousel=Carousel;}());
 /*!
  * modified scrollToY
  * @see {@link http://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation}
  * passes jshint
  */
-(function(){"use strict";var scroll2Top=function(scrollTargetY,speed,easing){var scrollY=window.scrollY||document.documentElement.scrollTop;scrollTargetY=scrollTargetY||0;speed=speed||2000;easing=easing||'easeOutSine';var currentTime=0;var time=Math.max(0.1,Math.min(Math.abs(scrollY-scrollTargetY)/speed,0.8));var easingEquations={easeOutSine:function(pos){return Math.sin(pos*(Math.PI/2));},easeInOutSine:function(pos){return(-0.5*(Math.cos(Math.PI*pos)-1));},easeInOutQuint:function(pos){if((pos/=0.5)<1){return 0.5*Math.pow(pos,5);}return 0.5*(Math.pow((pos-2),5)+2);}};function tick(){currentTime+=1/60;var p=currentTime/time;var t=easingEquations[easing](p);if(p<1){requestAnimationFrame(tick);window.scrollTo(0,scrollY+((scrollTargetY-scrollY)*t));}else{console.log('scroll done');window.scrollTo(0,scrollTargetY);}}tick();};("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window).scroll2Top=scroll2Top;}());
+(function(){"use strict";var scroll2Top=function(scrollTargetY,speed,easing){var scrollY=window.scrollY||document.documentElement.scrollTop;scrollTargetY=scrollTargetY||0;speed=speed||2000;easing=easing||'easeOutSine';var currentTime=0;var time=Math.max(0.1,Math.min(Math.abs(scrollY-scrollTargetY)/speed,0.8));var easingEquations={easeOutSine:function(pos){return Math.sin(pos*(Math.PI/2));},easeInOutSine:function(pos){return(-0.5*(Math.cos(Math.PI*pos)-1));},easeInOutQuint:function(pos){if((pos/=0.5)<1){return 0.5*Math.pow(pos,5);}return 0.5*(Math.pow((pos-2),5)+2);}};function tick(){currentTime+=1/60;var p=currentTime/time;var t=easingEquations[easing](p);if(p<1){requestAnimationFrame(tick);window.scrollTo(0,scrollY+((scrollTargetY-scrollY)*t));}else{console.log('scroll done');window.scrollTo(0,scrollTargetY);}}tick();};("object"===typeof window&&window||"object"===typeof self&&self||"object"===typeof global&&global||{}).scroll2Top=scroll2Top;}());
 /*!
  * return image is loaded promise
  * jsfiddle.net/englishextra/56pavv7d/
@@ -76,7 +76,35 @@
  * @see {@link https://gist.github.com/englishextra/3e95d301d1d47fe6e26e3be198f0675e}
  * passes jshint
  */
-(function(){"use strict";var imagePromise=function(s){if(window.Promise){return new Promise(function(y,n){var f=function(e,p){e.onload=function(){y(p);};e.onerror=function(){n(p);};e.src=p;};if("string"===typeof s){var a=new Image();f(a,s);}else{if("IMG"!==s.tagName){return Promise.reject();}else{if(s.src){f(s,s.src);}}}});}else{throw new Error("Promise is not in window");}};("undefined"===typeof window?"undefined"===typeof self?"undefined"===typeof global?this:global:self:window).imagePromise=imagePromise;}());
+(function(){"use strict";var imagePromise=function(s){if(window.Promise){return new Promise(function(y,n){var f=function(e,p){e.onload=function(){y(p);};e.onerror=function(){n(p);};e.src=p;};if("string"===typeof s){var a=new Image();f(a,s);}else{if("IMG"!==s.tagName){return Promise.reject();}else{if(s.src){f(s,s.src);}}}});}else{throw new Error("Promise is not in window");}};("object"===typeof window&&window||"object"===typeof self&&self||"object"===typeof global&&global||{}).imagePromise=imagePromise;}());
+/*!
+ * modified JavaScript Cookie - v2.1.3
+ * github.com/js-cookie/js-cookie
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ * Cookies.set('name', 'value');
+ * Create a cookie that expires 7 days from now, valid across the entire site:
+ * Cookies.set('name', 'value', { expires: 7 });
+ * Create an expiring cookie, valid to the path of the current page:
+ * Cookies.set('name', 'value', { expires: 7, path: '' });
+ * Cookies.get('name'); // => 'value'
+ * Cookies.get('nothing'); // => undefined
+ * Read all visible cookies:
+ * Cookies.get(); // => { name: 'value' }
+ * Cookies.remove('name');
+ * Delete a cookie valid to the path of the current page:
+ * Cookies.set('name', 'value', { path: '' });
+ * Cookies.remove('name'); // fail!
+ * Cookies.remove('name', { path: '' }); // removed!
+ * IMPORTANT! when deleting a cookie, you must pass the exact same path
+ * and domain attributes that was used to set the cookie,
+ * unless you're relying on the default attributes.
+ * removed AMD, CJS, ES6 wrapper
+ * fixed this
+ * source: github.com/js-cookie/js-cookie/blob/master/src/js.cookie.js
+ * passes jshint
+ */
+(function(){"use strict";var Cookies=function(){function extend(){var i=0;var result={};for(;i<arguments.length;i++){var attributes=arguments[i];for(var key in attributes){if(attributes.hasOwnProperty(key)){result[key]=attributes[key];}}}return result;}function init(converter){var api=function(key,value,attributes){var _this=this;var result;if(typeof document==='undefined'){return;}if(arguments.length>1){attributes=extend({path:'/'},api.defaults,attributes);if(typeof attributes.expires==='number'){var expires=new Date();expires.setMilliseconds(expires.getMilliseconds()+attributes.expires*864e+5);attributes.expires=expires;}try{result=JSON.stringify(value);if(/^[\{\[]/.test(result)){value=result;}}catch(e){}if(!converter.write){value=encodeURIComponent(String(value)).replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,decodeURIComponent);}else{value=converter.write(value,key);}key=encodeURIComponent(String(key));key=key.replace(/%(23|24|26|2B|5E|60|7C)/g,decodeURIComponent);key=key.replace(/[\(\)]/g,escape);var ret=(document.cookie=[key,'=',value,attributes.expires?'; expires='+attributes.expires.toUTCString():'',attributes.path?'; path='+attributes.path:'',attributes.domain?'; domain='+attributes.domain:'',attributes.secure?'; secure':''].join(''));return ret;}if(!key){result={};}var cookies=document.cookie?document.cookie.split('; '):[];var rdecode=/(%[0-9A-Z]{2})+/g;var i=0;for(;i<cookies.length;i++){var parts=cookies[i].split('=');var cookie=parts.slice(1).join('=');if(cookie.charAt(0)==='"'){cookie=cookie.slice(1,-1);}try{var name=parts[0].replace(rdecode,decodeURIComponent);cookie=converter.read?converter.read(cookie,name):converter(cookie,name)||cookie.replace(rdecode,decodeURIComponent);if(_this.json){try{cookie=JSON.parse(cookie);}catch(e){}}if(key===name){result=cookie;break;}if(!key){result[name]=cookie;}}catch(e){}}return result;};api.set=api;api.get=function(key){return api.call(api,key);};api.getJSON=function(){return api.apply({json:true},[].slice.call(arguments));};api.defaults={};api.remove=function(key,attributes){api(key,'',extend(attributes,{expires:-1}));};api.withConverter=init;return api;}return init(function(){});}();("object"===typeof window&&window||"object"===typeof self&&self||"object"===typeof global&&global||{}).Cookies=Cookies;}());
 /*!
  * A simple promise-compatible "document ready" event handler with a few extra treats.
  * With browserify/webpack:
@@ -149,6 +177,26 @@ var clearRequestInterval=function(handle){if(window.cancelAnimationFrame){window
  */
 var scriptIsLoaded=function(s){for(var b=document.getElementsByTagName("script")||"",a=0;a<b.length;a++)if(b[a].getAttribute("src")==s)return!0;return!1;};
 /*!
+ * parse JSON without try / catch
+ * @param {String} a JSON string
+ * @see {@link http://stackoverflow.com/questions/11182924/how-to-check-if-javascript-object-is-json}
+ * safelyParseJSON(a)
+ */
+var safelyParseJSON=function(a){var isJson=function(obj){var t=typeof obj;return['boolean','number','string','symbol','function'].indexOf(t)==-1;};if(!isJson(a)){return JSON.parse(a);}else{return a;}};
+/*!
+ * return an array of values that match on a certain key
+ * techslides.com/how-to-parse-and-search-json-in-javascript
+ * gist.github.com/englishextra/872269c30d7cb2d10e3c3babdefc37b4
+ * var jpr = JSON.parse(response);
+ * for(var i=0,l=jpr.length;i<l;i+=1)
+ * {var t=getKeyValuesFromJSON(jpr[i],"label"),
+ * p=getKeyValuesFromJSON(jpr[i],"link");};
+ * @param {String} b JSON entry
+ * @param {String} d JSON key to match
+ * getKeyValuesFromJSON(b,d)
+ */
+var getKeyValuesFromJSON=function(b,d){var c=[];for(var a in b){if(b.hasOwnProperty(a)){if("object"===typeof b[a]){c=c.concat(getKeyValuesFromJSON(b[a],d));}else{if(a==d){c.push(b[a]);}}}}return c;};
+/*!
  * loop over the Array
  * stackoverflow.com/questions/18238173/javascript-loop-through-json-array
  * gist.github.com/englishextra/b4939b3430da4b55d731201460d3decb
@@ -158,6 +206,18 @@ var scriptIsLoaded=function(s){for(var b=document.getElementsByTagName("script")
  * truncString(str,max,add)
  */
 var truncString=function(str,max,add){add=add||"\u2026";return("string"===typeof str&&str.length>max?str.substring(0,max)+add:str);};
+/*!
+ * fix en ru / ru en typo
+ * modified sovtime.ru/soft/convert.html
+ * gist.github.com/englishextra/8f398bb7a3e438b692352a3c114a13ae
+ * jsfiddle.net/englishextra/6p150wu1/
+ * jsbin.com/runoju/edit?js,output
+ * @param {String} e any text string
+ * @param {String} a "ru" or "en", default "en"
+ * @param {String} b "en" or "ru", default "ru"
+ * fixEnRuTypo(e,a,b)
+ */
+var fixEnRuTypo=function(e,a,b){var c="";if("ru"==a&&"en"==b){a='\u0430\u0431\u0432\u0433\u0434\u0435\u0451\u0436\u0437\u0438\u0439\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044c\u044b\u044d\u044e\u044f\u0410\u0411\u0412\u0413\u0414\u0415\u0401\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042b\u042d\u042e\u042f"\u2116;:?/.,';b="f,dult`;pbqrkvyjghcnea[wxio]ms'.zF<DULT~:PBQRKVYJGHCNEA{WXIO}MS'>Z@#$^&|/?";}else{a="f,dult`;pbqrkvyjghcnea[wxio]ms'.zF<DULT~:PBQRKVYJGHCNEA{WXIO}MS'>Z@#$^&|/?";b='\u0430\u0431\u0432\u0433\u0434\u0435\u0451\u0436\u0437\u0438\u0439\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044c\u044b\u044d\u044e\u044f\u0410\u0411\u0412\u0413\u0414\u0415\u0401\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042b\u042d\u042e\u042f"\u2116;:?/.,';}for(var d=0;d<e.length;d++){var f=a.indexOf(e.charAt(d));if(c>f){c+=e.charAt(d);}else{c+=b.charAt(f);}}return c;};
 /*!
  * Check if string represents a valid HTML id
  * gist.github.com/englishextra/b5aaef8b555a3ba84c68a6e251db149d
@@ -189,13 +249,6 @@ var removeChildren=function(e){return function(){if(e&&e.firstChild){for(;e.firs
  * appendFragment(e,a)
  */
 var appendFragment=function(e,a){"use strict";var d=document;a=a||d.getElementsByTagNames("body")[0]||"";return function(){if(e){var d=document,df=d.createDocumentFragment()||"",aC="appendChild";if("string"===typeof e){e=d.createTextNode(e);}df[aC](e);a[aC](df);}}();};
-/*!
- * parse JSON without try / catch
- * @param {String} a JSON string
- * @see {@link http://stackoverflow.com/questions/11182924/how-to-check-if-javascript-object-is-json}
- * safelyParseJSON(a)
- */
-var safelyParseJSON=function(a){var isJson=function(obj){var t=typeof obj;return['boolean','number','string','symbol','function'].indexOf(t)==-1;};if(!isJson(a)){return JSON.parse(a);}else{return a;}};
 /*!
  * modified Unified URL parsing API in the browser and node
  * github.com/wooorm/parse-link
@@ -322,31 +375,29 @@ var LoadingSpinner = function () {
 	var d = document,
 	b = d.body || "",
 	cls = "loading-spinner",
-	a = d.querySelector("." + cls) || "",
-	is_active = "is-active-loading-spinner",
-	cL = "classList";
+	qS = "querySelector",
+	a = d[qS]("." + cls) || "",
+	cL = "classList",
+	isActiveLoadingSpinnerClass = "is-active-loading-spinner";
 	console.log("triggered function: LoadingSpinner");
 	if (!a) {
 		a = d.createElement("div");
 		a[cL].add(cls);
-		b.appendChild(a);
+		appendFragment(a, b);
 	}
 	return {
 		show: function () {
-			return b[cL].contains(is_active) || b[cL].add(is_active);
+			return b[cL].contains(isActiveLoadingSpinnerClass) || b[cL].add(isActiveLoadingSpinnerClass);
 		},
 		hide: function (f, n) {
 			n = n || 500;
-			return function () {
-				var st = requestTimeout(function () {
-						clearRequestTimeout(st);
-						b[cL].remove(is_active);
-						if (f && "function" === typeof f) {
-							f();
-						}
-					}, n);
-			}
-			();
+			var st = requestTimeout(function () {
+					clearRequestTimeout(st);
+					b[cL].remove(isActiveLoadingSpinnerClass);
+					if (f && "function" === typeof f) {
+						f();
+					}
+				}, n);
 		}
 	};
 }
@@ -402,7 +453,7 @@ var openDeviceBrowser = function (a) {
 var insertTextAsFragment = function (t, c, f) {
 	"use strict";
 	var d = document,
-	b = d.getElementsByTagName("body")[0] || "",
+	b = d.body || "",
 	aC = "appendChild",
 	iH = "innerHTML",
 	pN = "parentNode",
@@ -434,7 +485,9 @@ var insertTextAsFragment = function (t, c, f) {
  */
 var insertExternalHTML = function (a, u, f) {
 	"use strict";
-	var c = document.querySelector(a) || "",
+	var d = document,
+	qS = "querySelector",
+	c = d[qS](a) || "",
 	g = function (t, s) {
 		var q = function () {
 			return s && "function" === typeof s && s();
@@ -488,13 +541,16 @@ var renderTemplate = function (parsedJson, templateId, targetId, callback) {
  * so that they open in new browser tab
  * @param {Object} [ctx] context HTML Element
  */
-var manageExternalLinks = function (ctx) {
+var manageExternalLinks = function () {
 	"use strict";
-	ctx = ctx || "";
 	var d = document,
-	cls = "a",
 	qS = "querySelector",
 	qSA = "querySelectorAll",
+	ctx = d.body || "",
+	cls = "a",
+	cL = "classList",
+	isBindedClass = "is-binded",
+	aEL = "addEventListener",
 	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
 	handleExternalLink = function (p, ev) {
 		ev.stopPropagation();
@@ -504,11 +560,14 @@ var manageExternalLinks = function (ctx) {
 	g = function (e) {
 		var p = e.getAttribute("href") || "";
 		if (p && parseLink(p).isCrossDomain && parseLink(p).hasHTTP) {
-			e.title = "" + (parseLink(p).hostname || "") + " откроется в новой вкладке";
-			if ("undefined" !== typeof getHTTP && getHTTP()) {
-				e.target = "_blank";
-			} else {
-				e.addEventListener("click", handleExternalLink.bind(null, p));
+			if (!e[cL].contains(isBindedClass)) {
+				e.title = "" + (parseLink(p).hostname || "") + " откроется в новой вкладке";
+				if ("undefined" !== typeof getHTTP && getHTTP()) {
+					e.target = "_blank";
+				} else {
+					e[aEL]("click", handleExternalLink.bind(null, p));
+				}
+				e[cL].add(isBindedClass);
 			}
 		}
 	},
@@ -523,33 +582,32 @@ var manageExternalLinks = function (ctx) {
 		k();
 	}
 };
-document.ready().then(manageExternalLinks.bind(null, ""));
+document.ready().then(manageExternalLinks);
 /*!
  * replace img src with data-src
  * @param {Object} [ctx] context HTML Element
  */
-var manageDataSrcImg = function (ctx) {
+var handleDataSrcImg = function () {
 	"use strict";
-	ctx = ctx || "";
 	var w = window,
 	d = document,
-	cls = "img[data-src]",
+	ctx = d.body || "",
 	qS = "querySelector",
 	qSA = "querySelectorAll",
+	cls = "img[data-src]",
 	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
-	is_active = "is-active",
 	cL = "classList",
 	ds = "dataset",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
+	isActiveClass = "is-active",
+	isBindedClass = "is-binded",
 	k = function (e) {
 		var _src = e[ds].src || "";
 		if (_src) {
-			if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
-				e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
-				_src = e[ds].src;
-			}
-			if (!e[cL].contains(is_active)) {
+			if (!e[cL].contains(isBindedClass)) {
+				if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
+					e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
+					_src = e[ds].src;
+				}
 				if (w.Promise) {
 					imagePromise(_src).then(function (r) {
 						e.src = _src;
@@ -560,7 +618,8 @@ var manageDataSrcImg = function (ctx) {
 				} else {
 					e.src = _src;
 				}
-				e[cL].add(is_active);
+				e[cL].add(isActiveClass);
+				e[cL].add(isBindedClass);
 			}
 		}
 	},
@@ -569,57 +628,54 @@ var manageDataSrcImg = function (ctx) {
 		 * true if elem is in same y-axis as the viewport or within 100px of it
 		 * github.com/ryanve/verge
 		 */
-		if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
+		if (verge.inY(e, 100) && 0 !== e.offsetHeight) {
 			k(e);
 		}
 	};
 	if (a) {
-		console.log("triggered function: manageDataSrcImg");
+		console.log("triggered function: handleDataSrcImg");
 		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		var h_w = function () {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
-			}
-		};
-		h_w();
-		w[aEL]("scroll", h_w);
-		w[aEL]("resize", h_w);
-		w[aEL]("hashchange", function h_r() {
-			w[rEL]("scroll", h_w);
-			w[rEL]("resize", h_w);
-			w[rEL]("hashchange", h_r);
-		});
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
+		}
 	}
+},
+manageDataSrcImg  = function () {
+	"use strict";
+	var w = window,
+	aEL = "addEventListener",
+	rEL = "removeEventListener";
+	w[rEL]("scroll", handleDataSrcImg);
+	w[rEL]("resize", handleDataSrcImg);
+	w[aEL]("scroll", handleDataSrcImg);
+	w[aEL]("resize", handleDataSrcImg);
 };
 /*!
  * replace iframe src with data-src
  * @param {Object} [ctx] context HTML Element
  */
-var manageDataSrcIframe = function (ctx) {
+var handleDataSrcIframe = function () {
 	"use strict";
-	ctx = ctx || "";
-	var w = window,
-	d = document,
-	cls = "iframe[data-src]",
+	var d = document,
+	ctx = d.body || "",
 	qS = "querySelector",
 	qSA = "querySelectorAll",
+	cls = "iframe[data-src]",
 	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
-	is_active = "is-active",
+	isBindedClass = "is-binded",
 	cL = "classList",
 	ds = "dataset",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
 	sA = "setAttribute",
 	k = function (e) {
 		var _src = e[ds].src || "";
 		if (_src) {
-			if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
-				e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
-				_src = e[ds].src;
-			}
-			if (!e[cL].contains(is_active)) {
+			if (!e[cL].contains(isBindedClass)) {
+				if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
+					e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
+					_src = e[ds].src;
+				}
 				e.src = _src;
-				e[cL].add(is_active);
+				e[cL].add(isBindedClass);
 				e[sA]("frameborder", "no");
 				e[sA]("style", "border:none;");
 				e[sA]("webkitallowfullscreen", "true");
@@ -639,28 +695,153 @@ var manageDataSrcIframe = function (ctx) {
 		}
 	};
 	if (a) {
-		console.log("triggered function: manageDataSrcIframe");
+		console.log("triggered function: handleDataSrcIframe");
 		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		var h_w = function () {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
+		}
+	}
+},
+manageDataSrcIframe  = function () {
+	"use strict";
+	var w = window,
+	aEL = "addEventListener",
+	rEL = "removeEventListener";
+	w[rEL]("scroll", handleDataSrcIframe);
+	w[rEL]("resize", handleDataSrcIframe);
+	w[aEL]("scroll", handleDataSrcIframe);
+	w[aEL]("resize", handleDataSrcIframe);
+};
+/*!
+ * manage data lightbox img links
+ */
+var manageImgLightboxLinks = function () {
+	"use strict";
+	var w = window,
+	d = document,
+	b = d.body || "",
+	ctx = d.body || "",
+	qS = "querySelector",
+	qSA = "querySelectorAll",
+	cls = "[data-lightbox]",
+	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
+	ilc = "img-lightbox-container",
+	c = d[qS]("." + ilc) || "",
+	m = d[qS]("." + ilc + " img") || "",
+	an = "animated",
+	an1 = "fadeIn",
+	an2 = "fadeInUp",
+	an3 = "fadeOut",
+	an4 = "fadeOutDown",
+	isBindedClass = "is-binded",
+	cL = "classList",
+	ds = "dataset",
+	aEL = "addEventListener",
+	rEL = "removeEventListener",
+	aC = "appendChild",
+	dm = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+	if (!c) {
+		c = d.createElement("div");
+		m = d.createElement("img");
+		c[cL].add(ilc);
+		m.src = dm;
+		m.alt = "";
+		c[aC](m);
+		appendFragment(c, b);
+	}
+	var handleImgLightboxLink = function (_this, ev) {
+		ev.stopPropagation();
+		ev.preventDefault();
+		var _href = _this.getAttribute("href") || "";
+		if (c && m && _href) {
+			LoadingSpinner.show();
+			c[cL].add(an);
+			c[cL].add(an1);
+			m[cL].add(an);
+			m[cL].add(an2);
+			if (parseLink(_href).isAbsolute && !parseLink(_href).hasHTTP) {
+				_href = _href.replace(/^/, getHTTP(!0) + ":");
 			}
-		};
-		h_w();
-		w[aEL]("scroll", h_w);
-		w[aEL]("resize", h_w);
-		w[aEL]("hashchange", function h_r() {
-			w[rEL]("scroll", h_w);
-			w[rEL]("resize", h_w);
-			w[rEL]("hashchange", h_r);
-		});
+			if (w.Promise) {
+				imagePromise(_href).then(function (r) {
+					m.src = _href;
+					console.log("manageDataSrcImg => imagePromise: loaded image:", r);
+				}).catch (function (err) {
+					console.log("manageDataSrcImg => imagePromise: cannot load image:", err);
+				});
+			} else {
+				m.src = _href;
+			}
+			c[aEL]("click", handleImgLightboxContainer);
+			w[aEL]("keyup", handleImgLightboxWindow);
+			c.style.display = "block";
+			LoadingSpinner.hide();
+		}
+	},
+	hideImgLightbox = function () {
+		if (c && m) {
+			m[cL].remove(an2);
+			m[cL].add(an4);
+			var hideImg = function () {
+				c[cL].remove(an);
+				c[cL].remove(an3);
+				m[cL].remove(an);
+				m[cL].remove(an4);
+				m.src = dm;
+				c.style.display = "none";
+			},
+			hideContainer = function () {
+				c[cL].remove(an1);
+				c[cL].add(an3);
+				var st1 = requestTimeout(function () {
+						clearRequestTimeout(st1);
+						hideImg();
+					}, 400);
+			};
+			var st2 = requestTimeout(function () {
+					clearRequestTimeout(st2);
+					hideContainer();
+				}, 400);
+		}
+	},
+	handleImgLightboxContainer = function () {
+		if (c) {
+			c[rEL]("click", handleImgLightboxContainer);
+			hideImgLightbox();
+		}
+	},
+	handleImgLightboxWindow = function (ev) {
+		w[rEL]("keyup", handleImgLightboxWindow);
+		if (27 === (ev.which || ev.keyCode)) {
+			hideImgLightbox();
+		}
+	},
+	k = function (e) {
+		if (!e[cL].contains(isBindedClass)) {
+			var v = e[ds].lightbox || "",
+			p = e.getAttribute("href") || "";
+			if ("img" === v && p) {
+				if (parseLink(p).isAbsolute && !parseLink(p).hasHTTP) {
+					e.setAttribute("href", p.replace(/^/, getHTTP(!0) + ":"));
+				}
+				e[aEL]("click", handleImgLightboxLink.bind(null, e));
+				e[cL].add(isBindedClass);
+			}
+		}
+	};
+	if (a) {
+		console.log("triggered function: manageImgLightboxLinks");
+		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
+		for (var j = 0, l = a.length; j < l; j += 1) {
+			k(a[j]);
+		}
 	}
 };
 /*!
  * add smooth scroll or redirection to static select options
  * @param {Object} [ctx] context HTML Element
  */
-var manageStaticSelect = function (ctx) {
+var managePagesSelect = function (ctx) {
 	"use strict";
 	ctx = ctx || "";
 	var w = window,
@@ -670,12 +851,13 @@ var manageStaticSelect = function (ctx) {
 	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
 	uiPanelContentsSelect = d[qS](".ui-panel-contents-select") || "",
 	cL = "classList",
-	is_active = "is-active",
+	isFixedClass = "is-fixed",
+	isBindedClass = "is-binded",
 	aEL = "addEventListener",
 	handleStaticSelect = function (_this) {
 		var h = _this.options[_this.selectedIndex].value || "",
 		zh = h ? (isValidId(h, !0) ? d[qS](h) : "") : "",
-		uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(is_active) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
+		uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
 		if (h) {
 			if (zh) {
 				scroll2Top(findPos(d[qS](h)).top - uiPanelContentsSelectHeight, 10000);
@@ -685,10 +867,13 @@ var manageStaticSelect = function (ctx) {
 		}
 	},
 	k = function () {
-		a[aEL]("change", handleStaticSelect.bind(null, a));
+		if (!a[cL].contains(isBindedClass)) {
+			a[aEL]("change", handleStaticSelect.bind(null, a));
+			a[cL].add(isBindedClass);
+		}
 	};
 	if (a) {
-		console.log("triggered function: manageStaticSelect");
+		console.log("triggered function: managePagesSelect");
 		k();
 	}
 };
@@ -705,19 +890,23 @@ var manageExpandingLayers = function (ctx) {
 	qSA = "querySelectorAll",
 	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
 	aEL = "addEventListener",
+	cL = "classList",
+	pN = "parentNode",
+	isActiveClass = "is-active",
+	isBindedClass = "is-binded",
 	handleExpandingLayers = function (_this) {
-		var cL = "classList",
-		pN = "parentNode",
-		is_active = "is-active",
-		s = _this[pN] ? _this[pN].nextElementSibling : "";
+		var s = _this[pN] ? _this[pN].nextElementSibling : "";
 		if (s) {
-			_this[cL].toggle(is_active);
-			s[cL].toggle(is_active);
+			_this[cL].toggle(isActiveClass);
+			s[cL].toggle(isActiveClass);
 		}
 		return !1;
 	},
 	k = function (e) {
-		e[aEL]("click", handleExpandingLayers.bind(null, e));
+		if (!e[cL].contains(isBindedClass)) {
+			e[aEL]("click", handleExpandingLayers.bind(null, e));
+			e[cL].add(isBindedClass);
+		}
 	},
 	q = function () {
 		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
@@ -730,6 +919,157 @@ var manageExpandingLayers = function (ctx) {
 		q();
 	}
 };
+/*!
+ * modified Notibar.js v1.0
+ * Lightweight notification bar, no dependency.
+ * github.com/englishextra/notibar.js
+ * passes jshint
+ */
+var notiBar = function (opt) {
+	var d = document,
+	b = d.body || "",
+	s_bar = "notibar",
+	qS = "querySelector",
+	c = d[qS]("." + s_bar) || "",
+	s_msg = "message",
+	s_close = "close",
+	s_key = "_notibar_dismiss_",
+	s_val = "ok",
+	s_an = "animated",
+	s_an1 = "fadeInDown",
+	s_an2 = "fadeOutUp",
+	cL = "classList",
+	aC = "appendChild",
+	cE = "createElement",
+	cENS = "createElementNS",
+	sANS = "setAttributeNS",
+	aEL = "addEventListener",
+	rEL = "removeEventListener";
+	if (b) {
+		console.log("triggered function: notiBar");
+		if ("string" === typeof opt) {
+			opt = {
+				"message": opt
+			};
+		}
+		var settings = {
+			"message": "",
+			"timeout": 10000,
+			"key": s_key,
+			"value": s_val,
+			"days": 0,
+		};
+		for (var i in opt) {
+			if (opt.hasOwnProperty(i)) {
+				settings[i] = opt[i];
+			}
+		}
+		var c_k = Cookies.get(settings.key) || "";
+		if (c_k && c_k === decodeURIComponent(settings.value)) {
+			return !1;
+		}
+		if (c) {
+			removeChildren(c);
+		} else {
+			c = d[cE]("div");
+			c[cL].add(s_bar);
+			c[cL].add(s_an);
+		}
+		var m = d[cE]("div");
+		m[cL].add(s_msg);
+		var s = settings.message || "";
+		if ("string" === typeof s) {
+			s = d.createTextNode(s);
+		}
+		m[aC](s);
+		c[aC](m);
+		var btn = d[cE]("a");
+		btn[cL].add(s_close);
+		var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
+		use = d[cENS]("http://www.w3.org/2000/svg", "use");
+		svg[cL].add("ui-icon");
+		use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Cancel");
+		svg[aC](use);
+		btn[aC](svg);
+		var set_cookie = function () {
+			if (settings.days) {
+				Cookies.set(settings.key, settings.value, {
+					expires: settings.days
+				});
+			} else {
+				Cookies.set(settings.key, settings.value);
+			}
+		},
+		hide_message = function () {
+			var notibar = d[qS]("." + s_bar) || "";
+			if (notibar) {
+				c[cL].remove(s_an1);
+				c[cL].add(s_an2);
+				removeChildren(c);
+			}
+		},
+		h_btn = function () {
+			btn[rEL]("click", h_btn);
+			hide_message();
+			set_cookie();
+		};
+		btn[aEL]("click", h_btn);
+		c[aC](btn);
+		appendFragment(c, b);
+		c[cL].remove(s_an2);
+		c[cL].add(s_an1);
+		var st = requestTimeout(function () {
+				clearRequestTimeout(st);
+				hide_message();
+			}, settings.timeout);
+	}
+};
+/*!
+ * init notibar
+ */
+var initNotibarMsg = function () {
+	"use strict";
+	if ("undefined" !== typeof getHTTP && getHTTP()) {
+		var w = window,
+		d = document,
+		n = "_notibar_dismiss_",
+		m = "Выбрать статью можно щелкнув по самофиксирующейся планке с заголовком текущей страницы.",
+		p = parseLink(w.location.href).origin,
+		qS = "querySelector",
+		aC = "appendChild",
+		aEL = "addEventListener",
+		rEL = "removeEventListener",
+		uiPanelContentsSelect = d[qS]("#render_contents_select") || "",
+		g = function () {
+			var msgObj = d.createElement("a");
+			/* jshint -W107 */
+			msgObj.href = "javascript:void(0);";
+			/* jshint +W107 */
+			var handlerMsgObj = function () {
+				msgObj[rEL]("click", handlerMsgObj);
+				var uiPanelContentsSelectPos = findPos(uiPanelContentsSelect).top || 0;
+				scroll2Top(uiPanelContentsSelectPos, 2000);
+			};
+			msgObj[aEL]("click", handlerMsgObj);
+			msgObj[aC](d.createTextNode(m));
+			notiBar({
+				"message": msgObj,
+				"timeout": 10000,
+				"key": n,
+				"value": m,
+				"days": 0
+			});
+		};
+		if (p && uiPanelContentsSelect) {
+			console.log("triggered function: initNotibarMsg");
+			var st = requestTimeout(function () {
+					clearRequestTimeout(st);
+					g();
+				}, 3000);
+		}
+	}
+};
+document.ready().then(initNotibarMsg);
 /*!
  * init Masonry grid
  * stackoverflow.com/questions/15160010/jquery-masonry-collapsing-on-initial-page-load-works-fine-after-clicking-home
@@ -828,17 +1168,17 @@ var loadRefreshDisqus = function () {
 	d = document,
 	qS = "querySelector",
 	c = d[qS]("#disqus_thread") || "",
-	is_active = "is-active",
 	btn = d[qS](".btn-show-disqus") || "",
 	p = w.location.href || "",
 	cL = "classList",
 	ds = "dataset",
 	pN = "parentNode",
 	aC = "appendChild",
+	isActiveClass = "is-active",
 	n = c ? (c[ds].shortname || "") : "",
 	js = getHTTP(!0) + "://" + n + ".disqus.com/embed.js",
 	g = function () {
-		c[cL].add(is_active);
+		c[cL].add(isActiveClass);
 		btn.style.display = "none";
 		LoadingSpinner.hide();
 	},
@@ -887,15 +1227,171 @@ manageDisqusButton = function () {
 	qS = "querySelector",
 	c = d[qS]("#disqus_thread") || "",
 	e = c ? (d[qS](".btn-show-disqus") || "") : "",
+	aEL = "addEventListener",
+	rEL = "removeEventListener",
+	cL = "classList",
+	isBindedClass = "is-binded",
 	h_e = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
-		e.removeEventListener("click", h_e);
+		e[rEL]("click", h_e);
 		loadRefreshDisqus();
 	};
 	if (c && e) {
-		console.log("triggered function: manageDisqusButton");
-		e.addEventListener("click", h_e);
+		if (!e[cL].contains(isBindedClass)) {
+			console.log("triggered function: manageDisqusButton");
+			e[aEL]("click", h_e);
+			e[cL].add(isBindedClass);
+		}
+	}
+};
+/*!
+ * init Pages Kamil autocomplete
+ * github.com/oss6/kamil/wiki/Example-with-label:link-json-and-typo-correct-suggestion
+ */
+var initContentsKamil = function (jsonObj) {
+	"use strict";
+	var w = window,
+	d = document,
+	qS = "querySelector",
+	qSA = "querySelectorAll",
+	search_form = d[qS](".search-form") || "",
+	id = "#text",
+	text = d[qS](id) || "",
+	_ul_id = "kamil-typo-autocomplete",
+	_ul_class = "kamil-autocomplete",
+	outsideContainer = d[qS](".container") || "",
+	cL = "classList",
+	aEL = "addEventListener",
+	aC = "appendChild",
+	pN = "parentNode",
+	q = function (r) {
+		if (r) {
+			var ac = new Kamil(id, {
+					source: r,
+					property: "title",
+					minChars: 2
+				});
+			/*!
+			 * create typo suggestion list
+			 */
+			var _ul = d.createElement("ul"),
+			_li = d.createElement("li"),
+			hideTypoSuggestions = function () {
+				_ul.style.display = "none";
+				_li.style.display = "none";
+			},
+			showTypoSuggestions = function () {
+				_ul.style.display = "block";
+				_li.style.display = "block";
+			};
+			_ul[cL].add(_ul_class);
+			_ul.id = _ul_id;
+			hideTypoSuggestions();
+			_ul[aC](_li);
+			text[pN].insertBefore(_ul, text.nextElementSibling);
+			/*!
+			 * show suggestions
+			 */
+			ac.renderMenu = function (ul, items) {
+				items = items || "";
+				var l = items.length,
+				_this = this,
+				/*!
+				 * limit output
+				 */
+				f = function (e, i) {
+					if (i < 10) {
+						_this._renderItemData(ul, e, i);
+					}
+				};
+				if (items) {
+					for (var i = 0; i < l; i += 1) {
+						f(items[i], i);
+					}
+				}
+				/*!
+				 * fix typo - non latin characters found
+				 */
+				var h_li = function (v) {
+					text.value = v;
+					text.focus();
+					hideTypoSuggestions();
+				},
+				h_text = function () {
+					if (text.value.length < 3 || text.value.match(/^\s*$/)) {
+						hideTypoSuggestions();
+					}
+				};
+				if (outsideContainer) {
+					outsideContainer[aEL]("click", hideTypoSuggestions);
+				}
+				while (l < 1) {
+					var v = text.value;
+					if (/[^\u0000-\u007f]/.test(v)) {
+						v = fixEnRuTypo(v, "ru", "en");
+					} else {
+						v = fixEnRuTypo(v, "en", "ru");
+					}
+					showTypoSuggestions();
+					removeChildren(_li);
+					appendFragment(d.createTextNode("" + v), _li);
+					_li[aEL]("click", h_li.bind(null, v));
+					if (v.match(/^\s*$/)) {
+						hideTypoSuggestions();
+					}
+					text[aEL]("input", h_text);
+					l += 1;
+				}
+				/*!
+				 * truncate text
+				 */
+				var lis = ul[qSA]("li") || "",
+				g = function (e) {
+					var t = e.firstChild.textContent || "",
+					n = d.createTextNode(truncString(t, 24));
+					e.replaceChild(n, e.firstChild);
+					e.title = "" + t;
+				};
+				if (lis) {
+					for (var j = 0, m = lis.length; j < m; j += 1) {
+						g(lis[j]);
+					}
+				}
+			};
+			/*!
+			 * unless you specify property option in new Kamil
+			 * use kamil built-in word label as search key in JSON file
+			 * [{"link":"/","label":"some text to match"},
+			 * {"link":"/pages/contents.html","label":"some text to match"}]
+			 */
+			ac.on("kamilselect", function (e) {
+				var p = e.item.href || "",
+				sm = function () {
+					e.inputElement.value = "";
+					hideTypoSuggestions();
+					w.location.href = p;
+				};
+				if (p) {
+					/*!
+					 * nwjs wont like setImmediate here
+					 */
+					/* setImmediate(sm); */
+					sm();
+				}
+			});
+		}
+	};
+	if (search_form && text) {
+		console.log("triggered function: initContentsKamil");
+		q(jsonObj);
+	}
+},
+loadInitContentsKamil = function (jsonObj) {
+	"use strict";
+	var js = "./cdn/kamil/0.1.1/js/kamil.fixed.min.js";
+	if (!scriptIsLoaded(js)) {
+		loadJS(js, initContentsKamil.bind(null, jsonObj));
 	}
 };
 /*!
@@ -908,7 +1404,6 @@ var renderNavigation = function () {
 	navbarClass = '[data-function="navbar"]',
 	navbar = d[qS](navbarClass) || "",
 	outsideContainerClass = ".container",
-	pN = "parentNode",
 	navigationJsonUrl = "./json/navigation.json";
 	if (navbar) {
 		fetch(navigationJsonUrl).then(function (navigationJson) {
@@ -922,13 +1417,12 @@ var renderNavigation = function () {
 				renderTemplate(navigationJson, "#template_navbar_popular", "#render_navbar_popular", function () {
 					renderTemplate(navigationJson, "#template_navbar_more", "#render_navbar_more", function () {
 						Navbar(navbarClass, outsideContainerClass);
-						manageExternalLinks(navbar);
+						manageExternalLinks();
 					});
 				});
-				var carouselRenderId = "#render_b_carousel",
-				carouselRenderParent = d[qS](carouselRenderId)[pN] || "";
+				var carouselRenderId = "#render_b_carousel";
 				renderTemplate(navigationJson, "#template_b_carousel", carouselRenderId, function () {
-					manageDataSrcImg(carouselRenderParent);
+					manageDataSrcImg();
 					var carousel = new Carousel({
 							"main": ".js-carousel",
 							"wrap": ".js-carousel__wrap",
@@ -945,29 +1439,30 @@ document.ready().then(renderNavigation);
 /*!
  * fix panel with contents select on scroll
  */
-var nailUiPanelContentsSelect = function () {
+var fixUiPanelContentsSelect = function () {
 	"use strict";
 	var w = window,
 	d = document,
 	qS = "querySelector",
 	cL = "classList",
+	aEL = "addEventListener",
 	uiPanelNavigation = d[qS](".ui-panel-navigation") || "",
 	holderHero = d[qS](".holder-hero") || "",
 	criticalHeight = (uiPanelNavigation ? uiPanelNavigation.offsetHeight : 0) + (holderHero ? holderHero.offsetHeight : 0),
 	uiPanelContentsSelect = d[qS](".ui-panel-contents-select") || "",
-	is_active = "is-active",
+	isFixedClass = "is-fixed",
 	handleUiPanelContentsSelect = function () {
-		if ((document.body.scrollTop || document.documentElement.scrollTop || 0) > criticalHeight) {
-			uiPanelContentsSelect[cL].add(is_active);
+		if ((d.body.scrollTop || d.documentElement.scrollTop || 0) > criticalHeight) {
+			uiPanelContentsSelect[cL].add(isFixedClass);
 		} else {
-			uiPanelContentsSelect[cL].remove(is_active);
+			uiPanelContentsSelect[cL].remove(isFixedClass);
 		}
 	};
 	if (uiPanelContentsSelect) {
-		w.addEventListener("scroll", handleUiPanelContentsSelect);
+		w[aEL]("scroll", handleUiPanelContentsSelect);
 	}
 };
-document.ready().then(nailUiPanelContentsSelect);
+document.ready().then(fixUiPanelContentsSelect);
 /*!
  * process routes, render contents select
  */
@@ -987,6 +1482,8 @@ var processRoutes = function () {
 	contentsSelect = d[qS](".contents-select") || "",
 	asideTemplateId = "#template_aside",
 	asideRenderId = "#render_aside",
+	nextHrefTemplateId = "#template_bottom_nav_btns",
+	nextHrefRenderId = "#render_bottom_nav_btns",
 	masonryTemplateId = "#template_masonry_grid",
 	masonryRenderId = "#render_contents_cards",
 	routesJsonUrl = "./json/routes.json";
@@ -999,8 +1496,8 @@ var processRoutes = function () {
 		}).then(function (routesJson) {
 			return routesJson.text();
 		}).then(function (routesJson) {
-			var routesData = JSON.parse(routesJson),
-			onInsertion = function (titleString, asideParsedJson, routesParsedJson) {
+			var routesParsedJson = JSON.parse(routesJson),
+			onInsertExternalHTML = function (titleString, nextHrefString, asideObj, routesObj) {
 				LoadingSpinner.hide();
 				/* var h1 = contentsSelect || d[qS]("#h1") || "",
 				h1Pos = findPos(h1).top || 0;
@@ -1010,65 +1507,72 @@ var processRoutes = function () {
 					scroll2Top(0, 20000);
 				} */
 				scroll2Top(0, 20000);
-				document.title = titleString + (initialDocumentTitle ? " - " + initialDocumentTitle : "") + userBrowsingDetails;
-				for (var i = 0, l = contentsSelect.options.length; i < l; i += 1) {
-					if (contentsSelect.options[i].value === w.location.hash) {
-						contentsSelect.selectedIndex = i;
-						break;
+				if (titleString) {
+					d.title = titleString + (initialDocumentTitle ? " - " + initialDocumentTitle : "") + userBrowsingDetails;
+				}
+				if (contentsSelect) {
+					for (var i = 0, l = contentsSelect.options.length; i < l; i += 1) {
+						if (contentsSelect.options[i].value === w.location.hash) {
+							contentsSelect.selectedIndex = i;
+							break;
+						}
 					}
+				}
+				if (routesObj) {
+					renderTemplate(routesObj, masonryTemplateId, masonryRenderId, function () {
+						loadInitMasonry(appContentParent);
+						manageDataSrcImg();
+					});
+				}
+				if (nextHrefString) {
+					renderTemplate({"next_href": nextHrefString}, nextHrefTemplateId, nextHrefRenderId);
+				}
+				if (asideObj) {
+					renderTemplate(asideObj, asideTemplateId, asideRenderId, function () {
+						manageExternalLinks();
+						manageDataSrcImg();
+					});
 				}
 				/*!
 				 * cache parent node beforehand
 				 */
-				manageExternalLinks(appContentParent);
-				manageDataSrcImg(appContentParent);
-				manageDataSrcIframe(appContentParent);
-				manageStaticSelect(appContentParent);
+				manageExternalLinks();
+				manageDataSrcImg();
+				manageDataSrcIframe();
+				manageImgLightboxLinks();
+				managePagesSelect(appContentParent);
 				manageExpandingLayers(appContentParent);
-				renderTemplate(routesParsedJson, masonryTemplateId, masonryRenderId, function () {
-					loadInitMasonry(appContentParent);
-					var masonryRenderParent = d[qS](masonryRenderId)[pN] || "";
-					if (masonryRenderParent) {
-						manageDataSrcImg(masonryRenderParent);
-					}
-				});
 				manageDisqusButton(appContentParent);
-				renderTemplate(asideParsedJson, asideTemplateId, asideRenderId, function () {
-					var asideRenderParent = d[qS](asideRenderId)[pN] || "";
-					if (asideRenderParent) {
-						manageExternalLinks(asideRenderParent);
-						manageDataSrcImg(asideRenderParent);
-					}
-				});
 			};
-			if (routesData) {
+			if (routesParsedJson) {
+				loadInitContentsKamil(routesParsedJson.hashes);
 				var navigateOnHashChange = function () {
 					if (w.location.hash) {
 						var notfound = false;
-						for (var key in routesData.hashes) {
-							if (routesData.hashes.hasOwnProperty(key)) {
-								if (w.location.hash === routesData.hashes[key].href) {
+						for (var key in routesParsedJson.hashes) {
+							if (routesParsedJson.hashes.hasOwnProperty(key)) {
+								if (w.location.hash === routesParsedJson.hashes[key].href) {
 									notfound = true;
 									LoadingSpinner.show();
-									insertExternalHTML(appContentId, routesData.hashes[key].url, onInsertion.bind(null, routesData.hashes[key].title, routesData.hashes[key].aside, routesData));
+									insertExternalHTML(appContentId, routesParsedJson.hashes[key].url, onInsertExternalHTML.bind(null, routesParsedJson.hashes[key].title, routesParsedJson.hashes[key].next_href, routesParsedJson.hashes[key].aside, routesParsedJson));
 									break;
 								}
 							}
 						}
 						if (false === notfound) {
-							var notfoundUrl = routesData.notfound.url,
-							notfoundText = routesData.notfound.title;
+							var notfoundUrl = routesParsedJson.notfound.url,
+							notfoundText = routesParsedJson.notfound.title;
 							if (notfoundUrl && notfoundText) {
 								LoadingSpinner.show();
-								insertExternalHTML(appContentId, notfoundUrl, onInsertion.bind(null, notfoundText));
+								insertExternalHTML(appContentId, notfoundUrl, onInsertExternalHTML.bind(null, notfoundText));
 							}
 						}
 					} else {
-						var homeUrl = routesData.home.url,
-						homeText = routesData.home.title;
+						var homeUrl = routesParsedJson.home.url,
+						homeText = routesParsedJson.home.title;
 						if (homeUrl && homeText) {
 							LoadingSpinner.show();
-							insertExternalHTML(appContentId, homeUrl, onInsertion.bind(null, homeText));
+							insertExternalHTML(appContentId, homeUrl, onInsertExternalHTML.bind(null, homeText));
 						}
 					}
 				};
@@ -1087,25 +1591,26 @@ var processRoutes = function () {
 					 */
 					/* var contentsHtml = contentsTemplate.innerHTML || "",
 					renderContentsTemplate = new t(contentsHtml);
-					var contentsRendered = renderContentsTemplate.render(routesData);
+					var contentsRendered = renderContentsTemplate.render(routesParsedJson);
 					contentsRender.innerHTML = contentsRendered; */
 					/*!
 					 * alternative way to generate select options
 					 * with document fragment
 					 */
 					var df = d.createDocumentFragment();
-					for (var key in routesData.hashes) {
-						if (routesData.hashes.hasOwnProperty(key)) {
+					for (var key in routesParsedJson.hashes) {
+						if (routesParsedJson.hashes.hasOwnProperty(key)) {
 							var contentsOption = d.createElement("option");
-							contentsOption.value = routesData.hashes[key].href;
-							var contentsOptionText = routesData.hashes[key].title;
+							contentsOption.value = routesParsedJson.hashes[key].href;
+							var contentsOptionText = routesParsedJson.hashes[key].title;
 							contentsOption.title = contentsOptionText;
 							var contentsOptionTextTruncated = truncString("" + contentsOptionText, 48);
 							contentsOption[aC](d.createTextNode(contentsOptionTextTruncated));
 							df[aC](contentsOption);
+							df[aC](d.createTextNode("\n"));
 						}
 					}
-					contentsRender[aC](df);
+					appendFragment(df, contentsRender);
 					contentsSelect[aEL]("change", handleContentsSelect.bind(null, contentsSelect));
 				}
 			}
@@ -1132,14 +1637,6 @@ var observeMutations = function (ctx) {
 				console.log(m.type, "removed: " + m.removedNodes.length + " nodes");
 				if ("childList" === m.type || "subtree" === m.type) {
 					mo.disconnect();
-					/* renderAside(ctx);
-					manageExternalLinks(ctx);
-					manageDataSrcImg(ctx);
-					manageDataSrcIframe(ctx);
-					manageStaticSelect(ctx);
-					manageExpandingLayers(ctx);
-					loadInitMasonry(ctx);
-					manageDisqusButton(ctx); */
 				}
 			};
 			for (var i = 0, l = e.length; i < l; i += 1) {
@@ -1190,7 +1687,6 @@ var initUiTotop = function () {
 	b = d[qS]("body") || "",
 	h = d[qS]("html") || "",
 	u = "ui-totop",
-	is_active = "is-active",
 	t = "Наверх",
 	cL = "classList",
 	cE = "createElement",
@@ -1198,19 +1694,20 @@ var initUiTotop = function () {
 	cENS = "createElementNS",
 	sANS = "setAttributeNS",
 	aEL = "addEventListener",
+	isActiveClass = "is-active",
 	k = function (_this) {
 		var a = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
 		c = _this.innerHeight || h.clientHeight || b.clientHeight || "",
 		e = d[qS]("." + u) || "";
 		if (a && c && e) {
 			if (a > c) {
-				e[cL].add(is_active);
+				e[cL].add(isActiveClass);
 			} else {
-				e[cL].remove(is_active);
+				e[cL].remove(isActiveClass);
 			}
 		}
 	},
-	g = function (f) {
+	g = function () {
 		var h_a = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
@@ -1244,7 +1741,9 @@ document.ready().then(initUiTotop);
  */
 var showPageFinishProgress = function () {
 	"use strict";
-	var a = document.querySelector("#page") || "",
+	var d = document,
+	qS = "querySelector",
+	a = d[qS]("#page") || "",
 	g = function () {
 		a.style.opacity = 1;
 		/* progressBar.complete(); */
