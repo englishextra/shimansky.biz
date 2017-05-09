@@ -188,12 +188,12 @@ u,
 	margin-top: 0;
 }
 
-.column.small-12.medium-12.large-3 h2:first-child {
+.col h2.aside-heading {
 	margin-top: 1.333rem;
 }
 
 @media only screen and (min-width:1024px) {
-	.column.small-12.medium-12.large-3 h2:first-child {
+	.col h2.aside-heading {
 		margin-top: 0;
 	}
 }
@@ -922,7 +922,7 @@ u,
 }
 
 .col .btn-expand-hidden-layer .ui-icon > * {
-	fill: inherit;
+	fill: $color-hex-body-text;
 }
 
 .col .holder-hidden-layer {
@@ -1059,7 +1059,7 @@ u,
 	fill: $AccentColor;
 }
 
-/**
+/*!
  * fix for yandex search
  * site.yandex.net/v2.0/js/suggest.js
  */
@@ -1075,6 +1075,152 @@ u,
 .ya-page_js_yes .ya-site-form_inited_no,
 .ya-site-form__submit {
 	display: none;
+}
+
+/*!
+ * share buttons
+ */
+
+.global-button {
+	display: inline-block;
+	width: 3.200rem;
+	height: 3.200rem;
+	color: inherit;
+	background-color: $color-rgba-ui-icon-bg;
+	z-index: 1;
+}
+
+.btn-toggle-holder-location-qr-code {
+	position: fixed;
+	top: 6.400rem;
+	right: 0;
+}
+
+.btn-toggle-holder-share-buttons {
+	position: fixed;
+	top: 9.600rem;
+	right: 0;
+}
+
+.btn-toggle-holder-vk-like {
+	position: fixed;
+	top: 12.800rem;
+	right: 0;
+}
+
+.btn-toggle-col-debug {
+	position: fixed;
+	top: 16.000rem;
+	right: 0;
+}
+
+.global-button-icon {
+	display: inline-block;
+	width: 1.333rem;
+	height: 1.333rem;
+	position: relative;
+	top: 0.933rem;
+	left: 0.933rem;
+	color: inherit;
+}
+
+.global-button-icon > * {
+	fill: $ButtonText;
+}
+
+/*!
+ * location qr code
+ */
+
+.holder-location-qr-code {
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+	width: 9.600rem;
+	height: 9.600rem;
+	position: fixed;
+	top: 6.400rem;
+	right: 3.200rem;
+	text-align: left;
+	background-color: #FFFFFF;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
+	transition: left 0.2s linear, visibility 0s, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.page.is-active-holder-location-qr-code .holder-location-qr-code {
+	visibility: visible;
+	opacity: 1;
+}
+
+.holder-location-qr-code .qr-code-img,
+.holder-location-qr-code img {
+	display: block;
+	width: 9.600rem;
+	height: 9.600rem;
+	background-color: transparent;
+	background-size: 9.600rem 9.600rem;
+	border: 0;
+	vertical-align: bottom;
+	padding: 0;
+	margin: 0;
+}
+
+/*!
+ * social buttons
+ */
+
+.holder-share-buttons {
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+	width: 3.200rem;
+	position: fixed;
+	top: 9.600rem;
+	right: 3.200rem;
+	line-height: 3.200rem;
+	background-color: #FFFFFF;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
+	transition: visibility 0s, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.page.is-active-holder-share-buttons .holder-share-buttons {
+	visibility: visible;
+	opacity: 1;
+}
+
+/*!
+ * holder-vk-like
+ */
+
+.holder-vk-like {
+	display: inline-block;
+	visibility: hidden;
+	opacity: 0;
+	height: 3.200rem;
+	position: fixed;
+	top: 12.800rem;
+	right: 3.200rem;
+	line-height: 0;
+	background-color: $color-hex-vk-like-bg;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
+	transition: visibility 0s, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.vk-like {
+	display: inline-block;
+	height: 1.533rem;
+	position: relative;
+	top: 0.800rem;
+	left: 0.800rem;
+	line-height: 0;
+}
+
+.page.is-active-holder-vk-like .holder-vk-like {
+	visibility: visible;
+	opacity: 1;
 }
 
 /*!

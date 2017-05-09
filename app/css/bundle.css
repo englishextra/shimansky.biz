@@ -51,33 +51,28 @@ EB5262
 
 /* @import "fontfacekit"; */
 
-/*! @import "normalize"; */
-
-/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
-
-/**
- * 1. Change the default font family in all browsers (opinionated).
- * 2. Correct the line height in all browsers.
- * 3. Prevent adjustments of font size after orientation changes in
- *		IE on Windows Phone and in iOS.
- */
+/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
-	========================================================================== */
+   ========================================================================== */
+
+/**
+ * 1. Correct the line height in all browsers.
+ * 2. Prevent adjustments of font size after orientation changes in
+ *    IE on Windows Phone and in iOS.
+ */
 
 html {
-	font-family: sans-serif;
-	/* 1 */
 	line-height: 1.15;
-	/* 2 */
+	/* 1 */
 	-ms-text-size-adjust: 100%;
-	/* 3 */
+	/* 2 */
 	-webkit-text-size-adjust: 100%;
-	/* 3 */
+	/* 2 */
 }
 
 /* Sections
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * Remove the margin in all browsers (opinionated).
@@ -111,7 +106,7 @@ h1 {
 }
 
 /* Grouping content
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * Add the correct display in IE 9-.
@@ -160,7 +155,7 @@ pre {
 }
 
 /* Text-level semantics
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * 1. Remove the gray background on active links in IE 10.
@@ -175,17 +170,7 @@ a {
 }
 
 /**
- * Remove the outline on focused links when they are also active or hovered
- * in all browsers (opinionated).
- */
-
-a:active,
-a:hover {
-	outline-width: 0;
-}
-
-/**
- * 1. Remove the bottom border in Firefox 39-.
+ * 1. Remove the bottom border in Chrome 57- and Firefox 39-.
  * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
  */
 
@@ -277,7 +262,7 @@ sup {
 }
 
 /* Embedded content
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * Add the correct display in IE 9-.
@@ -314,7 +299,7 @@ svg:not(:root) {
 }
 
 /* Forms
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * 1. Change the font styles in all browsers (opinionated).
@@ -360,7 +345,7 @@ select {
 
 /**
  * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
- *		controls in Android 4.
+ *    controls in Android 4.
  * 2. Correct the inability to style clickable types in iOS and Safari.
  */
 
@@ -396,20 +381,18 @@ button:-moz-focusring,
 }
 
 /**
- * Change the border, margin, and padding in all browsers (opinionated).
+ * Correct the padding in Firefox.
  */
 
 fieldset {
-	border: 1px solid #c0c0c0;
-	margin: 0 2px;
-	padding: 0.35em 0.625em 0.75em;
+	padding: 0.35em 0.75em 0.625em;
 }
 
 /**
  * 1. Correct the text wrapping in Edge and IE.
  * 2. Correct the color inheritance from `fieldset` elements in IE.
  * 3. Remove the padding so developers are not caught out when they zero out
- *		`fieldset` elements in all browsers.
+ *    `fieldset` elements in all browsers.
  */
 
 legend {
@@ -503,7 +486,7 @@ textarea {
 }
 
 /* Interactive
-	========================================================================== */
+   ========================================================================== */
 
 /*
  * Add the correct display in IE 9-.
@@ -524,7 +507,7 @@ summary {
 }
 
 /* Scripting
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * Add the correct display in IE 9-.
@@ -543,7 +526,7 @@ template {
 }
 
 /* Hidden
-	========================================================================== */
+   ========================================================================== */
 
 /**
  * Add the correct display in IE 10-.
@@ -3086,6 +3069,41 @@ body {
 	padding-left: 1.333rem;
 }
 
+/*! @import "ya-share2.fixed"; */
+
+/*!
+ * ya-share2
+ * yandex.ru/blog/share/kak-uvelichit-shrift-tsifr-sch-tchika#comment-add
+ */
+
+.ya-share2 {
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 rgba(50, 50, 50, 0.3);
+}
+
+.ya-share2 .ya-share2__container_size_m .ya-share2__icon {
+	height: 3.200rem;
+	width: 3.200rem;
+}
+
+.ya-share2 .ya-share2__container_size_m .ya-share2__counter {
+	font-size: 1.333rem;
+	line-height: 3.200rem;
+}
+
+.ya-share2 .ya-share2__container_size_m .ya-share2__title {
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.ya-share2 .ya-share2__container_size_m .ya-share2__item {
+	margin: 0;
+}
+
+.ya-share2 .ya-share2__container_size_m .ya-share2__badge {
+	border-radius: 0;
+}
+
 /*! @import "ui-totop"; */
 
 /**
@@ -3566,12 +3584,12 @@ u,
 	margin-top: 0;
 }
 
-.column.small-12.medium-12.large-3 h2:first-child {
+.col h2.aside-heading {
 	margin-top: 1.333rem;
 }
 
 @media only screen and (min-width: 1024px) {
-	.column.small-12.medium-12.large-3 h2:first-child {
+	.col h2.aside-heading {
 		margin-top: 0;
 	}
 }
@@ -4308,12 +4326,13 @@ u,
 }
 
 .col .btn-expand-hidden-layer .ui-icon > * {
-	fill: inherit;
+	fill: #191919;
 }
 
 .col .holder-hidden-layer {
 	max-height: 100%;
 	position: relative;
+	-webkit-transition: all 0.2s ease-out;
 	transition: all 0.2s ease-out;
 	overflow-y: hidden;
 }
@@ -4447,7 +4466,7 @@ u,
 	fill: #D83544;
 }
 
-/**
+/*!
  * fix for yandex search
  * site.yandex.net/v2.0/js/suggest.js
  */
@@ -4463,6 +4482,155 @@ u,
 .ya-page_js_yes .ya-site-form_inited_no,
 .ya-site-form__submit {
 	display: none;
+}
+
+/*!
+ * share buttons
+ */
+
+.global-button {
+	display: inline-block;
+	width: 3.200rem;
+	height: 3.200rem;
+	color: inherit;
+	background-color: rgba(205, 205, 205, 0.5);
+	z-index: 1;
+}
+
+.btn-toggle-holder-location-qr-code {
+	position: fixed;
+	top: 6.400rem;
+	right: 0;
+}
+
+.btn-toggle-holder-share-buttons {
+	position: fixed;
+	top: 9.600rem;
+	right: 0;
+}
+
+.btn-toggle-holder-vk-like {
+	position: fixed;
+	top: 12.800rem;
+	right: 0;
+}
+
+.btn-toggle-col-debug {
+	position: fixed;
+	top: 16.000rem;
+	right: 0;
+}
+
+.global-button-icon {
+	display: inline-block;
+	width: 1.333rem;
+	height: 1.333rem;
+	position: relative;
+	top: 0.933rem;
+	left: 0.933rem;
+	color: inherit;
+}
+
+.global-button-icon > * {
+	fill: #191919;
+}
+
+/*!
+ * location qr code
+ */
+
+.holder-location-qr-code {
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+	width: 9.600rem;
+	height: 9.600rem;
+	position: fixed;
+	top: 6.400rem;
+	right: 3.200rem;
+	text-align: left;
+	background-color: #FFFFFF;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 rgba(50, 50, 50, 0.3);
+	-webkit-transition: left 0.2s linear, visibility 0s, opacity 0.2s ease;
+	transition: left 0.2s linear, visibility 0s, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.page.is-active-holder-location-qr-code .holder-location-qr-code {
+	visibility: visible;
+	opacity: 1;
+}
+
+.holder-location-qr-code .qr-code-img,
+.holder-location-qr-code img {
+	display: block;
+	width: 9.600rem;
+	height: 9.600rem;
+	background-color: transparent;
+	background-size: 9.600rem 9.600rem;
+	border: 0;
+	vertical-align: bottom;
+	padding: 0;
+	margin: 0;
+}
+
+/*!
+ * social buttons
+ */
+
+.holder-share-buttons {
+	display: block;
+	visibility: hidden;
+	opacity: 0;
+	width: 3.200rem;
+	position: fixed;
+	top: 9.600rem;
+	right: 3.200rem;
+	line-height: 3.200rem;
+	background-color: #FFFFFF;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 rgba(50, 50, 50, 0.3);
+	-webkit-transition: visibility 0s, opacity 0.2s ease;
+	transition: visibility 0s, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.page.is-active-holder-share-buttons .holder-share-buttons {
+	visibility: visible;
+	opacity: 1;
+}
+
+/*!
+ * holder-vk-like
+ */
+
+.holder-vk-like {
+	display: inline-block;
+	visibility: hidden;
+	opacity: 0;
+	height: 3.200rem;
+	position: fixed;
+	top: 12.800rem;
+	right: 3.200rem;
+	line-height: 0;
+	background-color: #5E81A8;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 rgba(50, 50, 50, 0.3);
+	-webkit-transition: visibility 0s, opacity 0.2s ease;
+	transition: visibility 0s, opacity 0.2s ease;
+	z-index: 1;
+}
+
+.vk-like {
+	display: inline-block;
+	height: 1.533rem;
+	position: relative;
+	top: 0.800rem;
+	left: 0.800rem;
+	line-height: 0;
+}
+
+.page.is-active-holder-vk-like .holder-vk-like {
+	visibility: visible;
+	opacity: 1;
 }
 
 /*!

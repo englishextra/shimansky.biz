@@ -365,8 +365,8 @@ if (document.title) {
  * loading spinner
  * dependent on setAutoClearedTimeout
  * gist.github.com/englishextra/24ef040fbda405f7468da70e4f3b69e7
- * @param {Object} [f] callback function
- * @param {Int} [n] any positive whole number, default: 500
+ * @param {Object} [callback] callback function
+ * @param {Int} [delay] any positive whole number, default: 500
  * LoadingSpinner.show();
  * LoadingSpinner.hide(f,n);
  */
@@ -374,30 +374,30 @@ var LoadingSpinner = function () {
 	"use strict";
 	var d = document,
 	b = d.body || "",
-	cls = "loading-spinner",
 	qS = "querySelector",
-	a = d[qS]("." + cls) || "",
+	spinnerClass = "loading-spinner",
+	spinner = d[qS]("." + spinnerClass) || "",
 	cL = "classList",
 	isActiveLoadingSpinnerClass = "is-active-loading-spinner";
 	console.log("triggered function: LoadingSpinner");
-	if (!a) {
-		a = d.createElement("div");
-		a[cL].add(cls);
-		appendFragment(a, b);
+	if (!spinner) {
+		spinner = d.createElement("div");
+		spinner[cL].add(spinnerClass);
+		appendFragment(spinner, b);
 	}
 	return {
 		show: function () {
 			return b[cL].contains(isActiveLoadingSpinnerClass) || b[cL].add(isActiveLoadingSpinnerClass);
 		},
-		hide: function (f, n) {
-			n = n || 500;
+		hide: function (callback, delay) {
+			delay = delay || 500;
 			var st = requestTimeout(function () {
 					clearRequestTimeout(st);
 					b[cL].remove(isActiveLoadingSpinnerClass);
-					if (f && "function" === typeof f) {
-						f();
+					if (callback && "function" === typeof callback) {
+						callback();
 					}
-				}, n);
+				}, delay);
 		}
 	};
 }
@@ -408,72 +408,72 @@ var LoadingSpinner = function () {
  * stackoverflow.com/questions/32402327/how-can-i-force-external-links-from-browser-window-to-open-in-a-default-browser
  * github.com/nwjs/nw.js/wiki/shell
  * electron - file: | nwjs - chrome-extension: | http: Intel XDK
- * @param {String} a URL/path string
+ * @param {String} url URL/path string
  * openDeviceBrowser(a)
  */
-var openDeviceBrowser = function (a) {
+var openDeviceBrowser = function (url) {
 	"use strict";
 	var w = window,
-	g = function () {
+	triggerForElectron = function () {
 		var es = "undefined" !== typeof isElectron && isElectron ? require("electron").shell : "";
-		return es ? es.openExternal(a) : "";
+		return es ? es.openExternal(url) : "";
 	},
-	k = function () {
+	triggerForNwjs = function () {
 		var ns = "undefined" !== typeof isNwjs && isNwjs ? require("nw.gui").Shell : "";
-		return ns ? ns.openExternal(a) : "";
+		return ns ? ns.openExternal(url) : "";
 	},
-	q = function () {
+	triggerForHTTP = function () {
 		/*!
 		 * wont do in electron and nw,
 		 * so manageExternalLinks will set target blank to links
 		 */
-		/* var win = w.open(a, "_blank");
+		/* var win = w.open(url, "_blank");
 		win.focus(); */
 		return !0;
 	},
-	v = function () {
-		return w.open(a, "_system", "scrollbars=1,location=no");
+	triggerForLocal = function () {
+		return w.open(url, "_system", "scrollbars=1,location=no");
 	};
 	console.log("triggered function: openDeviceBrowser");
 	if ("undefined" !== typeof isElectron && isElectron) {
-		g();
+		triggerForElectron();
 	} else if ("undefined" !== typeof isNwjs && isNwjs) {
-		k();
+		triggerForNwjs();
 	} else {
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			q();
+			triggerForHTTP();
 		} else {
-			v();
+			triggerForLocal();
 		}
 	}
 };
 /*!
  * replacement for inner html
  */
-var insertTextAsFragment = function (t, c, f) {
+var insertTextAsFragment = function (text, container, callback) {
 	"use strict";
 	var d = document,
 	b = d.body || "",
 	aC = "appendChild",
 	iH = "innerHTML",
 	pN = "parentNode",
-	g = function () {
-		return f && "function" === typeof f && f();
+	cb = function () {
+		return callback && "function" === typeof callback && callback();
 	};
 	console.log("triggered function: insertTextAsFragment");
 	try {
-		var n = c.cloneNode(!1);
+		var n = container.cloneNode(!1);
 		if (d.createRange) {
 			var rg = d.createRange();
 			rg.selectNode(b);
-			var df = rg.createContextualFragment(t);
+			var df = rg.createContextualFragment(text);
 			n[aC](df);
-			return c[pN] ? c[pN].replaceChild(n, c) : c[iH] = t,
-			g();
+			return container[pN] ? container[pN].replaceChild(n, container) : container[iH] = text,
+			cb();
 		} else {
-			n[iH] = t;
-			return c[pN] ? c[pN].replaceChild(d.createDocumentFragment[aC](n), c) : c[iH] = t,
-			g();
+			n[iH] = text;
+			return container[pN] ? container[pN].replaceChild(d.createDocumentFragment[aC](n), container) : container[iH] = text,
+			cb();
 		}
 	} catch (e) {
 		console.log(e);
@@ -483,34 +483,34 @@ var insertTextAsFragment = function (t, c, f) {
 /*!
  * load content via ajax
  */
-var insertExternalHTML = function (a, u, f) {
+var insertExternalHTML = function (selector, url, callback) {
 	"use strict";
 	var d = document,
 	qS = "querySelector",
-	c = d[qS](a) || "",
-	g = function (t, s) {
-		var q = function () {
-			return s && "function" === typeof s && s();
+	container = d[qS](selector) || "",
+	arrange = function (frag) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
 		};
-		insertTextAsFragment(t, c, q);
+		insertTextAsFragment(frag, container, cb);
 	},
-	k = function () {
-		fetch(u).then(function (r) {
-			if (!r.ok) {
-				throw new Error(r.statusText);
+	init = function () {
+		fetch(url).then(function (response) {
+			if (!response.ok) {
+				throw new Error(response.statusText);
 			}
-			return r;
-		}).then(function (r) {
-			return r.text();
-		}).then(function (t) {
-			g(t, f);
-		}).catch (function (e) {
-			console.log("Error inserting content from file " + u, e);
+			return response;
+		}).then(function (response) {
+			return response.text();
+		}).then(function (text) {
+			arrange(text);
+		}).catch (function (err) {
+			console.log("Error inserting content from file " + url, err);
 		});
 	};
-	if (c) {
+	if (container) {
 		console.log("triggered function: insertExternalHTML");
-		k();
+		init();
 	}
 };
 /*!
@@ -544,23 +544,19 @@ var renderTemplate = function (parsedJson, templateId, targetId, callback) {
 var manageExternalLinks = function () {
 	"use strict";
 	var d = document,
-	qS = "querySelector",
-	qSA = "querySelectorAll",
-	ctx = d.body || "",
-	cls = "a",
+	link = d.getElementsByTagName("a") || "",
 	cL = "classList",
-	isBindedClass = "is-binded",
 	aEL = "addEventListener",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
+	isBindedClass = "is-binded",
 	handleExternalLink = function (p, ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		openDeviceBrowser(p);
 	},
-	g = function (e) {
-		var p = e.getAttribute("href") || "";
-		if (p && parseLink(p).isCrossDomain && parseLink(p).hasHTTP) {
-			if (!e[cL].contains(isBindedClass)) {
+	arrangeExternalLink = function (e) {
+		if (!e[cL].contains(isBindedClass)) {
+			var p = e.getAttribute("href") || "";
+			if (p && parseLink(p).isCrossDomain && parseLink(p).hasHTTP) {
 				e.title = "" + (parseLink(p).hostname || "") + " откроется в новой вкладке";
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
 					e.target = "_blank";
@@ -570,16 +566,12 @@ var manageExternalLinks = function () {
 				e[cL].add(isBindedClass);
 			}
 		}
-	},
-	k = function () {
-		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		for (var i = 0, l = a.length; i < l; i += 1) {
-			g(a[i]);
-		}
 	};
-	if (a) {
+	if (link) {
 		console.log("triggered function: manageExternalLinks");
-		k();
+		for (var i = 0, l = link.length; i < l; i += 1) {
+			arrangeExternalLink(link[i]);
+		}
 	}
 };
 document.ready().then(manageExternalLinks);
@@ -587,23 +579,24 @@ document.ready().then(manageExternalLinks);
  * replace img src with data-src
  * @param {Object} [ctx] context HTML Element
  */
-var handleDataSrcImg = function () {
+var manageDataSrcImg = function () {
 	"use strict";
 	var w = window,
 	d = document,
-	ctx = d.body || "",
 	qS = "querySelector",
 	qSA = "querySelectorAll",
-	cls = "img[data-src]",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
+	imgClass = "img[data-src]",
+	img = d[qS](imgClass) || "",
 	cL = "classList",
 	ds = "dataset",
+	aEL = "addEventListener",
+	rEL = "removeEventListener",
 	isActiveClass = "is-active",
 	isBindedClass = "is-binded",
-	k = function (e) {
-		var _src = e[ds].src || "";
-		if (_src) {
-			if (!e[cL].contains(isBindedClass)) {
+	rerenderDataSrcImg = function (e) {
+		if (!e[cL].contains(isBindedClass)) {
+			var _src = e[ds].src || "";
+			if (_src) {
 				if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
 					e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
 					_src = e[ds].src;
@@ -623,53 +616,51 @@ var handleDataSrcImg = function () {
 			}
 		}
 	},
-	g = function (e) {
+	arrangeDataSrcImg = function (e) {
 		/*!
 		 * true if elem is in same y-axis as the viewport or within 100px of it
 		 * github.com/ryanve/verge
 		 */
 		if (verge.inY(e, 100) && 0 !== e.offsetHeight) {
-			k(e);
+			rerenderDataSrcImg(e);
 		}
 	};
-	if (a) {
-		console.log("triggered function: handleDataSrcImg");
-		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		for (var i = 0, l = a.length; i < l; i += 1) {
-			g(a[i]);
-		}
+	if (img) {
+		console.log("triggered function: manageDataSrcImg");
+		img = d[qSA](imgClass) || "";
+		var handleDataSrcImg = function () {
+			for (var i = 0, l = img.length; i < l; i += 1) {
+				arrangeDataSrcImg(img[i]);
+			}
+		};
+		w[rEL]("scroll", handleDataSrcImg);
+		w[rEL]("resize", handleDataSrcImg);
+		w[aEL]("scroll", handleDataSrcImg);
+		w[aEL]("resize", handleDataSrcImg);
 	}
-},
-manageDataSrcImg  = function () {
-	"use strict";
-	var w = window,
-	aEL = "addEventListener",
-	rEL = "removeEventListener";
-	w[rEL]("scroll", handleDataSrcImg);
-	w[rEL]("resize", handleDataSrcImg);
-	w[aEL]("scroll", handleDataSrcImg);
-	w[aEL]("resize", handleDataSrcImg);
 };
 /*!
  * replace iframe src with data-src
  * @param {Object} [ctx] context HTML Element
  */
-var handleDataSrcIframe = function () {
+var manageDataSrcIframe = function () {
 	"use strict";
-	var d = document,
-	ctx = d.body || "",
+	var w = window,
+	d = document,
 	qS = "querySelector",
 	qSA = "querySelectorAll",
-	cls = "iframe[data-src]",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
-	isBindedClass = "is-binded",
+	iframeClass = "iframe[data-src]",
+	iframe = d[qS](iframeClass) || "",
 	cL = "classList",
 	ds = "dataset",
 	sA = "setAttribute",
-	k = function (e) {
-		var _src = e[ds].src || "";
-		if (_src) {
-			if (!e[cL].contains(isBindedClass)) {
+	aEL = "addEventListener",
+	rEL = "removeEventListener",
+	isBindedClass = "is-binded",
+	rerenderDataSrcIframe = function (e) {
+		if (!e[cL].contains(isBindedClass)) {
+			var _src = e[ds].src || "";
+			if (_src) {
 				if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
 					e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
 					_src = e[ds].src;
@@ -685,32 +676,28 @@ var handleDataSrcIframe = function () {
 			}
 		}
 	},
-	g = function (e) {
+	arrangeDataSrcIframe = function (e) {
 		/*!
 		 * true if elem is in same y-axis as the viewport or within 100px of it
 		 * github.com/ryanve/verge
 		 */
 		if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
-			k(e);
+			rerenderDataSrcIframe(e);
 		}
 	};
-	if (a) {
-		console.log("triggered function: handleDataSrcIframe");
-		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		for (var i = 0, l = a.length; i < l; i += 1) {
-			g(a[i]);
-		}
+	if (iframe) {
+		console.log("triggered function: manageDataSrcIframe");
+		iframe = d[qSA](iframeClass) || "";
+		var handleDataSrcIframe = function () {
+			for (var i = 0, l = iframe.length; i < l; i += 1) {
+				arrangeDataSrcIframe(iframe[i]);
+			}
+		};
+		w[rEL]("scroll", handleDataSrcIframe);
+		w[rEL]("resize", handleDataSrcIframe);
+		w[aEL]("scroll", handleDataSrcIframe);
+		w[aEL]("resize", handleDataSrcIframe);
 	}
-},
-manageDataSrcIframe  = function () {
-	"use strict";
-	var w = window,
-	aEL = "addEventListener",
-	rEL = "removeEventListener";
-	w[rEL]("scroll", handleDataSrcIframe);
-	w[rEL]("resize", handleDataSrcIframe);
-	w[aEL]("scroll", handleDataSrcIframe);
-	w[aEL]("resize", handleDataSrcIframe);
 };
 /*!
  * manage data lightbox img links
@@ -720,79 +707,78 @@ var manageImgLightboxLinks = function () {
 	var w = window,
 	d = document,
 	b = d.body || "",
-	ctx = d.body || "",
 	qS = "querySelector",
 	qSA = "querySelectorAll",
-	cls = "[data-lightbox]",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
-	ilc = "img-lightbox-container",
-	c = d[qS]("." + ilc) || "",
-	m = d[qS]("." + ilc + " img") || "",
+	linkClass = "[data-lightbox]",
+	link = d[qS](linkClass) || "",
+	containerClass = "img-lightbox-container",
+	container = d[qS]("." + containerClass) || "",
+	img = d[qS]("." + containerClass + " img") || "",
 	an = "animated",
 	an1 = "fadeIn",
 	an2 = "fadeInUp",
 	an3 = "fadeOut",
 	an4 = "fadeOutDown",
-	isBindedClass = "is-binded",
 	cL = "classList",
 	ds = "dataset",
 	aEL = "addEventListener",
 	rEL = "removeEventListener",
 	aC = "appendChild",
-	dm = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-	if (!c) {
-		c = d.createElement("div");
-		m = d.createElement("img");
-		c[cL].add(ilc);
-		m.src = dm;
-		m.alt = "";
-		c[aC](m);
-		appendFragment(c, b);
+	isBindedClass = "is-binded",
+	dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+	if (!container) {
+		container = d.createElement("div");
+		img = d.createElement("img");
+		container[cL].add(containerClass);
+		img.src = dummySrc;
+		img.alt = "";
+		container[aC](img);
+		appendFragment(container, b);
 	}
 	var handleImgLightboxLink = function (_this, ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		var _href = _this.getAttribute("href") || "";
-		if (c && m && _href) {
+		if (container && img && _href) {
 			LoadingSpinner.show();
-			c[cL].add(an);
-			c[cL].add(an1);
-			m[cL].add(an);
-			m[cL].add(an2);
+			container[cL].add(an);
+			container[cL].add(an1);
+			img[cL].add(an);
+			img[cL].add(an2);
 			if (parseLink(_href).isAbsolute && !parseLink(_href).hasHTTP) {
 				_href = _href.replace(/^/, getHTTP(!0) + ":");
 			}
 			if (w.Promise) {
 				imagePromise(_href).then(function (r) {
-					m.src = _href;
-					console.log("manageDataSrcImg => imagePromise: loaded image:", r);
+					img.src = _href;
+					console.log("manageImgLightboxLinks => imagePromise: loaded image:", r);
 				}).catch (function (err) {
-					console.log("manageDataSrcImg => imagePromise: cannot load image:", err);
+					console.log("manageImgLightboxLinks => imagePromise: cannot load image:", err);
 				});
 			} else {
-				m.src = _href;
+				img.src = _href;
 			}
-			c[aEL]("click", handleImgLightboxContainer);
 			w[aEL]("keyup", handleImgLightboxWindow);
-			c.style.display = "block";
+			container[aEL]("click", handleImgLightboxContainer);
+			container.style.display = "block";
 			LoadingSpinner.hide();
 		}
 	},
 	hideImgLightbox = function () {
-		if (c && m) {
-			m[cL].remove(an2);
-			m[cL].add(an4);
+		if (container && img) {
+			img[cL].remove(an2);
+			img[cL].add(an4);
 			var hideImg = function () {
-				c[cL].remove(an);
-				c[cL].remove(an3);
-				m[cL].remove(an);
-				m[cL].remove(an4);
-				m.src = dm;
-				c.style.display = "none";
+				container[cL].remove(an);
+				container[cL].remove(an3);
+				img[cL].remove(an);
+				img[cL].remove(an4);
+				img.src = dummySrc;
+				container.style.display = "none";
 			},
 			hideContainer = function () {
-				c[cL].remove(an1);
-				c[cL].add(an3);
+				container[cL].remove(an1);
+				container[cL].add(an3);
 				var st1 = requestTimeout(function () {
 						clearRequestTimeout(st1);
 						hideImg();
@@ -805,8 +791,8 @@ var manageImgLightboxLinks = function () {
 		}
 	},
 	handleImgLightboxContainer = function () {
-		if (c) {
-			c[rEL]("click", handleImgLightboxContainer);
+		if (container) {
+			container[rEL]("click", handleImgLightboxContainer);
 			hideImgLightbox();
 		}
 	},
@@ -816,24 +802,24 @@ var manageImgLightboxLinks = function () {
 			hideImgLightbox();
 		}
 	},
-	k = function (e) {
+	arrangeImgLightboxLink = function (e) {
 		if (!e[cL].contains(isBindedClass)) {
-			var v = e[ds].lightbox || "",
-			p = e.getAttribute("href") || "";
-			if ("img" === v && p) {
-				if (parseLink(p).isAbsolute && !parseLink(p).hasHTTP) {
-					e.setAttribute("href", p.replace(/^/, getHTTP(!0) + ":"));
+			var dataValue = e[ds].lightbox || "",
+			_href = e.getAttribute("href") || "";
+			if ("img" === dataValue && _href) {
+				if (parseLink(_href).isAbsolute && !parseLink(_href).hasHTTP) {
+					e.setAttribute("href", _href.replace(/^/, getHTTP(!0) + ":"));
 				}
 				e[aEL]("click", handleImgLightboxLink.bind(null, e));
 				e[cL].add(isBindedClass);
 			}
 		}
 	};
-	if (a) {
+	if (link) {
 		console.log("triggered function: manageImgLightboxLinks");
-		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		for (var j = 0, l = a.length; j < l; j += 1) {
-			k(a[j]);
+		link = d[qSA](linkClass) || "";
+		for (var j = 0, l = link.length; j < l; j += 1) {
+			arrangeImgLightboxLink(link[j]);
 		}
 	}
 };
@@ -846,14 +832,14 @@ var managePagesSelect = function (ctx) {
 	ctx = ctx || "";
 	var w = window,
 	d = document,
-	cls = "#pages-select",
 	qS = "querySelector",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
+	selectId = "#pages-select",
+	select = ctx ? ctx[qS](selectId) || "" : d[qS](selectId) || "",
 	uiPanelContentsSelect = d[qS](".ui-panel-contents-select") || "",
 	cL = "classList",
-	isFixedClass = "is-fixed",
-	isBindedClass = "is-binded",
 	aEL = "addEventListener",
+	isBindedClass = "is-binded",
+	isFixedClass = "is-fixed",
 	handleStaticSelect = function (_this) {
 		var h = _this.options[_this.selectedIndex].value || "",
 		zh = h ? (isValidId(h, !0) ? d[qS](h) : "") : "",
@@ -866,15 +852,15 @@ var managePagesSelect = function (ctx) {
 			}
 		}
 	},
-	k = function () {
-		if (!a[cL].contains(isBindedClass)) {
-			a[aEL]("change", handleStaticSelect.bind(null, a));
-			a[cL].add(isBindedClass);
+	arrangeSelect = function () {
+		if (!select[cL].contains(isBindedClass)) {
+			select[aEL]("change", handleStaticSelect.bind(null, select));
+			select[cL].add(isBindedClass);
 		}
 	};
-	if (a) {
+	if (select) {
 		console.log("triggered function: managePagesSelect");
-		k();
+		arrangeSelect();
 	}
 };
 /*!
@@ -885,15 +871,15 @@ var manageExpandingLayers = function (ctx) {
 	"use strict";
 	ctx = ctx || "";
 	var d = document,
-	cls = ".btn-expand-hidden-layer",
 	qS = "querySelector",
 	qSA = "querySelectorAll",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
+	btnClass = ".btn-expand-hidden-layer",
+	btn = ctx ? ctx[qS](btnClass) || "" : d[qS](btnClass) || "",
 	aEL = "addEventListener",
 	cL = "classList",
 	pN = "parentNode",
-	isActiveClass = "is-active",
 	isBindedClass = "is-binded",
+	isActiveClass = "is-active",
 	handleExpandingLayers = function (_this) {
 		var s = _this[pN] ? _this[pN].nextElementSibling : "";
 		if (s) {
@@ -902,21 +888,21 @@ var manageExpandingLayers = function (ctx) {
 		}
 		return !1;
 	},
-	k = function (e) {
+	arrangeExpandingLayers = function (e) {
 		if (!e[cL].contains(isBindedClass)) {
 			e[aEL]("click", handleExpandingLayers.bind(null, e));
 			e[cL].add(isBindedClass);
 		}
 	},
-	q = function () {
-		a = ctx ? ctx[qSA](cls) || "" : d[qSA](cls) || "";
-		for (var i = 0, l = a.length; i < l; i += 1) {
-			k(a[i]);
+	rerenderLinks = function () {
+		btn = ctx ? ctx[qSA](btnClass) || "" : d[qSA](btnClass) || "";
+		for (var i = 0, l = btn.length; i < l; i += 1) {
+			arrangeExpandingLayers(btn[i]);
 		}
 	};
-	if (a) {
+	if (btn) {
 		console.log("triggered function: manageExpandingLayers");
-		q();
+		rerenderLinks();
 	}
 };
 /*!
@@ -928,9 +914,9 @@ var manageExpandingLayers = function (ctx) {
 var notiBar = function (opt) {
 	var d = document,
 	b = d.body || "",
-	s_bar = "notibar",
 	qS = "querySelector",
-	c = d[qS]("." + s_bar) || "",
+	s_bar = "notibar",
+	bar = d[qS]("." + s_bar) || "",
 	s_msg = "message",
 	s_close = "close",
 	s_key = "_notibar_dismiss_",
@@ -968,12 +954,12 @@ var notiBar = function (opt) {
 		if (c_k && c_k === decodeURIComponent(settings.value)) {
 			return !1;
 		}
-		if (c) {
-			removeChildren(c);
+		if (bar) {
+			removeChildren(bar);
 		} else {
-			c = d[cE]("div");
-			c[cL].add(s_bar);
-			c[cL].add(s_an);
+			bar = d[cE]("div");
+			bar[cL].add(s_bar);
+			bar[cL].add(s_an);
 		}
 		var m = d[cE]("div");
 		m[cL].add(s_msg);
@@ -982,7 +968,7 @@ var notiBar = function (opt) {
 			s = d.createTextNode(s);
 		}
 		m[aC](s);
-		c[aC](m);
+		bar[aC](m);
 		var btn = d[cE]("a");
 		btn[cL].add(s_close);
 		var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
@@ -1003,9 +989,9 @@ var notiBar = function (opt) {
 		hide_message = function () {
 			var notibar = d[qS]("." + s_bar) || "";
 			if (notibar) {
-				c[cL].remove(s_an1);
-				c[cL].add(s_an2);
-				removeChildren(c);
+				bar[cL].remove(s_an1);
+				bar[cL].add(s_an2);
+				removeChildren(bar);
 			}
 		},
 		h_btn = function () {
@@ -1014,10 +1000,10 @@ var notiBar = function (opt) {
 			set_cookie();
 		};
 		btn[aEL]("click", h_btn);
-		c[aC](btn);
-		appendFragment(c, b);
-		c[cL].remove(s_an2);
-		c[cL].add(s_an1);
+		bar[aC](btn);
+		appendFragment(bar, b);
+		bar[cL].remove(s_an2);
+		bar[cL].add(s_an1);
 		var st = requestTimeout(function () {
 				clearRequestTimeout(st);
 				hide_message();
@@ -1032,15 +1018,15 @@ var initNotibarMsg = function () {
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
 		var w = window,
 		d = document,
-		n = "_notibar_dismiss_",
-		m = "Выбрать статью можно щелкнув по самофиксирующейся планке с заголовком текущей страницы.",
-		p = parseLink(w.location.href).origin,
 		qS = "querySelector",
+		uiPanelContentsSelect = d[qS]("#render_contents_select") || "",
 		aC = "appendChild",
 		aEL = "addEventListener",
 		rEL = "removeEventListener",
-		uiPanelContentsSelect = d[qS]("#render_contents_select") || "",
-		g = function () {
+		n = "_notibar_dismiss_",
+		m = "Выбрать статью можно щелкнув по самофиксирующейся планке с заголовком текущей страницы.",
+		locationOrigin = parseLink(w.location.href).origin,
+		renderMsg = function () {
 			var msgObj = d.createElement("a");
 			/* jshint -W107 */
 			msgObj.href = "javascript:void(0);";
@@ -1060,11 +1046,11 @@ var initNotibarMsg = function () {
 				"days": 0
 			});
 		};
-		if (p && uiPanelContentsSelect) {
+		if (locationOrigin && uiPanelContentsSelect) {
 			console.log("triggered function: initNotibarMsg");
 			var st = requestTimeout(function () {
 					clearRequestTimeout(st);
-					g();
+					renderMsg();
 				}, 3000);
 		}
 	}
@@ -1085,163 +1071,146 @@ initMasonry = function (ctx) {
 	var w = window,
 	d = document,
 	qS = "querySelector",
-	cls = ".masonry-grid",
-	h = ".masonry-grid-item",
-	k = ".masonry-grid-sizer",
-	a = ctx ? ctx[qS](cls) || "" : d[qS](cls) || "",
-	c = ctx ? ctx[qS](h) || "" : d[qS](h) || "",
-	g = function () {
+	gridClass = ".masonry-grid",
+	itemClass = ".masonry-grid-item",
+	sizerClass = ".masonry-grid-sizer",
+	grid = ctx ? ctx[qS](gridClass) || "" : d[qS](gridClass) || "",
+	item = ctx ? ctx[qS](itemClass) || "" : d[qS](itemClass) || "",
+	arrangeItems = function () {
 		var si;
 		if (w.Masonry) {
 			if (msnry) {
 				msnry.destroy();
 			}
-			msnry = new Masonry(a, {
-					itemSelector: h,
-					columnWidth: k,
+			msnry = new Masonry(grid, {
+					itemSelector: itemClass,
+					columnWidth: sizerClass,
 					gutter: 0,
 					percentPosition: !0
 				});
-			console.log("function initMasonry => initialised msnry");
+			console.log("function initMasonry.arrangeItems => initialised msnry");
 			si = requestInterval(function () {
-					console.log("function initMasonry => started Interval");
+					console.log("function initMasonry.arrangeItems => started Interval");
 					if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
 						clearRequestInterval(si);
-						console.log("function initMasonry => si=" + si.value + "; imagesPreloaded=" + imagesPreloaded);
+						console.log("function initMasonry.arrangeItems => si=" + si.value + "; imagesPreloaded=" + imagesPreloaded);
 						msnry.layout();
-						console.log("function initMasonry => reinitialised msnry");
+						console.log("function initMasonry.arrangeItems => reinitialised msnry");
 					}
 				}, 100);
 		} else if (w.Packery) {
 			if (pckry) {
 				pckry.destroy();
 			}
-			pckry = new Packery(a, {
-					itemSelector: h,
-					columnWidth: k,
+			pckry = new Packery(grid, {
+					itemSelector: itemClass,
+					columnWidth: sizerClass,
 					gutter: 0,
 					percentPosition: !0
 				});
-			console.log("function initMasonry => initialised pckry");
+			console.log("function initMasonry.arrangeItems => initialised pckry");
 			si = requestInterval(function () {
-					console.log("function initMasonry => started Interval");
+					console.log("function initMasonry.arrangeItems => started Interval");
 					if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
 						clearRequestInterval(si);
-						console.log("function initMasonry => si=" + si.value + "; imagesPreloaded=" + imagesPreloaded);
+						console.log("function initMasonry.arrangeItems => si=" + si.value + "; imagesPreloaded=" + imagesPreloaded);
 						pckry.layout();
-						console.log("function initMasonry => reinitialised pckry");
+						console.log("function initMasonry.arrangeItems => reinitialised pckry");
 					}
 				}, 100);
 		} else {
-			console.log("function initMasonry => no library is loaded");
+			console.log("function initMasonry.arrangeItems => no library is loaded");
 		}
 	};
-	if (a && c) {
-		console.log("triggered function: initMasonryGrid");
+	if (grid && item) {
 		if ("undefined" !== typeof imagesPreloaded) {
+			console.log("triggered function: initMasonryGrid");
 			var st = requestTimeout(function () {
 					clearRequestTimeout(st);
-					g();
+					/* var js = "./cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
+					var js = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
+					if (!scriptIsLoaded(js)) {
+						loadJS(js, arrangeItems);
+					} else {
+						arrangeItems();
+					}
 				}, 100);
 		} else {
 			console.log("function initMasonry => undefined: imagesPreloaded");
 		}
 	}
-},
-loadInitMasonry = function (ctx) {
-	"use strict";
-	ctx = ctx || "";
-	/* var js = "./cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
-	var js = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, initMasonry.bind(null, ctx));
-	} else {
-		initMasonry(ctx);
-	}
 };
 /*!
  * load or refresh disqus_thread on click
  */
-var loadRefreshDisqus = function () {
+var manageDisqusButton = function (ctx) {
 	"use strict";
+	ctx = ctx || "";
 	var w = window,
 	d = document,
 	qS = "querySelector",
-	c = d[qS]("#disqus_thread") || "",
-	btn = d[qS](".btn-show-disqus") || "",
-	p = w.location.href || "",
+	btnClass = ".btn-show-disqus",
+	btn = ctx ? ctx[qS](btnClass) || "" : d[qS](btnClass) || "",
+	disqusThread = d[qS]("#disqus_thread") || "",
 	cL = "classList",
 	ds = "dataset",
-	pN = "parentNode",
 	aC = "appendChild",
-	isActiveClass = "is-active",
-	n = c ? (c[ds].shortname || "") : "",
-	js = getHTTP(!0) + "://" + n + ".disqus.com/embed.js",
-	g = function () {
-		c[cL].add(isActiveClass);
-		btn.style.display = "none";
-		LoadingSpinner.hide();
-	},
-	k = function () {
-		try {
-			DISQUS.reset({
-				reload: !0,
-				config: function () {
-					this.page.identifier = n;
-					this.page.url = p;
-				}
-			});
-			g();
-		} catch (e) {
-			btn.style.display = "none";
-		}
-	},
-	v = function () {
-		loadJS(js, g);
-	},
-	z = function () {
-		removeChildren(c);
-		var replacementText = d.createElement("p");
-		replacementText[aC](d.createTextNode("Комментарии доступны только в веб версии этой страницы."));
-		appendFragment(replacementText, c);
-		c.removeAttribute("id");
-		btn[pN].style.display = "none";
-	};
-	if (c && btn && n && p) {
-		console.log("triggered function: loadRefreshDisqus");
-		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			LoadingSpinner.show();
-			if (scriptIsLoaded(js)) {
-				k();
-			} else {
-				v();
-			}
-		} else {
-			z();
-		}
-	}
-},
-manageDisqusButton = function () {
-	"use strict";
-	var d = document,
-	qS = "querySelector",
-	c = d[qS]("#disqus_thread") || "",
-	e = c ? (d[qS](".btn-show-disqus") || "") : "",
 	aEL = "addEventListener",
 	rEL = "removeEventListener",
-	cL = "classList",
 	isBindedClass = "is-binded",
-	h_e = function (ev) {
-		ev.stopPropagation();
-		ev.preventDefault();
-		e[rEL]("click", h_e);
-		loadRefreshDisqus();
-	};
-	if (c && e) {
-		if (!e[cL].contains(isBindedClass)) {
-			console.log("triggered function: manageDisqusButton");
-			e[aEL]("click", h_e);
-			e[cL].add(isBindedClass);
+	isActiveClass = "is-active",
+	locationHref = w.location.href || "",
+	disqusShortname = disqusThread ? (disqusThread[ds].shortname || "") : "",
+	embedJsUrl = getHTTP(!0) + "://" + disqusShortname + ".disqus.com/embed.js";
+	if (disqusThread && btn && disqusShortname && locationHref) {
+		console.log("triggered function: manageDisqusButton");
+		var hideButton = function () {
+			disqusThread[cL].add(isActiveClass);
+			btn.style.display = "none";
+			LoadingSpinner.hide();
+		},
+		hideDisqus = function () {
+			removeChildren(disqusThread);
+			var replacementText = d.createElement("p");
+			replacementText[aC](d.createTextNode("Комментарии доступны только в веб версии этой страницы."));
+			appendFragment(replacementText, disqusThread);
+			disqusThread.removeAttribute("id");
+			hideButton();
+		};
+		if ("undefined" !== typeof getHTTP && getHTTP()) {
+			var renderDisqus = function () {
+				try {
+					DISQUS.reset({
+						reload: !0,
+						config: function () {
+							this.page.identifier = disqusShortname;
+							this.page.url = locationHref;
+						}
+					});
+					hideButton();
+				} catch (e) {
+					hideButton();
+				}
+			},
+			handleDisqusButton = function (ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				btn[rEL]("click", handleDisqusButton);
+				LoadingSpinner.show();
+				if (!scriptIsLoaded(embedJsUrl)) {
+					loadJS(embedJsUrl, renderDisqus);
+				} else {
+					renderDisqus();
+				}
+			};
+			if (disqusThread && btn) {
+				if (!btn[cL].contains(isBindedClass)) {
+					btn[aEL]("click", handleDisqusButton);
+					btn[cL].add(isBindedClass);
+				}
+			}
+		} else {
+			hideDisqus();
 		}
 	}
 };
@@ -1255,19 +1224,19 @@ var initContentsKamil = function (jsonObj) {
 	d = document,
 	qS = "querySelector",
 	qSA = "querySelectorAll",
-	search_form = d[qS](".search-form") || "",
-	id = "#text",
-	text = d[qS](id) || "",
-	_ul_id = "kamil-typo-autocomplete",
-	_ul_class = "kamil-autocomplete",
+	searchForm = d[qS](".search-form") || "",
+	textInputId = "#text",
+	textInput = d[qS](textInputId) || "",
 	outsideContainer = d[qS](".container") || "",
+	typoAutcompleteListId = "kamil-typo-autocomplete",
+	typoAutcompleteListClass = "kamil-autocomplete",
 	cL = "classList",
 	aEL = "addEventListener",
 	aC = "appendChild",
 	pN = "parentNode",
-	q = function (r) {
+	generateMenu = function (r) {
 		if (r) {
-			var ac = new Kamil(id, {
+			var ac = new Kamil(textInputId, {
 					source: r,
 					property: "title",
 					minChars: 2
@@ -1275,21 +1244,21 @@ var initContentsKamil = function (jsonObj) {
 			/*!
 			 * create typo suggestion list
 			 */
-			var _ul = d.createElement("ul"),
-			_li = d.createElement("li"),
+			var typoAutcompleteList = d.createElement("ul"),
+			typoAutcompleteListItem = d.createElement("li"),
 			hideTypoSuggestions = function () {
-				_ul.style.display = "none";
-				_li.style.display = "none";
+				typoAutcompleteList.style.display = "none";
+				typoAutcompleteListItem.style.display = "none";
 			},
 			showTypoSuggestions = function () {
-				_ul.style.display = "block";
-				_li.style.display = "block";
+				typoAutcompleteList.style.display = "block";
+				typoAutcompleteListItem.style.display = "block";
 			};
-			_ul[cL].add(_ul_class);
-			_ul.id = _ul_id;
+			typoAutcompleteList[cL].add(typoAutcompleteListClass);
+			typoAutcompleteList.id = typoAutcompleteListId;
 			hideTypoSuggestions();
-			_ul[aC](_li);
-			text[pN].insertBefore(_ul, text.nextElementSibling);
+			typoAutcompleteList[aC](typoAutcompleteListItem);
+			textInput[pN].insertBefore(typoAutcompleteList, textInput.nextElementSibling);
 			/*!
 			 * show suggestions
 			 */
@@ -1313,13 +1282,13 @@ var initContentsKamil = function (jsonObj) {
 				/*!
 				 * fix typo - non latin characters found
 				 */
-				var h_li = function (v) {
-					text.value = v;
-					text.focus();
+				var handleTypoAutcompleteListItem = function (v) {
+					textInput.value = v;
+					textInput.focus();
 					hideTypoSuggestions();
 				},
-				h_text = function () {
-					if (text.value.length < 3 || text.value.match(/^\s*$/)) {
+				handleTypoAutcompleteTextInput = function () {
+					if (textInput.value.length < 3 || textInput.value.match(/^\s*$/)) {
 						hideTypoSuggestions();
 					}
 				};
@@ -1327,20 +1296,20 @@ var initContentsKamil = function (jsonObj) {
 					outsideContainer[aEL]("click", hideTypoSuggestions);
 				}
 				while (l < 1) {
-					var v = text.value;
+					var v = textInput.value;
 					if (/[^\u0000-\u007f]/.test(v)) {
 						v = fixEnRuTypo(v, "ru", "en");
 					} else {
 						v = fixEnRuTypo(v, "en", "ru");
 					}
 					showTypoSuggestions();
-					removeChildren(_li);
-					appendFragment(d.createTextNode("" + v), _li);
-					_li[aEL]("click", h_li.bind(null, v));
+					removeChildren(typoAutcompleteListItem);
+					appendFragment(d.createTextNode("" + v), typoAutcompleteListItem);
+					typoAutcompleteListItem[aEL]("click", handleTypoAutcompleteListItem.bind(null, v));
 					if (v.match(/^\s*$/)) {
 						hideTypoSuggestions();
 					}
-					text[aEL]("input", h_text);
+					textInput[aEL]("input", handleTypoAutcompleteTextInput);
 					l += 1;
 				}
 				/*!
@@ -1382,16 +1351,12 @@ var initContentsKamil = function (jsonObj) {
 			});
 		}
 	};
-	if (search_form && text) {
+	if (searchForm && textInput) {
 		console.log("triggered function: initContentsKamil");
-		q(jsonObj);
-	}
-},
-loadInitContentsKamil = function (jsonObj) {
-	"use strict";
-	var js = "./cdn/kamil/0.1.1/js/kamil.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, initContentsKamil.bind(null, jsonObj));
+		var kamilJsUrl = "./cdn/kamil/0.1.1/js/kamil.fixed.min.js";
+		if (!scriptIsLoaded(kamilJsUrl)) {
+			loadJS(kamilJsUrl, generateMenu.bind(null, jsonObj));
+		}
 	}
 };
 /*!
@@ -1464,6 +1429,285 @@ var fixUiPanelContentsSelect = function () {
 };
 document.ready().then(fixUiPanelContentsSelect);
 /*!
+ * init qr-code
+ * stackoverflow.com/questions/12777622/how-to-use-enquire-js
+ */
+var manageLocationQrCodeImg = function () {
+	"use strict";
+	var w = window,
+	d = document,
+	qS = "querySelector",
+	btn = d[qS](".btn-toggle-holder-location-qr-code") || "",
+	page = d[qS](".page") || "",
+	holder = d[qS](".holder-location-qr-code") || "",
+	cL = "classList",
+	aEL = "addEventListener",
+	activeLocationQrCodeClass = "is-active-holder-location-qr-code",
+	activeVkLikeClass = "is-active-holder-vk-like",
+	activeShareClass = "is-active-holder-share-buttons",
+	locationHash = w.location.href || "";
+	if (btn && page && holder && locationHash) {
+		if ("undefined" !== typeof getHTTP && getHTTP()) {
+			console.log("triggered function: manageLocationQrCodeImg");
+			var removeActiveLocationQrCodeClass = function () {
+				if (page[cL].contains(activeLocationQrCodeClass)) {
+					page[cL].remove(activeLocationQrCodeClass);
+				}
+			},
+			generateLocationQrCodeImg = function () {
+				var newText = w.location.href || "",
+				newImg = d.createElement("img"),
+				newTitle = d.title ? ("Ссылка на страницу «" + d.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "",
+				newSrc = getHTTP(!0) + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(newText);
+				newImg.alt = newTitle;
+				if (w.QRCode) {
+					if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
+						newSrc = QRCode.generateSVG(newText, {
+								ecclevel: "M",
+								fillcolor: "#FFFFFF",
+								textcolor: "#191919",
+								margin: 4,
+								modulesize: 8
+							});
+						var XMLS = new XMLSerializer();
+						newSrc = XMLS.serializeToString(newSrc);
+						newSrc = "data:image/svg+xml;base64," + w.btoa(unescape(encodeURIComponent(newSrc)));
+						newImg.src = newSrc;
+					} else {
+						newSrc = QRCode.generatePNG(newText, {
+								ecclevel: "M",
+								format: "html",
+								fillcolor: "#FFFFFF",
+								textcolor: "#191919",
+								margin: 4,
+								modulesize: 8
+							});
+						newImg.src = newSrc;
+					}
+				} else {
+					newImg.src = newSrc;
+				}
+				newImg[cL].add("qr-code-img");
+				newImg.title = newTitle;
+				removeChildren(holder);
+				appendFragment(newImg, holder);
+			},
+			handleLocationQrCodeButton = function (ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				page[cL].toggle(activeLocationQrCodeClass);
+				if (page[cL].contains(activeVkLikeClass)) {
+					page[cL].remove(activeVkLikeClass);
+				}
+				if (page[cL].contains(activeShareClass)) {
+					page[cL].remove(activeShareClass);
+				}
+			};
+			var qrjs2JsUrl = "./cdn/qrjs2/0.1.2/js/qrjs2.fixed.min.js";
+			if (!scriptIsLoaded(qrjs2JsUrl)) {
+				loadJS(qrjs2JsUrl, function () {
+					btn[aEL]("click", generateLocationQrCodeImg);
+					btn[aEL]("click", handleLocationQrCodeButton);
+					w[aEL]("hashchange", generateLocationQrCodeImg);
+					w[aEL]("hashchange", removeActiveLocationQrCodeClass);
+				});
+			}
+		}
+	}
+};
+document.ready().then(manageLocationQrCodeImg);
+/*!
+ * init share btn
+ */
+var manageShareButton = function () {
+	"use strict";
+	var d = document,
+	qS = "querySelector",
+	btn = d[qS](".btn-toggle-holder-share-buttons") || "",
+	page = d[qS](".page") || "",
+	yaShare2 =  d[qS](".ya-share2") || "",
+	cL = "classList",
+	aEL = "addEventListener",
+	activeLocationQrCodeClass = "is-active-holder-location-qr-code",
+	activeVkLikeClass = "is-active-holder-vk-like",
+	activeShareClass = "is-active-holder-share-buttons";
+	if (btn && page && yaShare2) {
+		if ("undefined" !== typeof getHTTP && getHTTP()) {
+			console.log("triggered function: manageShareButton");
+			var handleShareButton = function (ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				page[cL].toggle(activeShareClass);
+				if (page[cL].contains(activeLocationQrCodeClass)) {
+					page[cL].remove(activeLocationQrCodeClass);
+				}
+				if (page[cL].contains(activeVkLikeClass)) {
+					page[cL].remove(activeVkLikeClass);
+				}
+				var es5ShimsJsUrl = getHTTP(!0) + "://yastatic.net/es5-shims/0.0.2/es5-shims.min.js",
+				shareJsUrl = getHTTP(!0) + "://yastatic.net/share2/share.js";
+				if (!scriptIsLoaded(es5ShimsJsUrl)) {
+					loadJS(es5ShimsJsUrl, function () {
+						if (!scriptIsLoaded(shareJsUrl)) {
+							loadJS(shareJsUrl);
+						}
+					});
+				}
+			};
+			btn[aEL]("click", handleShareButton);
+		}
+	}
+};
+document.ready().then(manageShareButton);
+/*!
+ * init vk-like btn
+ */
+var manageVKLikeButton = function () {
+	"use strict";
+	var w = window,
+	d = document,
+	qS = "querySelector",
+	btn = d[qS](".btn-toggle-holder-vk-like") || "",
+	page = d[qS](".page") || "",
+	vkLikeId = "vk-like",
+	vkLike = d[qS]("#" + vkLikeId) || "",
+	cL = "classList",
+	aEL = "addEventListener",
+	activeLocationQrCodeClass = "is-active-holder-location-qr-code",
+	activeVkLikeClass = "is-active-holder-vk-like",
+	activeShareClass = "is-active-holder-share-buttons";
+	if (btn && page && vkLike) {
+		if ("undefined" !== typeof getHTTP && getHTTP()) {
+			console.log("triggered function: manageVKLikeButton");
+			var handleVKLikeButton = function (ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				page[cL].toggle(activeVkLikeClass);
+				if (page[cL].contains(activeLocationQrCodeClass)) {
+					page[cL].remove(activeLocationQrCodeClass);
+				}
+				if (page[cL].contains(activeShareClass)) {
+					page[cL].remove(activeShareClass);
+				}
+				var openapiJsUrl = getHTTP(!0) + "://vk.com/js/api/openapi.js?122";
+				if (!scriptIsLoaded(openapiJsUrl)) {
+					loadJS(openapiJsUrl, function () {
+						if (w.VK) {
+							VK.init({
+								apiId: (vkLike.dataset.apiid || ""),
+								nameTransportPath: "/xd_receiver.htm",
+								onlyWidgets: !0
+							});
+							VK.Widgets.Like(vkLikeId, {
+								type: "button",
+								height: 24
+							});
+						}
+					});
+				}
+			};
+			btn[aEL]("click", handleVKLikeButton);
+		}
+	}
+};
+document.ready().then(manageVKLikeButton);
+/*!
+ * init qr-code
+ * stackoverflow.com/questions/12777622/how-to-use-enquire-js
+ */
+var hideShareVkLikeLocationQrCode = function () {
+	"use strict";
+	var d = document,
+	qS = "querySelector",
+	page = d[qS](".page") || "",
+	container = d[qS](".container") || "",
+	cL = "classList",
+	aEL = "addEventListener",
+	activeLocationQrCodeClass = "is-active-holder-location-qr-code",
+	activeVkLikeClass = "is-active-holder-vk-like",
+	activeShareClass = "is-active-holder-share-buttons",
+	handleHideShareVkLikeLocationQrCode = function () {
+		if (page[cL].contains(activeVkLikeClass)) {
+			page[cL].remove(activeVkLikeClass);
+		}
+		if (page[cL].contains(activeShareClass)) {
+			page[cL].remove(activeShareClass);
+		}
+		if (page[cL].contains(activeLocationQrCodeClass)) {
+			page[cL].remove(activeLocationQrCodeClass);
+		}
+	};
+	if (page && container) {
+		container[aEL]("click", handleHideShareVkLikeLocationQrCode);
+	}
+};
+document.ready().then(hideShareVkLikeLocationQrCode);
+/*!
+ * init col debug btn
+ */
+var manageDebugGridButton = function () {
+	"use strict";
+	var w = window,
+	d = document,
+	qS = "querySelector",
+	container = d[qS](".container") || "",
+	btnClass = ".btn-toggle-col-debug",
+	btn = d[qS](btnClass) || "",
+	debugClass = "debug",
+	cL = "classList",
+	aEL = "addEventListener",
+	rEL = "removeEventListener",
+	hideDebugGrid = function () {
+		if (container) {
+			container[cL].remove(debugClass);
+			container[rEL]("click", hideDebugGrid);
+		}
+	},
+	showDebugGridMesage = function () {
+		var b = d.body || "",
+		page = d[qS](".page") || "",
+		container = d[qS](".container") || "",
+		col = d[qS](".col") || "",
+		a = [b, page, container, col],
+		m = [];
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			if (a[i]) {
+				m.push((a[i].className ? "." + a[i].className : a[i].id ? "#" + a[i].id : a[i].tagName), " ", w.getComputedStyle(a[i]).getPropertyValue("font-size"), " ", w.getComputedStyle(a[i]).getPropertyValue("line-height"), " ", a[i].offsetWidth, "x", a[i].offsetHeight, " \u003e ");
+			}
+		}
+		m = m.join("");
+		m = m.slice(0, m.lastIndexOf(" \u003e "));
+		notiBar({
+			"message": m,
+			"timeout": 10000,
+			/* "key": n,
+			"value": m, */
+			"days": 0
+		});
+	};
+	if (btn && container) {
+		console.log("triggered function: manageDebugGridButton");
+		var u = w.location.href || "";
+		if (u && parseLink(u).hasHTTP && /^(localhost|127.0.0.1)/.test(parseLink(u).hostname)) {
+			var handleDebugGridButton = function (ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				container[cL].toggle(debugClass);
+				if (container[cL].contains(debugClass)) {
+					container[aEL]("click", hideDebugGrid);
+					showDebugGridMesage();
+				} else {
+					container[rEL]("click", hideDebugGrid);
+				}
+			};
+			btn[aEL]("click", handleDebugGridButton);
+		} else {
+			btn.style.display = "none";
+		}
+	}
+};
+document.ready().then(manageDebugGridButton);
+/*!
  * process routes, render contents select
  */
 var processRoutes = function () {
@@ -1511,16 +1755,21 @@ var processRoutes = function () {
 					d.title = titleString + (initialDocumentTitle ? " - " + initialDocumentTitle : "") + userBrowsingDetails;
 				}
 				if (contentsSelect) {
+					var optionMatched = false;
 					for (var i = 0, l = contentsSelect.options.length; i < l; i += 1) {
 						if (contentsSelect.options[i].value === w.location.hash) {
+							optionMatched = true;
 							contentsSelect.selectedIndex = i;
 							break;
 						}
 					}
+					if (!optionMatched) {
+						contentsSelect.selectedIndex = 0;
+					}
 				}
 				if (routesObj) {
 					renderTemplate(routesObj, masonryTemplateId, masonryRenderId, function () {
-						loadInitMasonry(appContentParent);
+						initMasonry(appContentParent);
 						manageDataSrcImg();
 					});
 				}
@@ -1545,7 +1794,7 @@ var processRoutes = function () {
 				manageDisqusButton(appContentParent);
 			};
 			if (routesParsedJson) {
-				loadInitContentsKamil(routesParsedJson.hashes);
+				initContentsKamil(routesParsedJson.hashes);
 				var navigateOnHashChange = function () {
 					if (w.location.hash) {
 						var notfound = false;
@@ -1684,10 +1933,10 @@ var initUiTotop = function () {
 	var w = window,
 	d = document,
 	qS = "querySelector",
-	b = d[qS]("body") || "",
-	h = d[qS]("html") || "",
-	u = "ui-totop",
-	t = "Наверх",
+	b = d.body || "",
+	h = d.documentElement || "",
+	btnClass = "ui-totop",
+	btnTitle = "Наверх",
 	cL = "classList",
 	cE = "createElement",
 	aC = "appendChild",
@@ -1695,44 +1944,44 @@ var initUiTotop = function () {
 	sANS = "setAttributeNS",
 	aEL = "addEventListener",
 	isActiveClass = "is-active",
-	k = function (_this) {
-		var a = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
-		c = _this.innerHeight || h.clientHeight || b.clientHeight || "",
-		e = d[qS]("." + u) || "";
-		if (a && c && e) {
-			if (a > c) {
-				e[cL].add(isActiveClass);
+	handleUiTotopWindow = function (_this) {
+		var scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
+		windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "",
+		el = d[qS]("." + btnClass) || "";
+		if (scrollPosition && windowHeight && el) {
+			if (scrollPosition > windowHeight) {
+				el[cL].add(isActiveClass);
 			} else {
-				e[cL].remove(isActiveClass);
+				el[cL].remove(isActiveClass);
 			}
 		}
 	},
-	g = function () {
-		var h_a = function (ev) {
+	renderUiTotop = function () {
+		var handleUiTotopAnchor = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
 			scroll2Top(0, 20000);
 		},
-		a = d[cE]("a"),
+		anchor = d[cE]("a"),
 		svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
 		use = d[cENS]("http://www.w3.org/2000/svg", "use");
-		a[cL].add(u);
+		anchor[cL].add(btnClass);
 		/* jshint -W107 */
-		a.href = "javascript:void(0);";
+		anchor.href = "javascript:void(0);";
 		/* jshint +W107 */
-		a.title = t;
-		a[cL].add(u);
-		a[aEL]("click", h_a);
+		anchor.title = btnTitle;
+		anchor[cL].add(btnClass);
+		anchor[aEL]("click", handleUiTotopAnchor);
 		svg[cL].add("ui-icon");
 		use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Up");
 		svg[aC](use);
-		a[aC](svg);
-		b[aC](a);
-		w[aEL]("scroll", k.bind(null, w));
+		anchor[aC](svg);
+		b[aC](anchor);
+		w[aEL]("scroll", handleUiTotopWindow.bind(null, w));
 	};
 	if (b) {
 		console.log("triggered function: initUiTotop");
-		g();
+		renderUiTotop();
 	}
 };
 document.ready().then(initUiTotop);
@@ -1743,27 +1992,27 @@ var showPageFinishProgress = function () {
 	"use strict";
 	var d = document,
 	qS = "querySelector",
-	a = d[qS]("#page") || "",
-	g = function () {
-		a.style.opacity = 1;
+	page = d[qS]("#page") || "",
+	rerenderPage = function () {
+		page.style.opacity = 1;
 		/* progressBar.complete(); */
 	},
-	k = function () {
+	triggerOnImagesLoaded = function () {
 		var si = requestInterval(function () {
 				console.log("function showPageFinishProgress => started Interval");
 				if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
 					clearRequestInterval(si);
 					console.log("function showPageFinishProgress => si=" + si.value + "; imagesPreloaded=" + imagesPreloaded);
-					g();
+					rerenderPage();
 				}
 			}, 100);
 	};
-	if (a) {
+	if (page) {
 		console.log("triggered function: showPageFinishProgress");
 		if ("undefined" !== typeof imagesPreloaded) {
-			k();
+			triggerOnImagesLoaded();
 		} else {
-			g();
+			rerenderPage();
 		}
 	}
 };
