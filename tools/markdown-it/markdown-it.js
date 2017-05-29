@@ -4796,7 +4796,7 @@ module.exports = Token;
 	}
 	/**
 	 * Bias adaptation function as per section 3.4 of RFC 3492.
-	 * https://tools.ietf.org/html/rfc3492#section-3.4
+	 * @see {@link https://tools.ietf.org/html/rfc3492#section-3.4}
 	 * @private
 	 */
 	function adapt(delta, numPoints, firstTime) {

@@ -21,7 +21,7 @@
  * <pre class="prettyprint lang-css"></pre>
  *
  *
- * http://www.w3.org/TR/CSS21/grammar.html Section G2 defines the lexical
+ * @see {@link http://www.w3.org/TR/CSS21/grammar.html Section G2 defines the lexical}
  * grammar. This scheme does not recognize keywords containing escapes.
  *
  * @author mikesamuel@gmail.com

@@ -36,7 +36,7 @@
  reEmptyStringTrailing = /(__e\(.*?\)|\b__t\)) \+\n'';/g;
  /**
  * Used to match ES6 template delimiters
- * http://people.mozilla.org/~jorendorff/es6-draft.html#sec-literals-string-literals
+ * @see {@link http://people.mozilla.org/~jorendorff/es6-draft.html#sec-literals-string-literals}
  */
  var reEsTemplate = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g;
  /** Used to match regexp flags from their coerced string values */
@@ -1487,7 +1487,7 @@
  * Though the `>` character is escaped for symmetry, characters like `>` and `/`
  * don't require escaping in HTML and have no special meaning unless they're part
  * of a tag or an unquoted attribute value.
- * http://mathiasbynens.be/notes/ambiguous-ampersands (under "semi-related fun fact")
+ * @see {@link http://mathiasbynens.be/notes/ambiguous-ampersands (under "semi-related fun fact")}
  */
  var htmlEscapes = {
  '&': '&amp;',
@@ -5801,10 +5801,10 @@
  * debugging. See http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl
  *
  * For more information on precompiling templates see:
- * http://lodash.com/custom-builds
+ * @see {@link http://lodash.com/custom-builds}
  *
  * For more information on Chrome extension sandboxes see:
- * http://developer.chrome.com/stable/extensions/sandboxingEval.html
+ * @see {@link http://developer.chrome.com/stable/extensions/sandboxingEval.html}
  *
  * @static
  * @memberOf _

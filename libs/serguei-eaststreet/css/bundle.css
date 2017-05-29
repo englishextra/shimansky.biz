@@ -633,7 +633,7 @@ template {
 
 /*!
  * typeboost-uwp.css v0.1.8
- * github.com/englishextra/typeboost-uwp.css
+ * @see {@link https://github.com/englishextra/typeboost-uwp.css}
  * set html font to 15px, and body to 1.000rem
  * line height should be the closest multiple of 4
  */
@@ -1769,11 +1769,11 @@ body {
 /*!
  * ---------------------------------------------- *
  * Grid
- * http://brajeshwar.github.io/grid/
- * https://github.com/brajeshwar/grid
+ * @see {@link http://brajeshwar.github.io/grid/}
+ * @see {@link https://github.com/brajeshwar/grid}
  *
  * Brajeshwar
- * http://brajeshwar.me
+ * @see {@link http://brajeshwar.me}
  * ---------------------------------------------- *
  */
 
@@ -2398,7 +2398,7 @@ body {
 /*! @import "loading-spinner"; */
 
 /**
- * github.com/lukehaas/css-loaders
+ * @see {@link https://github.com/lukehaas/css-loaders}
  * projects.lukehaas.me/css-loaders/
  * size of a loader dependent on font size
  */
@@ -2455,7 +2455,7 @@ body {
 
 /*!
  * notibar
- * github.com/duyetdev/notibar.js
+ * @see {@link https://github.com/duyetdev/notibar.js}
  */
 
 .notibar {
@@ -2597,8 +2597,8 @@ body {
 	left: 0;
 	right: 0;
 	background-color: transparent;
-	border: 0.067rem solid rgba(255, 255, 255, 0.5);
-	border-radius: 0.067rem;
+	border: 0;
+	box-shadow: 0.267rem 0.267rem 0.267rem 0 rgba(3, 3, 3, 0.3);
 	vertical-align: middle;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -2669,7 +2669,7 @@ body {
 .kamil-autocomplete li.kamil-active,
 .kamil-autocomplete li:hover {
 	color: inherit;
-	background-color: #F2F2F2;
+	background-color: #E6E6E6;
 }
 
 /* .kamil-autocomplete li:focus, */
@@ -2717,7 +2717,7 @@ body {
 /*! @import "ui-totop"; */
 
 /**
- * github.com/sksmatt/UItoTop-jQuery-Plugin/
+ * @see {@link https://github.com/sksmatt/UItoTop-jQuery-Plugin/}
  */
 
 .ui-totop {
@@ -2768,8 +2768,8 @@ body {
 
 /**
  * Yandex map container
- * css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/
- * stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css
+ * @see {@link https://css-tricks.com/snippets/sass/maintain-aspect-ratio-mixin/}
+ * @see {@link https://stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css}
  */
 
 .ymap {
@@ -2816,7 +2816,7 @@ body {
 
 /**
  * some animations from animate.css
- * github.com/daneden/animate.css
+ * @see {@link https://github.com/daneden/animate.css}
  * daneden.github.io/animate.css/
  */
 
@@ -3450,6 +3450,13 @@ u,
 	transition: opacity 0.4s ease;
 }
 
+.col img.data-src-img,
+.col img[data-src],
+.col iframe.data-src-iframe,
+.col iframe[data-src] {
+	background-color: #F2F2F2;
+}
+
 .col img.data-src-img.is-active,
 .col img[data-src].is-active {
 	opacity: 1;
@@ -3512,7 +3519,7 @@ u,
 	height: 166px;
 }
 
-.holder-pages-select + canvas {
+.holder-chapters-select + canvas {
 	margin-top: 1.333rem;
 }
 
@@ -3603,8 +3610,8 @@ u,
  * buttons
  */
 
-.col div + .holder-bottom-nav-btns,
-.holder-bottom-nav-btns:first-child {
+.col div + .holder-bottom-navigation,
+.holder-bottom-navigation:first-child {
 	margin-top: 1.333rem;
 }
 
@@ -3754,13 +3761,13 @@ u,
  * pages selecto
  */
 
-.holder-pages-select {
+.holder-chapters-select {
 	display: block;
 	width: 100%;
 	text-align: left;
 }
 
-.holder-pages-select .pages-select {
+.holder-chapters-select .chapters-select {
 	display: inline-block;
 	width: 100%;
 	max-width: 18.133rem;
@@ -3781,16 +3788,16 @@ u,
 	padding: 0 0 0 0.267rem;
 }
 
-.holder-pages-select .pages-select::-ms-expand {
+.holder-chapters-select .chapters-select::-ms-expand {
 	display: none;
 }
 
-.holder-pages-select .pages-select::-ms-value {
+.holder-chapters-select .chapters-select::-ms-value {
 	background: none;
 	color: inherit;
 }
 
-.holder-pages-select .pages-select optgroup {
+.holder-chapters-select .chapters-select optgroup {
 	font-style: normal;
 	padding-left: 0.267rem;
 }
@@ -3799,10 +3806,10 @@ u,
  * fix select border for electron and nw
  */
 
-.holder-pages-select .pages-select,
-.holder-pages-select .pages-select:focus,
-.holder-pages-select .pages-select:hover,
-.holder-pages-select .pages-select:active {
+.holder-chapters-select .chapters-select,
+.holder-chapters-select .chapters-select:focus,
+.holder-chapters-select .chapters-select:hover,
+.holder-chapters-select .chapters-select:active {
 	border: 0.067rem solid #F2F2F2;
 }
 
@@ -4850,7 +4857,7 @@ iPad 3
 /*! @import "print"; */
 
 /**
- * gist.github.com/englishextra/cdd503793392281a8a0c
+ * @see {@link https://gist.github.com/englishextra/cdd503793392281a8a0c}
  * jafferhaider.wordpress.com/2007/12/29/fix-for-the-firefoxcss-one-page-printing-bug/
  * html,body {height: auto;}
  * body{overflow-x: visible;}

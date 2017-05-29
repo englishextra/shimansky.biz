@@ -759,7 +759,7 @@ template {
 /*! @import "photoswipe.default-skin.fixed"; */
 
 /**
- * github.com/dimsemenov/PhotoSwipe v4.1.0 images integrated in css using base64
+ * @see {@link https://github.com/dimsemenov/PhotoSwipe v4.1.0 images integrated in css using base64}
  * PhotoSwipe main CSS by Dmitry Semenov | photoswipe.com | MIT license
  * photoswipe.min.css
  */
@@ -1569,7 +1569,7 @@ a.pswp__share--download:hover {
 /*! @import "ui-totop"; */
 
 /**
- * github.com/sksmatt/UItoTop-jQuery-Plugin/
+ * @see {@link https://github.com/sksmatt/UItoTop-jQuery-Plugin/}
  */
 
 .ui-totop {
@@ -2057,7 +2057,7 @@ u,
 
 .panel-menu-more li a:hover {
 	color: inherit;
-	background-color: #F2F2F2;
+	background-color: #E6E6E6;
 }
 
 /* .panel-menu-more li a:focus, */

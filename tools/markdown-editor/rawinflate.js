@@ -2,7 +2,7 @@
  * $Id: rawinflate.js,v 0.2 2009/03/01 18:32:24 dankogai Exp $
  *
  * original:
- * http://www.onicos.com/staff/iz/amuse/javascript/expert/inflate.txt
+ * @see {@link http://www.onicos.com/staff/iz/amuse/javascript/expert/inflate.txt}
  */
 (function(){
 /* Copyright (C) 1999 Masanao Izumo <iz@onicos.co.jp>

@@ -397,6 +397,13 @@ u,
 	transition: opacity 0.4s ease;
 }
 
+.col img.data-src-img,
+.col img[data-src],
+.col iframe.data-src-iframe,
+.col iframe[data-src] {
+	background-color: $LeftNavBarLight;
+}
+
 .col img.data-src-img.is-active,
 .col img[data-src].is-active {
 	opacity: 1;
@@ -459,7 +466,7 @@ u,
 	height: 166px;
 }
 
-.holder-pages-select + canvas {
+.holder-chapters-select + canvas {
 	margin-top: 1.333rem;
 }
 
@@ -550,8 +557,8 @@ u,
  * buttons
  */
 
-.col div + .holder-bottom-nav-btns,
-.holder-bottom-nav-btns:first-child {
+.col div + .holder-bottom-navigation,
+.holder-bottom-navigation:first-child {
 	margin-top: 1.333rem;
 }
 
@@ -701,13 +708,13 @@ u,
  * pages selecto
  */
 
-.holder-pages-select {
+.holder-chapters-select {
 	display: block;
 	width: 100%;
 	text-align: left;
 }
 
-.holder-pages-select .pages-select {
+.holder-chapters-select .chapters-select {
 	display: inline-block;
 	width: 100%;
 	max-width: 18.133rem;
@@ -726,16 +733,16 @@ u,
 	padding: 0 0 0 0.267rem;
 }
 
-.holder-pages-select .pages-select::-ms-expand {
+.holder-chapters-select .chapters-select::-ms-expand {
 	display: none;
 }
 
-.holder-pages-select .pages-select::-ms-value {
+.holder-chapters-select .chapters-select::-ms-value {
     background: none;
 	color: inherit;
 }
 
-.holder-pages-select .pages-select optgroup {
+.holder-chapters-select .chapters-select optgroup {
 	font-style: normal;
 	padding-left: 0.267rem;
 }
@@ -744,10 +751,10 @@ u,
  * fix select border for electron and nw
  */
 
-.holder-pages-select .pages-select,
-.holder-pages-select .pages-select:focus,
-.holder-pages-select .pages-select:hover,
-.holder-pages-select .pages-select:active {
+.holder-chapters-select .chapters-select,
+.holder-chapters-select .chapters-select:focus,
+.holder-chapters-select .chapters-select:hover,
+.holder-chapters-select .chapters-select:active {
 	border: 0.067rem solid #F2F2F2;
 }
 

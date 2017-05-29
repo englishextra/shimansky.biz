@@ -974,7 +974,7 @@ template {
 
 /**
  * some animations from animate.css
- * github.com/daneden/animate.css
+ * @see {@link https://github.com/daneden/animate.css}
  * daneden.github.io/animate.css/
  */
 
@@ -1167,7 +1167,7 @@ img[class*=" english4free-banner-"] {
 /*! @import "ui-totop"; */
 
 /**
- * github.com/sksmatt/UItoTop-jQuery-Plugin/
+ * @see {@link https://github.com/sksmatt/UItoTop-jQuery-Plugin/}
  */
 
 .ui-totop {
@@ -1650,7 +1650,7 @@ u,
 
 .panel-menu-more li a:hover {
 	color: inherit;
-	background-color: #F2F2F2;
+	background-color: #E6E6E6;
 }
 
 /* .panel-menu-more li a:focus, */

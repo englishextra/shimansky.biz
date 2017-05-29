@@ -261,6 +261,13 @@ u,
 	transition: opacity 0.4s ease;
 }
 
+.col img.data-src-img,
+.col img[data-src],
+.col iframe.data-src-iframe,
+.col iframe[data-src] {
+	background-color: $LeftNavBarLight;
+}
+
 .col img.data-src-img.is-active,
 .col img[data-src].is-active {
 	opacity: 1;
@@ -323,7 +330,7 @@ u,
 	height: 166px;
 }
 
-.holder-pages-select + canvas {
+.holder-chapters-select + canvas {
 	margin-top: 1.333rem;
 }
 
@@ -477,52 +484,98 @@ u,
 }
 
 /*!
- * ui-panel-top
- */
-
-.ui-panel-top {
-	width: 100%;
-	height: 3.200rem;
-	background-color: $ButtonBackground;
-}
-
-/*!
  * navigation
  */
 
-.ui-panel-navigation {
-	width: 100%;
-	height: 3.200rem;
-	background-color: $TitleBarAndAppBarDark;
-}
-
-@media (max-width: 768px) {
-	.ui-panel-navigation {
-		display: none;
-	}
-}
-
 .container-navbar {
 	width: 100%;
-	position: absolute;
+	height: 3.200rem;
+	position: relative;
 	/* top: 3.200rem; */
 	top: 0;
 	left: 0;
 	background-color: $TitleBarAndAppBarDark;
-	z-index: 1;
-}
-
-@media (max-width: 768px) {
-	.container-navbar {
-		position: relative;
-		top: 0;
-	}
+	z-index: 2;
 }
 
 .holder-navbar {
 	width: 100%;
-	background-color: $TitleBarAndAppBarDark;
 	margin: 0 auto;
+}
+
+.navbar .navbar-button {
+	display: block;
+	float: left;
+	height: 3.200rem;
+	min-width: 3.200rem;
+	font-size: 0.933rem;
+	line-height: 3.200rem;
+	text-decoration: none;
+	color: #FFFFFF;
+	background-color: inherit;
+	padding: 0 0.933rem;
+}
+
+.navbar-button .navbar-icon {
+	width: 1.333rem;
+	height: 1.333rem;
+	margin-top: 0.933rem;
+}
+
+.navbar-button .navbar-icon.small.inline {
+	width: 0.533rem;
+	height: 0.533rem;
+	margin-top: 1.400rem;
+}
+
+.navbar-button .navbar-icon > * {
+	fill: #FFFFFF;
+}
+
+.navbar-list {
+	visibility: hidden;
+	opacity: 0;
+	width: 18.133rem;
+	max-height: 16.000rem;
+	overflow-y: auto;
+	position: absolute;
+	list-style: none;
+	color: #FFFFFF;
+	background-color: $TitleBarAndAppBarDark;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
+	transition: visibility 0s, opacity .2s ease;
+	padding: 0;
+	margin: 0;
+}
+
+.navbar-list.is-active {
+	visibility: visible;
+	opacity: 1;
+}
+
+.navbar-list li {
+	height: 3.200rem;
+	font-size: 0.933rem;
+	line-height: 3.200rem;
+}
+
+.navbar-list li:hover {
+	background-color: $TitleBarAndAppBarDarkItemHighlight;
+}
+
+.navbar-list li a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 0 0.933rem;
+}
+
+.navbar-list li a:active {
+	color: #191919;
+	background-color: $AccentColor;
 }
 
 /*!
@@ -662,9 +715,8 @@ u,
 	margin: 0 auto;
 }
 
-.ui-panel-contents-select .contents-select {
-	display: block;
-	/* max-width: 18.133rem; */
+.holder-contents-select .contents-select {
+	display: inline-block;
 	width: 100%;
 	height: 3.200rem;
 	font-family: inherit;
@@ -681,13 +733,118 @@ u,
 	outline: none;
 }
 
-.ui-panel-contents-select .contents-select::-ms-expand {
+.holder-contents-select .contents-select::-ms-expand {
 	display: none;
 }
 
-.ui-panel-contents-select .contents-select::-ms-value {
+.holder-contents-select .contents-select::-ms-value {
     background: none;
 	color: $color-hex-body-text;
+}
+
+.holder-contents-select .ui-icon {
+	display: inline-block;
+	width: 0.400em;
+	height: 0.400em;
+	position: absolute;
+	margin-top: 1.433em;
+	margin-left: -1.767em;
+	pointer-events: none;
+}
+
+.holder-contents-select .ui-icon > * {
+	fill: $ButtonText;
+}
+
+/*!
+ * fix select border for electron and nw
+ */
+
+.holder-contents-select .contents-select,
+.holder-contents-select .contents-select:focus,
+.holder-contents-select .contents-select:hover,
+.holder-contents-select .contents-select:active {
+	border: 0.067rem solid $TitleBarAndAppBarLight;
+}
+
+/*!
+ * contents select replacement with list
+ */
+
+.holder-contents-select .contents-list {
+	max-height: 0;
+	position: absolute;
+	list-style: none;
+	font-size: 0.933rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
+	transition: max-height 0.2s linear;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+}
+
+.holder-contents-select .contents-list.is-active {
+	max-height: 16.000rem;
+}
+
+.holder-contents-select .contents-list li {
+	height: 3.200rem;
+	line-height: 3.200rem;
+	background-color: $TitleBarAndAppBarLight;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 0 0.933rem;
+}
+
+.holder-contents-select .contents-list li:hover {
+	background-color: $ButtonBackground;
+	cursor: default;
+}
+
+/* .holder-contents-select .contents-list li:first-child {
+	display: none;
+} */
+
+.holder-contents-select a {
+	display: block;
+	height: 3.200rem;
+	font-size: 0.933rem;
+	line-height: 3.200rem;
+	color: $PlaceholderText;
+	background-color: $TitleBarAndAppBarLight;
+	cursor: default;
+	padding: 0 3.200rem 0 0.933rem;
+}
+
+.holder-contents-select a:focus,
+.holder-contents-select a:hover,
+.holder-contents-select a:active,
+.holder-contents-select a:visited {
+	color: $PlaceholderText;
+	text-decoration: none;
+}
+
+/*!
+ * reset for svg icon
+ */
+
+.holder-contents-select a .ui-icon {
+	display: inline-block;
+	width: 0.429em;
+	height: 0.429em;
+	float: right;
+	position: relative;
+	bottom: -1.500em;
+	right: -1.964em;
+	margin: 0;
+	pointer-events: none;
+}
+
+.holder-contents-select a .ui-icon > * {
+	fill: $ButtonText;
 }
 
 /*!
@@ -707,17 +864,17 @@ u,
 
 .col .display-medium {
 	font-size: 1.266rem;
-	line-height: 2.667rem;
+	line-height: 1.600rem;
 }
 
 .col .display-large {
 	font-size: 1.602rem;
-	line-height: 2.667rem;
+	line-height: 2.133rem;
 }
 
 .col .display-immense {
 	font-size: 2.566rem;
-	line-height: 4.000rem;
+	line-height: 3.200rem;
 }
 
 /*!
@@ -762,8 +919,8 @@ u,
  * buttons
  */
 
-.col div + .holder-bottom-nav-btns,
-.holder-bottom-nav-btns:first-child {
+.col div + .holder-bottom-navigation,
+.holder-bottom-navigation:first-child {
 	margin-top: 1.333rem;
 }
 
@@ -850,13 +1007,13 @@ u,
  * pages selecto
  */
 
-.holder-pages-select {
+.holder-chapters-select {
 	display: block;
 	width: 100%;
 	text-align: left;
 }
 
-.holder-pages-select .pages-select {
+.holder-chapters-select .chapters-select {
 	display: inline-block;
 	width: 100%;
 	height: 2.400rem;
@@ -871,32 +1028,126 @@ u,
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
 	margin: 0;
-	padding: 0 0 0 0.267rem;
+	padding: 0 2.133rem 0 0.267rem;
 }
 
-.holder-pages-select .pages-select::-ms-expand {
+.holder-chapters-select .chapters-select::-ms-expand {
 	display: none;
 }
 
-.holder-pages-select .pages-select::-ms-value {
+.holder-chapters-select .chapters-select::-ms-value {
     background: none;
 	color: $color-hex-body-text;
 }
 
-.holder-pages-select .pages-select optgroup {
+.holder-chapters-select .chapters-select optgroup {
 	font-style: normal;
 	padding-left: 0.267rem;
+}
+
+.holder-chapters-select .ui-icon {
+	display: inline-block;
+	width: 0.400em;
+	height: 0.400em;
+	position: absolute;
+	margin-top: 1.033em;
+	margin-left: -1.367em;
+	pointer-events: none;
+}
+
+.holder-chapters-select .ui-icon > * {
+	fill: $ButtonText;
 }
 
 /*!
  * fix select border for electron and nw
  */
 
-.holder-pages-select .pages-select,
-.holder-pages-select .pages-select:focus,
-.holder-pages-select .pages-select:hover,
-.holder-pages-select .pages-select:active {
+.holder-chapters-select .chapters-select,
+.holder-chapters-select .chapters-select:focus,
+.holder-chapters-select .chapters-select:hover,
+.holder-chapters-select .chapters-select:active {
 	border: 0.067rem solid $LeftNavBarLight;
+}
+
+/*!
+ * pages select replacement with list
+ */
+
+.holder-chapters-select .chapters-list {
+	max-height: 0;
+	position: absolute;
+	list-style: none;
+	font-size: 0.933rem;
+	overflow-x: hidden;
+	overflow-y: auto;
+	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
+	transition: max-height 0.2s linear;
+	padding: 0;
+	margin: 0;
+	z-index: 1;
+}
+
+.holder-chapters-select .chapters-list.is-active {
+	max-height: 12.000rem;
+}
+
+.holder-chapters-select .chapters-list li {
+	height: 2.400rem;
+	line-height: 2.400rem;
+	background-color: $LeftNavBarLight;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	padding: 0 0.533rem;
+}
+
+.holder-chapters-select .chapters-list li:hover {
+	background-color: $TitleBarAndAppBarLight;
+	cursor: default;
+}
+
+.holder-chapters-select .chapters-list li:first-child {
+	display: none;
+}
+
+.holder-chapters-select a {
+	display: block;
+	height: 2.400rem;
+	font-size: 0.933rem;
+	line-height: 2.400rem;
+	color: $PlaceholderText;
+	background-color: $LeftNavBarLight;
+	cursor: default;
+	padding: 0 2.400rem 0 0.533rem;
+}
+
+.holder-chapters-select a:focus,
+.holder-chapters-select a:hover,
+.holder-chapters-select a:active,
+.holder-chapters-select a:visited {
+	color: $PlaceholderText;
+	text-decoration: none;
+}
+
+/*!
+ * reset for svg icon
+ */
+
+.holder-chapters-select a .ui-icon {
+	display: inline-block;
+	width: 0.429em;
+	height: 0.429em;
+	float: right;
+	position: relative;
+	bottom: -1.071em;
+	right: -1.536em;
+	margin: 0;
+	pointer-events: none;
+}
+
+.holder-chapters-select a .ui-icon > * {
+	fill: $ButtonText;
 }
 
 /*!
@@ -991,7 +1242,7 @@ u,
 	border-color: $PlaceholderText;
 	border-style: solid;
 	border-width: 0.067rem;
-	background-color: inherit;
+	background-color: $TitleBarAndAppBarDark;
 	transition: width 0.2s linear;
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
@@ -1031,7 +1282,7 @@ u,
 	font-size: 0;
 	line-height: 0;
 	color: $PlaceholderText;
-	background-color: inherit;
+	background-color: transparent;
 	border: 0.067rem solid transparent;
 	cursor: pointer;
 	padding: 1.133rem;
@@ -1148,7 +1399,7 @@ u,
 	z-index: 1;
 }
 
-.page.is-active-holder-location-qr-code .holder-location-qr-code {
+.holder-location-qr-code.is-active {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1174,7 +1425,7 @@ u,
 	display: block;
 	visibility: hidden;
 	opacity: 0;
-	width: 3.200rem;
+	height: 3.200rem;
 	position: fixed;
 	top: 9.600rem;
 	right: 3.200rem;
@@ -1185,7 +1436,7 @@ u,
 	z-index: 1;
 }
 
-.page.is-active-holder-share-buttons .holder-share-buttons {
+.holder-share-buttons.is-active {
 	visibility: visible;
 	opacity: 1;
 }
@@ -1209,18 +1460,20 @@ u,
 	z-index: 1;
 }
 
-.vk-like {
-	display: inline-block;
-	height: 1.533rem;
-	position: relative;
-	top: 0.800rem;
-	left: 0.800rem;
-	line-height: 0;
-}
-
-.page.is-active-holder-vk-like .holder-vk-like {
+.holder-vk-like.is-active {
 	visibility: visible;
 	opacity: 1;
+}
+
+.vk-like {
+	display: inline-block;
+	height: 24px;
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translate(0, -50%);
+	transform: translate(0, -50%);
+	margin: 0 0 0 0.667rem;
+	line-height: 0;
 }
 
 /*!

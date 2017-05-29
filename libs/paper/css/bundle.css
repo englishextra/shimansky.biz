@@ -618,7 +618,7 @@ template {
 
 /*!
  * typeboost.css v0.1.8
- * github.com/englishextra/typeboost.css
+ * @see {@link https://github.com/englishextra/typeboost.css}
  * set html font to 16px, and body to 1.000rem
  * line height should be the closest multiple of 4
  */
@@ -2074,7 +2074,7 @@ body {
 /*! @import "loading-spinner"; */
 
 /**
- * github.com/lukehaas/css-loaders
+ * @see {@link https://github.com/lukehaas/css-loaders}
  * projects.lukehaas.me/css-loaders/
  * size of a loader dependent on font size
  */
@@ -2215,8 +2215,8 @@ body {
 	right: 0;
 	cursor: zoom-out;
 	background-color: transparent;
-	border: 0.063rem solid rgba(255, 255, 255, 0.5);
-	border-radius: 0.063rem;
+	border: 0;
+	box-shadow: 0.25rem 0.25rem 0.25rem 0 rgba(3, 3, 3, 0.3);
 	opacity: 0;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -2237,6 +2237,95 @@ body {
 	animation-duration: 0.4s;
 	-webkit-animation-fill-mode: both;
 	animation-fill-mode: both;
+}
+
+/*! @import "iframe-lightbox"; */
+
+/*!
+ * modified Simple lightbox effect in pure JS
+ * @see {@link https://github.com/squeral/lightbox}
+ * @see {@link https://github.com/squeral/lightbox/blob/master/lightbox.js}
+ * passes jshint
+ */
+
+.iframe-lightbox,
+.iframe-lightbox .backdrop {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+}
+
+.iframe-lightbox {
+	display: none;
+	position: fixed;
+	opacity: 0;
+	-webkit-transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease;
+	z-index: 2;
+}
+
+.iframe-lightbox .backdrop {
+	position: absolute;
+	background-color: rgba(0, 0, 0, 0.5);
+	cursor: default;
+	z-index: 1;
+}
+
+.iframe-lightbox .content-holder {
+	width: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	margin-right: -50%;
+	z-index: 2;
+}
+
+.iframe-lightbox .content {
+	height: 0;
+	position: relative;
+	/* background-color: #000000; */
+	padding-bottom: 56.25%;
+}
+
+.iframe-lightbox .content > .body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nNDgnIGhlaWdodD0nNDgnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIiBjbGFzcz0idWlsLXJpbmciPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSJub25lIiBjbGFzcz0iYmsiPjwvcmVjdD48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NiIgc3Ryb2tlLWRhc2hhcnJheT0iMTg3Ljg2NzI0MDY4NDY2OTY0IDEwMS4xNTkyODM0NDU1OTEzMSIgc3Ryb2tlPSIjRTZFNkU2IiBvcGFjaXR5PSIxIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjgiPjxhbmltYXRlVHJhbnNmb3JtIGF0dHJpYnV0ZU5hbWU9InRyYW5zZm9ybSIgdHlwZT0icm90YXRlIiB2YWx1ZXM9IjAgNTAgNTA7MTgwIDUwIDUwOzM2MCA1MCA1MDsiIGtleVRpbWVzPSIwOzAuNTsxIiBkdXI9IjFzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIgYmVnaW49IjBzIj48L2FuaW1hdGVUcmFuc2Zvcm0+PC9jaXJjbGU+PC9zdmc+);
+	background-repeat: no-repeat;
+	background-size: 3.000em 3.000em;
+	background-position: center center;
+}
+
+.iframe-lightbox .content > .body.is-loaded {
+	background-image: none;
+}
+
+.iframe-lightbox iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	box-shadow: 0.267rem 0.267rem 0.267rem 0 rgba(3, 3, 3, 0.3);
+	/*!
+	 * in js: iframe onload="this.style.opacity=1;" style="opacity:0;border:none;"
+	 */
+	/* opacity: 0; */
+	-webkit-transition: opacity 0.2s ease;
+	transition: opacity 0.2s ease;
+}
+
+.iframe-lightbox.is-showing {
+	display: block;
+}
+
+.iframe-lightbox.is-opened {
+	opacity: 1;
 }
 
 /*! @import "kamil-autocomplete.fixed"; */
@@ -2279,7 +2368,7 @@ body {
 .kamil-autocomplete li.kamil-active,
 .kamil-autocomplete li:hover {
 	color: inherit;
-	background-color: #F2F2F2;
+	background-color: #E6E6E6;
 }
 
 /* .kamil-autocomplete li:focus, */
@@ -2508,7 +2597,7 @@ body {
 
 /**
  * some animations from animate.css
- * github.com/daneden/animate.css
+ * @see {@link https://github.com/daneden/animate.css}
  * daneden.github.io/animate.css/
  */
 
@@ -2739,7 +2828,7 @@ body {
 
 /**
  * modified Hint.css - v2.2.0 - 2016-03-08
- * http://kushagragour.in/lab/hint/
+ * @see {@link http://kushagragour.in/lab/hint/}
  * Copyright (c) 2016 Kushagra Gour; Licensed
  */
 
@@ -3033,7 +3122,7 @@ img[class*=" contents-"] {
 /*! @import "ui-totop"; */
 
 /**
- * github.com/sksmatt/UItoTop-jQuery-Plugin/
+ * @see {@link https://github.com/sksmatt/UItoTop-jQuery-Plugin/}
  */
 
 .ui-totop {
@@ -3587,7 +3676,7 @@ u,
 
 .panel-menu-more li a:hover {
 	color: inherit;
-	background-color: #F2F2F2;
+	background-color: #E6E6E6;
 }
 
 /* .panel-menu-more li a:focus, */
@@ -3718,7 +3807,7 @@ u,
 /**
  * fixes to typeboost.css
  * modularscale.com
- * github.com/modularscale/modularscale-sass
+ * @see {@link https://github.com/modularscale/modularscale-sass}
  * ----------------
  * $ms-base: 1em;
  * $ms-ratio: 1.5,1.1;
@@ -3817,6 +3906,13 @@ u,
 	transition: opacity 0.4s ease;
 }
 
+.col img.data-src-img,
+.col img[data-src],
+.col iframe.data-src-iframe,
+.col iframe[data-src] {
+	background-color: #F2F2F2;
+}
+
 .col img.data-src-img.is-active,
 .col img[data-src].is-active {
 	opacity: 1;
@@ -3879,7 +3975,7 @@ u,
 	height: 166px;
 }
 
-.holder-pages-select + canvas {
+.holder-chapters-select + canvas {
 	margin-top: 1.500rem;
 }
 
@@ -3983,8 +4079,8 @@ u,
  * buttons
  */
 
-.col div + .holder-bottom-nav-btns,
-.holder-bottom-nav-btns:first-child {
+.col div + .holder-bottom-navigation,
+.holder-bottom-navigation:first-child {
 	margin-top: 1.500rem;
 }
 
@@ -4119,13 +4215,13 @@ u,
  * pages selecto
  */
 
-.holder-pages-select {
+.holder-chapters-select {
 	display: block;
 	width: 100%;
 	text-align: left;
 }
 
-.holder-pages-select .pages-select {
+.holder-chapters-select .chapters-select {
 	display: inline-block;
 	width: 100%;
 	max-width: 17.000rem;
@@ -4146,16 +4242,16 @@ u,
 	padding: 0 0 0 0.250rem;
 }
 
-.holder-pages-select .pages-select::-ms-expand {
+.holder-chapters-select .chapters-select::-ms-expand {
 	display: none;
 }
 
-.holder-pages-select .pages-select::-ms-value {
+.holder-chapters-select .chapters-select::-ms-value {
 	background: none;
 	color: inherit;
 }
 
-.holder-pages-select .pages-select optgroup {
+.holder-chapters-select .chapters-select optgroup {
 	font-style: normal;
 	padding-left: 0.250rem;
 }
@@ -4164,10 +4260,10 @@ u,
  * fix select border for electron and nw
  */
 
-.holder-pages-select .pages-select,
-.holder-pages-select .pages-select:focus,
-.holder-pages-select .pages-select:hover,
-.holder-pages-select .pages-select:active {
+.holder-chapters-select .chapters-select,
+.holder-chapters-select .chapters-select:focus,
+.holder-chapters-select .chapters-select:hover,
+.holder-chapters-select .chapters-select:active {
 	border: 0.063rem solid #F2F2F2;
 }
 
@@ -4445,7 +4541,7 @@ u,
 /*! @import "print"; */
 
 /**
- * gist.github.com/englishextra/cdd503793392281a8a0c
+ * @see {@link https://gist.github.com/englishextra/cdd503793392281a8a0c}
  * jafferhaider.wordpress.com/2007/12/29/fix-for-the-firefoxcss-one-page-printing-bug/
  * html,body {height: auto;}
  * body{overflow-x: visible;}
