@@ -42,7 +42,7 @@
  complete.style.top = pos.yBot + "px";
  document.body.appendChild(complete);
  // If we're at the edge of the screen, then we want the menu to appear on the left of the cursor.
- var winW = window.innerWidth || Math.max(document.body.offsetWidth, document.documentElement.offsetWidth);
+ var winw = globalRoot.innerWidth || Math.max(document.body.offsetWidth, document.documentElement.offsetWidth);
  if(winW - pos.x < sel.clientWidth)
  complete.style.left = (pos.x - sel.clientWidth) + "px";
  // Hack to hide the scrollbar.
