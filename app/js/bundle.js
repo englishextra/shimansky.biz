@@ -315,6 +315,19 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  */
 (function(root){"use strict";var scriptIsLoaded=function(s){for(var b=document.getElementsByTagName("script")||"",a=0;a<b.length;a++)if(b[a].getAttribute("src")==s)return!0;return!1;};root.scriptIsLoaded=scriptIsLoaded;})(globalRoot);
 /*!
+ * Load and execute JS via AJAX
+ * @see {@link https://gist.github.com/englishextra/8dc9fe7b6ff8bdf5f9b483bf772b9e1c}
+ * IE 5.5+, Firefox, Opera, Chrome, Safari XHR object
+ * @see {@link https://gist.github.com/Xeoncross/7663273}
+ * modified callback(x.responseText,x); to callback(eval(x.responseText),x);
+ * @see {@link https://stackoverflow.com/questions/3728798/running-javascript-downloaded-with-xmlhttprequest}
+ * @param {String} url path string
+ * @param {Object} [callback] callback function
+ * @param {Object} [onerror] on error callback function
+ * ajaxLoadTriggerJS(url,callback,onerror)
+ */
+(function(root){"use strict";var ajaxLoadTriggerJS=function(url,callback,onerror){var cb=function(string){return callback&&"function"===typeof callback&&callback(string);},fn=function(string){try{var Fn=Function;new Fn(""+string).call(root);}catch(err){throw new Error("Error evaluating file "+url,err);}};if(root.Promise&&root.fetch&&!("undefined"!==typeof root&&root.process&&"renderer"===root.process.type)){fetch(url).then(function(response){if(!response.ok){if(onerror&&"function"===typeof onerror){onerror();}else{throw new Error(response.statusText);}}return response;}).then(function(response){return response.text();}).then(function(text){fn(text);cb(text);}).catch(function(err){console.log("Error fetch-ing file "+url,err);});}else{var x=root.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");x.overrideMimeType("application/javascript;charset=utf-8");x.open("GET",url,!0);x.withCredentials=!1;x.onreadystatechange=function(){if(x.status=="404"){console.log("Error XMLHttpRequest-ing file "+url,x.status);return onerror&&"function"===typeof onerror&&onerror();}else if(x.readyState==4&&x.status==200&&x.responseText){fn(x.responseText);cb(x.responseText);}};x.send(null);}};root.ajaxLoadTriggerJS=ajaxLoadTriggerJS;})(globalRoot);
+/*!
  * Load .json file, but don't JSON.parse it
  * modified JSON with JS.md
  * @see {@link https://gist.github.com/thiagodebastos/08ea551b97892d585f17}
@@ -683,7 +696,7 @@ var handleExternalLink = function (url, ev) {
 	ev.stopPropagation();
 	ev.preventDefault();
 	var logicHandleExternalLink = openDeviceBrowser.bind(null, url),
-	debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 500);
+	debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
 	debounceLogicHandleExternalLink();
 },
 manageExternalLinks = function (ctx) {
@@ -846,7 +859,7 @@ manageImgLightboxLinks = function (ctx) {
 				LoadingSpinner.hide();
 			}
 		},
-		debounceLogicHandleImgLightboxLink = debounce(logicHandleImgLightboxLink, 500);
+		debounceLogicHandleImgLightboxLink = debounce(logicHandleImgLightboxLink, 200);
 		debounceLogicHandleImgLightboxLink();
 	},
 	arrangeImgLightboxLink = function (e) {
@@ -1240,7 +1253,7 @@ var manageDisqusButton = function (ctx) {
 					renderDisqusThread();
 				}
 			},
-			debounceLogicHandleDisqusButton = debounce(logicHandleDisqusButton, 500);
+			debounceLogicHandleDisqusButton = debounce(logicHandleDisqusButton, 200);
 			debounceLogicHandleDisqusButton();
 		};
 		if (disqusThread && btn) {
@@ -1431,7 +1444,7 @@ var manageSearchInput = function () {
 		var logicHandleSearchInputValue = function () {
 			_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
 		},
-		debounceLogicHandleSearchInputValue = debounce(logicHandleSearchInputValue, 500);
+		debounceLogicHandleSearchInputValue = debounce(logicHandleSearchInputValue, 200);
 		debounceLogicHandleSearchInputValue();
 	};
 	if (searchInput) {
@@ -1552,7 +1565,7 @@ var initKamilAutocomplete = function (jsonObj) {
 						itemsLength += 1;
 					}
 				},
-				debounceLogicReplaceTypo = debounce(logicReplaceTypo, 500);
+				debounceLogicReplaceTypo = debounce(logicReplaceTypo, 200);
 				debounceLogicReplaceTypo();
 				/*!
 				 * truncate text
@@ -1832,7 +1845,7 @@ var manageLocationQrCodeImage = function () {
 					handleOtherSocialButtons(holder);
 					generateLocationQrCodeImg();
 				},
-				debounceLogicHandleLocationQrCodeButton = debounce(logicHandleLocationQrCodeButton, 500);
+				debounceLogicHandleLocationQrCodeButton = debounce(logicHandleLocationQrCodeButton, 200);
 				debounceLogicHandleLocationQrCodeButton();
 			};
 			btn[aEL]("click", handleLocationQrCodeButton);
@@ -1874,7 +1887,7 @@ var manageShareButton = function () {
 						});
 					}
 				},
-				debounceLogicHandleShareButton = debounce(logicHandleShareButton, 500);
+				debounceLogicHandleShareButton = debounce(logicHandleShareButton, 200);
 				debounceLogicHandleShareButton();
 			};
 			btn[aEL]("click", handleShareButton);
@@ -1926,7 +1939,7 @@ var manageVKLikeButton = function () {
 						});
 					}
 				},
-				debounceLogicHandleVKLikeButton = debounce(logicHandleVKLikeButton, 500);
+				debounceLogicHandleVKLikeButton = debounce(logicHandleVKLikeButton, 200);
 				debounceLogicHandleVKLikeButton();
 			};
 			btn[aEL]("click", handleVKLikeButton);
@@ -2381,7 +2394,7 @@ document.ready().then(processPoutes);
  * bind functions only for inserted DOM
  * @param {String} ctx HTML Element class or id string
  */
-var observeMutations = function (ctx) {
+/* var observeMutations = function (ctx) {
 	"use strict";
 	ctx = ctx || "";
 	if (ctx) {
@@ -2395,9 +2408,9 @@ var observeMutations = function (ctx) {
 					mo.disconnect();
 				}
 			};
-			/* for (var i = 0, l = e.length; i < l; i += 1) {
+			for (var i = 0, l = e.length; i < l; i += 1) {
 				triggerOnMutation(e[i]);
-			} */
+			}
 			forEach(e, triggerOnMutation);
 		},
 		mo = new MutationObserver(getMutations);
@@ -2408,7 +2421,7 @@ var observeMutations = function (ctx) {
 			characterData: !1
 		});
 	}
-};
+}; */
 /*!
  * apply changes to inserted DOM
  * because replace child is used in the first place
@@ -2417,7 +2430,7 @@ var observeMutations = function (ctx) {
  * the parent node should be observed, not the target
  * node for the insertion
  */
-var updateInsertedDom = function () {
+/* var updateInsertedDom = function () {
 	"use strict";
 	var w = globalRoot,
 	d = document,
@@ -2426,11 +2439,11 @@ var updateInsertedDom = function () {
 	ctx = d[gEBI]("app-content")[pN] || "",
 	locationHash = w.location.hash || "";
 	if (ctx && locationHash) {
-		/* console.log("triggered function: updateInsertedDom"); */
+		console.log("triggered function: updateInsertedDom");
 		observeMutations(ctx);
 	}
 };
-/* globalRoot.addEventListener("hashchange", updateInsertedDom); */
+globalRoot.addEventListener("hashchange", updateInsertedDom); */
 /*!
  * init ui-totop
  */
@@ -2497,6 +2510,18 @@ var initUiTotop = function () {
 	}
 };
 document.ready().then(initUiTotop);
+/*!
+ * init manUP.js
+ */
+var initManUp = function () {
+	/* console.log("triggered function: initManUp"); */
+},
+loadInitManUp = function () {
+	if ("undefined" !== typeof getHTTP && getHTTP()) {
+		ajaxLoadTriggerJS("/cdn/ManUp.js/0.7/js/manup.fixed.min.js", initManUp);
+	}
+};
+document.ready().then(loadInitManUp);
 /*!
  * show page, finish ToProgress
  */
