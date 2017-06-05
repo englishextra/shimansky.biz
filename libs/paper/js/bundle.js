@@ -232,6 +232,31 @@ if (document.title) {
  */
 (function(root){var Timers=function(ids){this.ids=ids||[];};Timers.prototype.timeout=function(fn,ms){var id=setTimeout(fn,ms);this.ids.push(id);return id;};Timers.prototype.interval=function(fn,ms){var id=setInterval(fn,ms);this.ids.push(id);return id;};Timers.prototype.clear=function(){this.ids.forEach(clearTimeout);this.ids=[];};root.Timers=Timers;})(globalRoot);
 /*!
+ * modified Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered. The function will be called after it stops being called for
+ * N milliseconds. If `immediate` is passed, trigger the function on the
+ * leading edge, instead of the trailing. The function also has a property 'clear'
+ * that is a function which will clear the timer to prevent previously scheduled executions.
+ * @source underscore.js
+ * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
+ * @param {Function} function to wrap
+ * @param {Number} timeout in ms (`100`)
+ * @param {Boolean} whether to execute at the beginning (`false`)
+ * @api public
+ * @see {@link https://github.com/component/debounce/blob/master/index.js}
+ * passes jshint
+ */
+(function(root,undefined){var debounce=function(func,wait,immediate){var timeout,args,context,timestamp,result;if(undefined===wait||null===wait)wait=100;function later(){var last=Date.now()-timestamp;if(last<wait&&last>=0){timeout=setTimeout(later,wait-last);}else{timeout=null;if(!immediate){result=func.apply(context,args);context=args=null;}}}var debounced=function(){context=this;args=arguments;timestamp=Date.now();var callNow=immediate&&!timeout;if(!timeout)timeout=setTimeout(later,wait);if(callNow){result=func.apply(context,args);context=args=null;}return result;};debounced.clear=function(){if(timeout){clearTimeout(timeout);timeout=null;}};debounced.flush=function(){if(timeout){result=func.apply(context,args);context=args=null;clearTimeout(timeout);timeout=null;}};return debounced;};root.debounce=debounce;})(globalRoot);
+/*!
+ * modified Returns a new function that, when invoked, invokes `func` at most once per `wait` milliseconds.
+ * @param {Function} func Function to wrap.
+ * @param {Number} wait Number of milliseconds that must elapse between `func` invocations.
+ * @return {Function} A new function that wraps the `func` function passed in.
+ * @see {@link https://github.com/component/throttle/blob/master/index.js}
+ * passes jshint
+ */
+(function(root,undefined){var throttle=function(func,wait){var ctx,args,rtn,timeoutID;var last=0;return function throttled(){ctx=this;args=arguments;var delta=new Date()-last;if(!timeoutID)if(delta>=wait)call();else timeoutID=setTimeout(call,wait-delta);return rtn;};function call(){timeoutID=0;last=+new Date();rtn=func.apply(ctx,args);ctx=null;args=null;}};root.throttle=throttle;})(globalRoot);
+/*!
  * A simple promise-compatible "document ready" event handler with a few extra treats.
  * With browserify/webpack:
  * const ready = require('document-ready-promise')
@@ -376,7 +401,7 @@ var setStyleVisibilityHidden=function(a){return function(){if(a){a.style.visibil
  * @see {@link https://gist.github.com/englishextra/b5aaef8b555a3ba84c68a6e251db149d}
  * @see {@link https://jsfiddle.net/englishextra/z19tznau/}
  * @param {String} a text string
- * @param {Int} [full] if true, returns with leading hash/number sign
+ * @param {Int} [full] if true, checks with leading hash/number sign
  * isValidId(a,full)
  */
 (function(root){"use strict";var isValidId=function(a,full){return full?/^\#[A-Za-z][-A-Za-z0-9_:.]*$/.test(a)?!0:!1:/^[A-Za-z][-A-Za-z0-9_:.]*$/.test(a)?!0:!1;};root.isValidId=isValidId;})(globalRoot);
@@ -492,7 +517,7 @@ var handleExternalLink = function (p, ev) {
 },
 manageExternalLinks = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	aEL = "addEventListener",
 	cls = "a",
@@ -503,6 +528,7 @@ manageExternalLinks = function (ctx) {
 			e.title = "" + (parseLink(p).hostname || "") + " откроется в новой вкладке";
 			if ("undefined" !== typeof getHTTP && getHTTP()) {
 				e.target = "_blank";
+				e.rel = "noopener";
 			} else {
 				e[aEL]("click", handleExternalLink.bind(null, p));
 			}
@@ -525,7 +551,7 @@ manageExternalLinks = function (ctx) {
 		k();
 	}
 };
-document.ready().then(manageExternalLinks.bind(null, ""));
+document.ready().then(manageExternalLinks);
 /*!
  * loading spinner
  * @requires Timers
@@ -687,7 +713,7 @@ document.ready().then(initNotifier42WriteComment);
  */
 var initTablesort = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	cls = "table.sort",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
@@ -725,17 +751,18 @@ loadInitTablesort = function () {
 	"use strict";
 	var js = "../../cdn/tablesort/4.0.1/js/tablesort.fixed.min.js";
 	if (!scriptIsLoaded(js)) {
-		loadJS(js, initTablesort.bind(null, ""));
+		loadJS(js, initTablesort);
 	}
 };
 document.ready().then(loadInitTablesort);
 /*!
  * manage data lightbox img links
  */
-var handleImgLightboxLink = function (_this, ev) {
+var handleImgLightboxLink = function (ev) {
 	"use strict";
 	ev.stopPropagation();
 	ev.preventDefault();
+	var _this = this;
 	var w = globalRoot,
 	ilc = "img-lightbox-container",
 	c = BALA.one("." + ilc) || "",
@@ -833,7 +860,7 @@ handleImgLightboxWindow = function (ev) {
 },
 manageImgLightboxLinks = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	b = BALA.one("body") || "",
 	cls = ".img-lightbox-link",
@@ -859,7 +886,7 @@ manageImgLightboxLinks = function (ctx) {
 			if (parseLink(p).isAbsolute && !parseLink(p).hasHTTP) {
 				e.setAttribute("href", p.replace(/^/, getHTTP(!0) + ":"));
 			}
-			e[aEL]("click", handleImgLightboxLink.bind(null, e));
+			e[aEL]("click", handleImgLightboxLink);
 		}
 	};
 	if (a) {
@@ -876,85 +903,89 @@ manageImgLightboxLinks = function (ctx) {
 		}
 	}
 };
-document.ready().then(manageImgLightboxLinks.bind(null, ""));
+document.ready().then(manageImgLightboxLinks);
 /*!
  * replace img src with data-src
  * @param {Object} [ctx] context HTML Element
  */
-var manageDataSrcImages = function (ctx) {
+var handleDataSrcImages = function () {
 	"use strict";
-	ctx = ctx || "";
-	var w = globalRoot,
-	cls = "img[data-src]",
-	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
-	is_active = "is-active",
+	var d = document,
+	gEBCN = "getElementsByClassName",
 	cL = "classList",
 	ds = "dataset",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
-	k = function (e) {
-		var _src = e[ds].src || "";
-		if (_src) {
-			if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
-				e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
-				_src = e[ds].src;
-			}
-			if (!e[cL].contains(is_active)) {
-				if (w.Promise) {
-					imagePromise(_src).then(function (r) {
-						e.src = _src;
-						/* console.log("manageDataSrcImages => imagePromise: loaded image:", r); */
-					}).catch (function (err) {
-						/* console.log("manageDataSrcImages => imagePromise: cannot load image:", err); */
-					});
-				} else {
-					e.src = _src;
+	imgClass = "data-src-img",
+	img = d[gEBCN](imgClass) || "",
+	isActiveClass = "is-active",
+	isBindedClass = "is-binded",
+	rerenderDataSrcImage = function (e) {
+		if (!e[cL].contains(isBindedClass)) {
+			var _src = e[ds].src || "";
+			if (_src) {
+				if (parseLink(_src).isAbsolute && !parseLink(_src).hasHTTP) {
+					e[ds].src = _src.replace(/^/, getHTTP(!0) + ":");
+					_src = e[ds].src;
 				}
-				e[cL].add(is_active);
+				imagePromise(_src).then(function (r) {
+					e.src = _src;
+					/* console.log("manageDataSrcImages => imagePromise: loaded image:", r); */
+				}).catch (function (err) {
+					/* console.log("manageDataSrcImages => imagePromise: cannot load image:", err); */
+				});
+				/* e.src = _src; */
+				e[cL].add(isActiveClass);
+				e[cL].add(isBindedClass);
 			}
 		}
 	},
-	g = function (e) {
+	arrangeDataSrcImage = function (e) {
 		/*!
 		 * true if elem is in same y-axis as the viewport or within 100px of it
 		 * @see {@link https://github.com/ryanve/verge}
 		 */
-		if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
-			k(e);
+		if (verge.inY(e, 100) /*  && 0 !== e.offsetHeight */) {
+			rerenderDataSrcImage(e);
 		}
+	},
+	rerenderDataSrcImages = function () {
+		for (var i = 0, l = img.length; i < l; i += 1) {
+			arrangeDataSrcImage(img[i]);
+		}
+		/* forEach(img, arrangeDataSrcImage); */
 	};
-	if (a) {
+	if (img) {
 		/* console.log("triggered function: manageDataSrcImages"); */
-		a = ctx ? BALA(cls, ctx) || "" : BALA(cls) || "";
-		var h_w = function () {
-			if (w._) {
-				_.each(a, g);
-			} else if (w.forEach) {
-				forEach(a, g, !1);
-			} else {
-				for (var i = 0, l = a.length; i < l; i += 1) {
-					g(a[i]);
-				}
-			}
-		};
-		h_w();
-		w[aEL]("scroll", h_w);
-		w[aEL]("resize", h_w);
-		w[aEL]("hashchange", function h_r() {
-			w[rEL]("scroll", h_w);
-			w[rEL]("resize", h_w);
-			w[rEL]("hashchange", h_r);
-		});
+		rerenderDataSrcImages();
 	}
+},
+handleDataSrcImagesWindow = function () {
+	var throttleHandleDataSrcImages = throttle(handleDataSrcImages, 100);
+	throttleHandleDataSrcImages();
+},
+manageDataSrcImages = function () {
+	"use strict";
+	var w = globalRoot,
+	aEL = "addEventListener",
+	rEL = "removeEventListener";
+	w[rEL]("scroll", handleDataSrcImagesWindow);
+	w[rEL]("resize", handleDataSrcImagesWindow);
+	w[aEL]("scroll", handleDataSrcImagesWindow);
+	w[aEL]("resize", handleDataSrcImagesWindow);
+	var timers = new Timers();
+	timers.timeout(function () {
+		timers.clear();
+		timers = null;
+		handleDataSrcImages();
+	}, 100);
 };
-document.ready().then(manageDataSrcImages.bind(null, ""));
+document.ready().then(manageDataSrcImages);
 /*!
  * append media-iframe
  * @param {Object} [ctx] context HTML Element
  */
 var manageDataSrcIframes = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	cls = "iframe[data-src]",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
@@ -1017,14 +1048,14 @@ var manageDataSrcIframes = function (ctx) {
 		});
 	}
 };
-document.ready().then(manageDataSrcIframes.bind(null, ""));
+document.ready().then(manageDataSrcIframes);
 /*!
  * replace iframe src with data-src
  * @param {Object} [ctx] context HTML Element
  */
 var manageIframeLightboxLinks = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var d = document,
 	gEBCN = "getElementsByClassName",
 	cL = "classList",
@@ -1053,33 +1084,36 @@ document.ready().then(manageIframeLightboxLinks);
  * add smooth scroll or redirection to static select options
  * @param {Object} [ctx] context HTML Element
  */
-var handleStaticSelect = function (_this) {
+var handleChaptersSelect = function () {
 	"use strict";
-	var h = _this.options[_this.selectedIndex].value || "",
-	zh = h ? (isValidId(h, !0) ? BALA.one(h) : "") : "";
-	if (h) {
-		if (zh) {
-			scrollToElement(zh);
+	var _this = this;
+	var d = document,
+	gEBI = "getElementById",
+	_hash = _this.options[_this.selectedIndex].value || "",
+	tragetObject = _hash ? (isValidId(_hash, true) ? d[gEBI](_hash.replace(/^#/,"")) || "" : "") : "";
+	if (_hash) {
+		if (tragetObject) {
+			scrollToElement(tragetObject);
 		} else {
-			changeLocation(h);
+			changeLocation(_hash);
 		}
 	}
 },
-manageStaticSelect = function (ctx) {
+manageChaptersSelect = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var cls = "#chapters-select",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
 	aEL = "addEventListener",
 	k = function () {
-		a[aEL]("change", handleStaticSelect.bind(null, a));
+		a[aEL]("change", handleChaptersSelect);
 	};
 	if (a) {
-		/* console.log("triggered function: manageStaticSelect"); */
+		/* console.log("triggered function: manageChaptersSelect"); */
 		k();
 	}
 };
-document.ready().then(manageStaticSelect.bind(null, ""));
+document.ready().then(manageChaptersSelect);
 /*!
  * manage search input
  */
@@ -1087,13 +1121,13 @@ var manageSearchInput = function () {
 	"use strict";
 	var a = BALA.one("#text") || "",
 	aEL = "addEventListener",
-	g = function (_this) {
+	g = function () {
+		var _this = this;
 		_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
 	},
 	k = function (e) {
 		e.focus();
-		e[aEL]("input", g.bind(null, e));
-		/* e.oninput = g.bind(null, e); */
+		e[aEL]("input", g);
 	};
 	if (a) {
 		/* console.log("triggered function: manageSearchInput"); */
@@ -1105,8 +1139,9 @@ document.ready().then(manageSearchInput);
  * add click event on hidden-layer show btn
  * @param {Object} [ctx] context HTML Element
  */
-var handleExpandingLayers = function (_this) {
+var handleExpandingLayers = function () {
 	"use strict";
+	var _this = this;
 	var cL = "classList",
 	pN = "parentNode",
 	is_active = "is-active",
@@ -1119,13 +1154,13 @@ var handleExpandingLayers = function (_this) {
 },
 manageExpandingLayers = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	cls = ".btn-expand-hidden-layer",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
 	aEL = "addEventListener",
 	k = function (e) {
-		e[aEL]("click", handleExpandingLayers.bind(null, e));
+		e[aEL]("click", handleExpandingLayers);
 	},
 	q = function () {
 		a = ctx ? BALA(cls, ctx) || "" : BALA(cls) || "";
@@ -1144,7 +1179,7 @@ manageExpandingLayers = function (ctx) {
 		q();
 	}
 };
-document.ready().then(manageExpandingLayers.bind(null, ""));
+document.ready().then(manageExpandingLayers);
 /*!
  * init qr-code
  * @see {@link https://stackoverflow.com/questions/12777622/how-to-use-enquire-js}
@@ -1385,7 +1420,6 @@ var addAppUpdatesLink = function () {
 			a.href = "javascript:void(0);";
 			/* jshint +W107 */
 			a[aEL]("click", openDeviceBrowser.bind(null, p));
-			/* a.onclick = openDeviceBrowser.bind(null, p); */
 		}
 		crel(li, crel(a, "" + t));
 		if (panel.hasChildNodes()) {
@@ -1470,7 +1504,8 @@ var initUiTotop = function () {
 	t = "Наверх",
 	cL = "classList",
 	aEL = "addEventListener",
-	k = function (_this) {
+	k = function () {
+		var _this = this;
 		var a = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
 		c = _this.innerHeight || h.clientHeight || b.clientHeight || "",
 		e = BALA.one("." + u) || "";
@@ -1497,7 +1532,7 @@ var initUiTotop = function () {
 		a[cL].add(u);
 		a[aEL]("click", h_a);
 		crel(b, crel(a));
-		w[aEL]("scroll", k.bind(null, w));
+		w[aEL]("scroll", k);
 	};
 	if (b) {
 		/* console.log("triggered function: initUiTotop"); */

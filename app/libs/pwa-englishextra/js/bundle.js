@@ -220,7 +220,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * @see {@link https://gist.github.com/englishextra/b5aaef8b555a3ba84c68a6e251db149d}
  * @see {@link https://jsfiddle.net/englishextra/z19tznau/}
  * @param {String} a text string
- * @param {Int} [full] if true, returns with leading hash/number sign
+ * @param {Int} [full] if true, checks with leading hash/number sign
  * isValidId(a,full)
  */
 (function(root){"use strict";var isValidId=function(a,full){return full?/^\#[A-Za-z][-A-Za-z0-9_:.]*$/.test(a)?!0:!1:/^[A-Za-z][-A-Za-z0-9_:.]*$/.test(a)?!0:!1;};root.isValidId=isValidId;})(globalRoot);
@@ -315,19 +315,6 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  */
 (function(root){"use strict";var scriptIsLoaded=function(s){for(var b=document.getElementsByTagName("script")||"",a=0;a<b.length;a++)if(b[a].getAttribute("src")==s)return!0;return!1;};root.scriptIsLoaded=scriptIsLoaded;})(globalRoot);
 /*!
- * Load and execute JS via AJAX
- * @see {@link https://gist.github.com/englishextra/8dc9fe7b6ff8bdf5f9b483bf772b9e1c}
- * IE 5.5+, Firefox, Opera, Chrome, Safari XHR object
- * @see {@link https://gist.github.com/Xeoncross/7663273}
- * modified callback(x.responseText,x); to callback(eval(x.responseText),x);
- * @see {@link https://stackoverflow.com/questions/3728798/running-javascript-downloaded-with-xmlhttprequest}
- * @param {String} url path string
- * @param {Object} [callback] callback function
- * @param {Object} [onerror] on error callback function
- * loadTriggerJS(url,callback,onerror)
- */
-(function(root){"use strict";var loadTriggerJS=function(url,callback,onerror){var cb=function(string){return callback&&"function"===typeof callback&&callback(string);},fn=function(string){try{var Fn=Function;new Fn(""+string).call(root);}catch(err){throw new Error("Error evaluating file "+url,err);}};if(root.Promise&&root.fetch&&!root.chrome&&!("undefined"!==typeof root&&root.process&&"renderer"===root.process.type)){fetch(url).then(function(response){if(!response.ok){if(onerror&&"function"===typeof onerror){onerror();}else{throw new Error(response.statusText);}}return response;}).then(function(response){return response.text();}).then(function(text){fn(text);cb(text);}).catch(function(err){console.log("Error fetch-ing file "+url,err);});}else{var x=root.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");x.overrideMimeType("application/javascript;charset=utf-8");x.open("GET",url,!0);x.withCredentials=!1;x.onreadystatechange=function(){if(x.status=="404"||x.status===0){console.log("Error XMLHttpRequest-ing file "+url,x.status);return onerror&&"function"===typeof onerror&&onerror();}else if(x.readyState==4&&x.status==200&&x.responseText){fn(x.responseText);cb(x.responseText);}};x.send(null);}};root.loadTriggerJS=loadTriggerJS;})(globalRoot);
-/*!
  * Load .json file, but don't JSON.parse it
  * modified JSON with JS.md
  * @see {@link https://gist.github.com/thiagodebastos/08ea551b97892d585f17}
@@ -390,7 +377,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * detectmobilebrowsers.com
  * @see {@link https://github.com/heikojansen/plack-middleware-detectmobilebrowsers}
  */
-(function(root,html,mobile,desktop,opera){"use strict";var selector=(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i).test(opera)||(/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i).test(opera.substr(0,4))?mobile:desktop;if(html){html.classList.add(selector);}root.earlyDeviceType=selector||"";}(globalRoot,document.documentElement||"","mobile","desktop",navigator.userAgent||navigator.vendor||root.opera));
+(function(root,html,mobile,desktop,opera){"use strict";var selector=(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i).test(opera)||(/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i).test(opera.substr(0,4))?mobile:desktop;if(html){html.classList.add(selector);}root.earlyDeviceType=selector||"";}(globalRoot,document.documentElement||"","mobile","desktop",navigator.userAgent||navigator.vendor||globalRoot.opera));
 /*!
  * add svg support class
  */
@@ -501,9 +488,7 @@ var insertFromTemplate = function (parsedJson, templateId, targetId, callback, u
 			target.innerHTML = targetRendered;
 			cb();
 		} else {
-			insertTextAsFragment(targetRendered, target, function () {
-				cb();
-			});
+			insertTextAsFragment(targetRendered, target, cb);
 		}
 	}
 };
@@ -639,7 +624,7 @@ handleDataSrcIframesWindow = function () {
 },
 manageDataSrcIframes = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	aEL = "addEventListener",
 	rEL = "removeEventListener";
@@ -661,7 +646,7 @@ document.ready().then(manageDataSrcIframes);
  */
 var manageIframeLightboxLinks = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var d = document,
 	gEBCN = "getElementsByClassName",
 	cL = "classList",
@@ -701,7 +686,7 @@ var handleExternalLink = function (url, ev) {
 },
 manageExternalLinks = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var d = document,
 	gEBTN = "getElementsByTagName",
 	linkTag = "a",
@@ -717,6 +702,7 @@ manageExternalLinks = function (ctx) {
 				e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
 					e.target = "_blank";
+					e.rel = "noopener";
 				} else {
 					e[aEL]("click", handleExternalLink.bind(null, url));
 				}
@@ -801,11 +787,10 @@ handleImgLightboxWindow = function (ev) {
 },
 manageImgLightboxLinks = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	d = document,
 	b = d.body || "",
-	qS = "querySelector",
 	gEBCN = "getElementsByClassName",
 	gEBTN = "getElementsByTagName",
 	cL = "classList",
@@ -816,7 +801,7 @@ manageImgLightboxLinks = function (ctx) {
 	linkClass = "img-lightbox-link",
 	link = ctx ? ctx[gEBCN](linkClass) || "" : d[gEBCN](linkClass) || "",
 	containerClass = "img-lightbox-container",
-	container = d[qS]("." + containerClass) || "",
+	container = d[gEBCN](containerClass)[0] || "",
 	img = container ? container[gEBTN]("img")[0] || "" : "",
 	an = "animated",
 	an1 = "fadeIn",
@@ -832,9 +817,10 @@ manageImgLightboxLinks = function (ctx) {
 		container[cL].add(containerClass);
 		appendFragment(container, b);
 	}
-	var handleImgLightboxLink = function (_this, ev) {
+	var handleImgLightboxLink = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
+		var _this = this;
 		var logicHandleImgLightboxLink = function () {
 			var _href = _this[gA]("href") || "";
 			if (container && img && _href) {
@@ -869,7 +855,7 @@ manageImgLightboxLinks = function (ctx) {
 				if (parseLink(_href).isAbsolute && !parseLink(_href).hasHTTP) {
 					e.setAttribute("href", _href.replace(/^/, getHTTP(!0) + ":"));
 				}
-				e[aEL]("click", handleImgLightboxLink.bind(null, e));
+				e[aEL]("click", handleImgLightboxLink);
 				e[cL].add(isBindedClass);
 			}
 		}
@@ -933,9 +919,9 @@ var manageChaptersSelect = function () {
 	"use strict";
 	var w = globalRoot,
 	d = document,
-	qS = "querySelector",
 	gEBI = "getElementById",
 	gEBTN = "getElementsByTagName",
+	gEBCN = "getElementsByClassName",
 	cL = "classList",
 	pN = "parentNode",
 	cDF = "createDocumentFragment",
@@ -946,28 +932,29 @@ var manageChaptersSelect = function () {
 	aC = "appendChild",
 	aEL = "addEventListener",
 	chaptersSelect = d[gEBI]("chapters-select") || "",
-	holderChaptersSelect = d[qS](".holder-chapters-select") || "",
-	uiPanelContentsSelect = d[qS](".ui-panel-contents-select") || "",
+	holderChaptersSelect = d[gEBCN]("holder-chapters-select")[0] || "",
+	uiPanelContentsSelect = d[gEBCN]("ui-panel-contents-select")[0] || "",
 	chaptersListClass = "chapters-list",
 	isBindedClass = "is-binded",
 	isFixedClass = "is-fixed",
 	isActiveClass = "is-active",
 	isDropdownClass = "is-dropdown",
 	arrangePagesSelect = function () {
-		var handleChaptersSelect = function (selectObj) {
-			var _hash = selectObj.options[selectObj.selectedIndex].value || "",
-			_id = _hash ? (isValidId(_hash, !0) ? d[qS](_hash) : "") : "",
+		var handleChaptersSelect = function () {
+			var _this = this;
+			var _hash = _this.options[_this.selectedIndex].value || "",
+			tragetObject = _hash ? (isValidId(_hash, true) ? d[gEBI](_hash.replace(/^#/,"")) || "" : "") : "",
 			uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
 			if (_hash) {
-				if (_id) {
-					scroll2Top(findPos(d[qS](_hash)).top - uiPanelContentsSelectHeight, 10000);
+				if (tragetObject) {
+					scroll2Top(findPos(tragetObject).top - uiPanelContentsSelectHeight, 10000);
 				} else {
 					w.location.hash = _hash;
 				}
 			}
 		};
 		if (!chaptersSelect[cL].contains(isBindedClass)) {
-			chaptersSelect[aEL]("change", handleChaptersSelect.bind(null, chaptersSelect));
+			chaptersSelect[aEL]("change", handleChaptersSelect);
 			chaptersSelect[cL].add(isBindedClass);
 		}
 	},
@@ -989,13 +976,12 @@ var manageChaptersSelect = function () {
 		/* forEach(chaptersSelectOptions, rerenderOption); */
 	},
 	rerenderChaptersList = function () {
-		var handleChaptersListItem = function (listObj, hashOrUrl) {
-			var _hash = hashOrUrl || "",
-			_id = _hash ? (isValidId(_hash, !0) ? d[qS](_hash) : "") : "",
+		var handleChaptersListItem = function (listObj, _hash) {
+			var tragetObject = _hash ? (isValidId(_hash, true) ? d[gEBI](_hash.replace(/^#/,"")) || "" : "") : "",
 			uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
 			if (_hash) {
-				if (_id) {
-					scroll2Top(findPos(d[qS](_hash)).top - uiPanelContentsSelectHeight, 10000);
+				if (tragetObject) {
+					scroll2Top(findPos(tragetObject).top - uiPanelContentsSelectHeight, 10000);
 				} else {
 					w.location.hash = _hash;
 				}
@@ -1063,7 +1049,7 @@ var manageChaptersSelect = function () {
  */
 var manageExpandingLayers = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var d = document,
 	gEBCN = "getElementsByClassName",
 	aEL = "addEventListener",
@@ -1074,6 +1060,7 @@ var manageExpandingLayers = function (ctx) {
 	isBindedClass = "is-binded",
 	isActiveClass = "is-active",
 	handleExpandingLayers = function (_this) {
+		_this = _this ? _this.target || "" : "";
 		var s = _this[pN] ? _this[pN].nextElementSibling : "";
 		if (s) {
 			_this[cL].toggle(isActiveClass);
@@ -1083,7 +1070,7 @@ var manageExpandingLayers = function (ctx) {
 	},
 	arrangeExpandingLayers = function (e) {
 		if (!e[cL].contains(isBindedClass)) {
-			e[aEL]("click", handleExpandingLayers.bind(null, e));
+			e[aEL]("click", handleExpandingLayers);
 			e[cL].add(isBindedClass);
 		}
 	},
@@ -1109,7 +1096,7 @@ var msnry,
 pckry,
 initMasonry = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	d = document,
 	gEBCN = "getElementsByClassName",
@@ -1193,7 +1180,7 @@ initMasonry = function (ctx) {
  */
 var manageDisqusButton = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	var w = globalRoot,
 	d = document,
 	gEBI = "getElementById",
@@ -1440,7 +1427,8 @@ var manageSearchInput = function () {
 	gEBI = "getElementById",
 	aEL = "addEventListener",
 	searchInput = d[gEBI]("text") || "",
-	handleSearchInputValue = function (_this) {
+	handleSearchInputValue = function () {
+		var _this = this;
 		var logicHandleSearchInputValue = function () {
 			_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
 		},
@@ -1450,7 +1438,7 @@ var manageSearchInput = function () {
 	if (searchInput) {
 		/* console.log("triggered function: manageSearchInput"); */
 		searchInput.focus();
-		searchInput[aEL]("input", handleSearchInputValue.bind(null, searchInput));
+		searchInput[aEL]("input", handleSearchInputValue);
 	}
 };
 document.ready().then(manageSearchInput);
@@ -1722,12 +1710,15 @@ var renderNavigation = function () {
 			}
 			if (carouselTemplate && carouselRender) {
 				insertFromTemplate(navigationJsonResponse, carouselTemplateId, carouselRenderId, function () {
-					var carousel = new Carousel({
+					var newCarousel = function () {
+						return new Carousel({
 							"main": ".js-carousel",
 							"wrap": ".js-carousel__wrap",
 							"prev": ".js-carousel__prev",
 							"next": ".js-carousel__next"
 						});
+					};
+					newCarousel();
 					if (carouselRenderParent) {
 						manageDataSrcImages();
 						manageExternalLinks(carouselRenderParent);
@@ -2044,7 +2035,7 @@ var manageDebugGridButton = function () {
 				ev.preventDefault();
 				container[cL].toggle(debugClass);
 				if (container[cL].contains(debugClass)) {
-					container[aEL]("click", handleDebugGridButton);
+					container[aEL]("click", handleDebugGridContainer);
 					showDebugGridMessage();
 				} else {
 					container[rEL]("click", handleDebugGridContainer);
@@ -2310,9 +2301,15 @@ var processPoutes = function () {
 					contentsRender[iH] = contentsRendered; */
 					var rerenderContentsSelect = function () {
 						var handleContentsSelect = function (_this) {
+							_this = _this ? _this.target || "" : "";
 							var _hash = _this.options[_this.selectedIndex].value || "";
 							if (_hash) {
-								w.location.hash = _hash;
+								var tragetObject = isValidId(_hash, true) ? d[gEBI](_hash.replace(/^#/, "")) || "" : "";
+								if (tragetObject) {
+									scroll2Top(findPos(tragetObject).top, 10000);
+								} else {
+									w.location.hash = _hash;
+								}
 							}
 						},
 						df = d[cDF](),
@@ -2338,7 +2335,12 @@ var processPoutes = function () {
 					var rerenderContentsList = function () {
 						var handleContentsListItem = function (listObj, _hash) {
 							if (_hash) {
-								w.location.hash = _hash;
+								var tragetObject = isValidId(_hash, true) ? d[gEBI](_hash.replace(/^#/, "")) || "" : "";
+								if (tragetObject) {
+									scroll2Top(findPos(tragetObject).top, 10000);
+								} else {
+									w.location.hash = _hash;
+								}
 							}
 							listObj[cL].remove(isActiveClass);
 						},
@@ -2400,7 +2402,7 @@ document.ready().then(processPoutes);
  */
 /* var observeMutations = function (ctx) {
 	"use strict";
-	ctx = ctx || "";
+	ctx = ctx && ctx.nodeName ? ctx : "";
 	if (ctx) {
 		var getMutations = function (e) {
 			var triggerOnMutation = function (m) {
@@ -2518,11 +2520,18 @@ document.ready().then(initUiTotop);
  * init manUP.js
  */
 var initManUp = function () {
+	"use strict";
 	/* console.log("triggered function: initManUp"); */
 },
 loadInitManUp = function () {
+	"use strict";
+	var manUpJsUrl = "./cdn/ManUp.js/0.7/js/manup.fixed.min.js";
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		loadTriggerJS("/cdn/ManUp.js/0.7/js/manup.fixed.min.js", initManUp);
+		if (!scriptIsLoaded(manUpJsUrl)) {
+			loadJS(manUpJsUrl, initManUp);
+		} else {
+			initManUp();
+		}
 	}
 };
 document.ready().then(loadInitManUp);
