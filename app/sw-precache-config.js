@@ -8,71 +8,95 @@ module.exports = {
 		"manifest.json",
 		"yandex-tableau.json",
 		"**.{png,ico,svg}",
-		"cdn/**/*.{png,jpg,js,json,css}",
+		// "cdn/**/*.{png,jpg,js,json,css}",
 		"fonts/**/*.{eot,ttf,woff,woff2}",
 		"libs/**/img/**/*.{png,jpg}",
 		"pages/**/*.html"],
 	stripPrefix: "./",
 	runtimeCaching: [{
-			urlPattern: /^https:\/\/mc\.yandex\.ru/,
-			handler: "networkOnly"/* ,
+			urlPattern: /^https:\/\/yastatic\.net/,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
+		}, {
+			urlPattern: /^https:\/\/vk\.com/,
+			handler: "networkFirst",
+			options: {
+				debug: true
+			}
+		}, {
+			urlPattern: /^https:\/\/mc\.yandex\.ru/,
+			handler: "networkFirst",
+			options: {
+				debug: true
+			}
 		}, {
 			urlPattern: /^https:\/\/www\.google-analytics\.com/,
-			handler: "networkOnly"/* ,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /^https:\/\/ssl\.google-analytics\.com/,
-			handler: "networkOnly"/* ,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /^https:\/\/(.*?)\.disqus\.com/,
-			handler: "networkOnly"/* ,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /^https:\/\/w\.soundcloud\.com/,
-			handler: "networkOnly"/* ,
+			handler: "networkOnly",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /^https:\/\/player\.vimeo\.com/,
-			handler: "networkOnly"/* ,
+			handler: "networkOnly",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /^https:\/\/www\.youtube\.com/,
-			handler: "networkOnly"/* ,
+			handler: "networkOnly",
 			options: {
 				debug: true
-			} */
+			}
+		}, {
+			urlPattern: /^https:\/\/(.*?)\.staticflickr\.com/,
+			handler: "networkFirst",
+			options: {
+				debug: true
+			}
+		}, {
+			urlPattern: /\/cdn\/(.*?)/,
+			handler: "networkFirst",
+			options: {
+				debug: true
+			}
 		}, {
 			urlPattern: /\/libs\/(.*?)\/css\//,
-			handler: "fastest"/* ,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /\/libs\/(.*?)\/js\//,
-			handler: "fastest"/* ,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
 		}, {
 			urlPattern: /\/libs\/(.*?)\/json\//,
-			handler: "fastest"/* ,
+			handler: "networkFirst",
 			options: {
 				debug: true
-			} */
+			}
 		}
 	]
 };
