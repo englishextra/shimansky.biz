@@ -149,7 +149,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * new IframeLightbox(elem)
  * passes jshint
  */
-(function(root){"use strict";var d=document,aEL="addEventListener",gEBI="getElementById",gEBCN="getElementsByClassName",cE="createElement",cL="classList",aC="appendChild",dS="dataset",containerClass="iframe-lightbox",isLoadedClass="is-loaded",isOpenedClass="is-opened",isShowingClass="is-showing";var IframeLightbox=function(elem,rate){this.trigger=elem;this.rate=rate||500;this.el=d[gEBCN](containerClass)[0]||"";this.body=this.el?this.el[gEBCN]("body")[0]:"";this.content=this.el?this.el[gEBCN]("content")[0]:"";this.href=elem[dS].src||"";this.paddingBottom=elem[dS].paddingBottom||"";this.init();};IframeLightbox.prototype.init=function(){var _this=this;if(!this.el){this.create();}var debounce=function(func,wait){var timeout,args,context,timestamp;return function(){context=this;args=[].slice.call(arguments,0);timestamp=new Date();var later=function(){var last=(new Date())-timestamp;if(last<wait){timeout=setTimeout(later,wait-last);}else{timeout=null;func.apply(context,args);}};if(!timeout){timeout=setTimeout(later,wait);}};};var handleOpenIframeLightbox=function(e){e.preventDefault();_this.open();};var debounceHandleOpenIframeLightbox=debounce(handleOpenIframeLightbox,this.rate);this.trigger[aEL]("click",debounceHandleOpenIframeLightbox);};IframeLightbox.prototype.create=function(){var _this=this,bd=d[cE]("div");this.el=d[cE]("div");this.content=d[cE]("div");this.body=d[cE]("div");this.el[cL].add(containerClass);bd[cL].add("backdrop");this.content[cL].add("content");this.body[cL].add("body");this.el[aC](bd);this.content[aC](this.body);this.content_holder=d[cE]("div");this.content_holder[cL].add("content-holder");this.content_holder[aC](this.content);this.el[aC](this.content_holder);d.body[aC](this.el);bd[aEL]("click",function(){_this.close();});var clearBody=function(e){if(_this.isOpen()){return;}_this.el[cL].remove(isShowingClass);_this.body.innerHTML="";};this.el[aEL]("transitionend",clearBody,false);this.el[aEL]("webkitTransitionEnd",clearBody,false);this.el[aEL]("mozTransitionEnd",clearBody,false);this.el[aEL]("msTransitionEnd",clearBody,false);};IframeLightbox.prototype.loadIframe=function(){this.iframeId=containerClass+Date.now();this.body.innerHTML='<iframe src="'+this.href+'" name="'+this.iframeId+'" id="'+this.iframeId+'" onload="this.style.opacity=1;" style="opacity:0;border:none;" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" height="166" frameborder="no"></iframe>';(function(iframeId,body){d[gEBI](iframeId).onload=function(){this.style.opacity=1;body[cL].add(isLoadedClass);};})(this.iframeId,this.body);};IframeLightbox.prototype.open=function(){this.loadIframe();if(this.paddingBottom){this.content.style.paddingBottom=this.paddingBottom;}else{this.content.removeAttribute("style");}this.el[cL].add(isShowingClass);this.el[cL].add(isOpenedClass);};IframeLightbox.prototype.close=function(){this.el[cL].remove(isOpenedClass);this.body[cL].remove(isLoadedClass);};IframeLightbox.prototype.isOpen=function(){return this.el[cL].contains(isOpenedClass);};root.IframeLightbox=IframeLightbox;})(globalRoot);
+(function(root){"use strict";var d=document,aEL="addEventListener",gEBI="getElementById",gEBCN="getElementsByClassName",cE="createElement",cL="classList",aC="appendChild",dS="dataset",containerClass="iframe-lightbox",isLoadedClass="is-loaded",isOpenedClass="is-opened",isShowingClass="is-showing";var IframeLightbox=function(elem,rate){this.trigger=elem;this.rate=rate||500;this.el=d[gEBCN](containerClass)[0]||"";this.body=this.el?this.el[gEBCN]("body")[0]:"";this.content=this.el?this.el[gEBCN]("content")[0]:"";this.href=elem[dS].src||"";this.paddingBottom=elem[dS].paddingBottom||"";this.init();};IframeLightbox.prototype.init=function(){var _this=this;if(!this.el){this.create();}var debounce=function(func,wait){var timeout,args,context,timestamp;return function(){context=this;args=[].slice.call(arguments,0);timestamp=new Date();var later=function(){var last=(new Date())-timestamp;if(last<wait){timeout=setTimeout(later,wait-last);}else{timeout=null;func.apply(context,args);}};if(!timeout){timeout=setTimeout(later,wait);}};};var handleOpenIframeLightbox=function(e){e.preventDefault();_this.open();};var debounceHandleOpenIframeLightbox=debounce(handleOpenIframeLightbox,this.rate);this.trigger[aEL]("click",debounceHandleOpenIframeLightbox);};IframeLightbox.prototype.create=function(){var _this=this,bd=d[cE]("div");this.el=d[cE]("div");this.content=d[cE]("div");this.body=d[cE]("div");this.el[cL].add(containerClass);bd[cL].add("backdrop");this.content[cL].add("content");this.body[cL].add("body");this.el[aC](bd);this.content[aC](this.body);this.content_holder=d[cE]("div");this.content_holder[cL].add("content-holder");this.content_holder[aC](this.content);this.el[aC](this.content_holder);d.body[aC](this.el);bd[aEL]("click",function(){_this.close();});var clearBody=function(e){if(_this.isOpen()){return;}_this.el[cL].remove(isShowingClass);_this.body.innerHTML="";};this.el[aEL]("transitionend",clearBody,false);this.el[aEL]("webkitTransitionEnd",clearBody,false);this.el[aEL]("mozTransitionEnd",clearBody,false);this.el[aEL]("msTransitionEnd",clearBody,false);};IframeLightbox.prototype.loadIframe=function(){this.iframeId=containerClass+Date.now();this.body.innerHTML='<iframe src="'+this.href+'" name="'+this.iframeId+'" id="'+this.iframeId+'" onload="this.style.opacity=1;" style="opacity:0;border:none;" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" frameborder="no" title="Embedded Content"></iframe>';(function(iframeId,body){d[gEBI](iframeId).onload=function(){this.style.opacity=1;body[cL].add(isLoadedClass);};})(this.iframeId,this.body);};IframeLightbox.prototype.open=function(){this.loadIframe();if(this.paddingBottom){this.content.style.paddingBottom=this.paddingBottom;}else{this.content.removeAttribute("style");}this.el[cL].add(isShowingClass);this.el[cL].add(isOpenedClass);};IframeLightbox.prototype.close=function(){this.el[cL].remove(isOpenedClass);this.body[cL].remove(isLoadedClass);};IframeLightbox.prototype.isOpen=function(){return this.el[cL].contains(isOpenedClass);};root.IframeLightbox=IframeLightbox;})(globalRoot);
 /*!
  * add js class to html element
  */
@@ -364,38 +364,38 @@ if (document.title) {
  * @param {Object} a target HTML Element
  * prependFragmentBefore(e,a)
  */
-var prependFragmentBefore=function(e,a){if("string"===typeof e){e=document.createTextNode(e);}var p=a.parentNode||"",df=document.createDocumentFragment();return function(){if(p){df.appendChild(e);p.insertBefore(df,a);}}();};
+(function(root){var prependFragmentBefore=function(e,a){if("string"===typeof e){e=document.createTextNode(e);}var p=a.parentNode||"",df=document.createDocumentFragment();return function(){if(p){df.appendChild(e);p.insertBefore(df,a);}}();};root.prependFragmentBefore=prependFragmentBefore;})(globalRoot);
 /*!
  * set style display block of an element
  * @param {Object} a an HTML Element
  * setStyleDisplayBlock(a)
  */
-var setStyleDisplayBlock=function(a){return function(){if(a){a.style.display="block";}}();};
+(function(root){var setStyleDisplayBlock=function(a){return function(){if(a){a.style.display="block";}}();};root.setStyleDisplayBlock=setStyleDisplayBlock;})(globalRoot);
 /*!
  * set style display none of an element
  * @param {Object} a an HTML Element
  * setStyleDisplayNone(a)
  */
-var setStyleDisplayNone=function(a){return function(){if(a){a.style.display="none";}}();};
+(function(root){var setStyleDisplayNone=function(a){return function(){if(a){a.style.display="none";}}();};root.setStyleDisplayNone=setStyleDisplayNone;})(globalRoot);
 /*!
  * set style opacity of an element
  * @param {Object} a an HTML Element
  * @param {Number} n any positive decimal number 0.00-1.00
  * setStyleOpacity(a,n)
  */
-var setStyleOpacity=function(a,n){n=n||1;return function(){if(a){a.style.opacity=n;}}();};
+(function(root){var setStyleOpacity=function(a,n){n=n||1;return function(){if(a){a.style.opacity=n;}}();};root.setStyleOpacity=setStyleOpacity;})(globalRoot);
 /*!
  * set style visibility visible of an element
  * @param {Object} a an HTML Element
  * setStyleVisibilityVisible(a)
  */
-var setStyleVisibilityVisible=function(a){return function(){if(a){a.style.visibility="visible";}}();};
+(function(root){var setStyleVisibilityVisible=function(a){return function(){if(a){a.style.visibility="visible";}}();};root.setStyleVisibilityVisible=setStyleVisibilityVisible;})(globalRoot);
 /*!
  * set style visibility hidden of an element
  * @param {Object} a an HTML Element
  * setStyleVisibilityHidden(a)
  */
-var setStyleVisibilityHidden=function(a){return function(){if(a){a.style.visibility="hidden";}}();};
+(function(root){var setStyleVisibilityHidden=function(a){return function(){if(a){a.style.visibility="hidden";}}();};root.setStyleVisibilityHidden=setStyleVisibilityHidden;})(globalRoot);
 /*!
  * Check if string represents a valid HTML id
  * @see {@link https://gist.github.com/englishextra/b5aaef8b555a3ba84c68a6e251db149d}
@@ -431,7 +431,7 @@ var setStyleVisibilityHidden=function(a){return function(){if(a){a.style.visibil
  * @param {String} a URL / path string
  * changeLocation(a)
  */
-var changeLocation=function(a){return function(){if(a){document.location.href=a;}}();};
+(function(root){var changeLocation=function(a){return function(){if(a){document.location.href=a;}}();};root.changeLocation=changeLocation;})(globalRoot);
 /*!
  * modified Unified URL parsing API in the browser and node
  * @see {@link https://github.com/wooorm/parse-link}
@@ -1234,6 +1234,7 @@ manageLocationQrCodeImage = function () {
 	var w = globalRoot,
 	holder = ".holder-location-qr-code",
 	c = BALA.one(holder) || "",
+	aEL = "addEventListener",
 	u = w.location.href || "";
 	if (c && u) {
 		/* console.log("triggered function: manageLocationQrCodeImage"); */

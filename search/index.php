@@ -376,7 +376,7 @@ $SQLITE_CACHE = null;
 									<form method="post" action="/search/" id="search_form" class="search_form" enctype="application/x-www-form-urlencoded">
 										<p>
 											<label for="text">Введите одно ключевое слово:</label>
-											<input type="text" name="q" id="text" autocomplete="off" placeholder="Найти" aria-labelledby="search_form" />
+											<input type="text" name="q" id="text" autocomplete="off" placeholder="Найти" aria-label="Keywords / Ключевые слова" />
 										</p>
 										<p class="textcenter">
 											<input class="btn btn-default" id="search_form_reset_button" value="Очистить" type="reset" aria-label="Reset / Очистить" /><input class="btn btn-primary" id="search_form_submit_button" value="Отправить" type="submit" aria-label="Submit / Отправить" />
