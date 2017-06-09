@@ -684,14 +684,14 @@ template {
 	}
 
 	.masonry-grid-wrapper #h1,
-.masonry-grid-wrapper h1 {
+	.masonry-grid-wrapper h1 {
 		font-size: 1.772rem;
 	}
 }
 
 @media handheld, only screen and (max-width: 360px) {
 	.masonry-grid-wrapper #h1,
-.masonry-grid-wrapper h1 {
+	.masonry-grid-wrapper h1 {
 		font-size: 1.464rem;
 	}
 
