@@ -420,8 +420,7 @@ $SQLITE_CACHE = null;
 					<div class="grid-narrow grid-pad">
 						<div class="col col-1-1">
 							<div class="footer">
-								<p class="copyright"><a href="https://unsplash.com/photos/2yB0ilQgkxs" target="_blank">Hero&#160;image by&#160;Clem&#160;Onojeghuo.</a>&#160;
-						<a href="https://creativecommons.org/licenses/by-nd/4.0/" target="_blank">Content licensed under&#160;CC&#160;BY-ND&#160;4.0.</a>&#160;
+								<p class="copyright"><a href="https://creativecommons.org/licenses/by-nd/4.0/" target="_blank">Content licensed under&#160;CC&#160;BY-ND&#160;4.0.</a>&#160;
 						<a href="https://github.com/englishextra" target="_blank">&#169;&#160;2006&#8212;2017&#160;englishextra.</a></p>
 							</div>
 						</div>
