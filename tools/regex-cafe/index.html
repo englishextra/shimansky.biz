@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>RegEx Cafe - JavaScript Regular Expression Tester</title>
+		<link rel="stylesheet" href="./css/bootstrap.min.css" />
+		<link rel="stylesheet" href="./css/style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div id="main">
+				<div id="regex-box">
+					<div class="exp" style="margin-left:40px;">Your regular expression</div>
+					<span class="big-sl" style="margin-left:5px;">/</span>
+					<input type="text" id="regex-str" />
+					<span class="big-sl">/</span>
+					<input type="text" id="regex-opt" />
+				</div>
+				<div id="text-box">
+					<span class="exp" style="margin-top:90px;margin-left:23px;">Your test string</span>
+					<textarea id="text" rows="4" cols="40"></textarea>
+				</div>
+				<div id="results-box">
+					<span class="exp" style="margin-top:90px;margin-left:52px;">Match result</span>
+					<div id="match-results"></div>
+				</div>
+			</div>
+			<div id="ref">
+				<table>
+					<tr>
+						<td>\b</td>
+						<td>Any word boundary character</td>
+						<td>.</td>
+						<td>Any single character</td>
+						<td>(a|b)</td>
+						<td>a or b</td>
+					</tr>
+					<tr>
+						<td>\s</td>
+						<td>Any whitespace character（[ \f\n\r\t\v]）</td>
+						<td>^</td>
+						<td>Start of line</td>
+						<td>a?</td>
+						<td>Zero or one of a</td>
+					</tr>
+					<tr>
+						<td>\d</td>
+						<td>Any digit（[0-9]）</td>
+						<td>$</td>
+						<td>End of line</td>
+						<td>a*</td>
+						<td>Zero or more of a</td>
+					</tr>
+					<tr>
+						<td>\D</td>
+						<td>Any non-digit（[^0-9]）</td>
+						<td>[abc]</td>
+						<td>A single character</td>
+						<td>a+</td>
+						<td>One or more of a</td>
+					</tr>
+					<tr>
+						<td>\w</td>
+						<td>Any word character（[A-Za-z0-9_]）</td>
+						<td>[^abc]</td>
+						<td>Any single character</td>
+						<td>a{3}</td>
+						<td>Exactly 3 of a</td>
+					</tr>
+					<tr>
+						<td>\W</td>
+						<td>Any non-word character </td>
+						<td>[a-z]</td>
+						<td>Any single character in the range a-z</td>
+						<td>a{3,6}</td>
+						<td>Between 3 and 6 of a</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript" src="./js/jquery.min.js"></script>
+		<script type="text/javascript" src="./js/jquery.textchange.min.js"></script>
+		<script type="text/javascript" src="./js/script.js"></script>
+	</body>
+</html>
