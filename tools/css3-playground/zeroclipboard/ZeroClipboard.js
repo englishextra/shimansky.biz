@@ -107,7 +107,7 @@ ZeroClipboard.Client.prototype = {
 		if (typeof(appendElem) == 'string') {
 			appendElem = ZeroClipboard.$(appendElem);
 		}
-		else if (typeof(appendElem) == 'undefined') {
+		else if (typeof(appendElem) == "undefined") {
 			appendElem = document.getElementsByTagName('body')[0];
 		}
 		
@@ -270,13 +270,13 @@ ZeroClipboard.Client.prototype = {
 				}
 				break;
 			
-			case 'mousedown':
+			case "mousedown":
 				if (this.domElement && this.cssEffects) {
 					this.domElement.addClass('active');
 				}
 				break;
 			
-			case 'mouseup':
+			case "mouseup":
 				if (this.domElement && this.cssEffects) {
 					this.domElement.removeClass('active');
 					this.recoverActive = false;
@@ -288,7 +288,7 @@ ZeroClipboard.Client.prototype = {
 			for (var idx = 0, len = this.handlers[eventName].length; idx < len; idx++) {
 				var func = this.handlers[eventName][idx];
 			
-				if (typeof(func) == 'function') {
+				if (typeof(func) == "function") {
 					// actual function reference
 					func(this, args);
 				}

@@ -7568,7 +7568,7 @@
  if ("oncopy" in e) return true;
  e.setAttribute("oncopy", "return;");
  return typeof e.oncopy == "function";
- })();
+ }());
  var badZoomedRects = null;
  function hasBadZoomedRects(measure) {
  if (badZoomedRects != null) return badZoomedRects;
@@ -7593,7 +7593,7 @@
  for (var i = 65; i <= 90; i++) keyNames[i] = String.fromCharCode(i);
  // Function keys
  for (var i = 1; i <= 12; i++) keyNames[i + 111] = keyNames[i + 63235] = "F" + i;
- })();
+ }());
  // BIDI HELPERS
  function iterateBidiSections(order, from, to, f) {
  if (!order) return f(from, to, "ltr");
@@ -7860,7 +7860,7 @@
  order.push(new BidiSpan(order[0].level, len, len));
  return order;
  };
- })();
+ }());
  // THE END
  CodeMirror.version = "5.1.1";
  return CodeMirror;

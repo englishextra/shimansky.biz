@@ -1491,4 +1491,4 @@ var zip_deflate = function(str, level) {
 }
 if (! window.RawDeflate) RawDeflate = {};
 RawDeflate.deflate = zip_deflate;
-})();
+}());

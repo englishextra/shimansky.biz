@@ -8,7 +8,7 @@
  *
  */
 jQuery.cookie = function(name, value, options) {
- if (typeof value != 'undefined') { // name and value given, set cookie
+ if (typeof value != "undefined") { // name and value given, set cookie
  options = options || {};
  var expires = '';
  if (options.expires && (typeof options.expires == 'number' || options.expires.toGMTString)) {

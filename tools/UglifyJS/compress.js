@@ -2383,4 +2383,4 @@ merge(Compressor.prototype, {
  OPT(AST_Object, literals_in_boolean_context);
  OPT(AST_RegExp, literals_in_boolean_context);
 
-})();
+}());

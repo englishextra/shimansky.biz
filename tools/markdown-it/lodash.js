@@ -55,7 +55,7 @@
  var reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
  /** Used to assign default `context` object properties */
  var contextProps = [
- 'Array', 'Boolean', 'Date', 'Function', 'Math', 'Number', 'Object',
+ 'Array', 'Boolean', 'Date', "function", 'Math', 'Number', 'Object',
  'RegExp', 'String', '_', 'attachEvent', 'clearTimeout', 'isFinite', 'isNaN',
  'parseInt', 'setTimeout'
  ];
@@ -94,11 +94,11 @@
  /** Used to determine if values are of the language type Object */
  var objectTypes = {
  'boolean': false,
- 'function': true,
+ "function": true,
  'object': true,
  'number': false,
  'string': false,
- 'undefined': false
+ "undefined": false
  };
  /** Used to escape characters for inclusion in compiled string literals */
  var stringEscapes = {
@@ -221,10 +221,10 @@
  var value = ac[index],
  other = bc[index];
  if (value !== other) {
- if (value > other || typeof value == 'undefined') {
+ if (value > other || typeof value == "undefined") {
  return 1;
  }
- if (value < other || typeof other == 'undefined') {
+ if (value < other || typeof other == "undefined") {
  return -1;
  }
  }
@@ -255,7 +255,7 @@
  return false;
  }
  var cache = getObject();
- cache['false'] = cache['null'] = cache['true'] = cache['undefined'] = false;
+ cache['false'] = cache['null'] = cache['true'] = cache["undefined"] = false;
  var result = getObject();
  result.array = array;
  result.cache = cache;
@@ -304,7 +304,7 @@
  'push': null,
  'string': null,
  'true': false,
- 'undefined': false,
+ "undefined": false,
  'value': null
  };
  }
@@ -351,7 +351,7 @@
  */
  function slice(array, start, end) {
  start || (start = 0);
- if (typeof end == 'undefined') {
+ if (typeof end == "undefined") {
  end = array ? array.length : 0;
  }
  var index = -1,
@@ -663,7 +663,7 @@
  function baseClone(value, isDeep, callback, stackA, stackB) {
  if (callback) {
  var result = callback(value);
- if (typeof result != 'undefined') {
+ if (typeof result != "undefined") {
  return result;
  }
  }
@@ -770,15 +770,15 @@
  * @returns {Function} Returns a callback function.
  */
  function baseCreateCallback(func, thisArg, argCount) {
- if (typeof func != 'function') {
+ if (typeof func != "function") {
  return identity;
  }
  // exit early for no `thisArg` or already bound by `Function#bind`
- if (typeof thisArg == 'undefined' || !('prototype' in func)) {
+ if (typeof thisArg == "undefined" || !('prototype' in func)) {
  return func;
  }
  var bindData = func.__bindData__;
- if (typeof bindData == 'undefined') {
+ if (typeof bindData == "undefined") {
  if (support.funcNames) {
  bindData = !func.name;
  }
@@ -953,7 +953,7 @@
  // used to indicate that when comparing objects, `a` has at least the properties of `b`
  if (callback) {
  var result = callback(a, b);
- if (typeof result != 'undefined') {
+ if (typeof result != "undefined") {
  return !!result;
  }
  }
@@ -1127,7 +1127,7 @@
  var isShallow;
  if (callback) {
  result = callback(value, source);
- if ((isShallow = typeof result != 'undefined')) {
+ if ((isShallow = typeof result != "undefined")) {
  value = result;
  }
  }
@@ -1148,11 +1148,11 @@
  else {
  if (callback) {
  result = callback(value, source);
- if (typeof result == 'undefined') {
+ if (typeof result == "undefined") {
  result = source;
  }
  }
- if (typeof result != 'undefined') {
+ if (typeof result != "undefined") {
  value = result;
  }
  }
@@ -1351,7 +1351,7 @@
  * @returns {boolean} Returns `true` if the `value` is a native function, else `false`.
  */
  function isNative(value) {
- return typeof value == 'function' && reNative.test(value);
+ return typeof value == "function" && reNative.test(value);
  }
  /**
  * Sets `this` binding data on a given function.
@@ -1388,7 +1388,7 @@
  forIn(value, function(value, key) {
  result = key;
  });
- return typeof result == 'undefined' || hasOwnProperty.call(value, result);
+ return typeof result == "undefined" || hasOwnProperty.call(value, result);
  }
  /**
  * Used by `unescape` to convert HTML entities to characters.
@@ -1432,7 +1432,7 @@
  * @returns {boolean} Returns `true` if the `value` is an array, else `false`.
  * @example
  *
- * (function() { return _.isArray(arguments); })();
+ * (function() { return _.isArray(arguments); }());
  * // => false
  *
  * _.isArray([1, 2, 3]);
@@ -1525,7 +1525,7 @@
  * // => { 'name': 'fred', 'employer': 'slate' }
  *
  * var defaults = _.partialRight(_.assign, function(a, b) {
- * return typeof a == 'undefined' ? b : a;
+ * return typeof a == "undefined" ? b : a;
  * });
  *
  * var object = { 'name': 'barney' };
@@ -1538,9 +1538,9 @@
  var args = arguments,
  argsIndex = 0,
  argsLength = typeof guard == 'number' ? 2 : args.length;
- if (argsLength > 3 && typeof args[argsLength - 2] == 'function') {
+ if (argsLength > 3 && typeof args[argsLength - 2] == "function") {
  var callback = baseCreateCallback(args[--argsLength - 1], args[argsLength--], 2);
- } else if (argsLength > 2 && typeof args[argsLength - 1] == 'function') {
+ } else if (argsLength > 2 && typeof args[argsLength - 1] == "function") {
  callback = args[--argsLength];
  }
  while (++argsIndex < argsLength) {
@@ -1605,7 +1605,7 @@
  callback = isDeep;
  isDeep = false;
  }
- return baseClone(value, isDeep, typeof callback == 'function' && baseCreateCallback(callback, thisArg, 1));
+ return baseClone(value, isDeep, typeof callback == "function" && baseCreateCallback(callback, thisArg, 1));
  }
  /**
  * Creates a deep clone of `value`. If a callback is provided it will be
@@ -1649,7 +1649,7 @@
  * // => false
  */
  function cloneDeep(value, callback, thisArg) {
- return baseClone(value, true, typeof callback == 'function' && baseCreateCallback(callback, thisArg, 1));
+ return baseClone(value, true, typeof callback == "function" && baseCreateCallback(callback, thisArg, 1));
  }
  /**
  * Creates an object that inherits from the given `prototype` object. If a
@@ -1720,7 +1720,7 @@
  length = ownProps ? ownProps.length : 0;
  while (++ownIndex < length) {
  index = ownProps[ownIndex];
- if (typeof result[index] == 'undefined') result[index] = iterable[index];
+ if (typeof result[index] == "undefined") result[index] = iterable[index];
  }
  }
  }
@@ -1865,7 +1865,7 @@
  var index, iterable = collection, result = iterable;
  if (!iterable) return result;
  if (!objectTypes[typeof iterable]) return result;
- callback = callback && typeof thisArg == 'undefined' ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  for (index in iterable) {
  if (callback(iterable[index], index, collection) === false) return result;
  }
@@ -1938,7 +1938,7 @@
  var index, iterable = collection, result = iterable;
  if (!iterable) return result;
  if (!objectTypes[typeof iterable]) return result;
- callback = callback && typeof thisArg == 'undefined' ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  var ownIndex = -1,
  ownProps = objectTypes[typeof iterable] && keys(iterable),
  length = ownProps ? ownProps.length : 0;
@@ -2169,7 +2169,7 @@
  * // => true
  */
  function isEqual(a, b, callback, thisArg) {
- return baseIsEqual(a, b, typeof callback == 'function' && baseCreateCallback(callback, thisArg, 2));
+ return baseIsEqual(a, b, typeof callback == "function" && baseCreateCallback(callback, thisArg, 2));
  }
  /**
  * Checks if `value` is, or can be coerced to, a finite number.
@@ -2216,7 +2216,7 @@
  * // => true
  */
  function isFunction(value) {
- return typeof value == 'function';
+ return typeof value == "function";
  }
  /**
  * Checks if `value` is the language type of Object.
@@ -2394,7 +2394,7 @@
  * // => true
  */
  function isUndefined(value) {
- return typeof value == 'undefined';
+ return typeof value == "undefined";
  }
  /**
  * Creates an object with the same keys as `object` and values generated by
@@ -2502,9 +2502,9 @@
  if (typeof args[2] != 'number') {
  length = args.length;
  }
- if (length > 3 && typeof args[length - 2] == 'function') {
+ if (length > 3 && typeof args[length - 2] == "function") {
  var callback = baseCreateCallback(args[--length - 1], args[length--], 2);
- } else if (length > 2 && typeof args[length - 1] == 'function') {
+ } else if (length > 2 && typeof args[length - 1] == "function") {
  callback = args[--length];
  }
  var sources = slice(arguments, 1, length),
@@ -2546,7 +2546,7 @@
  */
  function omit(object, callback, thisArg) {
  var result = {};
- if (typeof callback != 'function') {
+ if (typeof callback != "function") {
  var props = [];
  forIn(object, function(value, key) {
  props.push(key);
@@ -2622,7 +2622,7 @@
  */
  function pick(object, callback, thisArg) {
  var result = {};
- if (typeof callback != 'function') {
+ if (typeof callback != "function") {
  var index = -1,
  props = baseFlatten(arguments, true, false, 1),
  length = isObject(object) ? props.length : 0;
@@ -3076,7 +3076,7 @@
  function forEach(collection, callback, thisArg) {
  var index = -1,
  length = collection ? collection.length : 0;
- callback = callback && typeof thisArg == 'undefined' ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  if (typeof length == 'number') {
  while (++index < length) {
  if (callback(collection[index], index, collection) === false) {
@@ -3107,7 +3107,7 @@
  */
  function forEachRight(collection, callback, thisArg) {
  var length = collection ? collection.length : 0;
- callback = callback && typeof thisArg == 'undefined' ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  if (typeof length == 'number') {
  while (length--) {
  if (callback(collection[length], length, collection) === false) {
@@ -3229,7 +3229,7 @@
  function invoke(collection, methodName) {
  var args = slice(arguments, 2),
  index = -1,
- isFunc = typeof methodName == 'function',
+ isFunc = typeof methodName == "function",
  length = collection ? collection.length : 0,
  result = Array(typeof length == 'number' ? length : 0);
  forEach(collection, function(value) {
@@ -3338,7 +3338,7 @@
  result = computed;
  // allows working with functions like `_.map` without using
  // their `index` argument as a callback
- if (typeof callback != 'function' && thisArg && thisArg[callback] === collection) {
+ if (typeof callback != "function" && thisArg && thisArg[callback] === collection) {
  callback = null;
  }
  if (callback == null && isArray(collection)) {
@@ -3409,7 +3409,7 @@
  result = computed;
  // allows working with functions like `_.map` without using
  // their `index` argument as a callback
- if (typeof callback != 'function' && thisArg && thisArg[callback] === collection) {
+ if (typeof callback != "function" && thisArg && thisArg[callback] === collection) {
  callback = null;
  }
  if (callback == null && isArray(collection)) {
@@ -4105,7 +4105,7 @@
  // juggle arguments
  if (typeof isShallow != 'boolean' && isShallow != null) {
  thisArg = callback;
- callback = (typeof isShallow != 'function' && thisArg && thisArg[isShallow] === array) ? null : isShallow;
+ callback = (typeof isShallow != "function" && thisArg && thisArg[isShallow] === array) ? null : isShallow;
  isShallow = false;
  }
  if (callback != null) {
@@ -4701,7 +4701,7 @@
  // juggle arguments
  if (typeof isSorted != 'boolean' && isSorted != null) {
  thisArg = callback;
- callback = (typeof isSorted != 'function' && thisArg && thisArg[isSorted] === array) ? null : isSorted;
+ callback = (typeof isSorted != "function" && thisArg && thisArg[isSorted] === array) ? null : isSorted;
  isSorted = false;
  }
  if (callback != null) {
@@ -5473,7 +5473,7 @@
  */
  function createCallback(func, thisArg, argCount) {
  var type = typeof func;
- if (func == null || type == 'function') {
+ if (func == null || type == "function") {
  return baseCreateCallback(func, thisArg, argCount);
  }
  // handle "_.pluck" style callback shorthands
@@ -6317,7 +6317,7 @@
  lodash.prototype[methodName]= function(n, guard) {
  var chainAll = this.__chain__,
  result = func(this.__wrapped__, n, guard);
- return !chainAll && (n == null || (guard && !(callbackable && typeof n == 'function')))
+ return !chainAll && (n == null || (guard && !(callbackable && typeof n == "function")))
  ? result
  : new lodashWrapper(result, chainAll);
  };
@@ -6369,7 +6369,7 @@
  // expose Lo-Dash
  var _ = runInContext();
  // some AMD build optimizers like r.js check for condition patterns like the following:
- if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+ if (typeof define == "function" && typeof define.amd == 'object' && define.amd) {
  // Expose Lo-Dash to the global object even when an AMD loader is present in
  // case Lo-Dash is loaded with a RequireJS shim config.
  // See http://requirejs.org/docs/api.html#config-shim

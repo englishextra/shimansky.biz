@@ -80,10 +80,10 @@ ColorThief.prototype.getColor = function(sourceImage, quality) {
  *
  */
 ColorThief.prototype.getPalette = function(sourceImage, colorCount, quality) {
- if (typeof colorCount === 'undefined') {
+ if (typeof colorCount === "undefined") {
  colorCount = 10;
  };
- if (typeof quality === 'undefined') {
+ if (typeof quality === "undefined") {
  quality = 10;
  };
  // Create custom CanvasImage object
@@ -552,4 +552,4 @@ var MMCQ = (function() {
  return {
  quantize: quantize
  }
-})();
+}());

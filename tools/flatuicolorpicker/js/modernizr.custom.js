@@ -72,8 +72,8 @@ window.Modernizr = (function( window, document, undefined ) {
  }
  if ( element.setAttribute && element.removeAttribute ) {
  element.setAttribute(eventName, '');
- isSupported = is(element[eventName], 'function');
- if ( !is(element[eventName], 'undefined') ) {
+ isSupported = is(element[eventName], "function");
+ if ( !is(element[eventName], "undefined") ) {
  element[eventName] = undefined;
  }
  element.removeAttribute(eventName);
@@ -85,14 +85,14 @@ window.Modernizr = (function( window, document, undefined ) {
  return isEventSupported;
  })(),
  _hasOwnProperty = ({}).hasOwnProperty, hasOwnProp;
- if ( !is(_hasOwnProperty, 'undefined') && !is(_hasOwnProperty.call, 'undefined') ) {
+ if ( !is(_hasOwnProperty, "undefined") && !is(_hasOwnProperty.call, "undefined") ) {
  hasOwnProp = function (object, property) {
  return _hasOwnProperty.call(object, property);
  };
  }
  else {
  hasOwnProp = function (object, property) {
- return ((property in object) && is(object.constructor.prototype[property], 'undefined'));
+ return ((property in object) && is(object.constructor.prototype[property], "undefined"));
  };
  }
  if (!Function.prototype.bind) {
@@ -151,7 +151,7 @@ window.Modernizr = (function( window, document, undefined ) {
  var item = obj[props[i]];
  if ( item !== undefined) {
  if (elem === false) return props[i];
- if (is(item, 'function')){
+ if (is(item, "function")){
  return item.bind(elem || obj);
  }
  return item;
@@ -175,7 +175,7 @@ window.Modernizr = (function( window, document, undefined ) {
  return !!(elem.getContext && elem.getContext('2d'));
  };
  tests['canvastext'] = function () {
- return !!(Modernizr['canvas'] && is(document.createElement('canvas').getContext('2d').fillText, 'function'));
+ return !!(Modernizr['canvas'] && is(document.createElement('canvas').getContext('2d').fillText, "function"));
  };
  tests['webgl'] = function () {
  return !!window.WebGLRenderingContext;
@@ -419,7 +419,7 @@ window.Modernizr = (function( window, document, undefined ) {
  if ( Modernizr[feature] !== undefined ) {
  return Modernizr;
  }
- test = typeof test == 'function' ? test() : test;
+ test = typeof test == "function" ? test() : test;
  if (typeof enableClasses !== "undefined" && enableClasses) {
  docElement.className += ' ' + (test ? '' : 'no-') + feature;
  }
@@ -447,9 +447,9 @@ window.Modernizr = (function( window, document, undefined ) {
  (document.createElement)('a');
  var frag = document.createDocumentFragment();
  return (
- typeof frag.cloneNode == 'undefined' ||
- typeof frag.createDocumentFragment == 'undefined' ||
- typeof frag.createElement == 'undefined'
+ typeof frag.cloneNode == "undefined" ||
+ typeof frag.createDocumentFragment == "undefined" ||
+ typeof frag.createElement == "undefined"
  );
  }());
  } catch(e) {

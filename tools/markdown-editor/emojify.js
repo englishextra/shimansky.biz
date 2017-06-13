@@ -153,7 +153,7 @@
  }
  function run(el) {
  // Check if an element was not passed.
- if(typeof el === 'undefined'){
+ if(typeof el === "undefined"){
  // Check if an element was configured. If not, default to the body.
  if (defaultConfig.only_crawl_id) {
  el = document.getElementById(defaultConfig.only_crawl_id);
@@ -212,9 +212,9 @@
  // Main method
  run: run
  };
- })();
+ }());
  global.emojify = emojify;
- if (typeof define === 'function' && define.amd) {
+ if (typeof define === "function" && define.amd) {
  define([], function() {
  return emojify;
  });

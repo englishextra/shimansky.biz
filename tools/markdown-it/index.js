@@ -9,14 +9,14 @@ https://highlightjs.org/
  typeof self == 'object' && self;
  // Setup highlight.js for different environments. First is Node.js or
  // CommonJS.
- if(typeof exports !== 'undefined') {
+ if(typeof exports !== "undefined") {
  factory(exports);
  } else if(globalObject) {
  // Export hljs globally even when using AMD for cases when this script
  // is loaded with others that may still expect a global hljs.
  globalObject.hljs = factory({});
  // Finally register the global hljs with AMD.
- if(typeof define === 'function' && define.amd) {
+ if(typeof define === "function" && define.amd) {
  define([], function() {
  return globalObject.hljs;
  });
@@ -738,8 +738,8 @@ module.exports = function(hljs) {
  keywords: {'meta-keyword': 'import include'}
  },
  {
- className: 'function',
- beginKeywords: 'function', end: '[{;]', excludeEnd: true,
+ className: "function",
+ beginKeywords: "function", end: '[{;]', excludeEnd: true,
  illegal: '\\S',
  contains: [
  hljs.TITLE_MODE,
@@ -1310,7 +1310,7 @@ module.exports = function(hljs) {
  relevance: 10
  },
  {
- className: 'function',
+ className: "function",
  begin: /\w[\w\d_]*\s*\(\s*\)\s*\{/,
  returnBegin: true,
  contains: [hljs.inherit(hljs.TITLE_MODE, {begin: /\w[\w\d_]*/})],
@@ -1548,7 +1548,7 @@ module.exports = function(hljs) {
  hljs.COMMENT('###', '###'),
  hljs.HASH_COMMENT_MODE,
  {
- className: 'function',
+ className: "function",
  begin: '^\\s*' + JS_IDENT_RE + '\\s*=\\s*' + PARAMS_RE, end: '[-=]>',
  returnBegin: true,
  contains: [TITLE, PARAMS]
@@ -1559,7 +1559,7 @@ module.exports = function(hljs) {
  relevance: 0,
  contains: [
  {
- className: 'function',
+ className: "function",
  begin: PARAMS_RE, end: '[-=]>',
  returnBegin: true,
  contains: [PARAMS]
@@ -1705,7 +1705,7 @@ module.exports = function(hljs) {
  relevance: 0
  },
  {
- className: 'function',
+ className: "function",
  begin: '(' + hljs.IDENT_RE + '[\\*&\\s]+)+' + FUNCTION_TITLE,
  returnBegin: true, end: /[{;=]/,
  excludeEnd: true,
@@ -2035,7 +2035,7 @@ module.exports = function(hljs) {
  hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
  hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'string', relevance: 0}),
  {
- className: 'function',
+ className: "function",
  beginKeywords: 'subroutine function program',
  illegal: '[${=\\n]',
  contains: [hljs.UNDERSCORE_TITLE_MODE, PARAMS]
@@ -2205,7 +2205,7 @@ module.exports = function(hljs) {
  begin: /:=/ // relevance booster
  },
  {
- className: 'function',
+ className: "function",
  beginKeywords: 'func', end: /\s*\{/, excludeEnd: true,
  contains: [
  hljs.TITLE_MODE,
@@ -2592,7 +2592,7 @@ module.exports = function(hljs) {
  relevance: 0
  },
  {
- className: 'function',
+ className: "function",
  begin: '(' + GENERIC_IDENT_RE + '\\s+)+' + hljs.UNDERSCORE_IDENT_RE + '\\s*\\(', returnBegin: true, end: /[{;=]/,
  excludeEnd: true,
  keywords: KEYWORDS,
@@ -2702,8 +2702,8 @@ module.exports = function(hljs) {
  relevance: 0
  },
  {
- className: 'function',
- beginKeywords: 'function', end: /\{/, excludeEnd: true,
+ className: "function",
+ beginKeywords: "function", end: /\{/, excludeEnd: true,
  contains: [
  hljs.inherit(hljs.TITLE_MODE, {begin: /[A-Za-z$_][0-9A-Za-z$_]*/}),
  {
@@ -2822,7 +2822,7 @@ module.exports = function(hljs) {
  });
  var MIXIN_GUARD_MODE = {
  beginKeywords: 'when', endsWithParent: true,
- contains: [{beginKeywords: 'and not'}].concat(VALUE) // using this form to override VALUE’s 'function' match
+ contains: [{beginKeywords: 'and not'}].concat(VALUE) // using this form to override VALUE’s "function" match
  };
  /* Rule-Level Modes */
  var RULE_MODE = {
@@ -3112,7 +3112,7 @@ module.exports = function(hljs) {
  hljs.COMMENT('\\/\\*', '\\*\\/'),
  hljs.HASH_COMMENT_MODE,
  {
- className: 'function',
+ className: "function",
  contains: [TITLE, PARAMS],
  returnBegin: true,
  variants: [
@@ -3183,8 +3183,8 @@ module.exports = function(hljs) {
  },
  contains: COMMENTS.concat([
  {
- className: 'function',
- beginKeywords: 'function', end: '\\)',
+ className: "function",
+ beginKeywords: "function", end: '\\)',
  contains: [
  hljs.inherit(hljs.TITLE_MODE, {begin: '([_a-zA-Z]\\w*\\.)*([_a-zA-Z]\\w*:)?[_a-zA-Z]\\w*'}),
  {
@@ -3293,8 +3293,8 @@ module.exports = function(hljs) {
  illegal: '(//|"|#|/\\*|\\s+/\\w+)',
  contains: [
  {
- className: 'function',
- beginKeywords: 'function', end: '$',
+ className: "function",
+ beginKeywords: "function", end: '$',
  contains: [
  hljs.UNDERSCORE_TITLE_MODE,
  {
@@ -3719,7 +3719,7 @@ module.exports = function(hljs) {
  ]
  },
  {
- className: 'function',
+ className: "function",
  beginKeywords: 'sub', end: '(\\s*\\(.*?\\))?[;{]', excludeEnd: true,
  relevance: 5,
  contains: [hljs.TITLE_MODE]
@@ -3833,8 +3833,8 @@ module.exports = function(hljs) {
  begin: /(::|->)+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/
  },
  {
- className: 'function',
- beginKeywords: 'function', end: /[;{]/, excludeEnd: true,
+ className: "function",
+ beginKeywords: "function", end: /[;{]/, excludeEnd: true,
  illegal: '\\$|\\[|%',
  contains: [
  hljs.UNDERSCORE_TITLE_MODE,
@@ -3945,7 +3945,7 @@ module.exports = function(hljs) {
  hljs.HASH_COMMENT_MODE,
  {
  variants: [
- {className: 'function', beginKeywords: 'def', relevance: 10},
+ {className: "function", beginKeywords: 'def', relevance: 10},
  {className: 'class', beginKeywords: 'class'}
  ],
  end: /:/,
@@ -4055,7 +4055,7 @@ module.exports = function(hljs) {
  ].concat(COMMENT_MODES)
  },
  {
- className: 'function',
+ className: "function",
  beginKeywords: 'def', end: '$|;',
  contains: [
  hljs.inherit(hljs.TITLE_MODE, {begin: RUBY_METHOD_RE}),
@@ -4203,7 +4203,7 @@ module.exports = function(hljs) {
  relevance: 0
  },
  {
- className: 'function',
+ className: "function",
  beginKeywords: 'fn', end: '(\\(|<)', excludeEnd: true,
  contains: [hljs.UNDERSCORE_TITLE_MODE]
  },
@@ -4329,7 +4329,7 @@ module.exports = function(hljs) {
  ]
  };
  var METHOD = {
- className: 'function',
+ className: "function",
  beginKeywords: 'def',
  end: /[:={\[(\n;]/,
  excludeEnd: true,
@@ -5013,7 +5013,7 @@ module.exports = function(hljs) {
  // functions
  // - only from beginning of line + whitespace
  {
- className: 'function',
+ className: "function",
  begin: '^[a-zA-Z][a-zA-Z0-9_\-]*\\(.*\\)',
  illegal: '[\\n]',
  returnBegin: true,
@@ -5123,7 +5123,7 @@ module.exports = function(hljs) {
  TYPE,
  NUMBERS,
  {
- className: 'function',
+ className: "function",
  beginKeywords: 'func', end: '{', excludeEnd: true,
  contains: [
  hljs.inherit(hljs.TITLE_MODE, {
@@ -5357,8 +5357,8 @@ module.exports = function(hljs) {
  relevance: 0
  },
  {
- className: 'function',
- begin: 'function', end: /[\{;]/, excludeEnd: true,
+ className: "function",
+ begin: "function", end: /[\{;]/, excludeEnd: true,
  keywords: KEYWORDS,
  contains: [
  'self',
@@ -5775,7 +5775,7 @@ module.exports = function sub_plugin(md) {
  if (title.length === 0) { return false; }
  if (!state.env.abbreviations) { state.env.abbreviations = {}; }
  // prepend ':' to avoid conflict with Object.prototype members
- if (typeof state.env.abbreviations[':' + label] === 'undefined') {
+ if (typeof state.env.abbreviations[':' + label] === "undefined") {
  state.env.abbreviations[':' + label] = title;
  }
  state.line = startLine + 1;
@@ -7367,7 +7367,7 @@ module.exports = function sub_plugin(md) {
  if (pos >= max) { return false; }
  pos++;
  label = state.src.slice(start + 2, pos - 1);
- if (typeof state.env.footnotes.refs[':' + label] === 'undefined') { return false; }
+ if (typeof state.env.footnotes.refs[':' + label] === "undefined") { return false; }
  if (!silent) {
  if (!state.env.footnotes.list) { state.env.footnotes.list = []; }
  if (state.env.footnotes.refs[':' + label] < 0) {
@@ -7873,7 +7873,7 @@ function encode(string, exclude, keepEscaped) {
  keepEscaped = exclude;
  exclude = encode.defaultChars;
  }
- if (typeof keepEscaped === 'undefined') {
+ if (typeof keepEscaped === "undefined") {
  keepEscaped = true;
  }
  cache = getEncodeCache(exclude);

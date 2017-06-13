@@ -1445,6 +1445,6 @@ function parse($TEXT, options) {
  toplevel = new AST_Toplevel({ start: start, body: body, end: end });
  }
  return toplevel;
- })();
+ }());
 
 };

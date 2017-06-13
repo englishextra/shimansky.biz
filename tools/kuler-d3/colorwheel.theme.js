@@ -24,10 +24,10 @@ ColorWheel.extend('theme', function (colorWheel) {
  .on('focus', function () {
  // Like jQuery's .one(), attach a listener that only executes once.
  // This way the user can use the cursor normally after the initial selection.
- d3.select(this).on('mouseup', function () {
+ d3.select(this).on("mouseup", function () {
  d3.event.preventDefault();
  // Detach the listener
- d3.select(this).on('mouseup', null);
+ d3.select(this).on("mouseup", null);
  })
  this.select();
  });

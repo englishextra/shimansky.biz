@@ -906,7 +906,7 @@ var matchers = (function() {
  hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
  hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
  };
-})();
+}());
 // `stringInputToObject`
 // Permissive string parsing. Take in a number of formats, and output an object
 // based on detected format. Returns `{ r, g, b }` or `{ h, s, l }` or `{ h, s, v}`
@@ -975,11 +975,11 @@ if (typeof module !== "undefined" && module.exports) {
  module.exports = tinycolor;
 }
 // AMD/requirejs: Define the module
-else if (typeof define === 'function' && define.amd) {
+else if (typeof define === "function" && define.amd) {
  define(function () {return tinycolor;});
 }
 // Browser: Expose to window
 else {
  window.tinycolor = tinycolor;
 }
-})();
+}());

@@ -1,7 +1,7 @@
 /*global defaults:false, parse:false, Compressor:false, JS_Parse_Error:false, DefaultsError:false */
 /*jshint globalstrict:true */
 
-'use strict';
+"use strict";
 
 // Create a simple wrapper around UglifyJS
 

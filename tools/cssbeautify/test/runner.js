@@ -20,7 +20,7 @@
 /*jslint browser:true node:true */
 /*global cssbeautify:true, tests:true */
 var cssbeautify;
-if (typeof require === 'function') {
+if (typeof require === "function") {
  cssbeautify = require('../cssbeautify');
 }
 function runTest(name, input, expected, options, reporter) {
@@ -124,7 +124,7 @@ function executeCommandLine() {
  }
  });
 }
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== "undefined" && module.exports) {
  executeCommandLine();
  console.log();
 }

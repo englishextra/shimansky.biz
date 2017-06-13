@@ -215,4 +215,4 @@ TreeTransformer.prototype = new TreeWalker;
  self.value = self.value.transform(tw);
  });
 
-})();
+}());

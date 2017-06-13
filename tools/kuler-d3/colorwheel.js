@@ -4,7 +4,7 @@
 // MIT License
 (function (root, factory) {
  // AMD/requirejs: Define the module
- if (typeof define === 'function' && define.amd) {
+ if (typeof define === "function" && define.amd) {
  define(['tinycolor', 'd3'], factory);
  } else {
  // Expose to browser window
@@ -96,7 +96,7 @@
  });
  // --- Plugins ---
  for (var pluginId in ColorWheel.plugins) {
- if (typeof ColorWheel.plugins[pluginId] == 'function') {
+ if (typeof ColorWheel.plugins[pluginId] == "function") {
  ColorWheel.plugins[pluginId](this);
  }
  }

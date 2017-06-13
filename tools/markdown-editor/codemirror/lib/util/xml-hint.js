@@ -32,7 +32,7 @@
  text = text.slice(0, text.length - typed.length);
  var path = getActiveElement(cm, text) + simbol;
  var hints = CodeMirror.xmlHints[path];
- if(typeof hints === 'undefined')
+ if(typeof hints === "undefined")
  hints = [''];
  else {
  hints = hints.slice(0);
@@ -101,4 +101,4 @@
  }
  return '';
  };
-})();
+}());

@@ -86,7 +86,7 @@ window.CodeMirror = (function() {
  var pollingFast = false; // Ensures slowPoll doesn't cancel fastPoll
  var goalColumn = null;
  // Initialize the content.
- operation(function(){setValue(options.value || ""); updateInput = false;})();
+ operation(function(){setValue(options.value || ""); updateInput = false;}());
  var history = new History();
  // Register our event handlers.
  connect(scroller, "mousedown", operation(onMouseDown));
@@ -517,7 +517,7 @@ window.CodeMirror = (function() {
  operation(function() {
  var end = replaceRange(text.join(""), pos, pos);
  setSelectionUser(pos, end);
- })();
+ }());
  }
  };
  reader.readAsText(file);
@@ -665,7 +665,7 @@ window.CodeMirror = (function() {
  if (bracketHighlighted)
  operation(function(){
  if (bracketHighlighted) { bracketHighlighted(); bracketHighlighted = null; }
- })();
+ }());
  scroller.className = scroller.className.replace(" CodeMirror-focused", "");
  }
  clearInterval(blinker);
@@ -1807,7 +1807,7 @@ window.CodeMirror = (function() {
  }
  });
  if (showingTo > startFrontier && frontier >= showingFrom)
- operation(function() {changes.push({from: startFrontier, to: frontier});})();
+ operation(function() {changes.push({from: startFrontier, to: frontier});}());
  }
  function startWorker(time) {
  if (frontier < showingTo)
@@ -2976,7 +2976,7 @@ window.CodeMirror = (function() {
  for (var i = 65; i <= 90; i++) keyNames[i] = String.fromCharCode(i);
  // Function keys
  for (var i = 1; i <= 12; i++) keyNames[i + 111] = keyNames[i + 63235] = "F" + i;
- })();
+ }());
  CodeMirror.version = "2.34";
  return CodeMirror;
-})();
+}());

@@ -1301,4 +1301,4 @@ function OutputStream(options) {
  output.add_mapping(self.start, self.key);
  });
 
-})();
+}());

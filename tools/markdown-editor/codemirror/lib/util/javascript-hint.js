@@ -40,7 +40,7 @@
  } while (level > 0);
  tprop = getToken(editor, {line: cur.line, ch: tprop.start});
 				if (tprop.className == 'variable')
-					tprop.className = 'function';
+					tprop.className = "function";
 				else return; // no clue
  }
  if (!context) var context = [];
@@ -106,9 +106,9 @@
  base = 1;
  else if (obj.className == "function") {
  if (window.jQuery != null && (obj.string == '$' || obj.string == 'jQuery') &&
- (typeof window.jQuery == 'function'))
+ (typeof window.jQuery == "function"))
  base = window.jQuery();
- else if (window._ != null && (obj.string == '_') && (typeof window._ == 'function'))
+ else if (window._ != null && (obj.string == '_') && (typeof window._ == "function"))
  base = window._();
  }
  while (base != null && context.length)
@@ -124,4 +124,4 @@
  }
  return found;
  }
-})();
+}());

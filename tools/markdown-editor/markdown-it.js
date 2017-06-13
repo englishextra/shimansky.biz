@@ -1284,7 +1284,7 @@ ParserInline.prototype.skipToken = function (state) {
  len = rules.length,
  maxNesting = state.md.options.maxNesting,
  cache = state.cache;
- if (typeof cache[pos] !== 'undefined') {
+ if (typeof cache[pos] !== "undefined") {
  state.pos = cache[pos];
  return;
  }
@@ -1659,7 +1659,7 @@ Renderer.prototype.renderInline = function (tokens, options, env) {
  rules = this.rules;
  for (var i = 0, len = tokens.length; i < len; i++) {
  type = tokens[i].type;
- if (typeof rules[type] !== 'undefined') {
+ if (typeof rules[type] !== "undefined") {
  result += rules[type](tokens, i, options, env, this);
  } else {
  result += this.renderToken(tokens, i, options);
@@ -1706,7 +1706,7 @@ Renderer.prototype.render = function (tokens, options, env) {
  type = tokens[i].type;
  if (type === 'inline') {
  result += this.renderInline(tokens[i].children, options, env);
- } else if (typeof rules[type] !== 'undefined') {
+ } else if (typeof rules[type] !== "undefined") {
  result += rules[tokens[i].type](tokens, i, options, env, this);
  } else {
  result += this.renderToken(tokens, i, options, env);
@@ -2725,10 +2725,10 @@ module.exports = function reference(state, startLine, _endLine, silent) {
  /*istanbul ignore if*/
  if (silent) { return true; }
  label = normalizeReference(str.slice(1, labelEnd));
- if (typeof state.env.references === 'undefined') {
+ if (typeof state.env.references === "undefined") {
  state.env.references = {};
  }
- if (typeof state.env.references[label] === 'undefined') {
+ if (typeof state.env.references[label] === "undefined") {
  state.env.references[label] = { title: title, href: href };
  }
  state.line = startLine + lines + 1;
@@ -3799,7 +3799,7 @@ module.exports = function image(state, silent) {
  //
  // Link reference
  //
- if (typeof state.env.references === 'undefined') { return false; }
+ if (typeof state.env.references === "undefined") { return false; }
  // [foo] [bar]
  // ^^ optional whitespace (can include newlines)
  for (; pos < max; pos++) {
@@ -3936,7 +3936,7 @@ module.exports = function link(state, silent) {
  //
  // Link reference
  //
- if (typeof state.env.references === 'undefined') { return false; }
+ if (typeof state.env.references === "undefined") { return false; }
  // [foo] [bar]
  // ^^ optional whitespace (can include newlines)
  for (; pos < max; pos++) {
@@ -4797,7 +4797,7 @@ module.exports = Token;
 	// Some AMD build optimizers, like r.js, check for specific condition patterns
 	// like the following:
 	if (
-		typeof define == 'function' &&
+		typeof define == "function" &&
 		typeof define.amd == 'object' &&
 		define.amd
 	) {
@@ -5514,7 +5514,7 @@ function encode(string, exclude, keepEscaped) {
  keepEscaped = exclude;
  exclude = encode.defaultChars;
  }
- if (typeof keepEscaped === 'undefined') {
+ if (typeof keepEscaped === "undefined") {
  keepEscaped = true;
  }
  cache = getEncodeCache(exclude);

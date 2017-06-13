@@ -479,7 +479,7 @@ var base54 = (function() {
  return ret;
  };
  return base54;
-})();
+}());
 
 AST_Toplevel.DEFMETHOD("scope_warnings", function(options){
  options = defaults(options, {

@@ -657,4 +657,4 @@ var zip_inflate = function(str) {
 }
 if (! window.RawDeflate) RawDeflate = {};
 RawDeflate.inflate = zip_inflate;
-})();
+}());

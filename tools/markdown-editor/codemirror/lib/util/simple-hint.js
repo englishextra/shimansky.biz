@@ -88,4 +88,4 @@
  closeOnBackspace: true,
  closeOnTokenChange: false
  };
-})();
+}());

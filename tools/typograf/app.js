@@ -455,7 +455,7 @@ module.exports = $;
 // for iPad 1
 if(!Function.prototype.bind) {
  Function.prototype.bind = function(oThis) {
- if(typeof this !== 'function') {
+ if(typeof this !== "function") {
  throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
  }
  var aArgs = Array.prototype.slice.call(arguments, 1),

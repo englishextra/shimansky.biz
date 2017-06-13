@@ -152,7 +152,7 @@ module.exports = function sub_plugin(md) {
  if (pos >= max) { return false; }
  pos++;
  label = state.src.slice(start + 2, pos - 1);
- if (typeof state.env.footnotes.refs[':' + label] === 'undefined') { return false; }
+ if (typeof state.env.footnotes.refs[':' + label] === "undefined") { return false; }
  if (!silent) {
  if (!state.env.footnotes.list) { state.env.footnotes.list = []; }
  if (state.env.footnotes.refs[':' + label] < 0) {

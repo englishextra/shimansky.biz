@@ -936,7 +936,7 @@ jQuery.ready.promise = function( obj ) {
  // and execute any waiting functions
  jQuery.ready();
  }
- })();
+ }());
  }
  }
  }
@@ -1543,7 +1543,7 @@ jQuery.support = (function() {
  all = select = fragment = opt = a = input = null;
 
  return support;
-})();
+}());
 
 var rbrace = /(?:\{[\s\S]*\}|\[[\s\S]*\])$/,
  rmultiDash = /([A-Z])/g;
@@ -9574,7 +9574,7 @@ jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 // Limit scope pollution from any deprecated API
 // (function() {
 
-// })();
+// }());
 // Expose jQuery to the global object
 window.jQuery = window.$ = jQuery;
 

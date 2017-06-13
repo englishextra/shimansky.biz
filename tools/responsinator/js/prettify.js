@@ -665,7 +665,7 @@ var prettyPrint;
  }
  allRegexs.push(/[\0-\uffff]/);
  tokenizer = combinePrefixPatterns(allRegexs);
- })();
+ }());
  var nPatterns = fallthroughStylePatterns.length;
  /**
  * Lexes job.sourceCode and produces an output array job.decorations of
@@ -1535,7 +1535,7 @@ var prettyPrint;
  if (k < elements.length) {
  // finish up in a continuation
  setTimeout(doWork, 250);
- } else if ('function' === typeof opt_whenDone) {
+ } else if ("function" === typeof opt_whenDone) {
  opt_whenDone();
  }
  }
@@ -1588,4 +1588,4 @@ var prettyPrint;
  return PR;
  });
  }
-})();
+}());

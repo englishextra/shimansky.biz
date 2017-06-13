@@ -30,7 +30,7 @@
  autosemicolon = false,
  trimRight;
  options = arguments.length > 1 ? opt : {};
- if (typeof options.indent === 'undefined') {
+ if (typeof options.indent === "undefined") {
  options.indent = ' ';
  }
  if (typeof options.openbrace === 'string') {
@@ -384,7 +384,7 @@
  formatted = blocks.join('') + formatted;
  return formatted;
  }
- if (typeof exports !== 'undefined') {
+ if (typeof exports !== "undefined") {
  // Node.js module.
  module.exports = exports = cssbeautify;
  } else if (typeof window === 'object') {

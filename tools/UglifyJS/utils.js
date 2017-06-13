@@ -160,7 +160,7 @@ var MAP = (function(){
  function Splice(val) { this.v = val };
  function Last(val) { this.v = val };
  return MAP;
-})();
+}());
 
 function push_uniq(array, el) {
  if (array.indexOf(el) < 0)

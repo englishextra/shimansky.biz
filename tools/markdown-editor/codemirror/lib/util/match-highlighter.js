@@ -21,7 +21,7 @@
 
  function markDocument(cm, className, minChars) {
  clearMarks(cm);
-	minChars = (typeof minChars !== 'undefined' ? minChars : DEFAULT_MIN_CHARS);
+	minChars = (typeof minChars !== "undefined" ? minChars : DEFAULT_MIN_CHARS);
 	if (cm.somethingSelected() && cm.getSelection().replace(/^\s+|\s+$/g, "").length >= minChars) {
 		var state = getMatchHighlightState(cm);
 		var query = cm.getSelection();
@@ -39,4 +39,4 @@
  CodeMirror.defineExtension("matchHighlight", function(className, minChars) {
  markDocument(this, className, minChars);
  });
-})();
+}());

@@ -269,7 +269,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
  }
  function inlineNormal(stream, state) {
  var style = state.text(stream, state);
- if (typeof style !== 'undefined')
+ if (typeof style !== "undefined")
  return style;
  if (state.list) { // List marker (*, +, -, 1., etc)
  state.list = null;
