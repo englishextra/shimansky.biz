@@ -127,7 +127,7 @@ function TouchScroller(mainElement, excludedClassNames) {
 			_element.addEventListener("mousedown", function(ev) { me.OnStart(ev); }, true);
 			_element.addEventListener("mousemove", function(ev) { me.OnMove(ev); }, true);
 			_element.addEventListener("mouseup", function(ev) { me.OnEnd(ev); }, true);
-			if (typeof(document.onmousewheel)=="undefined") {
+			if (typeof(document.onmousewheel)==="undefined") {
 				if (window.opera)
 					_element.addEventListener("mousewheel", function(ev) { me.OnWheel(ev); }, false);
 				else
