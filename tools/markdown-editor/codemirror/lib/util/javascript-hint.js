@@ -89,7 +89,7 @@
  if (str.indexOf(start) == 0 && !arrayContains(found, str)) found.push(str);
  }
  function gatherCompletions(obj) {
- if (typeof obj === "string") forEach(stringProps, maybeAdd);
+ if (typeof obj == "string") forEach(stringProps, maybeAdd);
  else if (obj instanceof Array) forEach(arrayProps, maybeAdd);
  else if (obj instanceof Function) forEach(funcProps, maybeAdd);
  for (var name in obj) maybeAdd(name);
@@ -100,7 +100,7 @@
  var obj = context.pop(), base;
  if (obj.className == "variable")
  base = window[obj.string];
- else if (obj.className === "string")
+ else if (obj.className == "string")
  base = "";
  else if (obj.className == "atom")
  base = 1;

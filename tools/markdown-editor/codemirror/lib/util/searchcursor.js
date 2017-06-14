@@ -1,7 +1,7 @@
 (function(){
  function SearchCursor(cm, query, pos, caseFold) {
  this.atOccurrence = false; this.cm = cm;
- if (caseFold == null && typeof query === "string") caseFold = false;
+ if (caseFold == null && typeof query == "string") caseFold = false;
  pos = pos ? cm.clipPos(pos) : {line: 0, ch: 0};
  this.pos = {from: pos, to: pos};
  // The matches method is filled in based on the type of query.

@@ -266,7 +266,7 @@ window.Modernizr = (function( window, document, undefined ) {
  return testPropsAll('boxReflect');
  };
  tests['csstransforms'] = function () {
- return !!testPropsAll("transform");
+ return !!testPropsAll('transform');
  };
  tests['csstransforms3d'] = function () {
  var ret = !!testPropsAll('perspective');
@@ -447,9 +447,9 @@ window.Modernizr = (function( window, document, undefined ) {
  (document.createElement)('a');
  var frag = document.createDocumentFragment();
  return (
- typeof frag.cloneNode === "undefined" ||
- typeof frag.createDocumentFragment === "undefined" ||
- typeof frag.createElement === "undefined"
+ typeof frag.cloneNode == "undefined" ||
+ typeof frag.createDocumentFragment == "undefined" ||
+ typeof frag.createElement == "undefined"
  );
  }());
  } catch(e) {
@@ -464,7 +464,7 @@ window.Modernizr = (function( window, document, undefined ) {
  }
  function getElements() {
  var elements = html5.elements;
- return typeof elements === "string" ? elements.split(' ') : elements;
+ return typeof elements == 'string' ? elements.split(' ') : elements;
  }
  function getExpandoData(ownerDocument) {
  var data = expandoData[ownerDocument[expando]];

@@ -56,7 +56,7 @@
  /** Used to assign default `context` object properties */
  var contextProps = [
  'Array', 'Boolean', 'Date', "function", 'Math', 'Number', "object",
- 'RegExp', "string", '_', 'attachEvent', 'clearTimeout', 'isFinite', 'isNaN',
+ 'RegExp', 'String', '_', 'attachEvent', 'clearTimeout', 'isFinite', 'isNaN',
  'parseInt', 'setTimeout'
  ];
  /** Used to make template sourceURLs easier to identify */
@@ -97,7 +97,7 @@
  "function": true,
  "object": true,
  'number': false,
- "string": false,
+ 'string': false,
  "undefined": false
  };
  /** Used to escape characters for inclusion in compiled string literals */
@@ -159,7 +159,7 @@
  if (type == 'boolean' || value == null) {
  return cache[value] ? 0 : -1;
  }
- if (type != 'number' && type != "string") {
+ if (type != 'number' && type != 'string') {
  type = "object";
  }
  var key = type == 'number' ? value : keyPrefix + value;
@@ -180,7 +180,7 @@
  if (type == 'boolean' || value == null) {
  cache[value] = true;
  } else {
- if (type != 'number' && type != "string") {
+ if (type != 'number' && type != 'string') {
  type = "object";
  }
  var key = type == 'number' ? value : keyPrefix + value,
@@ -221,10 +221,10 @@
  var value = ac[index],
  other = bc[index];
  if (value !== other) {
- if (value > other || typeof value === "undefined") {
+ if (value > other || typeof value == "undefined") {
  return 1;
  }
- if (value < other || typeof other === "undefined") {
+ if (value < other || typeof other == "undefined") {
  return -1;
  }
  }
@@ -302,7 +302,7 @@
  'number': null,
  "object": null,
  'push': null,
- "string": null,
+ 'string': null,
  'true': false,
  "undefined": false,
  'value': null
@@ -351,7 +351,7 @@
  */
  function slice(array, start, end) {
  start || (start = 0);
- if (typeof end === "undefined") {
+ if (typeof end == "undefined") {
  end = array ? array.length : 0;
  }
  var index = -1,
@@ -557,7 +557,7 @@
  * @memberOf _.support
  * @type boolean
  */
- support.funcNames = typeof Function.name === "string";
+ support.funcNames = typeof Function.name == 'string';
  /**
  * By default, the template delimiters used by Lo-Dash are similar to those in
  * embedded Ruby (ERB). Change the following template settings to use alternative
@@ -774,11 +774,11 @@
  return identity;
  }
  // exit early for no `thisArg` or already bound by `Function#bind`
- if (typeof thisArg === "undefined" || !('prototype' in func)) {
+ if (typeof thisArg == "undefined" || !('prototype' in func)) {
  return func;
  }
  var bindData = func.__bindData__;
- if (typeof bindData === "undefined") {
+ if (typeof bindData == "undefined") {
  if (support.funcNames) {
  bindData = !func.name;
  }
@@ -1148,7 +1148,7 @@
  else {
  if (callback) {
  result = callback(value, source);
- if (typeof result === "undefined") {
+ if (typeof result == "undefined") {
  result = source;
  }
  }
@@ -1388,7 +1388,7 @@
  forIn(value, function(value, key) {
  result = key;
  });
- return typeof result === "undefined" || hasOwnProperty.call(value, result);
+ return typeof result == "undefined" || hasOwnProperty.call(value, result);
  }
  /**
  * Used by `unescape` to convert HTML entities to characters.
@@ -1525,7 +1525,7 @@
  * // => { 'name': 'fred', 'employer': 'slate' }
  *
  * var defaults = _.partialRight(_.assign, function(a, b) {
- * return typeof a === "undefined" ? b : a;
+ * return typeof a == "undefined" ? b : a;
  * });
  *
  * var object = { 'name': 'barney' };
@@ -1720,7 +1720,7 @@
  length = ownProps ? ownProps.length : 0;
  while (++ownIndex < length) {
  index = ownProps[ownIndex];
- if (typeof result[index] === "undefined") result[index] = iterable[index];
+ if (typeof result[index] == "undefined") result[index] = iterable[index];
  }
  }
  }
@@ -1865,7 +1865,7 @@
  var index, iterable = collection, result = iterable;
  if (!iterable) return result;
  if (!objectTypes[typeof iterable]) return result;
- callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  for (index in iterable) {
  if (callback(iterable[index], index, collection) === false) return result;
  }
@@ -1938,7 +1938,7 @@
  var index, iterable = collection, result = iterable;
  if (!iterable) return result;
  if (!objectTypes[typeof iterable]) return result;
- callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  var ownIndex = -1,
  ownProps = objectTypes[typeof iterable] && keys(iterable),
  length = ownProps ? ownProps.length : 0;
@@ -2377,7 +2377,7 @@
  * // => true
  */
  function isString(value) {
- return typeof value === "string" ||
+ return typeof value == 'string' ||
  value && typeof value == "object" && toString.call(value) == stringClass || false;
  }
  /**
@@ -2394,7 +2394,7 @@
  * // => true
  */
  function isUndefined(value) {
- return typeof value === "undefined";
+ return typeof value == "undefined";
  }
  /**
  * Creates an object with the same keys as `object` and values generated by
@@ -3076,7 +3076,7 @@
  function forEach(collection, callback, thisArg) {
  var index = -1,
  length = collection ? collection.length : 0;
- callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  if (typeof length == 'number') {
  while (++index < length) {
  if (callback(collection[index], index, collection) === false) {
@@ -3107,7 +3107,7 @@
  */
  function forEachRight(collection, callback, thisArg) {
  var length = collection ? collection.length : 0;
- callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  if (typeof length == 'number') {
  while (length--) {
  if (callback(collection[length], length, collection) === false) {

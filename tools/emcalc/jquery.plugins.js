@@ -63,7 +63,7 @@ jQuery.cookie = function(name, value, options) {
  f = s[typeof v];
  if (f) {
  v = f(v);
- if (typeof v === "string") {
+ if (typeof v == 'string') {
  if (b) {
  a[a.length] = ',';
  }
@@ -95,7 +95,7 @@ jQuery.cookie = function(name, value, options) {
  f = s[typeof v];
  if (f) {
  v = f(v);
- if (typeof v === "string") {
+ if (typeof v == 'string') {
  if (b) {
  a[a.length] = ',';
  }
@@ -109,7 +109,7 @@ jQuery.cookie = function(name, value, options) {
  }
  return 'null';
  },
- "string": function (x) {
+ 'string': function (x) {
  if (/["\\\x00-\x1f]/.test(x)) {
  x = x.replace(/([\x00-\x1f\\"])/g, function(a, b) {
  var c = m[b];

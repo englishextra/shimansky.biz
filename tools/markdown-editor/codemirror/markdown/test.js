@@ -266,32 +266,32 @@ MT.testMode(
  'listAsterisk',
  '* foo\n* bar',
  [
- "string", '* foo',
- "string", '* bar'
+ 'string', '* foo',
+ 'string', '* bar'
  ]
 );
 MT.testMode(
  'listPlus',
  '+ foo\n+ bar',
  [
- "string", '+ foo',
- "string", '+ bar'
+ 'string', '+ foo',
+ 'string', '+ bar'
  ]
 );
 MT.testMode(
  'listDash',
  '- foo\n- bar',
  [
- "string", '- foo',
- "string", '- bar'
+ 'string', '- foo',
+ 'string', '- bar'
  ]
 );
 MT.testMode(
  'listNumber',
  '1. foo\n2. bar',
  [
- "string", '1. foo',
- "string", '2. bar'
+ 'string', '1. foo',
+ 'string', '2. bar'
  ]
 );
 // Formatting in lists (*)
@@ -299,20 +299,20 @@ MT.testMode(
  'listAsteriskFormatting',
  '* *foo* bar\n\n* **foo** bar\n\n* ***foo*** bar\n\n* `foo` bar',
  [
- "string", '* ',
+ 'string', '* ',
  'string em', '*foo*',
- "string", ' bar',
- "string", '* ',
+ 'string', ' bar',
+ 'string', '* ',
  'string strong', '**foo**',
- "string", ' bar',
- "string", '* ',
+ 'string', ' bar',
+ 'string', '* ',
  'string strong', '**',
  'string emstrong', '*foo**',
  'string em', '*',
- "string", ' bar',
- "string", '* ',
+ 'string', ' bar',
+ 'string', '* ',
  'string comment', '`foo`',
- "string", ' bar'
+ 'string', ' bar'
  ]
 );
 // Formatting in lists (+)
@@ -320,20 +320,20 @@ MT.testMode(
  'listPlusFormatting',
  '+ *foo* bar\n\n+ **foo** bar\n\n+ ***foo*** bar\n\n+ `foo` bar',
  [
- "string", '+ ',
+ 'string', '+ ',
  'string em', '*foo*',
- "string", ' bar',
- "string", '+ ',
+ 'string', ' bar',
+ 'string', '+ ',
  'string strong', '**foo**',
- "string", ' bar',
- "string", '+ ',
+ 'string', ' bar',
+ 'string', '+ ',
  'string strong', '**',
  'string emstrong', '*foo**',
  'string em', '*',
- "string", ' bar',
- "string", '+ ',
+ 'string', ' bar',
+ 'string', '+ ',
  'string comment', '`foo`',
- "string", ' bar'
+ 'string', ' bar'
  ]
 );
 // Formatting in lists (-)
@@ -341,20 +341,20 @@ MT.testMode(
  'listDashFormatting',
  '- *foo* bar\n\n- **foo** bar\n\n- ***foo*** bar\n\n- `foo` bar',
  [
- "string", '- ',
+ 'string', '- ',
  'string em', '*foo*',
- "string", ' bar',
- "string", '- ',
+ 'string', ' bar',
+ 'string', '- ',
  'string strong', '**foo**',
- "string", ' bar',
- "string", '- ',
+ 'string', ' bar',
+ 'string', '- ',
  'string strong', '**',
  'string emstrong', '*foo**',
  'string em', '*',
- "string", ' bar',
- "string", '- ',
+ 'string', ' bar',
+ 'string', '- ',
  'string comment', '`foo`',
- "string", ' bar'
+ 'string', ' bar'
  ]
 );
 // Formatting in lists (1.)
@@ -362,20 +362,20 @@ MT.testMode(
  'listNumberFormatting',
  '1. *foo* bar\n\n2. **foo** bar\n\n3. ***foo*** bar\n\n4. `foo` bar',
  [
- "string", '1. ',
+ 'string', '1. ',
  'string em', '*foo*',
- "string", ' bar',
- "string", '2. ',
+ 'string', ' bar',
+ 'string', '2. ',
  'string strong', '**foo**',
- "string", ' bar',
- "string", '3. ',
+ 'string', ' bar',
+ 'string', '3. ',
  'string strong', '**',
  'string emstrong', '*foo**',
  'string em', '*',
- "string", ' bar',
- "string", '4. ',
+ 'string', ' bar',
+ 'string', '4. ',
  'string comment', '`foo`',
- "string", ' bar'
+ 'string', ' bar'
  ]
 );
 // Paragraph lists
@@ -383,8 +383,8 @@ MT.testMode(
  'listParagraph',
  '* foo\n\n* bar',
  [
- "string", '* foo',
- "string", '* bar'
+ 'string', '* foo',
+ 'string', '* bar'
  ]
 );
 // Multi-paragraph lists
@@ -394,10 +394,10 @@ MT.testMode(
  'listMultiParagraph',
  '* foo\n\n* bar\n\n hello',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, ' ',
- "string", 'hello'
+ 'string', 'hello'
  ]
 );
 // 4 spaces, extra blank lines (should still be list, per Dingus)
@@ -405,10 +405,10 @@ MT.testMode(
  'listMultiParagraphExtra',
  '* foo\n\n* bar\n\n\n hello',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, ' ',
- "string", 'hello'
+ 'string', 'hello'
  ]
 );
 // 4 spaces, plus 1 space (should still be list, per Dingus)
@@ -416,12 +416,12 @@ MT.testMode(
  'listMultiParagraphExtraSpace',
  '* foo\n\n* bar\n\n hello\n\n world',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, ' ',
- "string", 'hello',
+ 'string', 'hello',
  null, ' ',
- "string", 'world'
+ 'string', 'world'
  ]
 );
 // 1 tab
@@ -429,10 +429,10 @@ MT.testMode(
  'listTab',
  '* foo\n\n* bar\n\n\thello',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, '\t',
- "string", 'hello'
+ 'string', 'hello'
  ]
 );
 // No indent
@@ -440,8 +440,8 @@ MT.testMode(
  'listNoIndent',
  '* foo\n\n* bar\n\nhello',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, 'hello'
  ]
 );
@@ -450,8 +450,8 @@ MT.testMode(
  'blockquote',
  '* foo\n\n* bar\n\n > hello',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, ' ',
  'string quote', '> hello'
  ]
@@ -461,12 +461,12 @@ MT.testMode(
  'blockquoteCode',
  '* foo\n\n* bar\n\n > hello\n\n world',
  [
- "string", '* foo',
- "string", '* bar',
+ 'string', '* foo',
+ 'string', '* bar',
  null, ' ',
  'comment', '> hello',
  null, ' ',
- "string", 'world'
+ 'string', 'world'
  ]
 );
 // Code block followed by text
@@ -474,13 +474,13 @@ MT.testMode(
  'blockquoteCodeText',
  '* foo\n\n bar\n\n hello\n\n world',
  [
- "string", '* foo',
+ 'string', '* foo',
  null, ' ',
- "string", 'bar',
+ 'string', 'bar',
  null, ' ',
  'comment', 'hello',
  null, ' ',
- "string", 'world'
+ 'string', 'world'
  ]
 );
 // Nested list
@@ -490,9 +490,9 @@ MT.testMode(
  'listAsteriskNested',
  '* foo\n\n * bar',
  [
- "string", '* foo',
+ 'string', '* foo',
  null, ' ',
- "string", '* bar'
+ 'string', '* bar'
  ]
 );
 // +
@@ -500,9 +500,9 @@ MT.testMode(
  'listPlusNested',
  '+ foo\n\n + bar',
  [
- "string", '+ foo',
+ 'string', '+ foo',
  null, ' ',
- "string", '+ bar'
+ 'string', '+ bar'
  ]
 );
 // -
@@ -510,9 +510,9 @@ MT.testMode(
  'listDashNested',
  '- foo\n\n - bar',
  [
- "string", '- foo',
+ 'string', '- foo',
  null, ' ',
- "string", '- bar'
+ 'string', '- bar'
  ]
 );
 // 1.
@@ -520,9 +520,9 @@ MT.testMode(
  'listNumberNested',
  '1. foo\n\n 2. bar',
  [
- "string", '1. foo',
+ 'string', '1. foo',
  null, ' ',
- "string", '2. bar'
+ 'string', '2. bar'
  ]
 );
 // Mixed
@@ -530,13 +530,13 @@ MT.testMode(
  'listMixed',
  '* foo\n\n + bar\n\n - hello\n\n 1. world',
  [
- "string", '* foo',
+ 'string', '* foo',
  null, ' ',
- "string", '+ bar',
+ 'string', '+ bar',
  null, ' ',
- "string", '- hello',
+ 'string', '- hello',
  null, ' ',
- "string", '1. world'
+ 'string', '1. world'
  ]
 );
 // Blockquote
@@ -544,9 +544,9 @@ MT.testMode(
  'listBlockquote',
  '* foo\n\n + bar\n\n > hello',
  [
- "string", '* foo',
+ 'string', '* foo',
  null, ' ',
- "string", '+ bar',
+ 'string', '+ bar',
  null, ' ',
  'quote string', '> hello'
  ]
@@ -556,9 +556,9 @@ MT.testMode(
  'listCode',
  '* foo\n\n + bar\n\n hello',
  [
- "string", '* foo',
+ 'string', '* foo',
  null, ' ',
- "string", '+ bar',
+ 'string', '+ bar',
  null, ' ',
  'comment', 'hello'
  ]
@@ -568,7 +568,7 @@ MT.testMode(
  'listCodeText',
  '* foo\n\n bar\n\nhello',
  [
- "string", '* foo',
+ 'string', '* foo',
  null, ' ',
  'comment', 'bar',
  null, 'hello'
@@ -617,7 +617,7 @@ MT.testMode(
  '[foo](http://example.com/ "bar") hello',
  [
  'link', '[foo]',
- "string", '(http://example.com/ "bar")',
+ 'string', '(http://example.com/ "bar")',
  null, ' hello'
  ]
 );
@@ -627,7 +627,7 @@ MT.testMode(
  '[foo](http://example.com/) bar',
  [
  'link', '[foo]',
- "string", '(http://example.com/)',
+ 'string', '(http://example.com/)',
  null, ' bar'
  ]
 );
@@ -637,7 +637,7 @@ MT.testMode(
  '[foo][bar] hello',
  [
  'link', '[foo]',
- "string", '[bar]',
+ 'string', '[bar]',
  null, ' hello'
  ]
 );
@@ -649,7 +649,7 @@ MT.testMode(
  [
  'link', '[foo]',
  null, ' ',
- "string", '[bar]',
+ 'string', '[bar]',
  null, ' hello'
  ]
 );
@@ -667,7 +667,7 @@ MT.testMode(
  '[foo][] hello',
  [
  'link', '[foo]',
- "string", '[]',
+ 'string', '[]',
  null, ' hello'
  ]
 );
@@ -682,7 +682,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/'
+ 'string', 'http://example.com/'
  ]
 );
 // Space in ID and title
@@ -692,7 +692,7 @@ MT.testMode(
  [
  'link', '[foo bar]:',
  null, ' ',
- "string", 'http://example.com/ "hello"'
+ 'string', 'http://example.com/ "hello"'
  ]
 );
 // Double title
@@ -702,7 +702,7 @@ MT.testMode(
  [
  'link', '[foo bar]:',
  null, ' ',
- "string", 'http://example.com/ "hello"',
+ 'string', 'http://example.com/ "hello"',
  null, ' "world"'
  ]
 );
@@ -713,7 +713,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/ "bar"'
+ 'string', 'http://example.com/ "bar"'
  ]
 );
 // Single quotes around title
@@ -723,7 +723,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/ \'bar\''
+ 'string', 'http://example.com/ \'bar\''
  ]
 );
 // Parentheses around title
@@ -733,7 +733,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/ (bar)'
+ 'string', 'http://example.com/ (bar)'
  ]
 );
 // Invalid title
@@ -743,7 +743,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/',
+ 'string', 'http://example.com/',
  null, ' bar'
  ]
 );
@@ -754,7 +754,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", '<http://example.com/> "bar"'
+ 'string', '<http://example.com/> "bar"'
  ]
 );
 // Title on next line per documentation (double quotes)
@@ -764,8 +764,8 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/',
- "string", '"bar"',
+ 'string', 'http://example.com/',
+ 'string', '"bar"',
  null, ' hello'
  ]
 );
@@ -776,8 +776,8 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/',
- "string", '\'bar\'',
+ 'string', 'http://example.com/',
+ 'string', '\'bar\'',
  null, ' hello'
  ]
 );
@@ -788,8 +788,8 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/',
- "string", '(bar)',
+ 'string', 'http://example.com/',
+ 'string', '(bar)',
  null, ' hello'
  ]
 );
@@ -800,7 +800,7 @@ MT.testMode(
  [
  'link', '[foo]:',
  null, ' ',
- "string", 'http://example.com/',
+ 'string', 'http://example.com/',
  null, '(bar" hello'
  ]
 );

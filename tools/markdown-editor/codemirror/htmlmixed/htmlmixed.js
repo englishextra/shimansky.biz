@@ -35,7 +35,7 @@ CodeMirror.defineMode("htmlmixed", function(config, parserConfig) {
  if (scriptType && /[\"\']/.test(scriptType.charAt(0))) scriptType = scriptType.slice(1, scriptType.length - 1);
  for (var i = 0; i < scriptTypes.length; ++i) {
  var tp = scriptTypes[i];
- if (typeof tp.matches === "string" ? scriptType == tp.matches : tp.matches.test(scriptType)) {
+ if (typeof tp.matches == "string" ? scriptType == tp.matches : tp.matches.test(scriptType)) {
  if (tp.mode) {
  state.token = script;
  state.localMode = tp.mode;

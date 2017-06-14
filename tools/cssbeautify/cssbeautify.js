@@ -33,7 +33,7 @@
  if (typeof options.indent === "undefined") {
  options.indent = ' ';
  }
- if (typeof options.openbrace === "string") {
+ if (typeof options.openbrace === 'string') {
  openbracesuffix = (options.openbrace === 'end-of-line');
  }
  if (typeof options.autosemicolon === 'boolean') {

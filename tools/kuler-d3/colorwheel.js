@@ -108,7 +108,7 @@
  if (data.constructor === Array) {
  var data = data.map(function (datum) {
  var d;
- if (typeof datum === "string") {
+ if (typeof datum === 'string') {
  d = tinycolor(datum).toHsv();
  } else if (typeof datum === "object") {
  d = tinycolor(datum.colorString).toHsv();

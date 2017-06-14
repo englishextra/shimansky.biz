@@ -14,7 +14,7 @@ StringStream.prototype = {
  },
  eat: function(match) {
  var ch = this.string.charAt(this.pos);
- if (typeof match === "string") var ok = ch == match;
+ if (typeof match == "string") var ok = ch == match;
  else var ok = ch && (match.test ? match.test(ch) : match(ch));
  if (ok) {++this.pos; return ch;}
  },
@@ -37,7 +37,7 @@ StringStream.prototype = {
  column: function() {return this.start;},
  indentation: function() {return 0;},
  match: function(pattern, consume, caseInsensitive) {
- if (typeof pattern === "string") {
+ if (typeof pattern == "string") {
  function cased(str) {return caseInsensitive ? str.toLowerCase() : str;}
  if (cased(this.string).indexOf(cased(pattern), this.pos) == this.pos) {
  if (consume !== false) this.pos += pattern.length;
@@ -60,9 +60,9 @@ var modes = exports.modes = {}, mimeModes = exports.mimeModes = {};
 exports.defineMode = function(name, mode) { modes[name] = mode; };
 exports.defineMIME = function(mime, spec) { mimeModes[mime] = spec; };
 exports.getMode = function(options, spec) {
- if (typeof spec === "string" && mimeModes.hasOwnProperty(spec))
+ if (typeof spec == "string" && mimeModes.hasOwnProperty(spec))
  spec = mimeModes[spec];
- if (typeof spec === "string")
+ if (typeof spec == "string")
  var mname = spec, config = {};
  else if (spec != null)
  var mname = spec.name, config = spec;

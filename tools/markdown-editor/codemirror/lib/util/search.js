@@ -14,7 +14,7 @@
  }
  function getSearchCursor(cm, query, pos) {
  // Heuristic: if the query string is all lowercase, do a case insensitive search.
- return cm.getSearchCursor(query, pos, typeof query === "string" && query == query.toLowerCase());
+ return cm.getSearchCursor(query, pos, typeof query == "string" && query == query.toLowerCase());
  }
  function dialog(cm, text, shortText, f) {
  if (cm.openDialog) cm.openDialog(text, f);
@@ -96,7 +96,7 @@
  [function() {doReplace(match);}, advance]);
  }
  function doReplace(match) {
- cursor.replace(typeof query === "string" ? text :
+ cursor.replace(typeof query == "string" ? text :
  text.replace(/\$(\d)/, function(w, i) {return match[i];}));
  advance();
  }

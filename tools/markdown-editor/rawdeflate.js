@@ -1474,7 +1474,7 @@ var zip_deflate = function(str, level) {
  var i, j;
  zip_deflate_data = str;
  zip_deflate_pos = 0;
- if(typeof level === "undefined")
+ if(typeof level == "undefined")
 	level = zip_DEFAULT_LEVEL;
  zip_deflate_start(level);
  var buff = new Array(1024);

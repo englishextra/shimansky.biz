@@ -403,7 +403,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
  cx.marked = "property";
  if (value == "get" || value == "set") return cont(getterSetter);
  return cont(afterprop);
- } else if (type == "number" || type === "string") {
+ } else if (type == "number" || type == "string") {
  cx.marked = jsonldMode ? "property" : (cx.style + " property");
  return cont(afterprop);
  } else if (type == "jsonld-keyword") {
@@ -536,7 +536,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
  return cont();
  }
  function afterModule(type, value) {
- if (type === "string") return cont(statement);
+ if (type == "string") return cont(statement);
  if (type == "variable") { register(value); return cont(maybeFrom); }
  }
  function afterExport(_type, value) {
@@ -545,7 +545,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
  return pass(statement);
  }
  function afterImport(type) {
- if (type === "string") return cont();
+ if (type == "string") return cont();
  return pass(importSpec, maybeFrom);
  }
  function importSpec(type, value) {

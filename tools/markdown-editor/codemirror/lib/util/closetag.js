@@ -119,7 +119,7 @@
 	}
 	
 	function shouldIndent(cm, indent, tagName) {
-		if (typeof indent === "undefined" || indent == null || indent == true) {
+		if (typeof indent == "undefined" || indent == null || indent == true) {
 			indent = cm.getOption('closeTagIndent');
 		}
 		if (!indent) {
@@ -132,7 +132,7 @@
 		if (cm.getOption('mode') == 'xml') {
 			return true; // always close xml tags
 		}
-		if (typeof vd === "undefined" || vd == null) {
+		if (typeof vd == "undefined" || vd == null) {
 			vd = cm.getOption('closeTagVoid');
 		}
 		if (!vd) {
