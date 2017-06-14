@@ -467,7 +467,7 @@ $SQLITE_CACHE = null;
 					 || !self.WeakMap
 					 || !self.MutationObserver
 					 ) {
-					if((/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){loadJS("../cdn/polyfills/js/polyfills.js");}else{loadJS("../cdn/polyfills/js/polyfills.min.js");}
+					if((/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){loadJS("../cdn/polyfills/js/polyfills.fixed.js");}else{loadJS("../cdn/polyfills/js/polyfills.fixed.min.js");}
 				}
 		</script>
 		<script>

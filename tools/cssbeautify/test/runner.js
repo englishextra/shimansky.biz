@@ -26,10 +26,10 @@ if (typeof require === "function") {
 function runTest(name, input, expected, options, reporter) {
  "use strict";
  var actual;
- if (typeof input !== 'string') {
+ if (typeof input !== "string") {
  input = input.join('\n');
  }
- if (typeof expected !== 'string') {
+ if (typeof expected !== "string") {
  expected = expected.join('\n');
  }
  actual = cssbeautify(input, options);

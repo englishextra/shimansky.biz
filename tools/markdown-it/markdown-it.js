@@ -106,7 +106,7 @@ function assign(obj /*from1, from2, from3, ...*/) {
  var sources = Array.prototype.slice.call(arguments, 1);
  sources.forEach(function (source) {
  if (!source) { return; }
- if (typeof source !== 'object') {
+ if (typeof source !== "object") {
  throw new TypeError(source + 'must be object');
  }
  Object.keys(source).forEach(function (key) {
@@ -4603,11 +4603,11 @@ module.exports = Token;
 /*! https://mths.be/punycode v1.4.1 by @mathias */
 (function(root) {
 	/** Detect free variables */
-	var freeExports = typeof exports == 'object' && exports &&
+	var freeExports = typeof exports == "object" && exports &&
 		!exports.nodeType && exports;
-	var freeModule = typeof module == 'object' && module &&
+	var freeModule = typeof module == "object" && module &&
 		!module.nodeType && module;
-	var freeGlobal = typeof global == 'object' && global;
+	var freeGlobal = typeof global == "object" && global;
 	if (
 		freeGlobal.global === freeGlobal ||
 		freeGlobal.window === freeGlobal ||
@@ -5050,7 +5050,7 @@ module.exports = Token;
 	// like the following:
 	if (
 		typeof define == "function" &&
-		typeof define.amd == 'object' &&
+		typeof define.amd == "object" &&
 		define.amd
 	) {
 		define('punycode', function() {
@@ -5727,7 +5727,7 @@ function getDecodeCache(exclude) {
 //
 function decode(string, exclude) {
  var cache;
- if (typeof exclude !== 'string') {
+ if (typeof exclude !== "string") {
  exclude = decode.defaultChars;
  }
  cache = getDecodeCache(exclude);
@@ -5828,7 +5828,7 @@ function getEncodeCache(exclude) {
 function encode(string, exclude, keepEscaped) {
  var i, l, code, nextCode, cache,
  result = '';
- if (typeof exclude !== 'string') {
+ if (typeof exclude !== "string") {
  // encode(string, keepEscaped)
  keepEscaped = exclude;
  exclude = encode.defaultChars;

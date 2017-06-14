@@ -549,7 +549,7 @@ window.CodeMirror = (function() {
  e.dataTransfer.setDragImage(elt('img'), 0, 0);
  }
  function doHandleBinding(bound, dropShift) {
- if (typeof bound == "string") {
+ if (typeof bound === "string") {
  bound = commands[bound];
  if (!bound) return false;
  }
@@ -589,7 +589,7 @@ window.CodeMirror = (function() {
  handled = lookupKey("Shift-" + name, options.extraKeys, options.keyMap,
  function(b) {return doHandleBinding(b, true);}, stop)
  || lookupKey(name, options.extraKeys, options.keyMap, function(b) {
- if (typeof b == "string" && /^go[A-Z]/.test(b)) return doHandleBinding(b);
+ if (typeof b === "string" && /^go[A-Z]/.test(b)) return doHandleBinding(b);
  }, stop);
  } else {
  handled = lookupKey(name, options.extraKeys, options.keyMap, doHandleBinding, stop);
@@ -1933,11 +1933,11 @@ window.CodeMirror = (function() {
  mimeModes[mime] = spec;
  };
  CodeMirror.resolveMode = function(spec) {
- if (typeof spec == "string" && mimeModes.hasOwnProperty(spec))
+ if (typeof spec === "string" && mimeModes.hasOwnProperty(spec))
  spec = mimeModes[spec];
- else if (typeof spec == "string" && /^[\w\-]+\/[\w\-]+\+xml$/.test(spec))
+ else if (typeof spec === "string" && /^[\w\-]+\/[\w\-]+\+xml$/.test(spec))
  return CodeMirror.resolveMode("application/xml");
- if (typeof spec == "string") return {name: spec};
+ if (typeof spec === "string") return {name: spec};
  else return spec || {name: "null"};
  };
  CodeMirror.getMode = function(options, spec) {
@@ -2062,7 +2062,7 @@ window.CodeMirror = (function() {
  "Alt-D": "delWordRight", "Alt-Backspace": "delWordLeft", "Ctrl-K": "killLine", "Ctrl-T": "transposeChars"
  };
  function getKeyMap(val) {
- if (typeof val == "string") return keyMap[val];
+ if (typeof val === "string") return keyMap[val];
  else return val;
  }
  function lookupKey(name, extraMap, map, handle, stop) {
@@ -2193,7 +2193,7 @@ window.CodeMirror = (function() {
  },
  eat: function(match) {
  var ch = this.string.charAt(this.pos);
- if (typeof match == "string") var ok = ch == match;
+ if (typeof match === "string") var ok = ch == match;
  else var ok = ch && (match.test ? match.test(ch) : match(ch));
  if (ok) {++this.pos; return ch;}
  },
@@ -2216,7 +2216,7 @@ window.CodeMirror = (function() {
  column: function() {return countColumn(this.string, this.start, this.tabSize);},
  indentation: function() {return countColumn(this.string, null, this.tabSize);},
  match: function(pattern, consume, caseInsensitive) {
- if (typeof pattern == "string") {
+ if (typeof pattern === "string") {
  var cased = function(str) {return caseInsensitive ? str.toLowerCase() : str;};
  if (cased(this.string).indexOf(cased(pattern), this.pos) == this.pos) {
  if (consume !== false) this.pos += pattern.length;
@@ -2321,8 +2321,8 @@ window.CodeMirror = (function() {
  }
  // hl stands for history-line, a data structure that can be either a
  // string (line without markers) or a {text, markedSpans} object.
- function hlText(val) { return typeof val == "string" ? val : val.text; }
- function hlSpans(val) { return typeof val == "string" ? null : val.markedSpans; }
+ function hlText(val) { return typeof val === "string" ? val : val.text; }
+ function hlSpans(val) { return typeof val === "string" ? null : val.markedSpans; }
  function newHL(text, spans) { return spans ? {text: text, markedSpans: spans} : text; }
  function detachMarkedSpans(line) {
  var spans = line.markedSpans;
@@ -2893,7 +2893,7 @@ window.CodeMirror = (function() {
  var e = document.createElement(tag);
  if (className) e.className = className;
  if (style) e.style.cssText = style;
- if (typeof content == "string") setTextContent(e, content);
+ if (typeof content === "string") setTextContent(e, content);
  else if (content) for (var i = 0; i < content.length; ++i) e.appendChild(content[i]);
  return e;
  }

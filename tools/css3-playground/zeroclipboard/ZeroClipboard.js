@@ -9,7 +9,7 @@ var ZeroClipboard = {
 	
 	$: function(thingy) {
 		// simple DOM lookup utility function
-		if (typeof(thingy) == 'string') thingy = document.getElementById(thingy);
+		if (typeof(thingy) === "string") thingy = document.getElementById(thingy);
 		if (!thingy.addClass) {
 			// extend element with a few useful methods
 			thingy.hide = function () { this.style.display = 'none'; };
@@ -104,10 +104,10 @@ ZeroClipboard.Client.prototype = {
 			zIndex = parseInt(this.domElement.style.zIndex, 10) + 1;
 		}
 		
-		if (typeof(appendElem) == 'string') {
+		if (typeof(appendElem) === "string") {
 			appendElem = ZeroClipboard.$(appendElem);
 		}
-		else if (typeof(appendElem) == "undefined") {
+		else if (typeof(appendElem) === "undefined") {
 			appendElem = document.getElementsByTagName('body')[0];
 		}
 		
@@ -124,7 +124,7 @@ ZeroClipboard.Client.prototype = {
 		style.height = '' + box.height + 'px';
 		style.zIndex = zIndex;
 		
-		if (typeof(stylesToAdd) == 'object') {
+		if (typeof(stylesToAdd) == "object") {
 			for (addedStyle in stylesToAdd) {
 				style[addedStyle] = stylesToAdd[addedStyle];
 			}
@@ -292,11 +292,11 @@ ZeroClipboard.Client.prototype = {
 					// actual function reference
 					func(this, args);
 				}
-				else if ((typeof(func) == 'object') && (func.length == 2)) {
+				else if ((typeof(func) == "object") && (func.length == 2)) {
 					// PHP style object + method, i.e. [myObject, 'myMethod']
 					func[0][ func[1] ](this, args);
 				}
-				else if (typeof(func) == 'string') {
+				else if (typeof(func) === "string") {
 					// name of function
 					window[func](this, args);
 				}

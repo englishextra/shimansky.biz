@@ -55,8 +55,8 @@
  var reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
  /** Used to assign default `context` object properties */
  var contextProps = [
- 'Array', 'Boolean', 'Date', "function", 'Math', 'Number', 'Object',
- 'RegExp', 'String', '_', 'attachEvent', 'clearTimeout', 'isFinite', 'isNaN',
+ 'Array', 'Boolean', 'Date', "function", 'Math', 'Number', "object",
+ 'RegExp', "string", '_', 'attachEvent', 'clearTimeout', 'isFinite', 'isNaN',
  'parseInt', 'setTimeout'
  ];
  /** Used to make template sourceURLs easier to identify */
@@ -95,9 +95,9 @@
  var objectTypes = {
  'boolean': false,
  "function": true,
- 'object': true,
+ "object": true,
  'number': false,
- 'string': false,
+ "string": false,
  "undefined": false
  };
  /** Used to escape characters for inclusion in compiled string literals */
@@ -159,12 +159,12 @@
  if (type == 'boolean' || value == null) {
  return cache[value] ? 0 : -1;
  }
- if (type != 'number' && type != 'string') {
- type = 'object';
+ if (type != 'number' && type != "string") {
+ type = "object";
  }
  var key = type == 'number' ? value : keyPrefix + value;
  cache = (cache = cache[type]) && cache[key];
- return type == 'object'
+ return type == "object"
  ? (cache && baseIndexOf(cache, value) > -1 ? 0 : -1)
  : (cache ? 0 : -1);
  }
@@ -180,12 +180,12 @@
  if (type == 'boolean' || value == null) {
  cache[value] = true;
  } else {
- if (type != 'number' && type != 'string') {
- type = 'object';
+ if (type != 'number' && type != "string") {
+ type = "object";
  }
  var key = type == 'number' ? value : keyPrefix + value,
  typeCache = cache[type] || (cache[type] = {});
- if (type == 'object') {
+ if (type == "object") {
  (typeCache[key] || (typeCache[key] = [])).push(value);
  } else {
  typeCache[key] = true;
@@ -221,10 +221,10 @@
  var value = ac[index],
  other = bc[index];
  if (value !== other) {
- if (value > other || typeof value == "undefined") {
+ if (value > other || typeof value === "undefined") {
  return 1;
  }
- if (value < other || typeof other == "undefined") {
+ if (value < other || typeof other === "undefined") {
  return -1;
  }
  }
@@ -250,8 +250,8 @@
  first = array[0],
  mid = array[(length / 2) | 0],
  last = array[length - 1];
- if (first && typeof first == 'object' &&
- mid && typeof mid == 'object' && last && typeof last == 'object') {
+ if (first && typeof first == "object" &&
+ mid && typeof mid == "object" && last && typeof last == "object") {
  return false;
  }
  var cache = getObject();
@@ -300,9 +300,9 @@
  'index': 0,
  'null': false,
  'number': null,
- 'object': null,
+ "object": null,
  'push': null,
- 'string': null,
+ "string": null,
  'true': false,
  "undefined": false,
  'value': null
@@ -351,7 +351,7 @@
  */
  function slice(array, start, end) {
  start || (start = 0);
- if (typeof end == "undefined") {
+ if (typeof end === "undefined") {
  end = array ? array.length : 0;
  }
  var index = -1,
@@ -517,7 +517,7 @@
  */
  function lodash(value) {
  // don't wrap if already wrapped, even if wrapped by a different `lodash` constructor
- return (value && typeof value == 'object' && !isArray(value) && hasOwnProperty.call(value, '__wrapped__'))
+ return (value && typeof value == "object" && !isArray(value) && hasOwnProperty.call(value, '__wrapped__'))
  ? value
  : new lodashWrapper(value);
  }
@@ -557,7 +557,7 @@
  * @memberOf _.support
  * @type boolean
  */
- support.funcNames = typeof Function.name == 'string';
+ support.funcNames = typeof Function.name === "string";
  /**
  * By default, the template delimiters used by Lo-Dash are similar to those in
  * embedded Ruby (ERB). Change the following template settings to use alternative
@@ -774,11 +774,11 @@
  return identity;
  }
  // exit early for no `thisArg` or already bound by `Function#bind`
- if (typeof thisArg == "undefined" || !('prototype' in func)) {
+ if (typeof thisArg === "undefined" || !('prototype' in func)) {
  return func;
  }
  var bindData = func.__bindData__;
- if (typeof bindData == "undefined") {
+ if (typeof bindData === "undefined") {
  if (support.funcNames) {
  bindData = !func.name;
  }
@@ -917,7 +917,7 @@
  result = [];
  while (++index < length) {
  var value = array[index];
- if (value && typeof value == 'object' && typeof value.length == 'number'
+ if (value && typeof value == "object" && typeof value.length == 'number'
  && (isArray(value) || isArguments(value))) {
  // recursively flatten arrays (susceptible to call stack limits)
  if (!isShallow) {
@@ -1148,7 +1148,7 @@
  else {
  if (callback) {
  result = callback(value, source);
- if (typeof result == "undefined") {
+ if (typeof result === "undefined") {
  result = source;
  }
  }
@@ -1388,7 +1388,7 @@
  forIn(value, function(value, key) {
  result = key;
  });
- return typeof result == "undefined" || hasOwnProperty.call(value, result);
+ return typeof result === "undefined" || hasOwnProperty.call(value, result);
  }
  /**
  * Used by `unescape` to convert HTML entities to characters.
@@ -1418,7 +1418,7 @@
  * // => false
  */
  function isArguments(value) {
- return value && typeof value == 'object' && typeof value.length == 'number' &&
+ return value && typeof value == "object" && typeof value.length == 'number' &&
  toString.call(value) == argsClass || false;
  }
  /**
@@ -1439,7 +1439,7 @@
  * // => true
  */
  var isArray = nativeIsArray || function(value) {
- return value && typeof value == 'object' && typeof value.length == 'number' &&
+ return value && typeof value == "object" && typeof value.length == 'number' &&
  toString.call(value) == arrayClass || false;
  };
  /**
@@ -1525,7 +1525,7 @@
  * // => { 'name': 'fred', 'employer': 'slate' }
  *
  * var defaults = _.partialRight(_.assign, function(a, b) {
- * return typeof a == "undefined" ? b : a;
+ * return typeof a === "undefined" ? b : a;
  * });
  *
  * var object = { 'name': 'barney' };
@@ -1720,7 +1720,7 @@
  length = ownProps ? ownProps.length : 0;
  while (++ownIndex < length) {
  index = ownProps[ownIndex];
- if (typeof result[index] == "undefined") result[index] = iterable[index];
+ if (typeof result[index] === "undefined") result[index] = iterable[index];
  }
  }
  }
@@ -1865,7 +1865,7 @@
  var index, iterable = collection, result = iterable;
  if (!iterable) return result;
  if (!objectTypes[typeof iterable]) return result;
- callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  for (index in iterable) {
  if (callback(iterable[index], index, collection) === false) return result;
  }
@@ -1938,7 +1938,7 @@
  var index, iterable = collection, result = iterable;
  if (!iterable) return result;
  if (!objectTypes[typeof iterable]) return result;
- callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  var ownIndex = -1,
  ownProps = objectTypes[typeof iterable] && keys(iterable),
  length = ownProps ? ownProps.length : 0;
@@ -2059,7 +2059,7 @@
  */
  function isBoolean(value) {
  return value === true || value === false ||
- value && typeof value == 'object' && toString.call(value) == boolClass || false;
+ value && typeof value == "object" && toString.call(value) == boolClass || false;
  }
  /**
  * Checks if `value` is a date.
@@ -2075,7 +2075,7 @@
  * // => true
  */
  function isDate(value) {
- return value && typeof value == 'object' && toString.call(value) == dateClass || false;
+ return value && typeof value == "object" && toString.call(value) == dateClass || false;
  }
  /**
  * Checks if `value` is a DOM element.
@@ -2311,7 +2311,7 @@
  */
  function isNumber(value) {
  return typeof value == 'number' ||
- value && typeof value == 'object' && toString.call(value) == numberClass || false;
+ value && typeof value == "object" && toString.call(value) == numberClass || false;
  }
  /**
  * Checks if `value` is an object created by the `Object` constructor.
@@ -2361,7 +2361,7 @@
  * // => true
  */
  function isRegExp(value) {
- return value && typeof value == 'object' && toString.call(value) == regexpClass || false;
+ return value && typeof value == "object" && toString.call(value) == regexpClass || false;
  }
  /**
  * Checks if `value` is a string.
@@ -2377,8 +2377,8 @@
  * // => true
  */
  function isString(value) {
- return typeof value == 'string' ||
- value && typeof value == 'object' && toString.call(value) == stringClass || false;
+ return typeof value === "string" ||
+ value && typeof value == "object" && toString.call(value) == stringClass || false;
  }
  /**
  * Checks if `value` is `undefined`.
@@ -2394,7 +2394,7 @@
  * // => true
  */
  function isUndefined(value) {
- return typeof value == "undefined";
+ return typeof value === "undefined";
  }
  /**
  * Creates an object with the same keys as `object` and values generated by
@@ -3076,7 +3076,7 @@
  function forEach(collection, callback, thisArg) {
  var index = -1,
  length = collection ? collection.length : 0;
- callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  if (typeof length == 'number') {
  while (++index < length) {
  if (callback(collection[index], index, collection) === false) {
@@ -3107,7 +3107,7 @@
  */
  function forEachRight(collection, callback, thisArg) {
  var length = collection ? collection.length : 0;
- callback = callback && typeof thisArg == "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
+ callback = callback && typeof thisArg === "undefined" ? callback : baseCreateCallback(callback, thisArg, 3);
  if (typeof length == 'number') {
  while (length--) {
  if (callback(collection[length], length, collection) === false) {
@@ -5477,7 +5477,7 @@
  return baseCreateCallback(func, thisArg, argCount);
  }
  // handle "_.pluck" style callback shorthands
- if (type != 'object') {
+ if (type != "object") {
  return property(func);
  }
  var props = keys(func),
@@ -6369,7 +6369,7 @@
  // expose Lo-Dash
  var _ = runInContext();
  // some AMD build optimizers like r.js check for condition patterns like the following:
- if (typeof define == "function" && typeof define.amd == 'object' && define.amd) {
+ if (typeof define == "function" && typeof define.amd == "object" && define.amd) {
  // Expose Lo-Dash to the global object even when an AMD loader is present in
  // case Lo-Dash is loaded with a RequireJS shim config.
  // See http://requirejs.org/docs/api.html#config-shim

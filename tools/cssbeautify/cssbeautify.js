@@ -33,7 +33,7 @@
  if (typeof options.indent === "undefined") {
  options.indent = ' ';
  }
- if (typeof options.openbrace === 'string') {
+ if (typeof options.openbrace === "string") {
  openbracesuffix = (options.openbrace === 'end-of-line');
  }
  if (typeof options.autosemicolon === 'boolean') {
@@ -387,7 +387,7 @@
  if (typeof exports !== "undefined") {
  // Node.js module.
  module.exports = exports = cssbeautify;
- } else if (typeof window === 'object') {
+ } else if (typeof window === "object") {
  // Browser loading.
  window.cssbeautify = cssbeautify;
  }

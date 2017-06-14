@@ -51,7 +51,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
  , linkinline = 'link'
  , linkemail = 'link'
  , linktext = 'link'
- , linkhref = 'string'
+ , linkhref = "string"
  , em = 'em'
  , strong = 'strong'
  , strikethrough = 'strikethrough';

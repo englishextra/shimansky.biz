@@ -5,8 +5,8 @@ https://highlightjs.org/
 */
 (function(factory) {
  // Find the global object for export to both the browser and web workers.
- var globalObject = typeof window == 'object' && window ||
- typeof self == 'object' && self;
+ var globalObject = typeof window == "object" && window ||
+ typeof self == "object" && self;
  // Setup highlight.js for different environments. First is Node.js or
  // CommonJS.
  if(typeof exports !== "undefined") {
@@ -183,7 +183,7 @@ https://highlightjs.org/
  compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
  });
  };
- if (typeof mode.keywords == 'string') { // string
+ if (typeof mode.keywords === "string") { // string
  flatten('keyword', mode.keywords);
  } else {
  Object.keys(mode.keywords).forEach(function (className) {
@@ -301,7 +301,7 @@ https://highlightjs.org/
  return result + escape(mode_buffer.substr(last_index));
  }
  function processSubLanguage() {
- var explicit = typeof top.subLanguage == 'string';
+ var explicit = typeof top.subLanguage === "string";
  if (explicit && !languages[top.subLanguage]) {
  return escape(mode_buffer);
  }
@@ -600,13 +600,13 @@ https://highlightjs.org/
  begin: '\\\\[\\s\\S]', relevance: 0
  };
  hljs.APOS_STRING_MODE = {
- className: 'string',
+ className: "string",
  begin: '\'', end: '\'',
  illegal: '\\n',
  contains: [hljs.BACKSLASH_ESCAPE]
  };
  hljs.QUOTE_STRING_MODE = {
- className: 'string',
+ className: "string",
  begin: '"', end: '"',
  illegal: '\\n',
  contains: [hljs.BACKSLASH_ESCAPE]
@@ -966,7 +966,7 @@ module.exports = function(hljs) {
  hljs.C_BLOCK_COMMENT_MODE,
  hljs.QUOTE_STRING_MODE,
  {
- className: 'string',
+ className: "string",
  begin: '\'',
  end: '[^\\\\]\'',
  relevance: 0
@@ -1134,7 +1134,7 @@ module.exports = function(hljs) {
  },
  // inline smart quotes
  {
- className: 'string',
+ className: "string",
  variants: [
  {begin: "``.+?''"},
  {begin: "`.+?'"}
@@ -1174,7 +1174,7 @@ module.exports = function(hljs) {
  relevance: 0
  },
  {
- className: 'string',
+ className: "string",
  begin: '\\[',
  end: '\\]',
  excludeBegin: true,
@@ -1236,7 +1236,7 @@ module.exports = function(hljs) {
  },
  hljs.QUOTE_STRING_MODE,
  {
- className: 'string',
+ className: "string",
  begin: '\'', end: '[^\\\\]\'',
  illegal: '[^\\\\][^\']'
  },
@@ -1259,7 +1259,7 @@ module.exports = function(hljs) {
  ]
  };
  var QUOTE_STRING = {
- className: 'string',
+ className: "string",
  begin: /"/, end: /"/,
  contains: [
  hljs.BACKSLASH_ESCAPE,
@@ -1272,7 +1272,7 @@ module.exports = function(hljs) {
  ]
  };
  var APOS_STRING = {
- className: 'string',
+ className: "string",
  begin: /'/, end: /'/
  };
  return {
@@ -1479,7 +1479,7 @@ module.exports = function(hljs) {
  hljs.BINARY_NUMBER_MODE,
  hljs.inherit(hljs.C_NUMBER_MODE, {starts: {end: '(\\s*/)?', relevance: 0}}), // a number tries to eat the following slash to prevent treating it as a regexp
  {
- className: 'string',
+ className: "string",
  variants: [
  {
  begin: /'''/, end: /'''/,
@@ -1596,7 +1596,7 @@ module.exports = function(hljs) {
  begin: '\\b[a-z\\d_]*_t\\b'
  };
  var STRINGS = {
- className: 'string',
+ className: "string",
  variants: [
  hljs.inherit(hljs.QUOTE_STRING_MODE, { begin: '((u8?|U)|L)?"' }),
  {
@@ -2032,8 +2032,8 @@ module.exports = function(hljs) {
  keywords: F_KEYWORDS,
  illegal: /\/\*/,
  contains: [
- hljs.inherit(hljs.APOS_STRING_MODE, {className: 'string', relevance: 0}),
- hljs.inherit(hljs.QUOTE_STRING_MODE, {className: 'string', relevance: 0}),
+ hljs.inherit(hljs.APOS_STRING_MODE, {className: "string", relevance: 0}),
+ hljs.inherit(hljs.QUOTE_STRING_MODE, {className: "string", relevance: 0}),
  {
  className: "function",
  beginKeywords: 'subroutine function program',
@@ -2187,7 +2187,7 @@ module.exports = function(hljs) {
  hljs.C_LINE_COMMENT_MODE,
  hljs.C_BLOCK_COMMENT_MODE,
  {
- className: 'string',
+ className: "string",
  variants: [
  hljs.QUOTE_STRING_MODE,
  {begin: '\'', end: '[^\\\\]\''},
@@ -2255,15 +2255,15 @@ module.exports = function(hljs) {
  hljs.C_LINE_COMMENT_MODE,
  hljs.C_BLOCK_COMMENT_MODE,
  {
- className: 'string',
+ className: "string",
  begin: '"""', end: '"""'
  },
  {
- className: 'string',
+ className: "string",
  begin: "'''", end: "'''"
  },
  {
- className: 'string',
+ className: "string",
  begin: "\\$/", end: "/\\$",
  relevance: 10
  },
@@ -2297,7 +2297,7 @@ module.exports = function(hljs) {
  },
  {
  // highlight map keys and named parameters as strings
- className: 'string', begin: /[^\?]{0}[A-Za-z0-9_$]+ *:/
+ className: "string", begin: /[^\?]{0}[A-Za-z0-9_$]+ *:/
  },
  {
  // catch middle element of the ternary operator
@@ -2662,7 +2662,7 @@ module.exports = function(hljs) {
  hljs.APOS_STRING_MODE,
  hljs.QUOTE_STRING_MODE,
  { // template string
- className: 'string',
+ className: "string",
  begin: '`', end: '`',
  contains: [
  hljs.BACKSLASH_ESCAPE,
@@ -2784,7 +2784,7 @@ module.exports = function(hljs) {
  var RULES = [], VALUE = []; // forward def. for recursive modes
  var STRING_MODE = function(c) { return {
  // Less strings are not multiline (also include '~' for more consistent coloring of "escaped" strings)
- className: 'string', begin: '~?' + c + '.*?' + c
+ className: "string", begin: '~?' + c + '.*?' + c
  };};
  var IDENT_MODE = function(name, begin, relevance) { return {
  className: name, begin: begin, relevance: relevance
@@ -2802,7 +2802,7 @@ module.exports = function(hljs) {
  hljs.CSS_NUMBER_MODE, // fixme: it does not include dot for numbers like .5em :(
  {
  begin: '(url|data-uri)\\(',
- starts: {className: 'string', end: '[\\)\\n]', excludeEnd: true}
+ starts: {className: "string", end: '[\\)\\n]', excludeEnd: true}
  },
  IDENT_MODE('number', '#[0-9A-Fa-f]+\\b'),
  PARENS_MODE,
@@ -3043,7 +3043,7 @@ module.exports = function(hljs) {
  starts: {end: '(\\s*/)?', relevance: 0} // a number tries to eat the following slash to prevent treating it as a regexp
  },
  {
- className: 'string',
+ className: "string",
  variants: [
  {
  begin: /'''/, end: /'''/,
@@ -3198,7 +3198,7 @@ module.exports = function(hljs) {
  hljs.APOS_STRING_MODE,
  hljs.QUOTE_STRING_MODE,
  {
- className: 'string',
+ className: "string",
  begin: OPENING_LONG_BRACKET, end: CLOSING_LONG_BRACKET,
  contains: [LONG_BRACKETS],
  relevance: 5
@@ -3256,7 +3256,7 @@ module.exports = function(hljs) {
  var COMMON_CONTAINS = [
  hljs.C_NUMBER_MODE,
  {
- className: 'string',
+ className: "string",
  begin: '\'', end: '\'',
  contains: [hljs.BACKSLASH_ESCAPE, {begin: '\'\''}]
  }
@@ -3392,7 +3392,7 @@ module.exports = function(hljs) {
  hljs.C_BLOCK_COMMENT_MODE,
  hljs.QUOTE_STRING_MODE,
  {
- className: 'string',
+ className: "string",
  begin: '\'',
  end: '[^\\\\]\'',
  relevance: 0
@@ -3447,7 +3447,7 @@ module.exports = function(hljs) {
  contains: [
  hljs.HASH_COMMENT_MODE,
  {
- className: 'string',
+ className: "string",
  contains: [hljs.BACKSLASH_ESCAPE, VAR],
  variants: [
  {begin: /"/, end: /"/},
@@ -3552,7 +3552,7 @@ module.exports = function(hljs) {
  hljs.C_NUMBER_MODE,
  hljs.QUOTE_STRING_MODE,
  {
- className: 'string',
+ className: "string",
  variants: [
  {
  begin: '@"', end: '"',
@@ -3644,7 +3644,7 @@ module.exports = function(hljs) {
  ),
  METHOD,
  {
- className: 'string',
+ className: "string",
  contains: STRING_CONTAINS,
  variants: [
  {
@@ -3759,7 +3759,7 @@ module.exports = function(hljs) {
  className: 'meta', begin: /<\?(php)?|\?>/
  };
  var STRING = {
- className: 'string',
+ className: "string",
  contains: [hljs.BACKSLASH_ESCAPE, PREPROCESSOR],
  variants: [
  {
@@ -3810,7 +3810,7 @@ module.exports = function(hljs) {
  }
  ),
  {
- className: 'string',
+ className: "string",
  begin: /<<<['"]?\w+['"]?$/, end: /^\w+;?$/,
  contains: [
  hljs.BACKSLASH_ESCAPE,
@@ -3883,7 +3883,7 @@ module.exports = function(hljs) {
  className: 'meta', begin: /^(>>>|\.\.\.) /
  };
  var STRING = {
- className: 'string',
+ className: "string",
  contains: [hljs.BACKSLASH_ESCAPE],
  variants: [
  {
@@ -4011,7 +4011,7 @@ module.exports = function(hljs) {
  keywords: RUBY_KEYWORDS
  };
  var STRING = {
- className: 'string',
+ className: "string",
  contains: [hljs.BACKSLASH_ESCAPE, SUBST],
  variants: [
  {begin: /'/, end: /'/},
@@ -4180,7 +4180,7 @@ module.exports = function(hljs) {
  BLOCK_COMMENT,
  hljs.inherit(hljs.QUOTE_STRING_MODE, {begin: /b?"/, illegal: null}),
  {
- className: 'string',
+ className: "string",
  variants: [
  { begin: /r(#*)".*?"\1(?!#)/ },
  { begin: /b?'\\?(x\w{2}|u\w{4}|U\w{8}|.)'/ }
@@ -4260,7 +4260,7 @@ module.exports = function(hljs) {
  ]
  };
  var STRING = {
- className: 'string',
+ className: "string",
  variants: [
  {
  begin: '"', end: '"',
@@ -4277,7 +4277,7 @@ module.exports = function(hljs) {
  contains: [hljs.BACKSLASH_ESCAPE, SUBST]
  },
  {
- className: 'string',
+ className: "string",
  begin: '[a-z]+"""', end: '"""',
  contains: [SUBST],
  relevance: 10
@@ -4581,7 +4581,7 @@ module.exports = function(hljs) {
 module.exports = function(hljs) {
  var VAR_IDENT_RE = '[a-z][a-zA-Z0-9_]*';
  var CHAR = {
- className: 'string',
+ className: "string",
  begin: '\\$.{1}'
  };
  var SYMBOL = {
@@ -4714,7 +4714,7 @@ module.exports = function(hljs) {
  'mark',
  'menu',
  'nav',
- 'object',
+ "object",
  'ol',
  'p',
  'q',
@@ -4925,7 +4925,7 @@ module.exports = function(hljs) {
  'text-transform',
  'text-underline-position',
  'top',
- 'transform',
+ "transform",
  'transform-origin',
  'transform-style',
  'transition',
@@ -5220,7 +5220,7 @@ module.exports = function(hljs) {
  ]
  },
  {
- className: 'string',
+ className: "string",
  contains: [hljs.BACKSLASH_ESCAPE],
  variants: [
  hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
@@ -5252,7 +5252,7 @@ module.exports = function(hljs) {
  relevance: 0,
  contains: [
  {
- className: 'string', // because it looks like attributes in HTML tags
+ className: "string", // because it looks like attributes in HTML tags
  variants: [
  {begin: /\[/, end: /\]/},
  {begin: /\{/, end: /\}/}
@@ -5325,7 +5325,7 @@ module.exports = function(hljs) {
  hljs.APOS_STRING_MODE,
  hljs.QUOTE_STRING_MODE,
  { // template string
- className: 'string',
+ className: "string",
  begin: '`', end: '`',
  contains: [
  hljs.BACKSLASH_ESCAPE,
@@ -5568,7 +5568,7 @@ module.exports = function(hljs) {
  relevance: 0,
  contains: [
  {
- className: 'string',
+ className: "string",
  endsParent: true,
  variants: [
  {begin: /"/, end: /"/},
@@ -5674,7 +5674,7 @@ module.exports = function(hljs) {
  ]
  };
  var STRING = {
- className: 'string',
+ className: "string",
  relevance: 0,
  variants: [
  {begin: /'/, end: /'/},
@@ -5696,7 +5696,7 @@ module.exports = function(hljs) {
  relevance: 10
  },
  { // multi line string
- className: 'string',
+ className: "string",
  begin: '[\\|>] *$',
  returnEnd: true,
  contains: STRING.contains,
@@ -7767,7 +7767,7 @@ function getDecodeCache(exclude) {
 //
 function decode(string, exclude) {
  var cache;
- if (typeof exclude !== 'string') {
+ if (typeof exclude !== "string") {
  exclude = decode.defaultChars;
  }
  cache = getDecodeCache(exclude);
@@ -7868,7 +7868,7 @@ function getEncodeCache(exclude) {
 function encode(string, exclude, keepEscaped) {
  var i, l, code, nextCode, cache,
  result = '';
- if (typeof exclude !== 'string') {
+ if (typeof exclude !== "string") {
  // encode(string, keepEscaped)
  keepEscaped = exclude;
  exclude = encode.defaultChars;

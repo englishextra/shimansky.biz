@@ -52,7 +52,7 @@
  copyObj(defaults, options, false);
  setGuttersForLineNumbers(options);
  var doc = options.value;
- if (typeof doc == "string") doc = new Doc(doc, options.mode);
+ if (typeof doc === "string") doc = new Doc(doc, options.mode);
  this.doc = doc;
  var input = new CodeMirror.inputStyles[options.inputStyle](this);
  var display = this.display = new Display(place, doc, input);
@@ -313,7 +313,7 @@
  // "CodeMirror-linenumbers" when the lineNumbers option is true.
  function setGuttersForLineNumbers(options) {
  var found = indexOf(options.gutters, "CodeMirror-linenumbers");
- if (found == -1 && options.lineNumbers) {
+ if (found === -1 && options.lineNumbers) {
  options.gutters = options.gutters.concat(["CodeMirror-linenumbers"]);
  } else if (found > -1 && !options.lineNumbers) {
  options.gutters = options.gutters.slice(0);
@@ -3538,7 +3538,7 @@
  // KEY EVENTS
  // Run a handler that was bound to a key.
  function doHandleBinding(cm, bound, dropShift) {
- if (typeof bound == "string") {
+ if (typeof bound === "string") {
  bound = commands[bound];
  if (!bound) return false;
  }
@@ -3602,7 +3602,7 @@
  // 'go') bound to the keyname without 'Shift-'.
  return dispatchKey(cm, "Shift-" + name, e, function(b) {return doHandleBinding(cm, b, true);})
  || dispatchKey(cm, name, e, function(b) {
- if (typeof b == "string" ? /^go[A-Z]/.test(b) : b.motion)
+ if (typeof b === "string" ? /^go[A-Z]/.test(b) : b.motion)
  return doHandleBinding(cm, b);
  });
  } else {
@@ -3973,7 +3973,7 @@
  function replaceRange(doc, code, from, to, origin) {
  if (!to) to = from;
  if (cmp(to, from) < 0) { var tmp = to; to = from; from = tmp; }
- if (typeof code == "string") code = splitLines(code);
+ if (typeof code === "string") code = splitLines(code);
  makeChange(doc, {from: from, to: to, text: code, origin: origin});
  }
  // SCROLLING THINGS INTO VIEW
@@ -4300,7 +4300,7 @@
  var overlays = this.state.overlays;
  for (var i = 0; i < overlays.length; ++i) {
  var cur = overlays[i].modeSpec;
- if (cur == spec || typeof spec == "string" && cur.name == spec) {
+ if (cur == spec || typeof spec === "string" && cur.name == spec) {
  overlays.splice(i, 1);
  this.state.modeGen++;
  regChange(this);
@@ -4370,7 +4370,7 @@
  var found = [];
  if (!helpers.hasOwnProperty(type)) return found;
  var help = helpers[type], mode = this.getModeAt(pos);
- if (typeof mode[type] == "string") {
+ if (typeof mode[type] === "string") {
  if (help[mode[type]]) found.push(help[mode[type]]);
  } else if (mode[type]) {
  for (var i = 0; i < mode[type].length; i++) {
@@ -4785,17 +4785,17 @@
  // Given a MIME type, a {name, ...options} config object, or a name
  // string, return a mode config object.
  CodeMirror.resolveMode = function(spec) {
- if (typeof spec == "string" && mimeModes.hasOwnProperty(spec)) {
+ if (typeof spec === "string" && mimeModes.hasOwnProperty(spec)) {
  spec = mimeModes[spec];
- } else if (spec && typeof spec.name == "string" && mimeModes.hasOwnProperty(spec.name)) {
+ } else if (spec && typeof spec.name === "string" && mimeModes.hasOwnProperty(spec.name)) {
  var found = mimeModes[spec.name];
- if (typeof found == "string") found = {name: found};
+ if (typeof found === "string") found = {name: found};
  spec = createObj(found, spec);
  spec.name = found.name;
- } else if (typeof spec == "string" && /^[\w\-]+\/[\w\-]+\+xml$/.test(spec)) {
+ } else if (typeof spec === "string" && /^[\w\-]+\/[\w\-]+\+xml$/.test(spec)) {
  return CodeMirror.resolveMode("application/xml");
  }
- if (typeof spec == "string") return {name: spec};
+ if (typeof spec === "string") return {name: spec};
  else return spec || {name: "null"};
  };
  // Given a mode spec (anything that resolveMode accepts), find and
@@ -5141,7 +5141,7 @@
  // Modifier key presses don't count as 'real' key presses for the
  // purpose of keymap fallthrough.
  var isModifierKey = CodeMirror.isModifierKey = function(value) {
- var name = typeof value == "string" ? value : keyNames[value.keyCode];
+ var name = typeof value === "string" ? value : keyNames[value.keyCode];
  return name == "Ctrl" || name == "Alt" || name == "Shift" || name == "Mod";
  };
  // Look up the name of a key as indicated by an event object.
@@ -5156,7 +5156,7 @@
  return name;
  };
  function getKeyMap(val) {
- return typeof val == "string" ? keyMap[val] : val;
+ return typeof val === "string" ? keyMap[val] : val;
  }
  // FROMTEXTAREA
  CodeMirror.fromTextArea = function(textarea, options) {
@@ -5230,7 +5230,7 @@
  },
  eat: function(match) {
  var ch = this.string.charAt(this.pos);
- if (typeof match == "string") var ok = ch == match;
+ if (typeof match === "string") var ok = ch == match;
  else var ok = ch && (match.test ? match.test(ch) : match(ch));
  if (ok) {++this.pos; return ch;}
  },
@@ -5262,7 +5262,7 @@
  (this.lineStart ? countColumn(this.string, this.lineStart, this.tabSize) : 0);
  },
  match: function(pattern, consume, caseInsensitive) {
- if (typeof pattern == "string") {
+ if (typeof pattern === "string") {
  var cased = function(str) {return caseInsensitive ? str.toLowerCase() : str;};
  var substr = this.string.substr(this.pos, pattern.length);
  if (cased(substr) == cased(pattern)) {
@@ -6518,7 +6518,7 @@
  this.history = new History(null);
  this.id = ++nextDocId;
  this.modeOption = mode;
- if (typeof text == "string") text = splitLines(text);
+ if (typeof text === "string") text = splitLines(text);
  updateDoc(this, {from: start, to: start, text: text});
  setSelection(this, simpleSelection(start), sel_dontScroll);
  };
@@ -7270,7 +7270,7 @@
  // registering a (non-DOM) handler on the editor for the event name,
  // and preventDefault-ing the event in that handler.
  function signalDOMEvent(cm, e, override) {
- if (typeof e == "string")
+ if (typeof e === "string")
  e = {type: e, preventDefault: function() { this.defaultPrevented = true; }};
  signal(cm, override || e.type, cm, e);
  return e_defaultPrevented(e) || e.codemirrorIgnore;
@@ -7407,7 +7407,7 @@
  var e = document.createElement(tag);
  if (className) e.className = className;
  if (style) e.style.cssText = style;
- if (typeof content == "string") e.appendChild(document.createTextNode(content));
+ if (typeof content === "string") e.appendChild(document.createTextNode(content));
  else if (content) for (var i = 0; i < content.length; ++i) e.appendChild(content[i]);
  return e;
  }

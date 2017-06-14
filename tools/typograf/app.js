@@ -58,7 +58,7 @@ var App = {
  this.prefs.langUI = localStorage.getItem('settings.langUI');
  this.prefs.mode = localStorage.getItem('settings.mode');
  } catch(e) {}
- if(rules && typeof rules === 'object' && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
+ if(rules && typeof rules === "object" && Array.isArray(rules.disabled) && Array.isArray(rules.enabled)) {
  typograf
  .enable(rules.enabled)
  .disable(rules.disabled);
@@ -432,7 +432,7 @@ $.hasClass = hasClassList ? function(el, name) {
  return el.className.search(re) > -1;
 };
 $.on = function(elem, type, callback) {
- elem = typeof elem === 'string' ? $(elem) : elem;
+ elem = typeof elem === "string" ? $(elem) : elem;
  if(Array.isArray(type)) {
  type.forEach(function(el) {
  elem && elem.addEventListener(el, callback, false);

@@ -694,7 +694,7 @@ var prettyPrint;
  var style = styleCache[token];
  var match = void 0;
  var isEmbedded;
- if (typeof style === 'string') {
+ if (typeof style === "string") {
  isEmbedded = false;
  } else {
  var patternParts = shortcuts[token.charAt(0)];
@@ -715,7 +715,7 @@ var prettyPrint;
  }
  }
  isEmbedded = style.length >= 5 && 'lang-' === style.substring(0, 5);
- if (isEmbedded && !(match && typeof match[1] === 'string')) {
+ if (isEmbedded && !(match && typeof match[1] === "string")) {
  isEmbedded = false;
  style = PR_SOURCE;
  }

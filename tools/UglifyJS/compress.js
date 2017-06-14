@@ -657,7 +657,7 @@ merge(Compressor.prototype, {
  def(AST_Call, function(compressor){
  return compressor.option("unsafe")
  && this.expression instanceof AST_SymbolRef
- && this.expression.name == "String"
+ && this.expression.name === "string"
  && this.expression.undeclared();
  });
  })(function(node, func){
@@ -716,7 +716,7 @@ merge(Compressor.prototype, {
  case "!": return !ev(e, compressor);
  case "typeof":
  // Function would be evaluated to an array and so typeof would
- // incorrectly return 'object'. Hence making is a special case.
+ // incorrectly return "object". Hence making is a special case.
  if (e instanceof AST_Function) return typeof function(){};
 
  e = ev(e, compressor);
@@ -778,7 +778,7 @@ merge(Compressor.prototype, {
  def(AST_Dot, function(compressor){
  if (compressor.option("unsafe") && this.property == "length") {
  var str = ev(this.expression, compressor);
- if (typeof str == "string")
+ if (typeof str === "string")
  return str.length;
  }
  throw def;
@@ -2047,7 +2047,7 @@ merge(Compressor.prototype, {
  case "==":
  case "!=":
  if (self.left instanceof AST_String
- && self.left.value == "undefined"
+ && self.left.value === "undefined"
  && self.right instanceof AST_UnaryPrefix
  && self.right.operator == "typeof"
  && compressor.option("unsafe")) {

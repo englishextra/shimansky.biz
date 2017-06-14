@@ -21,7 +21,7 @@
 	CodeMirror.defaults['closeTagEnabled'] = true;
 	
 	/** Array of tag names to add indentation after the start tag for. Default is the list of block-level html tags. */
-	CodeMirror.defaults['closeTagIndent'] = ['applet', 'blockquote', 'body', 'button', 'div', 'dl', 'fieldset', 'form', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'html', 'iframe', 'layer', 'legend', 'object', 'ol', 'p', 'select', 'table', 'ul'];
+	CodeMirror.defaults['closeTagIndent'] = ['applet', 'blockquote', 'body', 'button', 'div', 'dl', 'fieldset', 'form', 'frameset', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head', 'html', 'iframe', 'layer', 'legend', "object", 'ol', 'p', 'select', 'table', 'ul'];
 	/** Array of tag names where an end tag is forbidden. */
 	CodeMirror.defaults['closeTagVoid'] = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
 	function innerState(cm, state) {
@@ -119,7 +119,7 @@
 	}
 	
 	function shouldIndent(cm, indent, tagName) {
-		if (typeof indent == "undefined" || indent == null || indent == true) {
+		if (typeof indent === "undefined" || indent == null || indent == true) {
 			indent = cm.getOption('closeTagIndent');
 		}
 		if (!indent) {
@@ -132,7 +132,7 @@
 		if (cm.getOption('mode') == 'xml') {
 			return true; // always close xml tags
 		}
-		if (typeof vd == "undefined" || vd == null) {
+		if (typeof vd === "undefined" || vd == null) {
 			vd = cm.getOption('closeTagVoid');
 		}
 		if (!vd) {

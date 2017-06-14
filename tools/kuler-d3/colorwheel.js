@@ -25,7 +25,7 @@
  initMode: ColorWheel.modes.ANALOGOUS
  };
  // Merge default options with options param. (Similar to jQuery.extend)
- if (typeof options === 'object') {
+ if (typeof options === "object") {
  for (var option in options) {
  if (option == 'initMode') {
  ColorWheel.checkIfModeExists(options[option]);
@@ -108,9 +108,9 @@
  if (data.constructor === Array) {
  var data = data.map(function (datum) {
  var d;
- if (typeof datum === 'string') {
+ if (typeof datum === "string") {
  d = tinycolor(datum).toHsv();
- } else if (typeof datum === 'object') {
+ } else if (typeof datum === "object") {
  d = tinycolor(datum.colorString).toHsv();
  d.s = 1.0;
  d.name = datum.name;
