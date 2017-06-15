@@ -32,7 +32,7 @@ linkDynamicModule(entry);}
 curGroupDeclarative=!curGroupDeclarative;}}
 var moduleRecords={};function getOrCreateModuleRecord(name){return moduleRecords[name]||(moduleRecords[name]={name:name,dependencies:[],exports:{},importers:[]})}
 function linkDeclarativeModule(entry){if(entry.module)
-return;var module=entry.module=getOrCreateModuleRecord(entry.name);var exports=entry.module.exports;var declaration=entry.declare.call(global,function(name,value){module.locked=true;if(typeof name=="object"){for(var p in name)
+return;var module=entry.module=getOrCreateModuleRecord(entry.name);var exports=entry.module.exports;var declaration=entry.declare.call(global,function(name,value){module.locked=true;if(typeof name==="object"){for(var p in name)
 exports[p]=name[p];}
 else{exports[name]=value;}
 for(var i=0,l=module.importers.length;i<l;i++){var importerModule=module.importers[i];if(!importerModule.locked){for(var j=0;j<importerModule.dependencies.length;++j){if(importerModule.dependencies[j]===module){importerModule.setters[j](exports);}}}}
@@ -58,7 +58,7 @@ entry.evaluated=true;var output=entry.execute.call(global,function(name){for(var
 continue;return getModule(entry.normalizedDeps[i]);}
 throw new TypeError('Module '+name+' not declared as a dependency.');},exports,module);if(output)
 module.exports=output;exports=module.exports;if(exports&&exports.__esModule){entry.esModule=exports;}
-else{entry.esModule={};if((typeof exports=="object"||typeof exports=="function")&&exports!==global){if(getOwnPropertyDescriptor){var d;for(var p in exports)
+else{entry.esModule={};if((typeof exports==="object"||typeof exports=="function")&&exports!==global){if(getOwnPropertyDescriptor){var d;for(var p in exports)
 if(d=Object.getOwnPropertyDescriptor(exports,p))
 defineProperty(entry.esModule,p,d);}
 else{var hasOwnProperty=exports&&exports.hasOwnProperty;for(var p in exports){if(!hasOwnProperty||exports.hasOwnProperty(p))
@@ -76,7 +76,7 @@ return require(name.substr(6));var entry=defined[name];if(!entry)
 throw"Module "+name+" not present.";link(name);ensureEvaluated(name,[]);defined[name]=undefined;if(entry.declarative)
 defineProperty(entry.module.exports,'__esModule',{value:true});return modules[name]=entry.declarative?entry.module.exports:entry.esModule;};return function(mains,depNames,declare){return function(formatDetect){formatDetect(function(deps){var System={_nodeRequire:typeof require!="undefined"&&require.resolve&&typeof process!="undefined"&&require,register:register,registerDynamic:registerDynamic,get:load,set:function(name,module){modules[name]=module;},newModule:function(module){return module;}};System.set('@empty',{});for(var i=0;i<depNames.length;i++)(function(depName,dep){if(dep&&dep.__esModule)
 System.register(depName,[],function(_export){return{setters:[],execute:function(){for(var p in dep)
-if(p!='__esModule'&&!(typeof p=="object"&&p+''=='Module'))
+if(p!='__esModule'&&!(typeof p==="object"&&p+''=='Module'))
 _export(p,dep[p]);}};});else
 System.registerDynamic(depName,[],false,function(){return dep;});})(depNames[i],arguments[i]);declare(System);var firstLoad=load(mains[0]);if(mains.length>1)
 for(var i=1;i<mains.length;i++)
@@ -112,7 +112,7 @@ if(this[i]===item)
 return i;return-1;}
 var commentRegEx=/(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;var cjsRequirePre="(?:^|[^$_a-zA-Z\\xA0-\\uFFFF.])";var cjsRequirePost="\\s*\\(\\s*(\"([^\"]+)\"|'([^']+)')\\s*\\)";var fnBracketRegEx=/\(([^\)]*)\)/;var wsRegEx=/^\s+|\s+$/g;var requireRegExs={};function getCJSDeps(source,requireIndex){source=source.replace(commentRegEx,'');var params=source.match(fnBracketRegEx);var requireAlias=(params[1].split(',')[requireIndex]||'require').replace(wsRegEx,'');var requireRegEx=requireRegExs[requireAlias]||(requireRegExs[requireAlias]=new RegExp(cjsRequirePre+requireAlias+cjsRequirePost,'g'));requireRegEx.lastIndex=0;var deps=[];var match;while(match=requireRegEx.exec(source))
 deps.push(match[2]||match[3]);return deps;}
-function require(names,callback,errback,referer){if(typeof names=="object"&&!(names instanceof Array))
+function require(names,callback,errback,referer){if(typeof names==="object"&&!(names instanceof Array))
 return require.apply(null,Array.prototype.splice.call(arguments,1,arguments.length-1));if(typeof names=='string'&&typeof callback=="function")
 names=[names];if(names instanceof Array){var dynamicRequires=[];for(var i=0;i<names.length;i++)
 dynamicRequires.push(loader['import'](names[i],referer));Promise.all(dynamicRequires).then(function(modules){if(callback)
@@ -150,7 +150,7 @@ return arrIndexOf.call(classList,token);},ClassList=function(elem){var trimmedCl
 this._updateClassName=function(){elem.setAttribute("class",this.toString());};},classListProto=ClassList[protoProp]=[],classListGetter=function(){return new ClassList(this);};;DOMEx[protoProp]=Error[protoProp];classListProto.item=function(i){return this[i]||null;};classListProto.contains=function(token){token+="";return checkTokenAndGetIndex(this,token)!==-1;};classListProto.add=function(){var tokens=arguments,i=0,l=tokens.length,token,updated=false;;do{token=tokens[i]+"";if(checkTokenAndGetIndex(this,token)===-1){this.push(token);updated=true;}}while(++i<l);if(updated){this._updateClassName();}};classListProto.remove=function(){var tokens=arguments,i=0,l=tokens.length,token,updated=false,index;;do{token=tokens[i]+"";index=checkTokenAndGetIndex(this,token);while(index!==-1){this.splice(index,1);updated=true;index=checkTokenAndGetIndex(this,token);}}while(++i<l);if(updated){this._updateClassName();}};classListProto.toggle=function(token,force){token+="";var result=this.contains(token),method=result?force!==true&&"remove":force!==false&&"add";;if(method){this[method](token);}
 if(force===true||force===false){return force;}else{return!result;}};classListProto.toString=function(){return this.join(" ");};if(objCtr.defineProperty){var classListPropDesc={get:classListGetter,enumerable:true,configurable:true};try{objCtr.defineProperty(elemCtrProto,classListProp,classListPropDesc);}catch(ex){if(ex.number === undefined || ex.number === -0x7FF5EC54){classListPropDesc.enumerable=false;objCtr.defineProperty(elemCtrProto,classListProp,classListPropDesc);}}}else if(objCtr[protoProp].__defineGetter__){elemCtrProto.__defineGetter__(classListProp,classListGetter);}}(window.self));}else{(function(){"use strict";var testElement=document.createElement("_");testElement.classList.add("c1","c2");if(!testElement.classList.contains("c2")){var createMethod=function(method){var original=DOMTokenList.prototype[method];DOMTokenList.prototype[method]=function(token){var i,len=arguments.length;for(i=0;i<len;i++){token=arguments[i];original.call(this,token);}};};createMethod('add');createMethod('remove');}
 testElement.classList.toggle("c3",false);if(testElement.classList.contains("c3")){var _toggle=DOMTokenList.prototype.toggle;DOMTokenList.prototype.toggle=function(token,force){if(1 in arguments&&!this.contains(token)===!force){return force;}else{return _toggle.call(this,token);}};}
-testElement=null;}());}}})();return _retrieveGlobal();});(function(){var _removeDefine=$__System.get("@@amd-helpers").createDefine();(function(mod){if(typeof exports=="object"&&typeof module=="object")
+testElement=null;}());}}})();return _retrieveGlobal();});(function(){var _removeDefine=$__System.get("@@amd-helpers").createDefine();(function(mod){if(typeof exports==="object"&&typeof module==="object")
 mod(require("../../lib/codemirror"));else if(typeof define=="function"&&define.amd)
 define("3",["4"],mod);else
 mod(CodeMirror);})(function(CodeMirror){"use strict";CodeMirror.defineMode("javascript",function(config,parserConfig){var indentUnit=config.indentUnit;var statementIndent=parserConfig.statementIndent;var jsonldMode=parserConfig.jsonld;var jsonMode=parserConfig.json||jsonldMode;var isTS=parserConfig.typescript;var wordRE=parserConfig.wordCharacters||/[\w$\xa1-\uffff]/;var keywords=function(){function kw(type){return{type:type,style:"keyword"};}
@@ -368,7 +368,7 @@ function comprehension(type){if(type=="for")
 return cont(forspec,comprehension);if(type=="if")
 return cont(expression,comprehension);}
 function isContinuedStatement(state,textAfter){return state.lastType=="operator"||state.lastType==","||isOperatorChar.test(textAfter.charAt(0))||/[,.]/.test(textAfter.charAt(0));}
-return{startState:function(basecolumn){var state={tokenize:tokenBase,lastType:"sof",cc:[],lexical:new JSLexical((basecolumn||0)-indentUnit,0,"block",false),localVars:parserConfig.localVars,context:parserConfig.localVars&&{vars:parserConfig.localVars},indented:0};if(parserConfig.globalVars&&typeof parserConfig.globalVars=="object")
+return{startState:function(basecolumn){var state={tokenize:tokenBase,lastType:"sof",cc:[],lexical:new JSLexical((basecolumn||0)-indentUnit,0,"block",false),localVars:parserConfig.localVars,context:parserConfig.localVars&&{vars:parserConfig.localVars},indented:0};if(parserConfig.globalVars&&typeof parserConfig.globalVars==="object")
 state.globalVars=parserConfig.globalVars;return state;},token:function(stream,state){if(stream.sol()){if(!state.lexical.hasOwnProperty("align"))
 state.lexical.align=false;state.indented=stream.indentation();findFatArrow(stream,state);}
 if(state.tokenize!=tokenComment&&stream.eatSpace())
@@ -632,7 +632,7 @@ if(this._input==="")
 return this.EOF;this.parseError("Lexical error on line "+(this.yylineno+1)+". Unrecognized text.\n"+this.showPosition(),{text:"",token:null,line:this.yylineno});},lex:function(){var b=this.next();return typeof b!="undefined"?b:this.lex();},begin:function(b){this.conditionStack.push(b);},popState:function(){return this.conditionStack.pop();},_currentRules:function(){return this.conditions[this.conditionStack[this.conditionStack.length-1]].rules;},topState:function(){return this.conditionStack[this.conditionStack.length-2];},pushState:function(b){this.begin(b);}};return a.options={},a.performAction=function(b,c,d,e){var f=e;switch(d){case 0:break;case 1:return 6;case 2:return c.yytext=c.yytext.substr(1,c.yyleng-2),4;case 3:return 17;case 4:return 18;case 5:return 23;case 6:return 24;case 7:return 22;case 8:return 21;case 9:return 10;case 10:return 11;case 11:return 8;case 12:return 14;case 13:return"INVALID";}},a.rules=[/^(?:\s+)/,/^(?:(-?([0-9]|[1-9][0-9]+))(\.[0-9]+)?([eE][-+]?[0-9]+)?\b)/,/^(?:"(?:\\[\\"bfnrt/]|\\u[a-fA-F0-9]{4}|[^\\\0-\x09\x0a-\x1f"])*")/,/^(?:\{)/,/^(?:\})/,/^(?:\[)/,/^(?:\])/,/^(?:,)/,/^(?::)/,/^(?:true\b)/,/^(?:false\b)/,/^(?:null\b)/,/^(?:$)/,/^(?:.)/],a.conditions={INITIAL:{rules:[0,1,2,3,4,5,6,7,8,9,10,11,12,13],inclusive:!0}},a;}();return a.lexer=b,a;}();return typeof a!="undefined"&&typeof c!="undefined"&&(c.parser=d,c.parse=function(){return d.parse.apply(d,arguments);},c.main=function(d){if(!d[1])
 throw new Error("Usage: "+d[0]+" FILE");if(typeof process!="undefined")
 var e=a("fs").readFileSync(a("path").join(process.cwd(),d[1]),"utf8");else
-var f=a("file").path(a("file").cwd()),e=f.join(d[1]).read({charset:"utf-8"});return c.parser.parse(e);},typeof b!="undefined"&&a.main===b&&c.main(typeof process!="undefined"?process.argv.slice(1):a("system").args)),c;}();this["jsonlint"]=jsonlint;})();return _retrieveGlobal();});(function(){var _removeDefine=$__System.get("@@amd-helpers").createDefine();(function(mod){if(typeof exports=="object"&&typeof module=="object")
+var f=a("file").path(a("file").cwd()),e=f.join(d[1]).read({charset:"utf-8"});return c.parser.parse(e);},typeof b!="undefined"&&a.main===b&&c.main(typeof process!="undefined"?process.argv.slice(1):a("system").args)),c;}();this["jsonlint"]=jsonlint;})();return _retrieveGlobal();});(function(){var _removeDefine=$__System.get("@@amd-helpers").createDefine();(function(mod){if(typeof exports==="object"&&typeof module==="object")
 module.exports=mod();else if(typeof define=="function"&&define.amd)
 return define("4",[],mod);else
 this.CodeMirror=mod();})(function(){"use strict";var userAgent=navigator.userAgent;var platform=navigator.platform;var gecko=/gecko\/\d/i.test(userAgent);var ie_upto10=/MSIE \d/.test(userAgent);var ie_11up=/Trident\/(?:[7-9]|\d{2,})\..*rv:(\d+)/.exec(userAgent);var ie=ie_upto10||ie_11up;var ie_version=ie&&(ie_upto10?document.documentMode||6:ie_11up[1]);var webkit=/WebKit\//.test(userAgent);var qtwebkit=webkit&&/Qt\/\d+\.\d+/.test(userAgent);var chrome=/Chrome\//.test(userAgent);var presto=/Opera\//.test(userAgent);var safari=/Apple Computer/.test(navigator.vendor);var mac_geMountainLion=/Mac OS X 1\d\D([8-9]|\d\d)\D/.test(userAgent);var phantom=/PhantomJS/.test(userAgent);var ios=/AppleWebKit/.test(userAgent)&&/Mobile\/\w+/.test(userAgent);var mobile=ios||/Android|webOS|BlackBerry|Opera Mini|Opera Mobi|IEMobile/i.test(userAgent);var mac=ios||/Mac/.test(platform);var windows=/win/i.test(platform);var presto_version=presto&&userAgent.match(/Version\/(\d*\.\d*)/);if(presto_version)
@@ -1651,7 +1651,7 @@ found.push(val);}}else if(mode.helperType&&help[mode.helperType]){found.push(hel
 for(var i=0;i<help._global.length;i++){var cur=help._global[i];if(cur.pred(mode,this)&&indexOf(found,cur.val)==-1)
 found.push(cur.val);}
 return found;},getStateAfter:function(line,precise){var doc=this.doc;line=clipLine(doc,line==null?doc.first+doc.size-1:line);return getStateBefore(this,line+1,precise);},cursorCoords:function(start,mode){var pos,range=this.doc.sel.primary();if(start==null)
-pos=range.head;else if(typeof start=="object")
+pos=range.head;else if(typeof start==="object")
 pos=clipPos(this.doc,start);else
 pos=start?range.from():range.to();return cursorCoords(this,pos,mode||"page");},charCoords:function(pos,mode){return charCoords(this,clipPos(this.doc,pos),mode||"page");},coordsChar:function(coords,mode){coords=fromCoordSystem(this,coords,mode||"page");return coordsChar(this,coords.left,coords.top);},lineAtHeight:function(height,mode){height=fromCoordSystem(this,{top:height,left:0},mode||"page").top;return lineAtHeight(this.doc,height+this.display.viewOffset);},heightAtLine:function(line,mode){var end=false,lineObj;if(typeof line=="number"){var last=this.doc.first+this.doc.size-1;if(line<this.doc.first)
 line=this.doc.first;else if(line>last){line=last;end=true;}
