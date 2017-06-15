@@ -398,7 +398,6 @@ function $(cls) {
 }
 var div = document.createElement('div'),
  hasClassList = !!div.classList;
-
 $.addClass = hasClassList ? function(el, name) {
  el.classList.add(name);
 } : function(el, name) { // support IE9

@@ -1,11 +1,9 @@
 CodeMirror.defineMode("css", function(config) {
  var indentUnit = config.indentUnit, type;
-
  var atMediaTypes = keySet([
  "all", "aural", "braille", "handheld", "print", "projection", "screen",
  "tty", "tv", "embossed"
  ]);
-
  var atMediaFeatures = keySet([
  "width", "min-width", "max-width", "height", "min-height", "max-height",
  "device-width", "min-device-width", "max-device-width", "device-height",
@@ -97,7 +95,6 @@ CodeMirror.defineMode("css", function(config) {
  "black", "silver", "gray", "white", "maroon", "red", "purple", "fuchsia",
  "green", "lime", "olive", "yellow", "navy", "blue", "teal", "aqua"
  ]);
-
  var valueKeywords = keySet([
  "above", "absolute", "activeborder", "activecaption", "afar",
  "after-white-space", "ahead", "alias", "all", "all-scroll", "alternate",
@@ -279,7 +276,6 @@ CodeMirror.defineMode("css", function(config) {
  stack: []};
  },
  token: function(stream, state) {
-
  // Use these terms when applicable (see http://www.xanthir.com/blog/b4E50)
  //
  // rule** or **ruleset:

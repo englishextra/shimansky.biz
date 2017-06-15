@@ -546,7 +546,7 @@ window.CodeMirror = (function() {
  e.dataTransfer.setData("Text", txt);
  // Use dummy image instead of default browsers image.
  if (e.dataTransfer.setDragImage)
- e.dataTransfer.setDragImage(elt('img'), 0, 0);
+ e.dataTransfer.setDragImage(elt("img"), 0, 0);
  }
  function doHandleBinding(bound, dropShift) {
  if (typeof bound == "string") {

@@ -1,5 +1,5 @@
 TouchHelpers = {
-	IsSupported : (typeof(document.ontouchstart)!="undefined" && window.addEventListener) ? true:false,
+	IsSupported : (typeof(document.ontouchstart)!=="undefined" && window.addEventListener) ? true:false,
 	
 	IsAnyMatch : function(srcArray, cmpArray) {
 		for (var i = 0; i<srcArray.length; i++) {
@@ -41,7 +41,7 @@ function TouchScroller(mainElement, excludedClassNames) {
 			if (parentEl.tagName && (parentEl.tagName=="INPUT" || parentEl.tagName=="TEXTAREA" || parentEl.tagName=="SELECT" || parentEl.tagName=="LABEL")) {
 				return true;
 			}
-			if (_excludedClassNames!=null && typeof(parentEl.className)!="undefined" && parentEl.className
+			if (_excludedClassNames!=null && typeof(parentEl.className)!=="undefined" && parentEl.className
 				&& TouchHelpers.IsAnyMatch(parentEl.className.split(" "), _excludedClassNames)) {
 				return true;
 			}

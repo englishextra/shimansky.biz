@@ -1,31 +1,22 @@
 /***********************************************************************
-
  A JavaScript tokenizer / parser / beautifier / compressor.
  https://github.com/mishoo/UglifyJS2
-
  -------------------------------- (C) ---------------------------------
-
  Author: Mihai Bazon
  <mihai.bazon@gmail.com>
  http://mihai.bazon.net/blog
-
  Distributed under the BSD license:
-
  Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
  are met:
-
  * Redistributions of source code must retain the above
  copyright notice, this list of conditions and the following
  disclaimer.
-
  * Redistributions in binary form must reproduce the above
  copyright notice, this list of conditions and the following
  disclaimer in the documentation and/or other materials
  provided with the distribution.
-
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS” AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -38,11 +29,8 @@
  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
  THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
-
  ***********************************************************************/
-
 "use strict";
-
 function SymbolDef(scope, index, orig) {
  this.name = orig.name;
  this.orig = [ orig ];
@@ -54,7 +42,6 @@ function SymbolDef(scope, index, orig) {
  this.constant = false;
  this.index = index;
 };
-
 SymbolDef.prototype = {
  unmangleable: function(options) {
  return (this.global && !(options && options.toplevel))
@@ -70,12 +57,10 @@ SymbolDef.prototype = {
  }
  }
 };
-
 AST_Toplevel.DEFMETHOD("figure_out_scope", function(options){
  options = defaults(options, {
  screw_ie8: false
  });
-
  // pass 1: setup scope chaining and handle definitions
  var self = this;
  var scope = self.parent_scope = null;
@@ -137,7 +122,6 @@ AST_Toplevel.DEFMETHOD("figure_out_scope", function(options){
  }
  });
  self.walk(tw);
-
  // pass 2: find back references and eval
  var func = null;
  var globals = self.globals = new Dictionary();
@@ -179,7 +163,6 @@ AST_Toplevel.DEFMETHOD("figure_out_scope", function(options){
  });
  self.walk(tw);
 });
-
 AST_Scope.DEFMETHOD("init_scope_vars", function(nesting){
  this.directives = []; // contains the directives defined in this scope, i.e. "use strict"
  this.variables = new Dictionary(); // map name to AST_SymbolVar (variables defined in this scope; includes functions)
@@ -191,16 +174,13 @@ AST_Scope.DEFMETHOD("init_scope_vars", function(nesting){
  this.cname = -1; // the current index for mangling functions/variables
  this.nesting = nesting; // the nesting level of this scope (0 means toplevel)
 });
-
 AST_Scope.DEFMETHOD("strict", function(){
  return this.has_directive("use strict");
 });
-
 AST_Lambda.DEFMETHOD("init_scope_vars", function(){
  AST_Scope.prototype.init_scope_vars.apply(this, arguments);
  this.uses_arguments = false;
 });
-
 AST_SymbolRef.DEFMETHOD("reference", function() {
  var def = this.definition();
  def.references.push(this);
@@ -212,22 +192,18 @@ AST_SymbolRef.DEFMETHOD("reference", function() {
  }
  this.frame = this.scope.nesting - def.scope.nesting;
 });
-
 AST_Scope.DEFMETHOD("find_variable", function(name){
  if (name instanceof AST_Symbol) name = name.name;
  return this.variables.get(name)
  || (this.parent_scope && this.parent_scope.find_variable(name));
 });
-
 AST_Scope.DEFMETHOD("has_directive", function(value){
  return this.parent_scope && this.parent_scope.has_directive(value)
  || (this.directives.indexOf(value) >= 0 ? this : null);
 });
-
 AST_Scope.DEFMETHOD("def_function", function(symbol){
  this.functions.set(symbol.name, this.def_variable(symbol));
 });
-
 AST_Scope.DEFMETHOD("def_variable", function(symbol){
  var def;
  if (!this.variables.has(symbol.name)) {
@@ -240,17 +216,14 @@ AST_Scope.DEFMETHOD("def_variable", function(symbol){
  }
  return symbol.thedef = def;
 });
-
 AST_Scope.DEFMETHOD("next_mangled", function(options){
  var ext = this.enclosed;
  out: while (true) {
  var m = base54(++this.cname);
  if (!is_identifier(m)) continue; // skip over "do"
-
  // https://github.com/mishoo/UglifyJS2/issues/242 -- do not
  // shadow a name excepted from mangling.
  if (options.except.indexOf(m) >= 0) continue;
-
  // we must ensure that the mangled name does not shadow a name
  // from some parent scope that is referenced in this or in
  // inner scopes.
@@ -262,12 +235,10 @@ AST_Scope.DEFMETHOD("next_mangled", function(options){
  return m;
  }
 });
-
 AST_Function.DEFMETHOD("next_mangled", function(options, def){
  // #179, #326
  // in Safari strict mode, something like (function x(x){...}) is a syntax error;
  // a function expression's argument cannot shadow the function expression's name
-
  var tricky_def = def.orig[0] instanceof AST_SymbolFunarg && this.name && this.name.definition();
  while (true) {
  var name = AST_Lambda.prototype.next_mangled.call(this, options, def);
@@ -275,51 +246,40 @@ AST_Function.DEFMETHOD("next_mangled", function(options, def){
  return name;
  }
 });
-
 AST_Scope.DEFMETHOD("references", function(sym){
  if (sym instanceof AST_Symbol) sym = sym.definition();
  return this.enclosed.indexOf(sym) < 0 ? null : sym;
 });
-
 AST_Symbol.DEFMETHOD("unmangleable", function(options){
  return this.definition().unmangleable(options);
 });
-
 // property accessors are not mangleable
 AST_SymbolAccessor.DEFMETHOD("unmangleable", function(){
  return true;
 });
-
 // labels are always mangleable
 AST_Label.DEFMETHOD("unmangleable", function(){
  return false;
 });
-
 AST_Symbol.DEFMETHOD("unreferenced", function(){
  return this.definition().references.length == 0
  && !(this.scope.uses_eval || this.scope.uses_with);
 });
-
 AST_Symbol.DEFMETHOD("undeclared", function(){
  return this.definition().undeclared;
 });
-
 AST_LabelRef.DEFMETHOD("undeclared", function(){
  return false;
 });
-
 AST_Label.DEFMETHOD("undeclared", function(){
  return false;
 });
-
 AST_Symbol.DEFMETHOD("definition", function(){
  return this.thedef;
 });
-
 AST_Symbol.DEFMETHOD("global", function(){
  return this.definition().global;
 });
-
 AST_Toplevel.DEFMETHOD("_default_mangler_options", function(options){
  return defaults(options, {
  except : [],
@@ -329,7 +289,6 @@ AST_Toplevel.DEFMETHOD("_default_mangler_options", function(options){
  screw_ie8 : false
  });
 });
-
 AST_Toplevel.DEFMETHOD("mangle_names", function(options){
  options = this._default_mangler_options(options);
  // We only need to mangle declaration nodes. Special logic wired
@@ -373,7 +332,6 @@ AST_Toplevel.DEFMETHOD("mangle_names", function(options){
  this.walk(tw);
  to_mangle.forEach(function(def){ def.mangle(options) });
 });
-
 AST_Toplevel.DEFMETHOD("compute_char_frequency", function(options){
  options = this._default_mangler_options(options);
  var tw = new TreeWalker(function(node){
@@ -443,7 +401,6 @@ AST_Toplevel.DEFMETHOD("compute_char_frequency", function(options){
  this.walk(tw);
  base54.sort();
 });
-
 var base54 = (function() {
  var string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_0123456789";
  var chars, frequency;
@@ -480,7 +437,6 @@ var base54 = (function() {
  };
  return base54;
 }());
-
 AST_Toplevel.DEFMETHOD("scope_warnings", function(options){
  options = defaults(options, {
  undeclared : false, // this makes a lot of noise

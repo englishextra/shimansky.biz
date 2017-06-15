@@ -1,5 +1,5 @@
 var boxUniqueId = 1;
-var hasTouchSupport = typeof(document.ontouchstart)!="undefined" && document.addEventListener;
+var hasTouchSupport = typeof(document.ontouchstart)!=="undefined" && document.addEventListener;
 function SetStyleForAll(box, name, set) {
 	var capName = name.substring(0, 1).toUpperCase() + name.substring(1);
 	var findHyphen = capName.indexOf("-");
@@ -921,7 +921,7 @@ function setupColorPalette(baseName, updateFunc, clickFunc) {
 			updateFunc();
 		},
 		onMouseDown: function() {
-			if (typeof(clickFunc)!="undefined")
+			if (typeof(clickFunc)!=="undefined")
 				clickFunc();
 		}
 	}, baseName + "Palette");

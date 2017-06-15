@@ -663,7 +663,7 @@
  function baseClone(value, isDeep, callback, stackA, stackB) {
  if (callback) {
  var result = callback(value);
- if (typeof result != "undefined") {
+ if (typeof result !== "undefined") {
  return result;
  }
  }
@@ -953,7 +953,7 @@
  // used to indicate that when comparing objects, `a` has at least the properties of `b`
  if (callback) {
  var result = callback(a, b);
- if (typeof result != "undefined") {
+ if (typeof result !== "undefined") {
  return !!result;
  }
  }
@@ -1127,7 +1127,7 @@
  var isShallow;
  if (callback) {
  result = callback(value, source);
- if ((isShallow = typeof result != "undefined")) {
+ if ((isShallow = typeof result !== "undefined")) {
  value = result;
  }
  }
@@ -1152,7 +1152,7 @@
  result = source;
  }
  }
- if (typeof result != "undefined") {
+ if (typeof result !== "undefined") {
  value = result;
  }
  }

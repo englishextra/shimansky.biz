@@ -1,31 +1,22 @@
 /***********************************************************************
-
  A JavaScript tokenizer / parser / beautifier / compressor.
  https://github.com/mishoo/UglifyJS2
-
  -------------------------------- (C) ---------------------------------
-
  Author: Mihai Bazon
  <mihai.bazon@gmail.com>
  http://mihai.bazon.net/blog
-
  Distributed under the BSD license:
-
  Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
  are met:
-
  * Redistributions of source code must retain the above
  copyright notice, this list of conditions and the following
  disclaimer.
-
  * Redistributions in binary form must reproduce the above
  copyright notice, this list of conditions and the following
  disclaimer in the documentation and/or other materials
  provided with the distribution.
-
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS” AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -38,40 +29,32 @@
  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
  THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
-
  ***********************************************************************/
-
 "use strict";
-
 function array_to_hash(a) {
  var ret = Object.create(null);
  for (var i = 0; i < a.length; ++i)
  ret[a[i]] = true;
  return ret;
 };
-
 function slice(a, start) {
  return Array.prototype.slice.call(a, start || 0);
 };
-
 function characters(str) {
  return str.split("");
 };
-
 function member(name, array) {
  for (var i = array.length; --i >= 0;)
  if (array[i] == name)
  return true;
  return false;
 };
-
 function find_if(func, array) {
  for (var i = 0, n = array.length; i < n; ++i) {
  if (func(array[i]))
  return array[i];
  }
 };
-
 function repeat_string(str, i) {
  if (i <= 0) return "";
  if (i == 1) return str;
@@ -80,7 +63,6 @@ function repeat_string(str, i) {
  if (i & 1) d += str;
  return d;
 };
-
 function DefaultsError(msg, defs) {
  Error.call(this, msg);
  this.msg = msg;
@@ -88,11 +70,9 @@ function DefaultsError(msg, defs) {
 };
 DefaultsError.prototype = Object.create(Error.prototype);
 DefaultsError.prototype.constructor = DefaultsError;
-
 DefaultsError.croak = function(msg, defs) {
  throw new DefaultsError(msg, defs);
 };
-
 function defaults(args, defs, croak) {
  if (args === true)
  args = {};
@@ -104,16 +84,13 @@ function defaults(args, defs, croak) {
  }
  return ret;
 };
-
 function merge(obj, ext) {
  for (var i in ext) if (ext.hasOwnProperty(i)) {
  obj[i] = ext[i];
  }
  return obj;
 };
-
 function noop() {};
-
 var MAP = (function(){
  function MAP(a, f, backwards) {
  var ret = [], top = [], i;
@@ -161,24 +138,20 @@ var MAP = (function(){
  function Last(val) { this.v = val };
  return MAP;
 }());
-
 function push_uniq(array, el) {
  if (array.indexOf(el) < 0)
  array.push(el);
 };
-
 function string_template(text, props) {
  return text.replace(/\{(.+?)\}/g, function(str, p){
  return props[p];
  });
 };
-
 function remove(array, el) {
  for (var i = array.length; --i >= 0;) {
  if (array[i] === el) array.splice(i, 1);
  }
 };
-
 function mergeSort(array, cmp) {
  if (array.length < 2) return array.slice();
  function merge(a, b) {
@@ -202,19 +175,16 @@ function mergeSort(array, cmp) {
  };
  return _ms(array);
 };
-
 function set_difference(a, b) {
  return a.filter(function(el){
  return b.indexOf(el) < 0;
  });
 };
-
 function set_intersection(a, b) {
  return a.filter(function(el){
  return b.indexOf(el) >= 0;
  });
 };
-
 // this function is taken from Acorn [1], written by Marijn Haverbeke
 // [1] https://github.com/marijnh/acorn
 function makePredicate(words) {
@@ -251,14 +221,12 @@ function makePredicate(words) {
  }
  return new Function("str", f);
 };
-
 function all(array, predicate) {
  for (var i = array.length; --i >= 0;)
  if (!predicate(array[i]))
  return false;
  return true;
 };
-
 function Dictionary() {
  this._values = Object.create(null);
  this._size = 0;

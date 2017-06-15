@@ -228,7 +228,6 @@ var Mustache = function () {
  return bool === false || bool === 0 || bool;
  }
  var value;
-
  // check for dot notation eg. foo.bar
  if(name.match(/([a-z_]+)\./ig)){
  value = is_kinda_truthy(this.walk_context(name, context));

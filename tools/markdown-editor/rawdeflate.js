@@ -478,7 +478,6 @@ var zip_fill_window = function () {
 //	System.arraycopy(window, WSIZE, window, 0, WSIZE);
 	for(n = 0; n < zip_WSIZE; n++)
 	 zip_window[n] = zip_window[n + zip_WSIZE];
-
 	zip_match_start -= zip_WSIZE;
 	zip_strstart -= zip_WSIZE; /* we now have strstart >= MAX_DIST: */
 	zip_block_start -= zip_WSIZE;

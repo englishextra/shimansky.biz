@@ -75,7 +75,7 @@
  }
  /* Given a match in a node, replace the text with an image */
  function insertEmojicon(node, match, emojiName) {
- var emojiImg = document.createElement('img');
+ var emojiImg = document.createElement("img");
  emojiImg.setAttribute('title', ':' + emojiName + ':');
  emojiImg.setAttribute('alt', ':' + emojiName + ':');
  emojiImg.setAttribute('class', 'emoji');

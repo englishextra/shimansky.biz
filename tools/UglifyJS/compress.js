@@ -1,31 +1,22 @@
 /***********************************************************************
-
  A JavaScript tokenizer / parser / beautifier / compressor.
  https://github.com/mishoo/UglifyJS2
-
  -------------------------------- (C) ---------------------------------
-
  Author: Mihai Bazon
  <mihai.bazon@gmail.com>
  http://mihai.bazon.net/blog
-
  Distributed under the BSD license:
-
  Copyright 2012 (c) Mihai Bazon <mihai.bazon@gmail.com>
-
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions
  are met:
-
  * Redistributions of source code must retain the above
  copyright notice, this list of conditions and the following
  disclaimer.
-
  * Redistributions in binary form must reproduce the above
  copyright notice, this list of conditions and the following
  disclaimer in the documentation and/or other materials
  provided with the distribution.
-
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER “AS IS” AND ANY
  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -38,11 +29,8 @@
  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
  THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
-
  ***********************************************************************/
-
 "use strict";
-
 function Compressor(options, false_by_default) {
  if (!(this instanceof Compressor))
  return new Compressor(options, false_by_default);
@@ -73,12 +61,10 @@ function Compressor(options, false_by_default) {
  screw_ie8 : false,
  drop_console : false,
  angular : false,
-
  warnings : true,
  global_defs : {}
  }, true);
 };
-
 Compressor.prototype = new TreeTransformer;
 merge(Compressor.prototype, {
  option: function(key) { return this.options[key] },
@@ -103,9 +89,7 @@ merge(Compressor.prototype, {
  return node;
  }
 });
-
 (function(){
-
  function OPT(node, optimizer) {
  node.DEFMETHOD("optimize", function(compressor){
  var self = this;
@@ -116,16 +100,13 @@ merge(Compressor.prototype, {
  return opt.transform(compressor);
  });
  };
-
  OPT(AST_Node, function(self, compressor){
  return self;
  });
-
  AST_Node.DEFMETHOD("equivalent_to", function(node){
  // XXX: this is a rather expensive way to test two node's equivalence:
  return this.print_to_string() == node.print_to_string();
  });
-
  function make_node(ctor, orig, props) {
  if (!props) props = {};
  if (orig) {
@@ -134,7 +115,6 @@ merge(Compressor.prototype, {
  }
  return new ctor(props);
  };
-
  function make_node_from_constant(compressor, val, orig) {
  // XXX: WIP.
  // if (val instanceof AST_Node) return val.transform(new TreeTransformer(null, function(node){
@@ -145,7 +125,6 @@ merge(Compressor.prototype, {
  // return node;
  // }
  // })).transform(compressor);
-
  if (val instanceof AST_Node) return val.transform(compressor);
  switch (typeof val) {
  case "string":
@@ -172,7 +151,6 @@ merge(Compressor.prototype, {
  }));
  }
  };
-
  function as_statement_array(thing) {
  if (thing === null) return [];
  if (thing instanceof AST_BlockStatement) return thing.body;
@@ -180,14 +158,12 @@ merge(Compressor.prototype, {
  if (thing instanceof AST_Statement) return [ thing ];
  throw new Error("Can't convert thing to statement array");
  };
-
  function is_empty(thing) {
  if (thing === null) return true;
  if (thing instanceof AST_EmptyStatement) return true;
  if (thing instanceof AST_BlockStatement) return thing.body.length == 0;
  return false;
  };
-
  function loop_body(x) {
  if (x instanceof AST_Switch) return x;
  if (x instanceof AST_For || x instanceof AST_ForIn || x instanceof AST_DWLoop) {
@@ -195,7 +171,6 @@ merge(Compressor.prototype, {
  }
  return x;
  };
-
  function tighten_body(statements, compressor) {
  var CHANGED;
  do {
@@ -217,13 +192,10 @@ merge(Compressor.prototype, {
  statements = join_consecutive_vars(statements, compressor);
  }
  } while (CHANGED);
-
  if (compressor.option("negate_iife")) {
  negate_iifes(statements, compressor);
  }
-
  return statements;
-
  function process_for_angular(statements) {
  function make_injector(func, name) {
  return make_node(AST_SimpleStatement, func, {
@@ -267,7 +239,6 @@ merge(Compressor.prototype, {
  return a;
  }, []);
  }
-
  function eliminate_spurious_blocks(statements) {
  var seen_dirs = [];
  return statements.reduce(function(a, stat){
@@ -289,7 +260,6 @@ merge(Compressor.prototype, {
  return a;
  }, []);
  };
-
  function handle_if_return(statements, compressor) {
  var self = compressor.self();
  var in_lambda = self instanceof AST_Lambda;
@@ -363,7 +333,6 @@ merge(Compressor.prototype, {
  continue loop;
  }
  }
-
  var ab = aborts(stat.body);
  var lct = ab instanceof AST_LoopControl ? compressor.loopcontrol_target(ab.label) : null;
  if (ab && ((ab instanceof AST_Return && !ab.value && in_lambda)
@@ -385,7 +354,6 @@ merge(Compressor.prototype, {
  ret = [ stat.transform(compressor) ];
  continue loop;
  }
-
  var ab = aborts(stat.alternative);
  var lct = ab instanceof AST_LoopControl ? compressor.loopcontrol_target(ab.label) : null;
  if (ab && ((ab instanceof AST_Return && !ab.value && in_lambda)
@@ -405,7 +373,6 @@ merge(Compressor.prototype, {
  ret = [ stat.transform(compressor) ];
  continue loop;
  }
-
  ret.unshift(stat);
  break;
  default:
@@ -415,7 +382,6 @@ merge(Compressor.prototype, {
  }
  return ret;
  };
-
  function eliminate_dead_code(statements, compressor) {
  var has_quit = false;
  var orig = statements.length;
@@ -446,7 +412,6 @@ merge(Compressor.prototype, {
  CHANGED = statements.length != orig;
  return statements;
  };
-
  function sequencesize(statements, compressor) {
  if (statements.length < 2) return statements;
  var seq = [], ret = [];
@@ -466,7 +431,6 @@ merge(Compressor.prototype, {
  CHANGED = ret.length != statements.length;
  return ret;
  };
-
  function sequencesize_2(statements, compressor) {
  function cons_seq(right) {
  ret.pop();
@@ -520,7 +484,6 @@ merge(Compressor.prototype, {
  });
  return ret;
  };
-
  function join_consecutive_vars(statements, compressor) {
  var prev = null;
  return statements.reduce(function(a, stat){
@@ -548,7 +511,6 @@ merge(Compressor.prototype, {
  return a;
  }, []);
  };
-
  function negate_iifes(statements, compressor) {
  statements.forEach(function(stat){
  if (stat instanceof AST_SimpleStatement) {
@@ -582,9 +544,7 @@ merge(Compressor.prototype, {
  }
  });
  };
-
  };
-
  function extract_declarations_from_unreachable_code(compressor, stat, target) {
  compressor.warn("Dropping unreachable code [{file}:{line},{col}]", stat.start);
  stat.walk(new TreeWalker(function(node){
@@ -603,9 +563,7 @@ merge(Compressor.prototype, {
  }
  }));
  };
-
  /* -----[ boolean/negation helpers ]----- */
-
  // methods to determine whether an expression has a boolean result type
  (function (def){
  var unary_bool = [ "!", "delete" ];
@@ -633,7 +591,6 @@ merge(Compressor.prototype, {
  })(function(node, func){
  node.DEFMETHOD("is_boolean", func);
  });
-
  // methods to determine if an expression has a string result type
  (function (def){
  def(AST_Node, function(){ return false });
@@ -663,13 +620,11 @@ merge(Compressor.prototype, {
  })(function(node, func){
  node.DEFMETHOD("is_string", func);
  });
-
  function best_of(ast1, ast2) {
  return ast1.print_to_string().length >
  ast2.print_to_string().length
  ? ast2 : ast1;
  };
-
  // methods to evaluate a constant expression
  (function (def){
  // The evaluate method returns an array with one or two
@@ -701,7 +656,6 @@ merge(Compressor.prototype, {
  });
  function ev(node, compressor) {
  if (!compressor) throw new Error("Compressor must be passed");
-
  return node._eval(compressor);
  };
  def(AST_Node, function(){
@@ -718,13 +672,10 @@ merge(Compressor.prototype, {
  // Function would be evaluated to an array and so typeof would
  // incorrectly return "object". Hence making is a special case.
  if (e instanceof AST_Function) return typeof function(){};
-
  e = ev(e, compressor);
-
  // typeof <RegExp> returns "object" or "function" on different platforms
  // so cannot evaluate reliably
  if (e instanceof RegExp) throw def;
-
  return typeof e;
  case "void": return void ev(e, compressor);
  case "~": return ~ev(e, compressor);
@@ -786,7 +737,6 @@ merge(Compressor.prototype, {
  })(function(node, func){
  node.DEFMETHOD("_eval", func);
  });
-
  // method to negate an expression
  (function(def){
  function basic_negation(exp) {
@@ -853,21 +803,17 @@ merge(Compressor.prototype, {
  return func.call(this, compressor);
  });
  });
-
  // determine if expression has side effects
  (function(def){
  def(AST_Node, function(compressor){ return true });
-
  def(AST_EmptyStatement, function(compressor){ return false });
  def(AST_Constant, function(compressor){ return false });
  def(AST_This, function(compressor){ return false });
-
  def(AST_Call, function(compressor){
  var pure = compressor.option("pure_funcs");
  if (!pure) return true;
  return pure.indexOf(this.expression.print_to_string()) < 0;
  });
-
  def(AST_Block, function(compressor){
  for (var i = this.body.length; --i >= 0;) {
  if (this.body[i].has_side_effects(compressor))
@@ -875,7 +821,6 @@ merge(Compressor.prototype, {
  }
  return false;
  });
-
  def(AST_SimpleStatement, function(compressor){
  return this.body.has_side_effects(compressor);
  });
@@ -932,7 +877,6 @@ merge(Compressor.prototype, {
  })(function(node, func){
  node.DEFMETHOD("has_side_effects", func);
  });
-
  // tell me if a statement aborts
  function aborts(thing) {
  return thing && thing.aborts();
@@ -952,22 +896,18 @@ merge(Compressor.prototype, {
  })(function(node, func){
  node.DEFMETHOD("aborts", func);
  });
-
  /* -----[ optimizers ]----- */
-
  OPT(AST_Directive, function(self, compressor){
  if (self.scope.has_directive(self.value) !== self.scope) {
  return make_node(AST_EmptyStatement, self);
  }
  return self;
  });
-
  OPT(AST_Debugger, function(self, compressor){
  if (compressor.option("drop_debugger"))
  return make_node(AST_EmptyStatement, self);
  return self;
  });
-
  OPT(AST_LabeledStatement, function(self, compressor){
  if (self.body instanceof AST_Break
  && compressor.loopcontrol_target(self.body.label) === self.body) {
@@ -975,12 +915,10 @@ merge(Compressor.prototype, {
  }
  return self.label.references.length == 0 ? self.body : self;
  });
-
  OPT(AST_Block, function(self, compressor){
  self.body = tighten_body(self.body, compressor);
  return self;
  });
-
  OPT(AST_BlockStatement, function(self, compressor){
  self.body = tighten_body(self.body, compressor);
  switch (self.body.length) {
@@ -989,7 +927,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  AST_Scope.DEFMETHOD("drop_unused", function(compressor){
  var self = this;
  if (compressor.option("unused")
@@ -1146,17 +1083,14 @@ merge(Compressor.prototype, {
  }
  if (node instanceof AST_For) {
  descend(node, this);
-
  if (node.init instanceof AST_BlockStatement) {
  // certain combination of unused name + side effect leads to:
  // https://github.com/mishoo/UglifyJS2/issues/44
  // that's an invalid AST.
  // We fix it at this stage by moving the `var` outside the `for`.
-
  var body = node.init.body.slice(0, -1);
  node.init = node.init.body.slice(-1)[0].body;
  body.push(node);
-
  return in_list ? MAP.splice(body) : make_node(AST_BlockStatement, node, {
  body: body
  });
@@ -1169,7 +1103,6 @@ merge(Compressor.prototype, {
  self.transform(tt);
  }
  });
-
  AST_Scope.DEFMETHOD("hoist_declarations", function(compressor){
  var hoist_funs = compressor.option("hoist_funs");
  var hoist_vars = compressor.option("hoist_vars");
@@ -1294,7 +1227,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_SimpleStatement, function(self, compressor){
  if (compressor.option("side_effects")) {
  if (!self.body.has_side_effects(compressor)) {
@@ -1304,7 +1236,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_DWLoop, function(self, compressor){
  var cond = self.condition.evaluate(compressor);
  self.condition = cond[0];
@@ -1324,7 +1255,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  function if_break_in_loop(self, compressor) {
  function drop_it(rest) {
  rest = as_statement_array(rest);
@@ -1369,7 +1299,6 @@ merge(Compressor.prototype, {
  }
  }
  };
-
  OPT(AST_While, function(self, compressor) {
  if (!compressor.option("loops")) return self;
  self = AST_DWLoop.prototype.optimize.call(self, compressor);
@@ -1379,7 +1308,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_For, function(self, compressor){
  var cond = self.condition;
  if (cond) {
@@ -1407,7 +1335,6 @@ merge(Compressor.prototype, {
  if_break_in_loop(self, compressor);
  return self;
  });
-
  OPT(AST_If, function(self, compressor){
  if (!compressor.option("conditionals")) return self;
  // if condition can be statically determined, warn and drop
@@ -1530,7 +1457,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Switch, function(self, compressor){
  if (self.body.length == 0 && compressor.option("conditionals")) {
  return make_node(AST_SimpleStatement, self, {
@@ -1625,21 +1551,17 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Case, function(self, compressor){
  self.body = tighten_body(self.body, compressor);
  return self;
  });
-
  OPT(AST_Try, function(self, compressor){
  self.body = tighten_body(self.body, compressor);
  return self;
  });
-
  AST_Definitions.DEFMETHOD("remove_initializers", function(){
  this.definitions.forEach(function(def){ def.value = null });
  });
-
  AST_Definitions.DEFMETHOD("to_assignments", function(){
  var assignments = this.definitions.reduce(function(a, def){
  if (def.value) {
@@ -1655,13 +1577,11 @@ merge(Compressor.prototype, {
  if (assignments.length == 0) return null;
  return AST_Seq.from_array(assignments);
  });
-
  OPT(AST_Definitions, function(self, compressor){
  if (self.definitions.length == 0)
  return make_node(AST_EmptyStatement, self);
  return self;
  });
-
  OPT(AST_Function, function(self, compressor){
  self = AST_Lambda.prototype.optimize.call(self, compressor);
  if (compressor.option("unused")) {
@@ -1671,7 +1591,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Call, function(self, compressor){
  if (compressor.option("unsafe")) {
  var exp = self.expression;
@@ -1843,7 +1762,6 @@ merge(Compressor.prototype, {
  }
  return self.evaluate(compressor)[0];
  });
-
  OPT(AST_New, function(self, compressor){
  if (compressor.option("unsafe")) {
  var exp = self.expression;
@@ -1860,7 +1778,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Seq, function(self, compressor){
  if (!compressor.option("side_effects"))
  return self;
@@ -1909,7 +1826,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  AST_Unary.DEFMETHOD("lift_sequences", function(compressor){
  if (compressor.option("sequences")) {
  if (this.expression instanceof AST_Seq) {
@@ -1923,11 +1839,9 @@ merge(Compressor.prototype, {
  }
  return this;
  });
-
  OPT(AST_UnaryPostfix, function(self, compressor){
  return self.lift_sequences(compressor);
  });
-
  OPT(AST_UnaryPrefix, function(self, compressor){
  self = self.lift_sequences(compressor);
  var e = self.expression;
@@ -1951,7 +1865,6 @@ merge(Compressor.prototype, {
  }
  return self.evaluate(compressor)[0];
  });
-
  function has_side_effects_or_prop_access(node, compressor) {
  var save_pure_getters = compressor.option("pure_getters");
  compressor.options.pure_getters = false;
@@ -1959,7 +1872,6 @@ merge(Compressor.prototype, {
  compressor.options.pure_getters = save_pure_getters;
  return ret;
  }
-
  AST_Binary.DEFMETHOD("lift_sequences", function(compressor){
  if (compressor.option("sequences")) {
  if (this.left instanceof AST_Seq) {
@@ -1983,9 +1895,7 @@ merge(Compressor.prototype, {
  }
  return this;
  });
-
  var commutativeOperators = makePredicate("== === != !== * & | ^");
-
  OPT(AST_Binary, function(self, compressor){
  var reverse = compressor.has_directive("use asm") ? noop
  : function(op, force) {
@@ -2002,7 +1912,6 @@ merge(Compressor.prototype, {
  // if right is a constant, whatever side effects the
  // left side might have could not influence the
  // result. hence, force switch.
-
  if (!(self.left instanceof AST_Binary
  && PRECEDENCE[self.left.operator] >= PRECEDENCE[self.operator])) {
  reverse(null, true);
@@ -2189,7 +2098,6 @@ merge(Compressor.prototype, {
  }
  return self.evaluate(compressor)[0];
  });
-
  OPT(AST_SymbolRef, function(self, compressor){
  if (self.undeclared()) {
  var defines = compressor.option("global_defs");
@@ -2207,7 +2115,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Undefined, function(self, compressor){
  if (compressor.option("unsafe")) {
  var scope = compressor.find_parent(AST_Scope);
@@ -2224,7 +2131,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  var ASSIGN_OPS = [ '+', '-', '/', '*', '%', '>>', '<<', '>>>', '|', '^', '&' ];
  OPT(AST_Assign, function(self, compressor){
  self = self.lift_sequences(compressor);
@@ -2239,7 +2145,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Conditional, function(self, compressor){
  if (!compressor.option("conditionals")) return self;
  if (self.condition instanceof AST_Seq) {
@@ -2322,7 +2227,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Boolean, function(self, compressor){
  if (compressor.option("booleans")) {
  var p = compressor.parent();
@@ -2348,7 +2252,6 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Sub, function(self, compressor){
  var prop = self.property;
  if (prop instanceof AST_String && compressor.option("properties")) {
@@ -2368,11 +2271,9 @@ merge(Compressor.prototype, {
  }
  return self;
  });
-
  OPT(AST_Dot, function(self, compressor){
  return self.evaluate(compressor)[0];
  });
-
  function literals_in_boolean_context(self, compressor) {
  if (compressor.option("booleans") && compressor.in_boolean_context()) {
  return make_node(AST_True, self);
@@ -2382,5 +2283,4 @@ merge(Compressor.prototype, {
  OPT(AST_Array, literals_in_boolean_context);
  OPT(AST_Object, literals_in_boolean_context);
  OPT(AST_RegExp, literals_in_boolean_context);
-
 }());

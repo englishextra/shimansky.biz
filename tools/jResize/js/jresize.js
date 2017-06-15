@@ -6,7 +6,6 @@
 */
 ;(function ($) {
  $.jResize = function (options) {
-
  	// jResize default options for customisation, ViewPort size, Background Color and Font Color
  	$.jResize.defaults = {
  viewPortSizes : ["320px", "480px", "540px", "600px", "768px", "960px", "1024px", "1280px"],
@@ -38,7 +37,6 @@
  });
  // Prepend our Reset button
  $('.viewlist').prepend('<li class="reset" style="' + viewPortList + '">Reset</li>', credit);
-
  // Slidedown the viewport navigation and animate the resizer
  var height = $('.viewlist').outerHeight();
  $('.viewports').hide().slideDown('300');
@@ -49,6 +47,5 @@
  width: 'auto'
  });
  });
-
  };
 })(jQuery);
