@@ -249,7 +249,7 @@ var Mustache = function () {
  return "";
  },
  walk_context: function(name, context){
- var path = name.split('.');
+ var path = name.split(".");
  // if the var doesn't exist in current context, check the top level context
  var value_context = (context[path[0]] != undefined) ? context : this.context;
  var value = value_context[path.shift()];

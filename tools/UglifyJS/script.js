@@ -53,7 +53,7 @@ function is_visible(class_name) {
 	return (' ' + $body.className + ' ').indexOf(' ' + class_name + ' ') >= 0;
 }
 function hide(class_name) {
-	var names = class_name.split(' ');
+	var names = class_name.split(" ");
 	var cur = ' ' + $body.className + ' ';
 	for (var i = 0; i < names.length; i++) {
 		while (cur.indexOf(' ' + names[i] + ' ') >= 0) {
@@ -66,7 +66,7 @@ function show(class_name) {
 	$body.className += ' ' + class_name;
 }
 function toggle(class_name) {
-	var names = class_name.split(' ');
+	var names = class_name.split(" ");
 	for (var i = 0; i < names.length; i++) {
 		if (is_visible(names[i])) {
 			hide(names[i]);

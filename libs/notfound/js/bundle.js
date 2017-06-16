@@ -1,3 +1,20 @@
+/*jshint browser: true */
+/*jshint node: true */
+/*jslint browser: true */
+/*jslint node: true */
+/*global  _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA,
+ Carousel, changeLocation, container, Cookies, crel, debounce, DISQUS,
+ earlyDeviceOrientation, earlyDeviceSize, earlyDeviceType, earlyFnGetYyyymmdd,
+ earlyHasTouch, earlySvgasimgSupport, earlySvgSupport, escape, findPos,
+ fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox,
+ imagePromise, insertExternalHTML, insertTextAsFragment,
+ isValidId, jQuery, Kamil, loadJS, loadUnparsedJSON, manageDataSrcImages,
+ Masonry, openDeviceBrowser, Packery, parseLink, Promise, Proxy, QRCode,
+ removeChildren, require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
+ scrollToElement, scrollToTop, setStyleDisplayBlock, setStyleDisplayNone,
+ setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
+ throttle, Timers, ToProgress, truncString, unescape, verge, VK, zenscroll */
+/*property console, split */
 /*!
  * define global root
  */

@@ -433,7 +433,7 @@ var punycode,maxInt=2147483647,base=36,tMin=1,tMax=26,skew=38,damp=700,initialBi
 function map(array,fn){var length=array.length;var result=[];while(length--){result[length]=fn(array[length]);}
 return result;}
 function mapDomain(string,fn){var parts=string.split('@');var result='';if(parts.length>1){result=parts[0]+'@';string=parts[1];}
-string=string.replace(regexSeparators,'\x2E');var labels=string.split('.');var encoded=map(labels,fn).join('.');return result+encoded;}
+string=string.replace(regexSeparators,'\x2E');var labels=string.split(".");var encoded=map(labels,fn).join('.');return result+encoded;}
 function ucs2decode(string){var output=[],counter=0,length=string.length,value,extra;while(counter<length){value=string.charCodeAt(counter++);if(value>=0xD800&&value<=0xDBFF&&counter<length){extra=string.charCodeAt(counter++);if((extra&0xFC00)==0xDC00){output.push(((value&0x3FF)<<10)+(extra&0x3FF)+0x10000);}else{output.push(value);counter--;}}else{output.push(value);}}
 return output;}
 function ucs2encode(array){return map(array,function(value){var output='';if(value>0xFFFF){value-=0x10000;output+=stringFromCharCode(value>>>10&0x3FF|0xD800);value=0xDC00|value&0x3FF;}
