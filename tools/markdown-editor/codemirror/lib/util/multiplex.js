@@ -3,7 +3,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
  var others = Array.prototype.slice.call(arguments, 1);
  var n_others = others.length;
  function indexOf(string, pattern, from) {
- if (typeof pattern == "string") return string.indexOf(pattern, from);
+ if (typeof pattern === "string") return string.indexOf(pattern, from);
  var m = pattern.exec(from ? string.slice(from) : string);
  return m ? m.index + from : -1;
  }

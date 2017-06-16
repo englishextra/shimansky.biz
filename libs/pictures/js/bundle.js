@@ -2,19 +2,24 @@
 /*jshint node: true */
 /*jslint browser: true */
 /*jslint node: true */
-/*global  _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA,
- Carousel, changeLocation, container, Cookies, crel, debounce, DISQUS,
- earlyDeviceOrientation, earlyDeviceSize, earlyDeviceType, earlyFnGetYyyymmdd,
- earlyHasTouch, earlySvgasimgSupport, earlySvgSupport, escape, findPos,
- fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox,
- imagePromise, insertExternalHTML, insertTextAsFragment,
- isValidId, jQuery, Kamil, loadJS, loadUnparsedJSON, manageDataSrcImages,
- Masonry, openDeviceBrowser, Packery, parseLink, Promise, Proxy, QRCode,
- removeChildren, require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
- scrollToElement, scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
- setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
- throttle, Timers, ToProgress, truncString, unescape, verge, VK, zenscroll */
-/*property console, split */
+/*global _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA, 
+Carousel, changeLocation, container, Cookies, crel, debounce, define, 
+DISQUS, DoSlide, Draggabilly, earlyDeviceOrientation, earlyDeviceSize, 
+earlyDeviceType, earlyFnGetYyyymmdd, earlyHasTouch, 
+earlySvgasimgSupport, earlySvgSupport, escape, fetch, findPos, 
+fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox, 
+imagePromise, imagesLoaded, imagesPreloaded, insertExternalHTML, 
+insertTextAsFragment, Isotope, isValidId, jQuery, Kamil, 
+loadExternalHTML, loadJS, loadUnparsedJSON, manageDataSrcImages, 
+manageImgLightboxLinks, Masonry, module, openDeviceBrowser, Packery, 
+Parallax, parseLink, PhotoSwipe, PhotoSwipeUI_Default, pnotify, 
+prependFragmentBefore, prettyPrint, Promise, Proxy, QRCode, 
+removeChildren, removeElement, require, routie, safelyParseJSON, 
+scriptIsLoaded, scroll2Top, scrollToElement, scrollToPos, scrollToTop, 
+setImmediate, setStyleDisplayBlock, setStyleDisplayNone, 
+setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t, 
+Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge, 
+VK, Ya, ymaps, zenscroll */
 /*!
  * define global root
  */
@@ -230,7 +235,7 @@ if (document.title) {
  * @see {@link https://github.com/component/debounce/blob/master/index.js}
  * passes jshint
  */
-(function(root,undefined){var debounce=function(func,wait,immediate){var timeout,args,context,timestamp,result;if(undefined===wait||null===wait){wait=100;}function later(){var last=Date.now()-timestamp;if(last<wait&&last>=0){timeout=setTimeout(later,wait-last);}else{timeout=null;if(!immediate){result=func.apply(context,args);context=args=null;}}}var debounced=function(){context=this;args=arguments;timestamp=Date.now();var callNow=immediate&&!timeout;if(!timeout)timeout=setTimeout(later,wait);if(callNow){result=func.apply(context,args);context=args=null;}return result;};debounced.clear=function(){if(timeout){clearTimeout(timeout);timeout=null;}};debounced.flush=function(){if(timeout){result=func.apply(context,args);context=args=null;clearTimeout(timeout);timeout=null;}};return debounced;};root.debounce=debounce;}(globalRoot));
+(function(root,undefined){var debounce=function(func,wait,immediate){var timeout,args,context,timestamp,result;if(undefined===wait||null===wait){wait=100;}function later(){var last=Date.now()-timestamp;if(last<wait&&last>=0){timeout=setTimeout(later,wait-last);}else{timeout=null;if(!immediate){result=func.apply(context,args);context=args=null;}}}var debounced=function(){context=this;args=arguments;timestamp=Date.now();var callNow=immediate&&!timeout;if(!timeout){timeout=setTimeout(later,wait);}if(callNow){result=func.apply(context,args);context=args=null;}return result;};debounced.clear=function(){if(timeout){clearTimeout(timeout);timeout=null;}};debounced.flush=function(){if(timeout){result=func.apply(context,args);context=args=null;clearTimeout(timeout);timeout=null;}};return debounced;};root.debounce=debounce;}(globalRoot));
 /*!
  * modified Returns a new function that, when invoked, invokes `func` at most once per `wait` milliseconds.
  * @param {Function} func Function to wrap.
@@ -239,7 +244,7 @@ if (document.title) {
  * @see {@link https://github.com/component/throttle/blob/master/index.js}
  * passes jshint
  */
-(function(root,undefined){var throttle=function(func,wait){var ctx,args,rtn,timeoutID;var last=0;return function throttled(){ctx=this;args=arguments;var delta=new Date()-last;if(!timeoutID)if(delta>=wait)call();else timeoutID=setTimeout(call,wait-delta);return rtn;};function call(){timeoutID=0;last=+new Date();rtn=func.apply(ctx,args);ctx=null;args=null;}};root.throttle=throttle;}(globalRoot));
+(function(root,undefined){var throttle=function(func,wait){var ctx,args,rtn,timeoutID;var last=0;return function throttled(){ctx=this;args=arguments;var delta=new Date()-last;if(!timeoutID){if(delta>=wait){call();}else{timeoutID=setTimeout(call,wait-delta);}}return rtn;};function call(){timeoutID=0;last=+new Date();rtn=func.apply(ctx,args);ctx=null;args=null;}};root.throttle=throttle;}(globalRoot));
 /*!
  * A simple promise-compatible "document ready" event handler with a few extra treats.
  * With browserify/webpack:
@@ -417,8 +422,7 @@ var handleExternalLink = function (p, ev) {
 manageExternalLinks = function (ctx) {
 	"use strict";
 	ctx = ctx && ctx.nodeName ? ctx : "";
-	var w = globalRoot,
-	aEL = "addEventListener",
+	var aEL = "addEventListener",
 	cls = "a",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
 	g = function (e) {
@@ -435,15 +439,10 @@ manageExternalLinks = function (ctx) {
 	},
 	k = function () {
 		a = ctx ? BALA(cls, ctx) || "" : BALA(cls) || "";
-		if (w._) {
-			_.each(a, g);
-		} else if (w.forEach) {
-			forEach(a, g, !1);
-		} else {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
-			}
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
 		}
+		/* forEach(a, g, !1); */
 	};
 	if (a) {
 		/* console.log("triggered function: manageExternalLinks"); */
@@ -454,7 +453,8 @@ document.ready().then(manageExternalLinks);
 /*!
  * init Masonry grid and rerender on imagesLoaded progress
  */
-var initMasonryImagesLoaded = function () {
+var localImagesPreloaded,
+initMasonryImagesLoaded = function () {
 	"use strict";
 	var w = globalRoot,
 	g = ".masonry-grid",
@@ -480,7 +480,7 @@ var initMasonryImagesLoaded = function () {
 				});
 			}
 			if ("undefined" !== typeof imagesPreloaded) {
-				imagesPreloaded = !0;
+				localImagesPreloaded = true;
 			}
 		} else if (w.Packery) {
 			var pckry = new Packery(c, {
@@ -498,7 +498,7 @@ var initMasonryImagesLoaded = function () {
 				});
 			}
 			if ("undefined" !== typeof imagesPreloaded) {
-				imagesPreloaded = !0;
+				localImagesPreloaded = true;
 			}
 		} else {
 			/* console.log("function initMasonry => no library is loaded"); */
@@ -527,8 +527,7 @@ document.ready().then(loadInitMasonryImagesLoaded);
  */
 var initPhotoswipe = function () {
 	"use strict";
-	var w = globalRoot,
-	c = ".pswp-gallery",
+	var c = ".pswp-gallery",
 	gallery = BALA.one(c) || "",
 	item = ".masonry-grid-item",
 	gallery_item = BALA.one(item) || "",
@@ -694,7 +693,7 @@ var initPhotoswipe = function () {
 					/* parse real index when custom PIDs are used */
 					/* http://photoswipe.com/documentation/faq.html#custom-pid-in-url */
 					for (var j = 0; j < items.length; j++) {
-						if (items[j].pid == index) {
+						if (items[j].pid === index) {
 							options.index = j;
 							break;
 						}
@@ -712,7 +711,7 @@ var initPhotoswipe = function () {
 			var radios = document.getElementsByName("gallery-style");
 			for (var i = 0, length = radios.length; i < length; i++) {
 				if (radios[i].checked) {
-					if (radios[i].id == "radio-all-controls") {}
+					if (radios[i].id === "radio-all-controls") {}
 					else if (radios[i].id === "radio-minimal-black") {
 						options.mainClass = "pswp--minimal--dark";
 						options.barsSize = {
@@ -801,15 +800,10 @@ var initPhotoswipe = function () {
 		}
 	},
 	k = function (a) {
-		if (w._) {
-			_.each(a, g);
-		} else if (w.forEach) {
-			forEach(a, g, !1);
-		} else {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
-			}
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
 		}
+		/* forEach(a, g, !1); */
 	},
 	q = function (e) {
 		setStyleDisplayBlock(e);
@@ -820,15 +814,10 @@ var initPhotoswipe = function () {
 	},
 	s = function () {
 		var galleries = BALA(c) || "";
-		if (w._) {
-			_.each(galleries, q);
-		} else if (w.forEach) {
-			forEach(galleries, q, !1);
-		} else {
-			for (var i = 0, l = galleries.length; i < l; i += 1) {
-				q(galleries[i]);
-			}
+		for (var i = 0, l = galleries.length; i < l; i += 1) {
+			q(galleries[i]);
 		}
+		/* forEach(galleries, q, !1); */
 	},
 	v = function () {
 		/* var f = function () {
@@ -1379,7 +1368,7 @@ var showPageFinishProgress = function () {
 		var timers = new Timers();
 		timers.interval(function () {
 			/* console.log("function showPageFinishProgress => started Interval"); */
-			if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
+			if ("undefined" !== typeof imagesPreloaded && localImagesPreloaded) {
 				timers.clear();
 				timers = null;
 				/* console.log("function showPageFinishProgress; imagesPreloaded=" + imagesPreloaded); */

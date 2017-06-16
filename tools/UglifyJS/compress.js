@@ -614,7 +614,7 @@ merge(Compressor.prototype, {
  def(AST_Call, function(compressor){
  return compressor.option("unsafe")
  && this.expression instanceof AST_SymbolRef
- && this.expression.name == "String"
+ && this.expression.name === "string"
  && this.expression.undeclared();
  });
  })(function(node, func){
@@ -729,7 +729,7 @@ merge(Compressor.prototype, {
  def(AST_Dot, function(compressor){
  if (compressor.option("unsafe") && this.property == "length") {
  var str = ev(this.expression, compressor);
- if (typeof str == "string")
+ if (typeof str === "string")
  return str.length;
  }
  throw def;

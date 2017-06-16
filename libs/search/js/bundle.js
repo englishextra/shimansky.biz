@@ -2,19 +2,24 @@
 /*jshint node: true */
 /*jslint browser: true */
 /*jslint node: true */
-/*global  _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA,
- Carousel, changeLocation, container, Cookies, crel, debounce, DISQUS,
- earlyDeviceOrientation, earlyDeviceSize, earlyDeviceType, earlyFnGetYyyymmdd,
- earlyHasTouch, earlySvgasimgSupport, earlySvgSupport, escape, findPos,
- fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox,
- imagePromise, insertExternalHTML, insertTextAsFragment,
- isValidId, jQuery, Kamil, loadJS, loadUnparsedJSON, manageDataSrcImages,
- Masonry, openDeviceBrowser, Packery, parseLink, Promise, Proxy, QRCode,
- removeChildren, require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
- scrollToElement, scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
- setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
- throttle, Timers, ToProgress, truncString, unescape, verge, VK, zenscroll */
-/*property console, split */
+/*global _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA, 
+Carousel, changeLocation, container, Cookies, crel, debounce, define, 
+DISQUS, DoSlide, Draggabilly, earlyDeviceOrientation, earlyDeviceSize, 
+earlyDeviceType, earlyFnGetYyyymmdd, earlyHasTouch, 
+earlySvgasimgSupport, earlySvgSupport, escape, fetch, findPos, 
+fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox, 
+imagePromise, imagesLoaded, imagesPreloaded, insertExternalHTML, 
+insertTextAsFragment, Isotope, isValidId, jQuery, Kamil, 
+loadExternalHTML, loadJS, loadUnparsedJSON, manageDataSrcImages, 
+manageImgLightboxLinks, Masonry, module, openDeviceBrowser, Packery, 
+Parallax, parseLink, PhotoSwipe, PhotoSwipeUI_Default, pnotify, 
+prependFragmentBefore, prettyPrint, Promise, Proxy, QRCode, 
+removeChildren, removeElement, require, routie, safelyParseJSON, 
+scriptIsLoaded, scroll2Top, scrollToElement, scrollToPos, scrollToTop, 
+setImmediate, setStyleDisplayBlock, setStyleDisplayNone, 
+setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t, 
+Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge, 
+VK, Ya, ymaps, zenscroll */
 /*!
  * define global root
  */
@@ -211,7 +216,7 @@ if (document.title) {
  * @param {String} a URL / path string
  * changeLocation(a)
  */
-(function(root){var changeLocation=function(a){return function(){if(a){document.location.href=a;}}();};root.changeLocation=changeLocation;}(globalRoot));
+(function(root){var changeLocation=function(a){return (function(){if(a){document.location.href=a;}}());};root.changeLocation=changeLocation;}(globalRoot));
 /*!
  * modified Unified URL parsing API in the browser and node
  * @see {@link https://github.com/wooorm/parse-link}
@@ -298,8 +303,7 @@ var handleExternalLink = function (p, ev) {
 manageExternalLinks = function (ctx) {
 	"use strict";
 	ctx = ctx && ctx.nodeName ? ctx : "";
-	var w = globalRoot,
-	aEL = "addEventListener",
+	var aEL = "addEventListener",
 	cls = "a",
 	a = ctx ? BALA.one(cls, ctx) || "" : BALA.one(cls) || "",
 	g = function (e) {
@@ -316,15 +320,10 @@ manageExternalLinks = function (ctx) {
 	},
 	k = function () {
 		a = ctx ? BALA(cls, ctx) || "" : BALA(cls) || "";
-		if (w._) {
-			_.each(a, g);
-		} else if (w.forEach) {
-			forEach(a, g, !1);
-		} else {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
-			}
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
 		}
+		/* forEach(a, g, !1); */
 	};
 	if (a) {
 		/* console.log("triggered function: manageExternalLinks"); */

@@ -272,13 +272,13 @@ CodeMirror.defineMode("xml", function(config, parserConfig) {
  return attrState(type, stream, state);
  }
  function attrValueState(type, stream, state) {
- if (type == "string") return attrContinuedState;
+ if (type === "string") return attrContinuedState;
  if (type == "word" && Kludges.allowUnquoted) {setStyle = "string"; return attrState;}
  setStyle = "error";
  return attrState(type, stream, state);
  }
  function attrContinuedState(type, stream, state) {
- if (type == "string") return attrContinuedState;
+ if (type === "string") return attrContinuedState;
  return attrState(type, stream, state);
  }
  return {

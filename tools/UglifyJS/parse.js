@@ -535,7 +535,7 @@ function parse($TEXT, options) {
  html5_comments : true,
  });
  var S = {
- input : (typeof $TEXT == "string"
+ input : (typeof $TEXT === "string"
  ? tokenizer($TEXT, options.filename,
  options.html5_comments)
  : $TEXT),
@@ -561,7 +561,7 @@ function parse($TEXT, options) {
  S.token = S.input();
  }
  S.in_directives = S.in_directives && (
- S.token.type == "string" || is("punc", ";")
+ S.token.type === "string" || is("punc", ";")
  );
  return S.token;
  };

@@ -2,19 +2,24 @@
 /*jshint node: true */
 /*jslint browser: true */
 /*jslint node: true */
-/*global  _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA,
- Carousel, changeLocation, container, Cookies, crel, debounce, DISQUS,
- earlyDeviceOrientation, earlyDeviceSize, earlyDeviceType, earlyFnGetYyyymmdd,
- earlyHasTouch, earlySvgasimgSupport, earlySvgSupport, escape, findPos,
- fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox,
- imagePromise, insertExternalHTML, insertTextAsFragment,
- isValidId, jQuery, Kamil, loadJS, loadUnparsedJSON, manageDataSrcImages,
- Masonry, openDeviceBrowser, Packery, parseLink, Promise, Proxy, QRCode,
- removeChildren, require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
- scrollToElement, scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
- setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
- throttle, Timers, ToProgress, truncString, unescape, verge, VK, zenscroll */
-/*property console, split */
+/*global _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA, 
+Carousel, changeLocation, container, Cookies, crel, debounce, define, 
+DISQUS, DoSlide, Draggabilly, earlyDeviceOrientation, earlyDeviceSize, 
+earlyDeviceType, earlyFnGetYyyymmdd, earlyHasTouch, 
+earlySvgasimgSupport, earlySvgSupport, escape, fetch, findPos, 
+fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox, 
+imagePromise, imagesLoaded, imagesPreloaded, insertExternalHTML, 
+insertTextAsFragment, Isotope, isValidId, jQuery, Kamil, 
+loadExternalHTML, loadJS, loadUnparsedJSON, manageDataSrcImages, 
+manageImgLightboxLinks, Masonry, module, openDeviceBrowser, Packery, 
+Parallax, parseLink, PhotoSwipe, PhotoSwipeUI_Default, pnotify, 
+prependFragmentBefore, prettyPrint, Promise, Proxy, QRCode, 
+removeChildren, removeElement, require, routie, safelyParseJSON, 
+scriptIsLoaded, scroll2Top, scrollToElement, scrollToPos, scrollToTop, 
+setImmediate, setStyleDisplayBlock, setStyleDisplayNone, 
+setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t, 
+Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge, 
+VK, Ya, ymaps, zenscroll */
 /*!
  * define global root
  */
@@ -326,15 +331,10 @@ manageExternalLinks = function (ctx) {
 	},
 	k = function () {
 		a = ctx ? BALA(cls, ctx) || "" : BALA(cls) || "";
-		if (w._) {
-			_.each(a, g);
-		} else if (w.forEach) {
-			forEach(a, g, !1);
-		} else {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
-			}
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
 		}
+		/* forEach(a, g, !1); */
 	};
 	if (a) {
 		/* console.log("triggered function: manageExternalLinks"); */
@@ -360,15 +360,10 @@ var manageLocalLinks = function (ctx) {
 	};
 	if (a) {
 		a = ctx ? BALA("a", ctx) || "" : BALA("a") || "";
-		if (w._) {
-			_.each(a, g);
-		} else if (w.forEach) {
-			forEach(a, g, !1);
-		} else {
-			for (var i = 0, l = a.length; i < l; i += 1) {
-				g(a[i]);
-			}
+		for (var i = 0, l = a.length; i < l; i += 1) {
+			g(a[i]);
 		}
+		/* forEach(a, g, !1); */
 	}
 };
 document.ready().then(manageLocalLinks);
@@ -396,7 +391,7 @@ var hideUiBtnsInFullScreen = function () {
 		 * @see {@link https://stackoverflow.com/questions/1047319/detecting-if-a-browser-is-in-full-screen-mode}
 		 */
 		var args = [cd_prev, cd_next, btn_nav_menu, btn_menu_more, btn_block_social_buttons, ui_totop, holder_search_form];
-		if ((w.navigator.standalone) || (screen.height === w.outerHeight) || (w.fullScreen) || (w.innerWidth == screen.width && w.innerHeight == screen.height)) {
+		if ((w.navigator.standalone) || (screen.height === w.outerHeight) || (w.fullScreen) || (w.innerWidth === screen.width && w.innerHeight === screen.height)) {
 			for (var i = 0, l = args.length; i < l; i += 1) {
 				setStyleDisplayNone(args[i]);
 			}

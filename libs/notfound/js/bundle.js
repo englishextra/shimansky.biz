@@ -2,19 +2,24 @@
 /*jshint node: true */
 /*jslint browser: true */
 /*jslint node: true */
-/*global  _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA,
- Carousel, changeLocation, container, Cookies, crel, debounce, DISQUS,
- earlyDeviceOrientation, earlyDeviceSize, earlyDeviceType, earlyFnGetYyyymmdd,
- earlyHasTouch, earlySvgasimgSupport, earlySvgSupport, escape, findPos,
- fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox,
- imagePromise, insertExternalHTML, insertTextAsFragment,
- isValidId, jQuery, Kamil, loadJS, loadUnparsedJSON, manageDataSrcImages,
- Masonry, openDeviceBrowser, Packery, parseLink, Promise, Proxy, QRCode,
- removeChildren, require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
- scrollToElement, scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
- setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
- throttle, Timers, ToProgress, truncString, unescape, verge, VK, zenscroll */
-/*property console, split */
+/*global _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA, 
+Carousel, changeLocation, container, Cookies, crel, debounce, define, 
+DISQUS, DoSlide, Draggabilly, earlyDeviceOrientation, earlyDeviceSize, 
+earlyDeviceType, earlyFnGetYyyymmdd, earlyHasTouch, 
+earlySvgasimgSupport, earlySvgSupport, escape, fetch, findPos, 
+fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox, 
+imagePromise, imagesLoaded, imagesPreloaded, insertExternalHTML, 
+insertTextAsFragment, Isotope, isValidId, jQuery, Kamil, 
+loadExternalHTML, loadJS, loadUnparsedJSON, manageDataSrcImages, 
+manageImgLightboxLinks, Masonry, module, openDeviceBrowser, Packery, 
+Parallax, parseLink, PhotoSwipe, PhotoSwipeUI_Default, pnotify, 
+prependFragmentBefore, prettyPrint, Promise, Proxy, QRCode, 
+removeChildren, removeElement, require, routie, safelyParseJSON, 
+scriptIsLoaded, scroll2Top, scrollToElement, scrollToPos, scrollToTop, 
+setImmediate, setStyleDisplayBlock, setStyleDisplayNone, 
+setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t, 
+Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge, 
+VK, Ya, ymaps, zenscroll */
 /*!
  * define global root
  */
