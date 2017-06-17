@@ -28,6 +28,7 @@ var rename = require("gulp-rename");
 var sh = require("shelljs");
 var babel = require("gulp-babel");
 var uglify = require("gulp-uglify");
+var path = require('path');
 var paths = {
 	sass: ["libs/**/scss/**/*.scss"],
 	babel: ["libs/**/src/**/*.js"]
@@ -36,7 +37,7 @@ gulp.task("default", ["sass", "babel"]);
 gulp.task("sass", function (done) {
 	"use strict";
 	gulp.src("libs/**/scss/*.scss", {
-		base: "./"
+		base: "./libs/"
 	})
 	.pipe(sass())
 	.pipe(sourcemaps.init())
@@ -45,9 +46,7 @@ gulp.task("sass", function (done) {
 	/* .pipe(rename({
 	suffix: "-compiled"
 	})) */
-	.pipe(gulp.dest(function (file) {
-			return file.base;
-		}))
+	.pipe(gulp.dest('./dist'))
 	.pipe(cleancss({
 			keepSpecialComments: 0
 		}))
@@ -55,15 +54,13 @@ gulp.task("sass", function (done) {
 			extname: ".min.css"
 		}))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(function (file) {
-			return file.base;
-		}))
+	.pipe(gulp.dest('./dist'))
 	.on("end", done);
 });
 gulp.task("babel", function () {
 	"use strict";
-	return gulp.src("libs/**/src/*.js", {
-		base: "./"
+	gulp.src("libs/**/src/*.js", {
+		base: "./libs/"
 	})
 	.pipe(sourcemaps.init())
 	.pipe(babel({
@@ -72,17 +69,13 @@ gulp.task("babel", function () {
 	/* .pipe(rename({
 	suffix: "-compiled"
 	})) */
-	.pipe(gulp.dest(function (file) {
-			return file.base;
-		}))
+	.pipe(gulp.dest('./dist'))
 	.pipe(uglify())
 	.pipe(rename({
 			extname: ".min.js"
 		}))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest(function (file) {
-			return file.base;
-		}));
+	.pipe(gulp.dest('./dist'));
 });
 gulp.task("watch", function () {
 	"use strict";
