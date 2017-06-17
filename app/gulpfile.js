@@ -29,12 +29,15 @@ var sh = require("shelljs");
 var babel = require("gulp-babel");
 var uglify = require("gulp-uglify");
 var paths = {
-	sass: ["./libs/pwa-englishextra/scss/**/*.scss"]
+	sass: ["libs/**/scss/**/*.scss"],
+	babel: ["libs/**/src/**/*.js"]
 };
 gulp.task("default", ["sass", "babel"]);
 gulp.task("sass", function (done) {
 	"use strict";
-	gulp.src("./libs/pwa-englishextra/scss/bundle.scss")
+	gulp.src("libs/**/scss/*.scss", {
+		base: "./"
+	})
 	.pipe(sass())
 	.pipe(sourcemaps.init())
 	.pipe(autoprefixer())
@@ -42,7 +45,9 @@ gulp.task("sass", function (done) {
 	/* .pipe(rename({
 	suffix: "-compiled"
 	})) */
-	.pipe(gulp.dest("./libs/pwa-englishextra/css/"))
+	.pipe(gulp.dest(function (file) {
+			return file.base;
+		}))
 	.pipe(cleancss({
 			keepSpecialComments: 0
 		}))
@@ -50,12 +55,16 @@ gulp.task("sass", function (done) {
 			extname: ".min.css"
 		}))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest("./libs/pwa-englishextra/css/"))
+	.pipe(gulp.dest(function (file) {
+			return file.base;
+		}))
 	.on("end", done);
 });
 gulp.task("babel", function () {
 	"use strict";
-	return gulp.src("./libs/pwa-englishextra/js/bundle.js")
+	return gulp.src("libs/**/src/*.js", {
+		base: "./"
+	})
 	.pipe(sourcemaps.init())
 	.pipe(babel({
 			presets: ["es2015"]
@@ -63,17 +72,22 @@ gulp.task("babel", function () {
 	/* .pipe(rename({
 	suffix: "-compiled"
 	})) */
-	.pipe(gulp.dest("./libs/pwa-englishextra/js/"))
+	.pipe(gulp.dest(function (file) {
+			return file.base;
+		}))
 	.pipe(uglify())
 	.pipe(rename({
 			extname: ".min.js"
 		}))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest("./libs/pwa-englishextra/js/"));
+	.pipe(gulp.dest(function (file) {
+			return file.base;
+		}));
 });
 gulp.task("watch", function () {
 	"use strict";
 	gulp.watch(paths.sass, ["sass"]);
+	gulp.watch(paths.babel, ["babel"]);
 });
 gulp.task("install", ["git-check"], function () {
 	"use strict";
