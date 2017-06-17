@@ -21,6 +21,7 @@ var gutil = require("gulp-util");
 var bower = require("bower");
 var concat = require("gulp-concat");
 var sass = require("gulp-sass");
+var cssbeautify = require("gulp-cssbeautify");
 var sourcemaps = require("gulp-sourcemaps");
 var autoprefixer = require("gulp-autoprefixer");
 var cleancss = require("gulp-clean-css");
@@ -28,59 +29,47 @@ var rename = require("gulp-rename");
 var sh = require("shelljs");
 var babel = require("gulp-babel");
 var uglify = require("gulp-uglify");
-var path = require('path');
 var paths = {
-	sass: ["libs/**/scss/**/*.scss"],
-	babel: ["libs/**/src/**/*.js"]
+	sass: ["./libs/pwa-englishextra/scss/**/*.scss"]
 };
 gulp.task("default", ["sass", "babel"]);
 gulp.task("sass", function (done) {
 	"use strict";
-	gulp.src("libs/**/scss/*.scss", {
-		base: "./libs/"
-	})
+	gulp.src("./libs/pwa-englishextra/scss/*.scss")
 	.pipe(sass())
-	.pipe(sourcemaps.init())
-	.pipe(autoprefixer())
-	.on("error", sass.logError)
-	/* .pipe(rename({
-	suffix: "-compiled"
-	})) */
-	.pipe(gulp.dest('./dist'))
-	.pipe(cleancss({
-			keepSpecialComments: 0
-		}))
+	.pipe(gulp.dest("./libs/pwa-englishextra/css/"))
 	.pipe(rename({
 			extname: ".min.css"
 		}))
+	.pipe(sourcemaps.init())
+	.pipe(autoprefixer())
+	.on("error", sass.logError)
+	.pipe(cleancss({
+			keepSpecialComments: 0
+		}))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest('./dist'))
+	.pipe(gulp.dest("./libs/pwa-englishextra/css/"))
 	.on("end", done);
 });
-gulp.task("babel", function () {
+gulp.task("babel", function (done) {
 	"use strict";
-	gulp.src("libs/**/src/*.js", {
-		base: "./libs/"
-	})
+	gulp.src("./libs/pwa-englishextra/src/*.js")
+	.pipe(gulp.dest("./libs/pwa-englishextra/js/"))
+	.pipe(rename({
+			extname: ".min.js"
+		}))
 	.pipe(sourcemaps.init())
 	.pipe(babel({
 			presets: ["es2015"]
 		}))
-	/* .pipe(rename({
-	suffix: "-compiled"
-	})) */
-	.pipe(gulp.dest('./dist'))
 	.pipe(uglify())
-	.pipe(rename({
-			extname: ".min.js"
-		}))
 	.pipe(sourcemaps.write("."))
-	.pipe(gulp.dest('./dist'));
+	.pipe(gulp.dest("./libs/pwa-englishextra/js/"))
+	.on("end", done);
 });
 gulp.task("watch", function () {
 	"use strict";
 	gulp.watch(paths.sass, ["sass"]);
-	gulp.watch(paths.babel, ["babel"]);
 });
 gulp.task("install", ["git-check"], function () {
 	"use strict";
