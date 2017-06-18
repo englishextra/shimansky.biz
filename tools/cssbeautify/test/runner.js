@@ -17,8 +17,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
 */
-/*jshint browser: true */
-/*jshint node: true */
 /*jslint browser: true */
 /*jslint node: true */
 /*global cssbeautify:true, tests:true */
