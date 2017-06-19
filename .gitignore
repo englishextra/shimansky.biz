@@ -1,8 +1,6 @@
-*.bat
 *.fw.png
 *.map
 *.npp
-*.sh
 *.URL
 *.xdk
 *.xdke
@@ -15,6 +13,5 @@
 /sql
 /sqlite
 intelxdk.config.additions.xml
-koala-config.json
 project-info.json
 xdk-publish-meta-data.json
