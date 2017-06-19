@@ -1,22 +1,22 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global global, _, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA, 
-Carousel, changeLocation, container, Cookies, crel, debounce, define, 
-DISQUS, DoSlide, Draggabilly, earlyDeviceOrientation, earlyDeviceSize, 
-earlyDeviceType, earlyFnGetYyyymmdd, earlyHasTouch, 
-earlySvgasimgSupport, earlySvgSupport, escape, fetch, findPos, 
-fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox, 
-imagePromise, imagesLoaded, imagesPreloaded, insertExternalHTML, 
-insertTextAsFragment, Isotope, isValidId, jQuery, Kamil, 
-loadExternalHTML, loadJS, loadUnparsedJSON, manageDataSrcImages, 
-manageImgLightboxLinks, Masonry, module, openDeviceBrowser, Packery, 
-Parallax, parseLink, PhotoSwipe, PhotoSwipeUI_Default, pnotify, 
-prependFragmentBefore, prettyPrint, Promise, Proxy, QRCode, 
-removeChildren, removeElement, require, routie, safelyParseJSON, 
-scriptIsLoaded, scroll2Top, scrollToElement, scrollToPos, scrollToTop, 
-setImmediate, setStyleDisplayBlock, setStyleDisplayNone, 
-setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t, 
-Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge, 
+/*global global, _, $, ActiveXObject, alignToMasterBottomLeft, appendFragment, BALA,
+Carousel, changeLocation, container, Cookies, crel, debounce, define,
+DISQUS, DoSlide, Draggabilly, earlyDeviceOrientation, earlyDeviceSize,
+earlyDeviceType, earlyFnGetYyyymmdd, earlyHasTouch,
+earlySvgasimgSupport, earlySvgSupport, escape, fetch, findPos,
+fixEnRuTypo, forEach, getHTTP, getKeyValuesFromJSON, IframeLightbox,
+imagePromise, imagesLoaded, imagesPreloaded, insertExternalHTML,
+insertTextAsFragment, Isotope, isValidId, jQuery, Kamil,
+loadExternalHTML, loadJS, loadUnparsedJSON, manageDataSrcImages,
+manageImgLightboxLinks, Masonry, module, openDeviceBrowser, Packery,
+Parallax, parseLink, PhotoSwipe, PhotoSwipeUI_Default, pnotify,
+prependFragmentBefore, prettyPrint, Promise, Proxy, QRCode,
+removeChildren, removeElement, require, routie, safelyParseJSON,
+scriptIsLoaded, scroll2Top, scrollToElement, scrollToPos, scrollToTop,
+setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
+setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
+Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge,
 VK, Ya, ymaps, zenscroll */
 /*!
  * define global root
@@ -611,7 +611,7 @@ var initWebslides = function () {
 			var updateURL = function () {
 				// updates slide state
 				var currentURL = document.location.toString();
-				if (currentURL.indexOf('#') != 1) {
+				if (currentURL.indexOf('#') !== 1) {
 					currentURL = currentURL.substr(0, currentURL.indexOf('#'));
 				}
 				history.pushState(null, null, '#slide=' + slidePointer.current);
@@ -627,14 +627,18 @@ var initWebslides = function () {
 				var nextSlide;
 				if ($slideshow.hasClass(ID.verticalClass) && !isMobile) {
 					// Is vertical
-					if ($slideshow.data('moving')) return;
+					if ($slideshow.data('moving')) {
+						return;
+					}
 					$slideshow.data('moving', true);
 					jQuery('html').css({
 						overflow: 'hidden'
 					});
 					nextSlide = $currentSlide.next();
 					slidePointer.current = (slidePointer.current + 1) % total;
-					if (slidePointer.current === 0) slidePointer.current = total;
+					if (slidePointer.current === 0) {
+						slidePointer.current = total;
+					}
 					// show next slide
 					nextSlide.show().addClass(ID.current);
 					// scroll to next slide
@@ -674,7 +678,9 @@ var initWebslides = function () {
 					$currentSlide.siblings('.slide').last().after($currentSlide);
 					$currentSlide = nextSlide;
 					slidePointer.current = (slidePointer.current + 1) % total;
-					if (slidePointer.current == 0) slidePointer.current = total;
+					if (slidePointer.current === 0) {
+						slidePointer.current = total;
+					}
 					// update counter
 					updateCounter();
 					// update url
@@ -687,14 +693,18 @@ var initWebslides = function () {
 				var prevSlide;
 				if ($slideshow.hasClass(ID.verticalClass) && !isMobile) {
 					// Is vertical
-					if ($slideshow.data('moving')) return;
+					if ($slideshow.data('moving')) {
+						return;
+					}
 					$slideshow.data('moving', true);
 					jQuery('html').css({
 						overflow: 'hidden'
 					});
 					$currentSlide.before($currentSlide.siblings('.slide').last());
 					prevSlide = $currentSlide.prev();
-					if (prevSlide.length === 0) return false;
+					if (prevSlide.length === 0) {
+						return false;
+					}
 					// show next slide
 					prevSlide.show().addClass(ID.current);
 					// scroll to next slide
@@ -708,7 +718,7 @@ var initWebslides = function () {
 							$currentSlide = prevSlide;
 							// not the last slide => go to the next one and increment the counter
 							$currentSlide = prevSlide;
-							slidePointer.current = slidePointer.current == 1 ? total : slidePointer.current - 1;
+							slidePointer.current = slidePointer.current === 1 ? total : slidePointer.current - 1;
 							// update counter
 							updateCounter();
 							// update url
@@ -736,7 +746,7 @@ var initWebslides = function () {
 					prevSlide = $currentSlide.prev();
 					prevSlide.show().addClass(ID.current);
 					$currentSlide = prevSlide;
-					slidePointer.current = slidePointer.current == 1 ? total : slidePointer.current - 1;
+					slidePointer.current = slidePointer.current === 1 ? total : slidePointer.current - 1;
 					// update counter
 					updateCounter();
 					// update URL
@@ -799,11 +809,11 @@ var initWebslides = function () {
 			jQuery(document).keydown(function (e) {
 				if (!$slideshow.hasClass(ID.verticalClass) || isMobile) {
 					$slideshow.data('iswheel', false);
-					if (e.which == 39 || e.which == 32) {
+					if (e.which === 39 || e.which === 32) {
 						// right key pressed => next slide
 						nextSlide();
 						return false;
-					} else if (e.which == 37) {
+					} else if (e.which === 37) {
 						// left or l key pressed => previous slide
 						previousSlide();
 						return false;
@@ -814,11 +824,11 @@ var initWebslides = function () {
 			jQuery(document).keydown(function (e) {
 				if ($slideshow.hasClass(ID.verticalClass) && !isMobile) {
 					$slideshow.data('iswheel', false);
-					if (e.which == 40 || e.which == 32) {
+					if (e.which === 40 || e.which === 32) {
 						// right key pressed => next slide
 						nextSlide();
 						return false;
-					} else if (e.which == 38) {
+					} else if (e.which === 38) {
 						// left or l key pressed => previous slide
 						previousSlide();
 						return false;
@@ -841,9 +851,9 @@ var initWebslides = function () {
 			function goToSlideIfSlideHashChange() {
 				var paramsArr = getArrayOfHashParams();
 				var slideObj = $.grep(paramsArr, function (e) {
-					return e.key == "slide";
+					return e.key === "slide";
 				});
-				if (slideObj.length == 1) {
+				if (slideObj.length === 1) {
 					goToSlide(slideObj[0].value);
 				}
 			}
@@ -922,7 +932,7 @@ var initWebslides = function () {
 		});
 		// Prototype better, faster. To show the grid/baseline.png, press Enter on keyboard
 		$(document).keypress(function (e) {
-			if (e.which == 13) {
+			if (e.which === 13) {
 				$('body').toggleClass('baseline').css('height', $(document).height());
 			}
 		});
