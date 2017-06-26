@@ -1579,9 +1579,10 @@ var notiBar = function (opt) {
 	    gEBCN = "getElementsByClassName",
 	    cL = "classList",
 	    cE = "createElement",
-	    cENS = "createElementNS",
-	    sANS = "setAttributeNS",
-	    aC = "appendChild",
+
+	/* cENS = "createElementNS",
+ sANS = "setAttributeNS", */
+	aC = "appendChild",
 	    aEL = "addEventListener",
 	    rEL = "removeEventListener",
 	    notibarClass = "notibar",
@@ -1631,17 +1632,17 @@ var notiBar = function (opt) {
 		}
 		msgContainer[aC](msgContent);
 		notibarContainer[aC](msgContainer);
-		var insertCancelSvg = function (targetObj) {
-			var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
-			    use = d[cENS]("http://www.w3.org/2000/svg", "use");
-			svg[cL].add("ui-icon");
-			use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Cancel");
-			svg[aC](use);
-			targetObj[aC](svg);
-		},
-		    closeButton = d[cE]("a");
+		var /* insertCancelSvg = function (targetObj) {
+      var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
+      use = d[cENS]("http://www.w3.org/2000/svg", "use");
+      svg[cL].add("ui-icon");
+      use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Cancel");
+      svg[aC](use);
+      targetObj[aC](svg);
+      }, */
+		closeButton = d[cE]("a");
 		closeButton[cL].add(closeButtonClass);
-		insertCancelSvg(closeButton);
+		/* insertCancelSvg(closeButton); */
 		var set_cookie = function () {
 			if (settings.days) {
 				Cookies.set(settings.key, settings.datum, {
@@ -1677,56 +1678,6 @@ var notiBar = function (opt) {
 		}, settings.timeout);
 	}
 };
-/*!
- * init notibar
- */
-var initNotibarMsg = function () {
-	"use strict";
-
-	var w = globalRoot,
-	    d = document,
-	    gEBI = "getElementById",
-	    aC = "appendChild",
-	    aEL = "addEventListener",
-	    rEL = "removeEventListener",
-	    cE = "createElement",
-	    cookieKey = "_notibar_dismiss_",
-	    cookieDatum = "Напишите мне, отвечу очень скоро. Регистрироваться не нужно.",
-	    locationOrigin = parseLink(w.location.href).origin,
-	    renderMsg = function () {
-		var msgObj = d[cE]("a");
-		/*jshint -W107 */
-		msgObj.href = "javascript:void(0);";
-		/*jshint +W107 */
-		var handleMsgObj = function (ev) {
-			ev.stopPropagation();
-			ev.preventDefault();
-			msgObj[rEL]("click", handleMsgObj);
-			scroll2Top(findPos(d[gEBI]("disqus_thread")).top, 20000);
-		};
-		msgObj[aEL]("click", handleMsgObj);
-		msgObj[aC](d.createTextNode(cookieDatum));
-		notiBar({
-			"message": msgObj,
-			"timeout": 5000,
-			"key": cookieKey,
-			"datum": cookieDatum,
-			"days": 0
-		});
-	};
-	if (locationOrigin) {
-		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			/* console.log("triggered function: initNotibarMsg"); */
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				renderMsg();
-			}, 3000);
-		}
-	}
-};
-document.ready().then(initNotibarMsg);
 /*!
  * notifier42
  * Toast messages with pure JS
