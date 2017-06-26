@@ -653,11 +653,11 @@ manageContentsSelect = function () {
 	"use strict";
 	var d = document,
 	gEBI = "getElementById",
-	contentsSelect = d[gEBI]("contents-select") || "",
 	cE = "createElement",
 	cTN = "createTextNode",
 	aC = "appendChild",
 	aEL = "addEventListener",
+	contentsSelect = d[gEBI]("contents-select") || "",
 	jsonUrl = "../libs/contents/json/contents.json",
 	initContentsSelect = function (jsonResponse) {
 		var df = d.createDocumentFragment(),
