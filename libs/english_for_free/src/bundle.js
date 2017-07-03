@@ -617,9 +617,9 @@ manageLocationQrCodeImage = function () {
 },
 loadManageLocationQrCodeImg = function () {
 	"use strict";
-	var js = "../../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, manageLocationQrCodeImage);
+	var jsUrl = "../../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, manageLocationQrCodeImage);
 	}
 };
 document.ready().then(loadManageLocationQrCodeImg);
@@ -943,24 +943,24 @@ var manageShareButton = function () {
 	btn = d[gEBCN]("btn-share-buttons")[0] || "",
 	pluso = d[gEBCN]("pluso")[0] || "",
 	ya_share2 = d[gEBCN]("ya-share2")[0] || "",
-	pluso_like_js_src = getHTTP(true) + "://share.pluso.ru/pluso-like.js",
-	share_js_src = getHTTP(true) + "://yastatic.net/share2/share.js",
+	plusoJsUrl = getHTTP(true) + "://share.pluso.ru/pluso-like.js",
+	shareJsUrl = getHTTP(true) + "://yastatic.net/share2/share.js",
 	showShare = function (s, b) {
 		setStyleVisibilityVisible(s);
 		setStyleOpacity(s, 1);
 		setStyleDisplayNone(b);
 	},
-	loadShare = function (js, s, b) {
-		if (!scriptIsLoaded(js)) {
-			loadJS(js, showShare.bind(null, s, b));
+	loadShare = function (jsUrl, block, btn) {
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, showShare.bind(null, block, btn));
 		}
 	},
 	chooseProvider = function () {
 		if (pluso) {
-			loadShare(pluso_like_js_src, pluso, btn);
+			loadShare(plusoJsUrl, pluso, btn);
 		} else {
 			if (ya_share2) {
-				loadShare(share_js_src, ya_share2, btn);
+				loadShare(shareJsUrl, ya_share2, btn);
 			}
 		}
 	},
@@ -999,7 +999,7 @@ manageVKLikeButton = function () {
 	VKLikeId = "vk-like",
 	VKLike = d[gEBI](VKLikeId) || "",
 	btn = d[gEBCN]("btn-show-vk-like")[0] || "",
-	js = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
+	jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
 	showVK = function () {
 		try {
 			if (w.VK) {
@@ -1023,8 +1023,8 @@ manageVKLikeButton = function () {
 		}
 	},
 	addBtnHandlers = function () {
-		if (!scriptIsLoaded(js)) {
-			loadJS(js, showVK);
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, showVK);
 		}
 	},
 	initVk = function () {
@@ -1051,13 +1051,13 @@ document.ready().then(manageVKLikeButton);
  */
 var loadInitManUp = function () {
 	"use strict";
-	var manUpJsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js",
+	var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js",
 	initManUp = function () {
 		/* console.log("triggered function: initManUp"); */
 	};
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		if (!scriptIsLoaded(manUpJsUrl)) {
-			loadJS(manUpJsUrl, initManUp);
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, initManUp);
 		} else {
 			initManUp();
 		}

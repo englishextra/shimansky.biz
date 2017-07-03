@@ -1290,9 +1290,9 @@ var manageDataQrcodeImg = function (ctx) {
 loadManageDataQrcodeImg = function (ctx) {
 	"use strict";
 	ctx = ctx && ctx.nodeName ? ctx : "";
-	var js = "../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, manageDataQrcodeImg.bind(null, ctx));
+	var jsUrl = "../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, manageDataQrcodeImg.bind(null, ctx));
 	} else {
 		manageDataQrcodeImg(ctx);
 	}
@@ -1651,9 +1651,9 @@ manageLocationQrCodeImage = function () {
 },
 loadManageLocationQrCodeImg = function () {
 	"use strict";
-	var js = "../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, manageLocationQrCodeImage);
+	var jsUrl = "../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, manageLocationQrCodeImage);
 	}
 };
 document.ready().then(loadManageLocationQrCodeImg);
@@ -1691,13 +1691,13 @@ var manageShareButton = function () {
 			if (page[cL].contains(isActiveMenumoreClass)) {
 				page[cL].remove(isActiveMenumoreClass);
 			}
-			var js = getHTTP(true) + "://yastatic.net/es5-shims/0.0.2/es5-shims.min.js",
-			js2 = getHTTP(true) + "://yastatic.net/share2/share.js";
+			var jsUrl = getHTTP(true) + "://yastatic.net/es5-shims/0.0.2/es5-shims.min.js",
+			jsUrl2 = getHTTP(true) + "://yastatic.net/share2/share.js";
 			if (page[cL].contains(isActiveShareClass)) {
-				if (!scriptIsLoaded(js)) {
-					loadJS(js, function () {
-						if (!scriptIsLoaded(js2)) {
-							loadJS(js2);
+				if (!scriptIsLoaded(jsUrl)) {
+					loadJS(jsUrl, function () {
+						if (!scriptIsLoaded(jsUrl2)) {
+							loadJS(jsUrl2);
 						}
 					});
 				}
@@ -1746,7 +1746,7 @@ manageVKLikeButton = function () {
 			if (page[cL].contains(isActiveMenumoreClass)) {
 				page[cL].remove(isActiveMenumoreClass);
 			}
-			var js = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
+			var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
 			initVKLike = function () {
 				if (w.VK) {
 					VK.init({
@@ -1761,8 +1761,8 @@ manageVKLikeButton = function () {
 				}
 			};
 			if (page[cL].contains(isActiveVKLikeClass)) {
-				if (!scriptIsLoaded(js)) {
-					loadJS(js, initVKLike);
+				if (!scriptIsLoaded(jsUrl)) {
+					loadJS(jsUrl, initVKLike);
 				}
 			}
 		};
@@ -1787,7 +1787,7 @@ var loadRefreshDisqus = function () {
 	btn = d[gEBCN]("btn-show-disqus")[0] || "",
 	locationHref = w.location.href || "",
 	disqusThreadShortName = disqusThread ? (disqusThread[ds].shortname || "") : "",
-	js = getHTTP(true) + "://" + disqusThreadShortName + ".disqus.com/embed.js",
+	jsUrl = getHTTP(true) + "://" + disqusThreadShortName + ".disqus.com/embed.js",
 	showDisqus = function () {
 		disqusThread[cL].add(isActiveClass);
 		setStyleDisplayNone(btn);
@@ -1807,9 +1807,6 @@ var loadRefreshDisqus = function () {
 			setStyleDisplayBlock(btn);
 		}
 	},
-	loadInitDisqus = function () {
-		loadJS(js, showDisqus);
-	},
 	hideDisqus = function () {
 		removeChildren(disqusThread);
 		var msgText = d.createRange().createContextualFragment("<p>Комментарии доступны только в веб версии этой страницы.</p>");
@@ -1821,10 +1818,10 @@ var loadRefreshDisqus = function () {
 		/* console.log("triggered function: loadRefreshDisqus"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
 			LoadingSpinner.show();
-			if (scriptIsLoaded(js)) {
-				initDisqus();
+			if (!scriptIsLoaded(jsUrl)) {
+				loadJS(jsUrl, initDisqus);
 			} else {
-				loadInitDisqus();
+				initDisqus();
 			}
 		} else {
 			hideDisqus();
@@ -1872,7 +1869,7 @@ initYandexMap = function (yandexMapId) {
 	yandexMapCenter = yandexMap ? (yandexMap[ds].center || "") : "",
 	yandexMapZoom = yandexMap ? (yandexMap[ds].zoom || "") : "",
 	isActiveClass = "is-active",
-	js = getHTTP(true) + "://api-maps.yandex.ru/2.1/?lang=ru_RU",
+	jsUrl = getHTTP(true) + "://api-maps.yandex.ru/2.1/?lang=ru_RU",
 	initMyMap = function () {
 		if (myMap) {
 			myMap.destroy();
@@ -1923,8 +1920,8 @@ initYandexMap = function (yandexMapId) {
 				btnDestroy[aEL]("click", handleYandexMapBtnDestroy);
 			}
 			LoadingSpinner.show();
-			if (!scriptIsLoaded(js)) {
-				loadJS(js, initYmaps);
+			if (!scriptIsLoaded(jsUrl)) {
+				loadJS(jsUrl, initYmaps);
 			} else {
 				initYmaps();
 			}
@@ -2116,9 +2113,9 @@ var initKamilAutocomplete = function () {
 },
 loadInitKamilAutocomplete = function () {
 	"use strict";
-	var js = "../cdn/kamil/0.1.1/js/kamil.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, initKamilAutocomplete);
+	var jsUrl = "../cdn/kamil/0.1.1/js/kamil.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, initKamilAutocomplete);
 	}
 };
 document.ready().then(loadInitKamilAutocomplete);
@@ -2358,13 +2355,13 @@ globalRoot.addEventListener("hashchange", updateInsertedDom); */
  */
 var loadInitManUp = function () {
 	"use strict";
-	var manUpJsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js",
+	var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js",
 	initManUp = function () {
 		/* console.log("triggered function: initManUp"); */
 	};
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		if (!scriptIsLoaded(manUpJsUrl)) {
-			loadJS(manUpJsUrl, initManUp);
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, initManUp);
 		} else {
 			initManUp();
 		}

@@ -735,9 +735,9 @@ var initTablesort = function (ctx) {
 },
 loadInitTablesort = function () {
 	"use strict";
-	var js = "../../cdn/tablesort/4.0.1/js/tablesort.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, initTablesort);
+	var jsUrl = "../../cdn/tablesort/4.0.1/js/tablesort.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, initTablesort);
 	}
 };
 document.ready().then(loadInitTablesort);
@@ -1237,9 +1237,9 @@ manageLocationQrCodeImage = function () {
 },
 loadManageLocationQrCodeImg = function () {
 	"use strict";
-	var js = "../../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, manageLocationQrCodeImage);
+	var jsUrl = "../../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, manageLocationQrCodeImage);
 	}
 };
 document.ready().then(loadManageLocationQrCodeImg);
@@ -1563,24 +1563,24 @@ var manageShareButton = function () {
 	btn = d[gEBCN]("btn-share-buttons")[0] || "",
 	pluso = d[gEBCN]("pluso")[0] || "",
 	ya_share2 = d[gEBCN]("ya-share2")[0] || "",
-	pluso_like_js_src = getHTTP(true) + "://share.pluso.ru/pluso-like.js",
-	share_js_src = getHTTP(true) + "://yastatic.net/share2/share.js",
+	plusoJsUrl = getHTTP(true) + "://share.pluso.ru/pluso-like.js",
+	shareJsUrl = getHTTP(true) + "://yastatic.net/share2/share.js",
 	showShare = function (s, b) {
 		setStyleVisibilityVisible(s);
 		setStyleOpacity(s, 1);
 		setStyleDisplayNone(b);
 	},
-	loadShare = function (js, s, b) {
-		if (!scriptIsLoaded(js)) {
-			loadJS(js, showShare.bind(null, s, b));
+	loadShare = function (jsUrl, block, btn) {
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, showShare.bind(null, block, btn));
 		}
 	},
 	chooseProvider = function () {
 		if (pluso) {
-			loadShare(pluso_like_js_src, pluso, btn);
+			loadShare(plusoJsUrl, pluso, btn);
 		} else {
 			if (ya_share2) {
-				loadShare(share_js_src, ya_share2, btn);
+				loadShare(shareJsUrl, ya_share2, btn);
 			}
 		}
 	},
@@ -1714,7 +1714,7 @@ var initDisqusOnScroll = function () {
 	btn = d[gEBCN]("btn-show-disqus")[0] || "",
 	locationHref = w.location.href || "",
 	disqusThreadShortname = disqusThread ? (disqusThread[ds].shortname || "") : "",
-	js = getHTTP(true) + "://" + disqusThreadShortname + ".disqus.com/embed.js",
+	jsUrl = getHTTP(true) + "://" + disqusThreadShortname + ".disqus.com/embed.js",
 	showDisqus = function () {
 		setStyleDisplayNone(btn);
 		disqusThread[cL].add(isActiveClass);
@@ -1722,8 +1722,8 @@ var initDisqusOnScroll = function () {
 	},
 	loadDisqus = function () {
 		LoadingSpinner.show();
-		if (!scriptIsLoaded(js)) {
-			loadJS(js, showDisqus);
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, showDisqus);
 		}
 	},
 	addBtnHandlers = function () {
@@ -1777,7 +1777,7 @@ manageVKLikeButton = function () {
 	VKLikeId = "vk-like",
 	VKLike = d[gEBI](VKLikeId) || "",
 	btn = d[gEBCN]("btn-show-vk-like")[0] || "",
-	js = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
+	jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
 	showVK = function () {
 		try {
 			if (w.VK) {
@@ -1801,8 +1801,8 @@ manageVKLikeButton = function () {
 		}
 	},
 	addBtnHandlers = function () {
-		if (!scriptIsLoaded(js)) {
-			loadJS(js, showVK);
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, showVK);
 		}
 	},
 	initVk = function () {
@@ -1986,9 +1986,9 @@ var initKamilAutocomplete = function () {
 },
 loadInitKamilAutocomplete = function () {
 	"use strict";
-	var js = "../../cdn/kamil/0.1.1/js/kamil.fixed.min.js";
-	if (!scriptIsLoaded(js)) {
-		loadJS(js, initKamilAutocomplete);
+	var jsUrl = "../../cdn/kamil/0.1.1/js/kamil.fixed.min.js";
+	if (!scriptIsLoaded(jsUrl)) {
+		loadJS(jsUrl, initKamilAutocomplete);
 	}
 };
 document.ready().then(loadInitKamilAutocomplete);
@@ -1997,13 +1997,13 @@ document.ready().then(loadInitKamilAutocomplete);
  */
 var loadInitManUp = function () {
 	"use strict";
-	var manUpJsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js",
+	var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js",
 	initManUp = function () {
 		/* console.log("triggered function: initManUp"); */
 	};
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		if (!scriptIsLoaded(manUpJsUrl)) {
-			loadJS(manUpJsUrl, initManUp);
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, initManUp);
 		} else {
 			initManUp();
 		}
