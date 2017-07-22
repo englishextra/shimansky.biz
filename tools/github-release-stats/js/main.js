@@ -91,8 +91,8 @@ function showStats(data) {
                 $.each(releaseAssets, function(index, asset) {
                     var assetSize = (asset.size / 1048576.0).toFixed(2);
                     var lastUpdate = asset.updated_at.split("T")[0];
-                    html += "<li>" + asset.name + " (" + assetSize + " MiB) - Downloaded " +
-                        asset.download_count + " times.<br><i>Last updated on " + lastUpdate + "</i></li>";
+                    html += "<li>" + asset.name + " (" + assetSize + " MiB) - Downloaded <big><strong>" +
+                        asset.download_count + "</strong></big> times.<br><small>Last updated on " + lastUpdate + "</small></li>";
                     totalDownloadCount += asset.download_count;
                 });
                 html += "</ul>";
@@ -103,9 +103,9 @@ function showStats(data) {
             totalDownloadCount = totalDownloadCount.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,');
             var totalHTML = "<div class='row total-downloads'>";
             totalHTML += "<h2><span class='glyphicon glyphicon-download'></span>" +
-                "&nbsp&nbspTotal Downloads</h2> ";
-            totalHTML += "<span>" + totalDownloadCount + "</span>";
-            totalHTML += "</div>";
+                "&nbsp&nbspTotal Downloads ";
+            totalHTML += "<span><strong>" + totalDownloadCount + "</strong></span>";
+            totalHTML += "</h2></div>";
             html = totalHTML + html;
         }
         html += "</div>";
