@@ -24,14 +24,20 @@ if (zoomwallGallery) {
 			var key;
 			for (key in jsonObj) {
 				if (jsonObj.hasOwnProperty(key)) {
-					var img = document.createElement("img");
-					img.src = ["data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20",
-						jsonObj[key][jsonSrcKeyName].replace("x", "%20"),
-						"%27%2F%3E"].join("");
-					img.dataset[jsonHighresKeyName] = jsonObj[key][jsonHighresKeyName];
-					img.classList.add(imgClass);
-					df.appendChild(img);
-					df.appendChild(document.createTextNode("\n"));
+					if (jsonObj[key][jsonSrcKeyName] && jsonObj[key][jsonHighresKeyName]) {
+						var img = document.createElement("img");
+						if ((/^([0-9]+)(\x|\ )([0-9]+)$/).test(jsonObj[key][jsonSrcKeyName])) {
+							img.src = ["data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20",
+								jsonObj[key][jsonSrcKeyName].replace("x", "%20"),
+								"%27%2F%3E"].join("");
+						} else {
+							img.src = jsonObj[key][jsonSrcKeyName];
+						}
+						img.dataset[jsonHighresKeyName] = jsonObj[key][jsonHighresKeyName];
+						img.classList.add(imgClass);
+						df.appendChild(img);
+						df.appendChild(document.createTextNode("\n"));
+					}
 				}
 			}
 			key = null;
