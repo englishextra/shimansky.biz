@@ -1263,6 +1263,7 @@ var insertFromTemplate = function (parsedJson, templateId, targetId, callback, u
 };
 /*!
  * replace img src with data-src
+ * initiate on load, not on ready
  */
 var handleDataSrcImages = function () {
 	"use strict";
@@ -1285,11 +1286,9 @@ var handleDataSrcImages = function () {
 				}
 				imagePromise(srcString).then(function (r) {
 					e.src = srcString;
-					/* console.log("manageDataSrcImages => imagePromise: loaded image:", r); */
 				}).catch(function (err) {
-					/* console.log("manageDataSrcImages => imagePromise: cannot load image:", err); */
+					console.log("cannot load image with imagePromise:", srcString);
 				});
-				/* e.src = srcString; */
 				e[cL].add(isActiveClass);
 				e[cL].add(isBindedClass);
 			}
@@ -1334,9 +1333,9 @@ var handleDataSrcImages = function () {
 		timers.clear();
 		timers = null;
 		handleDataSrcImages();
-	}, 100);
+	}, 500);
 };
-document.ready().then(manageDataSrcImages);
+globalRoot.addEventListener("load", manageDataSrcImages);
 /*!
  * replace iframe src with data-src
  */
@@ -1410,9 +1409,9 @@ var handleDataSrcIframes = function () {
 		timers.clear();
 		timers = null;
 		handleDataSrcIframes();
-	}, 100);
+	}, 500);
 };
-document.ready().then(manageDataSrcIframes);
+globalRoot.addEventListener("load", manageDataSrcIframes);
 /*!
  * replace iframe src with data-src
  * @param {Object} [ctx] context HTML Element
@@ -2512,7 +2511,7 @@ var renderNavigation = function () {
 						"next": "js-carousel__next"
 					});
 					if (carouselRenderParent) {
-						manageDataSrcImages();
+						handleDataSrcImages();
 						manageExternalLinks(carouselRenderParent);
 					}
 				});
@@ -2971,7 +2970,7 @@ var processPoutes = function () {
 					if (asideTemplate && asideRender) {
 						insertFromTemplate(asideObj, asideTemplateId, asideRenderId, function () {
 							if (asideRenderParent) {
-								manageDataSrcImages();
+								handleDataSrcImages();
 								manageExternalLinks(asideRenderParent);
 							}
 						});
@@ -3013,7 +3012,7 @@ var processPoutes = function () {
 						}
 						insertTextAsFragment(renderMasonry, contentsRender, function () {
 							if (contentsRenderParent) {
-								manageDataSrcImages();
+								handleDataSrcImages();
 								initMasonry(contentsRenderParent);
 								manageExternalLinks(contentsRenderParent);
 							}
@@ -3027,8 +3026,8 @@ var processPoutes = function () {
      * put when templates rendered
      */
 				if (appContentParent) {
-					manageDataSrcImages();
-					manageDataSrcIframes();
+					handleDataSrcImages();
+					handleDataSrcIframes();
 					manageExternalLinks(appContentParent);
 					manageImgLightboxLinks(appContentParent);
 					manageIframeLightboxLinks(appContentParent);

@@ -804,6 +804,7 @@ loadInitPhotoswipe = function () {
 document.ready().then(loadInitPhotoswipe);
 /*!
  * replace img src with data-src
+ * initiate on load, not on ready
  * @param {Object} [ctx] context HTML Element
  */
 var handleDataSrcImages = function () {
@@ -826,11 +827,9 @@ var handleDataSrcImages = function () {
 				}
 				imagePromise(srcString).then(function (r) {
 					e.src = srcString;
-					/* console.log("manageDataSrcImages => imagePromise: loaded image:", r); */
 				}).catch (function (err) {
-					/* console.log("manageDataSrcImages => imagePromise: cannot load image:", err); */
+					console.log("cannot load image with imagePromise:", srcString);
 				});
-				/* e.src = srcString; */
 				e[cL].add(isActiveClass);
 				e[cL].add(isBindedClass);
 			}
@@ -874,9 +873,9 @@ manageDataSrcImages = function () {
 		timers.clear();
 		timers = null;
 		handleDataSrcImages();
-	}, 100);
+	}, 500);
 };
-document.ready().then(manageDataSrcImages);
+globalRoot.addEventListener("load", manageDataSrcImages);
 /*!
  * init qr-code
  * @see {@link https://stackoverflow.com/questions/12777622/how-to-use-enquire-js}

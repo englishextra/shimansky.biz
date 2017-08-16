@@ -2175,6 +2175,7 @@ var hideImgLightbox = function () {
 };
 /*!
  * replace img src with data-src
+ * initiate on load, not on ready
  * @param {Object} [ctx] context HTML Element
  */
 var handleDataSrcImages = function () {
@@ -2198,11 +2199,9 @@ var handleDataSrcImages = function () {
 				}
 				imagePromise(srcString).then(function (r) {
 					e.src = srcString;
-					/* console.log("manageDataSrcImages => imagePromise: loaded image:", r); */
 				}).catch(function (err) {
-					/* console.log("manageDataSrcImages => imagePromise: cannot load image:", err); */
+					console.log("cannot load image with imagePromise:", srcString);
 				});
-				/* e.src = srcString; */
 				e[cL].add(isActiveClass);
 				e[cL].add(isBindedClass);
 			}
@@ -2247,11 +2246,12 @@ var handleDataSrcImages = function () {
 		timers.clear();
 		timers = null;
 		handleDataSrcImages();
-	}, 100);
+	}, 500);
 };
-document.ready().then(manageDataSrcImages);
+globalRoot.addEventListener("load", manageDataSrcImages);
 /*!
  * replace img src with data-src
+ * initiate on load, not on ready
  * @param {Object} [ctx] context HTML Element
  */
 var manageDataQrcodeImg = function (ctx) {
@@ -2442,8 +2442,8 @@ var includeHTMLintoTarget = function (_this, u, t) {
 				hideBtn();
 				if (containerParent) {
 					manageExternalLinks(containerParent);
-					manageDataSrcImages(containerParent);
 					manageImgLightboxLinks(containerParent);
+					handleDataSrcImages();
 				}
 			};
 			insertTextAsFragment(t, container, cb);
@@ -3254,17 +3254,17 @@ var initRoutie = function () {
 		/*!
    * hide loading spinner before scrolling
    */
-		LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));
 		d.title = (titleString ? titleString + " - " : "") + (initialDocumentTitle ? initialDocumentTitle + (userBrowsingDetails ? userBrowsingDetails : "") : "");
 		manageYandexMapButton("ymap");
 		manageDisqusButton(appContentParent);
 		manageExternalLinks(appContentParent);
 		manageDataTargetLinks(appContentParent);
 		manageImgLightboxLinks(appContentParent);
-		manageDataSrcImages(appContentParent);
 		loadManageDataQrcodeImg(appContentParent);
 		manageChaptersSelect(appContentParent);
 		manageExpandingLayers(appContentParent);
+		handleDataSrcImages();
+		LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));
 	},
 	    loadNotFoundPage = function (containerClass) {
 		var container = d[gEBI](containerClass) || "",
