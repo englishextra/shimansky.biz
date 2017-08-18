@@ -1308,10 +1308,13 @@ globalRoot.addEventListener("load", manageDataSrcImages);
 /*!
  * init disqus_thread and Masonry / Packery
  * add Draggabilly to Packarey
+ * @see {@link https://stackoverflow.com/questions/15160010/jquery-masonry-collapsing-on-initial-page-load-works-fine-after-clicking-home}
  * @see {@link https://gist.github.com/englishextra/5e423ff34f67982f017b}
- * percentPosition: !0 works well with percent-width items,
+ * percentPosition: true works well with percent-width items,
  * as items will not transition their position on resize.
  * masonry.desandro.com/options.html
+ * use timed out layout property after initialising
+ * to level the horizontal gaps
  */
 var initMasonryDisqus = function () {
 	"use strict";
@@ -1332,67 +1335,34 @@ var initMasonryDisqus = function () {
 	    disqusShortname = disqusThread ? disqusThread[ds].shortname || "" : "",
 	    jsUrl = getHTTP(true) + "://" + disqusShortname + ".disqus.com/embed.js",
 	    isActiveClass = "is-active",
-
-	/*! Masonry */
-	initMasonryGrid = function () {
-		var initMsnry = function () {
-			if (w.Masonry) {
-				msnry = new Masonry(grid, {
-					itemSelector: gridItemSelector,
-					columnWidth: gridSizerSelector,
-					gutter: 0,
-					percentPosition: !0
-				});
-				/* console.log("function initMasonryDisqus => initialised msnry"); */
-				/* var timers = new Timers();
-    timers.interval(function () {
-    	if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
-    		timers.clear();
-    		timers = null;
-    		msnry.layout();
-    	}
-    }, 100); */
-			}
-		};
-		/* if ("undefined" !== typeof imagesPreloaded) { */
-		var timers = new Timers();
-		timers.timeout(function () {
-			timers.clear();
-			timers = null;
-			initMsnry();
-		}, 100);
-		/* } else { */
-		/* console.log("function initMasonryDisqus => undefined: imagesPreloaded"); */
-		/* } */
-	},
-
-	/*! or Packery */
-	initPackeryGrid = function (c) {
-		var initPckry = function () {
+	    msnry,
+	    pckry,
+	    initGrid = function () {
+		if (w.Masonry) {
+			/* console.log("function initMasonryDisqus => initialised msnry"); */
+			msnry = new Masonry(grid, {
+				itemSelector: gridItemSelector,
+				columnWidth: gridSizerSelector,
+				gutter: 0,
+				percentPosition: true
+			});
+		} else {
 			if (w.Packery) {
+				/* console.log("function initMasonryDisqus => initialised pckry"); */
 				pckry = new Packery(grid, {
 					itemSelector: gridItemSelector,
 					columnWidth: gridSizerSelector,
 					gutter: 0,
-					percentPosition: !0
+					percentPosition: true
 				});
-				/* console.log("function initMasonryDisqus => initialised pckry"); */
-				/* var timers = new Timers();
-    timers.interval(function () {
-    	if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
-    		timers.clear();
-    		timers = null;
-    		pckry.layout();
-    	}
-    }, 100); */
 				if (gridItem) {
 					if (w.Draggabilly) {
+						/* console.log("function initMasonryDisqus => initialised draggie"); */
 						var draggie,
 						    initDraggie = function (e) {
 							var draggableElem = e;
 							draggie = new Draggabilly(draggableElem, {});
 							draggies.push(draggie);
-							/* console.log("function initMasonryDisqus => initialised draggie"); */
 						},
 						    draggies = [];
 						for (var i = 0, l = gridItem.length; i < l; i += 1) {
@@ -1400,23 +1370,13 @@ var initMasonryDisqus = function () {
 						}
 						/* forEach(gridItem, initDraggie, false); */
 						if (pckry && draggie) {
-							pckry.bindDraggabillyEvents(draggie);
 							/* console.log("function initMasonryDisqus => binded draggie to pckry"); */
+							pckry.bindDraggabillyEvents(draggie);
 						}
 					}
 				}
 			}
-		};
-		/* if ("undefined" !== typeof imagesPreloaded) { */
-		var timers = new Timers();
-		timers.timeout(function () {
-			timers.clear();
-			timers = null;
-			initPckry();
-		}, 100);
-		/* } else { */
-		/* console.log("function initMasonryDisqus => undefined: imagesPreloaded"); */
-		/* } */
+		}
 	},
 	    showDisqusThread = function () {
 		var loadInitMasonryDisqus = function () {
@@ -1429,12 +1389,12 @@ var initMasonryDisqus = function () {
 					timers = null;
 					/* console.log("function initMasonryDisqus; disqusThreadHeight=" + disqusThreadHeight); */
 					if ("undefined" !== typeof msnry && msnry) {
-						msnry.layout();
 						/* console.log("function initMasonryDisqus => reinitialised msnry"); */
+						msnry.layout();
 					} else {
 						if ("undefined" !== typeof pckry && pckry) {
-							pckry.layout();
 							/* console.log("function initMasonryDisqus => reinitialised pckry"); */
+							pckry.layout();
 						}
 					}
 				}
@@ -1447,11 +1407,33 @@ var initMasonryDisqus = function () {
 	};
 	if (grid && gridItem) {
 		/* console.log("triggered function: initMasonryDisqus"); */
-		var msnry, pckry;
-		/*! Masonry */
-		initMasonryGrid();
-		/*! or Packery */
-		initPackeryGrid();
+		initGrid();
+		/* var timers = new Timers();
+  timers.interval(function () {
+  	if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
+  		timers.clear();
+  		timers = null;
+  		if ("undefined" !== typeof msnry && msnry) {
+  			msnry.layout();
+  		} else {
+  			if ("undefined" !== typeof pckry && pckry) {
+  				pckry.layout();
+  			}
+  		}
+  	}
+  }, 100); */
+		var timers = new Timers();
+		timers.timeout(function () {
+			timers.clear();
+			timers = null;
+			if ("undefined" !== typeof msnry && msnry) {
+				msnry.layout();
+			} else {
+				if ("undefined" !== typeof pckry && pckry) {
+					pckry.layout();
+				}
+			}
+		}, 500);
 		if (disqusThread && disqusShortname) {
 			if ("undefined" !== typeof getHTTP && getHTTP()) {
 				showDisqusThread();
