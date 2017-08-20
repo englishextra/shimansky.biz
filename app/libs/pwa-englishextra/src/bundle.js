@@ -1177,9 +1177,9 @@ initMasonry = function (ctx) {
 					}
 				}
 			}, 500);
-		};
-		/* var jsUrl = "./cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
-		var jsUrl = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
+		},
+		/* jsUrl = "./cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
+		jsUrl = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initRerenderGrid);
 		} else {
@@ -2535,8 +2535,6 @@ var initManUp = function () {
 		var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
-		} else {
-			initScript();
 		}
 	}
 };
