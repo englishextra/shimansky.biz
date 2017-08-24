@@ -17,7 +17,7 @@ require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
 scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
 setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
 Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge,
-VK, ymaps, zenscroll */
+VK, Ya, ymaps, zenscroll */
 /*property console, split */
 /*!
  * define global root
@@ -964,7 +964,7 @@ var handleExternalLink = function (url, ev) {
 			}
 		}
 	},
-	    arrangeAllExternalLinks = function () {
+	    initScript = function () {
 		for (var i = 0, l = link.length; i < l; i += 1) {
 			arrangeExternalLink(link[i]);
 		}
@@ -972,7 +972,7 @@ var handleExternalLink = function (url, ev) {
 	};
 	if (link) {
 		/* console.log("triggered function: manageExternalLinks"); */
-		arrangeAllExternalLinks();
+		initScript();
 	}
 };
 document.ready().then(manageExternalLinks);
@@ -1019,7 +1019,7 @@ var handleDataSrcImages = function () {
 				rerenderDataSrcImage(e);
 			}
 	},
-	    arrangeAllDataSrcImages = function () {
+	    initScript = function () {
 		for (var i = 0, l = img.length; i < l; i += 1) {
 			arrangeDataSrcImage(img[i]);
 		}
@@ -1027,7 +1027,7 @@ var handleDataSrcImages = function () {
 	};
 	if (img) {
 		/* console.log("triggered function: manageDataSrcImages"); */
-		arrangeAllDataSrcImages();
+		initScript();
 	}
 },
     handleDataSrcImagesWindow = function () {
@@ -1223,31 +1223,30 @@ var initMasonry = function () {
 				}
 			}
 		}
+	},
+	    initScript = function () {
+		initGrid();
+		var timers = new Timers();
+		timers.timeout(function () {
+			timers.clear();
+			timers = null;
+			if ("undefined" !== typeof iso && iso) {
+				iso.layout();
+			} else if ("undefined" !== typeof msnry && msnry) {
+				msnry.layout();
+			} else {
+				if ("undefined" !== typeof pckry && pckry) {
+					pckry.layout();
+				}
+			}
+		}, 500);
 	};
 	if (grid && gridItem) {
 		/* console.log("triggered function: initMasonry"); */
-		var initScript = function () {
-			initGrid();
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				if ("undefined" !== typeof iso && iso) {
-					iso.layout();
-				} else if ("undefined" !== typeof msnry && msnry) {
-					msnry.layout();
-				} else {
-					if ("undefined" !== typeof pckry && pckry) {
-						pckry.layout();
-					}
-				}
-			}, 500);
-		},
-
-		/* jsUrl = "./cdn/masonry/4.1.1/js/masonry.imagesloaded.pkgd.fixed.min.js"; */
-		/* jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.min.js"; */
-		/* jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.draggabilly.pkgd.fixed.min.js"; */
-		jsUrl = "./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.min.js";
+		/* var jsUrl = "./cdn/masonry/4.1.1/js/masonry.imagesloaded.pkgd.fixed.min.js"; */
+		/* var jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.min.js"; */
+		/* var jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.draggabilly.pkgd.fixed.min.js"; */
+		var jsUrl = "./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
@@ -1275,24 +1274,24 @@ var initUiTotop = function () {
 	    btnClass = "ui-totop",
 	    btnTitle = "Наверх",
 	    isActiveClass = "is-active",
-	    handleUiTotopWindow = function (_this) {
-		var logicHandleUiTotopWindow = function () {
-			var btn = d[gEBCN](btnClass)[0] || "",
-			    scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
-			    windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
-			if (scrollPosition && windowHeight && btn) {
-				if (scrollPosition > windowHeight) {
-					btn[cL].add(isActiveClass);
-				} else {
-					btn[cL].remove(isActiveClass);
-				}
-			}
-		},
-		    throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
-		throttleLogicHandleUiTotopWindow();
-	},
 	    renderUiTotop = function () {
-		var handleUiTotopAnchor = function (ev) {
+		var handleUiTotopWindow = function (_this) {
+			var logicHandleUiTotopWindow = function () {
+				var btn = d[gEBCN](btnClass)[0] || "",
+				    scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
+				    windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
+				if (scrollPosition && windowHeight && btn) {
+					if (scrollPosition > windowHeight) {
+						btn[cL].add(isActiveClass);
+					} else {
+						btn[cL].remove(isActiveClass);
+					}
+				}
+			},
+			    throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
+			throttleLogicHandleUiTotopWindow();
+		},
+		    handleUiTotopAnchor = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
 			scroll2Top(0, 20000);
@@ -1335,23 +1334,17 @@ var showPageFinishProgress = function () {
 	    showContainer = function () {
 		setStyleOpacity(container, 1);
 		progressBar.complete();
-	},
-	    showContainerOnImagesPreloaded = function () {
-		var timers = new Timers();
-		timers.interval(function () {
-			/* console.log("function showPageFinishProgress => started Interval"); */
-			if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
-				timers.clear();
-				timers = null;
-				/* console.log("function showPageFinishProgress; imagesPreloaded=" + imagesPreloaded); */
-				showContainer();
-			}
-		}, 100);
 	};
 	if (container) {
-		/* console.log("triggered function: showPageFinishProgress"); */
 		/* if ("undefined" !== typeof imagesPreloaded) {
-  	showContainerOnImagesPreloaded();
+  	var timers = new Timers();
+  	timers.interval(function () {
+  		if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
+  			timers.clear();
+  			timers = null;
+  			showContainer();
+  		}
+  	}, 100);
   } else { */
 		showContainer();
 		/* } */

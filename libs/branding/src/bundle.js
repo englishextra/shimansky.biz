@@ -17,7 +17,7 @@ require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
 scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
 setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
 Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge,
-VK, ymaps, zenscroll */
+VK, Ya, ymaps, zenscroll */
 /*property console, split */
 /*!
  * define global root
@@ -511,7 +511,7 @@ manageExternalLinks = function (ctx) {
 			}
 		}
 	},
-	arrangeAllExternalLinks = function () {
+	initScript = function () {
 		for (var i = 0, l = link.length; i < l; i += 1) {
 			arrangeExternalLink(link[i]);
 		}
@@ -519,7 +519,7 @@ manageExternalLinks = function (ctx) {
 	};
 	if (link) {
 		/* console.log("triggered function: manageExternalLinks"); */
-		arrangeAllExternalLinks();
+		initScript();
 	}
 };
 document.ready().then(manageExternalLinks);
@@ -544,7 +544,7 @@ var initAllMasonry = function () {
 	gridItem = d[gEBCN]("masonry-grid-item") || "",
 	msnry,
 	pckry,
-	initGrid = function () {
+	initScript = function () {
 		if (w.Masonry) {
 			/* console.log("function initMasonryDisqus => initialised msnry"); */
 			if (msnry) {
@@ -597,27 +597,24 @@ var initAllMasonry = function () {
 				}
 			}
 		}
+		var timers = new Timers();
+		timers.timeout(function () {
+			timers.clear();
+			timers = null;
+			if ("undefined" !== typeof msnry && msnry) {
+				msnry.layout();
+			} else {
+				if ("undefined" !== typeof pckry && pckry) {
+					pckry.layout();
+				}
+			}
+		}, 500);
 	};
 	if (grid && gridItem) {
 		/* console.log("triggered function: initAllMasonry"); */
-		var initScript = function () {
-			initGrid();
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				if ("undefined" !== typeof msnry && msnry) {
-					msnry.layout();
-				} else {
-					if ("undefined" !== typeof pckry && pckry) {
-						pckry.layout();
-					}
-				}
-			}, 500);
-		},
-		/* jsUrl = "../../cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
-		/* jsUrl = "../../cdn/packery/2.1.1/js/packery.draggabilly.pkgd.fixed.min.js"; */
-		jsUrl = "../../cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
+		/* var jsUrl = "../../cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
+		/* var jsUrl = "../../cdn/packery/2.1.1/js/packery.draggabilly.pkgd.fixed.min.js"; */
+		var jsUrl = "../../cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
@@ -632,15 +629,15 @@ var initPrettyPrint = function () {
 	var w = globalRoot,
 	d = document,
 	gEBCN = "getElementsByClassName",
-	pre = d[gEBCN]("prettyprint")[0] || "";
+	pre = d[gEBCN]("prettyprint")[0] || "",
+	initScript = function () {
+		if (w.prettyPrint) {
+			prettyPrint();
+		}
+	};
 	if (pre) {
 		/* console.log("triggered function: initPrettyPrint"); */
-		var initScript = function () {
-			if (w.prettyPrint) {
-				prettyPrint();
-			}
-		},
-		jsUrl = "../../cdn/google-code-prettify/0.1/js/prettify.bundled.fixed.min.js";
+		var jsUrl = "../../cdn/google-code-prettify/0.1/js/prettify.bundled.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
@@ -663,28 +660,28 @@ var hideImgLightbox = function () {
 	an2 = "fadeInUp",
 	an3 = "fadeOut",
 	an4 = "fadeOutDown",
-	dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+	dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+	hideImg = function () {
+		container[cL].remove(an);
+		container[cL].remove(an3);
+		img[cL].remove(an);
+		img[cL].remove(an4);
+		img.src = dummySrc;
+		container.style.display = "none";
+	},
+	hideContainer = function () {
+		container[cL].remove(an1);
+		container[cL].add(an3);
+		var timers = new Timers();
+		timers.timeout(function () {
+			timers.clear();
+			timers = null;
+			hideImg();
+		}, 400);
+	};
 	if (container && img) {
 		img[cL].remove(an2);
 		img[cL].add(an4);
-		var hideImg = function () {
-			container[cL].remove(an);
-			container[cL].remove(an3);
-			img[cL].remove(an);
-			img[cL].remove(an4);
-			img.src = dummySrc;
-			container.style.display = "none";
-		},
-		hideContainer = function () {
-			container[cL].remove(an1);
-			container[cL].add(an3);
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				hideImg();
-			}, 400);
-		};
 		var timers = new Timers();
 		timers.timeout(function () {
 			timers.clear();
@@ -759,11 +756,9 @@ manageImgLightboxLinks = function (ctx) {
 				}
 				imagePromise(hrefString).then(function (r) {
 					img.src = hrefString;
-					/* console.log("manageImgLightboxLinks => imagePromise: loaded image:", r); */
 				}).catch (function (err) {
 					/* console.log("manageImgLightboxLinks => imagePromise: cannot load image:", err); */
 				});
-				/* img.src = hrefString; */
 				w[aEL]("keyup", handleImgLightboxWindow);
 				container[aEL]("click", handleImgLightboxContainer);
 				container.style.display = "block";
@@ -785,7 +780,7 @@ manageImgLightboxLinks = function (ctx) {
 			}
 		}
 	},
-	arrangeAllImgLightboxLinks = function () {
+	initScript = function () {
 		for (var j = 0, l = link.length; j < l; j += 1) {
 			arrangeImgLightboxLink(link[j]);
 		}
@@ -793,7 +788,7 @@ manageImgLightboxLinks = function (ctx) {
 	};
 	if (link) {
 		/* console.log("triggered function: manageImgLightboxLinks"); */
-		arrangeAllImgLightboxLinks();
+		initScript();
 	}
 };
 document.ready().then(manageImgLightboxLinks);
@@ -839,7 +834,7 @@ var handleDataSrcImages = function () {
 			rerenderDataSrcImage(e);
 		}
 	},
-	arrangeAllDataSrcImages = function () {
+	initScript = function () {
 		for (var i = 0, l = img.length; i < l; i += 1) {
 			arrangeDataSrcImage(img[i]);
 		}
@@ -847,7 +842,7 @@ var handleDataSrcImages = function () {
 	};
 	if (img) {
 		/* console.log("triggered function: manageDataSrcImages"); */
-		arrangeAllDataSrcImages();
+		initScript();
 	}
 },
 handleDataSrcImagesWindow = function () {
@@ -918,7 +913,7 @@ var handleDataSrcIframes = function () {
 			rerenderDataSrcIframe(e);
 		}
 	},
-	rerenderDataSrcIframes = function () {
+	initScript = function () {
 		for (var i = 0, l = ifrm.length; i < l; i += 1) {
 			arrangeDataSrcIframe(ifrm[i]);
 		}
@@ -926,7 +921,7 @@ var handleDataSrcIframes = function () {
 	};
 	if (ifrm) {
 		/* console.log("triggered function: manageDataSrcIframes"); */
-		rerenderDataSrcIframes();
+		initScript();
 	}
 },
 handleDataSrcIframesWindow = function () {
@@ -1037,7 +1032,7 @@ manageExpandingLayers = function (ctx) {
 	arrangeBtn = function (e) {
 		e[aEL]("click", handleExpandingLayers);
 	},
-	arrangeAllBtns = function () {
+	initScript = function () {
 		for (var i = 0, l = btn.length; i < l; i += 1) {
 			arrangeBtn(btn[i]);
 		}
@@ -1045,7 +1040,7 @@ manageExpandingLayers = function (ctx) {
 	};
 	if (btn) {
 		/* console.log("triggered function: manageExpandingLayers"); */
-		arrangeAllBtns();
+		initScript();
 	}
 };
 document.ready().then(manageExpandingLayers);
@@ -1077,7 +1072,7 @@ manageSourceCodeLayers = function (ctx) {
 	arrangeBtn = function (e) {
 		e[aEL]("click", handleSourceCodeLayers);
 	},
-	arrangeAllBtns = function () {
+	initScript = function () {
 		for (var i = 0, l = btn.length; i < l; i += 1) {
 			arrangeBtn(btn[i]);
 		}
@@ -1085,7 +1080,7 @@ manageSourceCodeLayers = function (ctx) {
 	};
 	if (btn) {
 		/* console.log("triggered function: manageExpandingLayers"); */
-		arrangeAllBtns();
+		initScript();
 	}
 };
 document.ready().then(manageSourceCodeLayers);
@@ -1102,53 +1097,53 @@ var manageLocationQrCodeImage = function () {
 	cE = "createElement",
 	aEL = "addEventListener",
 	holder = d[gEBCN]("holder-location-qr-code")[0] || "",
-	locationHref = w.location.href || "";
+	locationHref = w.location.href || "",
+	generateLocationQrCodeImg = function () {
+		var locationHref = w.location.href || "",
+		img = d[cE]("img"),
+		imgTitle = d.title ? ("Ссылка на страницу «" + d.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "",
+		imgSrc = getHTTP(true) + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+		img.alt = imgTitle;
+		if (w.QRCode) {
+			if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
+				imgSrc = QRCode.generateSVG(locationHref, {
+						ecclevel: "M",
+						fillcolor: "#FFFFFF",
+						textcolor: "#191919",
+						margin: 4,
+						modulesize: 8
+					});
+				var XMLS = new XMLSerializer();
+				imgSrc = XMLS.serializeToString(imgSrc);
+				imgSrc = "data:image/svg+xml;base64," + w.btoa(unescape(encodeURIComponent(imgSrc)));
+				img.src = imgSrc;
+			} else {
+				imgSrc = QRCode.generatePNG(locationHref, {
+						ecclevel: "M",
+						format: "html",
+						fillcolor: "#FFFFFF",
+						textcolor: "#191919",
+						margin: 4,
+						modulesize: 8
+					});
+				img.src = imgSrc;
+			}
+		} else {
+			img.src = imgSrc;
+		}
+		img[cL].add("qr-code-img");
+		img.title = imgTitle;
+		removeChildren(holder);
+		appendFragment(img, holder);
+	},
+	initScript = function () {
+		generateLocationQrCodeImg();
+		w[aEL]("hashchange", generateLocationQrCodeImg);
+	};
 	if (holder && locationHref) {
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
 			/* console.log("triggered function: manageLocationQrCodeImage"); */
-			var generateLocationQrCodeImg = function () {
-				var locationHref = w.location.href || "",
-				img = d[cE]("img"),
-				imgTitle = d.title ? ("Ссылка на страницу «" + d.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "",
-				imgSrc = getHTTP(true) + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
-				img.alt = imgTitle;
-				if (w.QRCode) {
-					if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
-						imgSrc = QRCode.generateSVG(locationHref, {
-								ecclevel: "M",
-								fillcolor: "#FFFFFF",
-								textcolor: "#191919",
-								margin: 4,
-								modulesize: 8
-							});
-						var XMLS = new XMLSerializer();
-						imgSrc = XMLS.serializeToString(imgSrc);
-						imgSrc = "data:image/svg+xml;base64," + w.btoa(unescape(encodeURIComponent(imgSrc)));
-						img.src = imgSrc;
-					} else {
-						imgSrc = QRCode.generatePNG(locationHref, {
-								ecclevel: "M",
-								format: "html",
-								fillcolor: "#FFFFFF",
-								textcolor: "#191919",
-								margin: 4,
-								modulesize: 8
-							});
-						img.src = imgSrc;
-					}
-				} else {
-					img.src = imgSrc;
-				}
-				img[cL].add("qr-code-img");
-				img.title = imgTitle;
-				removeChildren(holder);
-				appendFragment(img, holder);
-			},
-			initScript = function () {
-				generateLocationQrCodeImg();
-				w[aEL]("hashchange", generateLocationQrCodeImg);
-			},
-			jsUrl = "../../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
+			var jsUrl = "../../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
 			if (!scriptIsLoaded(jsUrl)) {
 				loadJS(jsUrl, initScript);
 			}
@@ -1196,7 +1191,7 @@ var initNavMenu = function () {
 			holderPanelMenuMore[cL].remove(isActiveClass);
 		}
 	},
-	addContainerHandlers = function () {
+	addContainerHandler = function () {
 		var handleContainerLeft = function () {
 			/* console.log("swipeleft"); */
 			removeHolderActiveClass();
@@ -1220,7 +1215,7 @@ var initNavMenu = function () {
 			/* container.onswiperight = handleContainerRight; */
 		}
 	},
-	addBtnHandlers = function () {
+	addBtnHandler = function () {
 		var h_btn = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
@@ -1229,7 +1224,7 @@ var initNavMenu = function () {
 		};
 		btnNavMenu[aEL]("click", h_btn);
 	},
-	removeHoldeAndAllActiveClass = function () {
+	removeHolderAndAllActiveClass = function () {
 		removeHolderActiveClass();
 		removeAllActiveClass();
 	},
@@ -1239,18 +1234,15 @@ var initNavMenu = function () {
 	addActiveClass = function (e) {
 		e[cL].add(isActiveClass);
 	},
-	removeItemsActiveClass = function (a) {
-		for (var j = 0, l = a.length; j < l; j += 1) {
-			removeActiveClass(a[j]);
-		}
-		/* forEach(a, removeActiveClass, false); */
-	},
 	addItemHandler = function (e) {
 		var handleItem = function () {
 			if (panelNavMenu[cL].contains(isActiveClass)) {
-				removeHoldeAndAllActiveClass();
+				removeHolderAndAllActiveClass();
 			}
-			removeItemsActiveClass(panelNavMenuItems);
+			for (var j = 0, l = panelNavMenuItems.length; j < l; j += 1) {
+				removeActiveClass(panelNavMenuItems[j]);
+			}
+			/* forEach(panelNavMenuItems, removeActiveClass, false); */
 			addActiveClass(e);
 		};
 		e[aEL]("click", handleItem);
@@ -1260,7 +1252,7 @@ var initNavMenu = function () {
 			removeActiveClass(e);
 		}
 	},
-	addAllItemHandlers = function () {
+	addAllItemHandler = function () {
 		for (var i = 0, l = panelNavMenuItems.length; i < l; i += 1) {
 			addItemHandler(panelNavMenuItems[i]);
 		}
@@ -1269,14 +1261,17 @@ var initNavMenu = function () {
 	if (page && container && btnNavMenu && panelNavMenu && panelNavMenuItems) {
 		/* console.log("triggered function: initNavMenu"); */
 		/*!
+		 * close nav on outside click
+		 */
+		addContainerHandler();
+		/*!
 		 * open or close nav
 		 */
-		addBtnHandlers();
-		addContainerHandlers();
+		addBtnHandler();
 		/*!
 		 * close nav, scroll to top, highlight active nav item
 		 */
-		addAllItemHandlers();
+		addAllItemHandler();
 	}
 };
 document.ready().then(initNavMenu);
@@ -1308,7 +1303,7 @@ var addAppUpdatesLink = function () {
 	} else {
 		linkHref = "";
 	}
-	var	arrangeAppUpdatesLink = function () {
+	var	initScript = function () {
 		var listItem = d[cE]("li"),
 		link = d[cE]("a"),
 		linkText = "Скачать приложение сайта";
@@ -1337,7 +1332,7 @@ var addAppUpdatesLink = function () {
 	};
 	if (panel && items && linkHref) {
 		/* console.log("triggered function: addAppUpdatesLink"); */
-		arrangeAppUpdatesLink();
+		initScript();
 	}
 };
 document.ready().then(addAppUpdatesLink);
@@ -1370,10 +1365,10 @@ var initMenuMore = function () {
 	addItemHandler = function (e) {
 		e[aEL]("click", handleItem);
 	},
-	addContainerHandlers = function () {
+	addContainerHandler = function () {
 		container[aEL]("click", handleItem);
 	},
-	addBtnHandlers = function () {
+	addBtnHandler = function () {
 		var h_btn = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
@@ -1381,7 +1376,7 @@ var initMenuMore = function () {
 		};
 		btnMenuMore[aEL]("click", h_btn);
 	},
-	addAllItemHandlers = function () {
+	addAllItemHandler = function () {
 		for (var i = 0, l = panelMenuMoreItems.length; i < l; i += 1) {
 			addItemHandler(panelMenuMoreItems[i]);
 		}
@@ -1392,15 +1387,15 @@ var initMenuMore = function () {
 		/*!
 		 * hide menu more on outside click
 		 */
-		addContainerHandlers();
+		addContainerHandler();
 		/*!
 		 * show or hide menu more
 		 */
-		addBtnHandlers();
+		addBtnHandler();
 		/*!
 		 * hide menu more on item clicked
 		 */
-		addAllItemHandlers();
+		addAllItemHandler();
 	}
 };
 document.ready().then(initMenuMore);
@@ -1423,24 +1418,24 @@ var initUiTotop = function () {
 	btnClass = "ui-totop",
 	btnTitle = "Наверх",
 	isActiveClass = "is-active",
-	handleUiTotopWindow = function (_this) {
-		var logicHandleUiTotopWindow = function () {
-			var btn = d[gEBCN](btnClass)[0] || "",
-			scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
-			windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
-			if (scrollPosition && windowHeight && btn) {
-				if (scrollPosition > windowHeight) {
-					btn[cL].add(isActiveClass);
-				} else {
-					btn[cL].remove(isActiveClass);
-				}
-			}
-		},
-		throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
-		throttleLogicHandleUiTotopWindow();
-	},
 	renderUiTotop = function () {
-		var handleUiTotopAnchor = function (ev) {
+		var handleUiTotopWindow = function (_this) {
+			var logicHandleUiTotopWindow = function () {
+				var btn = d[gEBCN](btnClass)[0] || "",
+				scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
+				windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
+				if (scrollPosition && windowHeight && btn) {
+					if (scrollPosition > windowHeight) {
+						btn[cL].add(isActiveClass);
+					} else {
+						btn[cL].remove(isActiveClass);
+					}
+				}
+			},
+			throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
+			throttleLogicHandleUiTotopWindow();
+		},
+		handleUiTotopAnchor = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
 			scroll2Top(0, 20000);
@@ -1471,54 +1466,65 @@ var initUiTotop = function () {
 };
 document.ready().then(initUiTotop);
 /*!
- * init pluso-engine or ya-share on click
+ * init share btn
+ * class ya-share2 automatically triggers Ya.share2,
+ * so use either default class ya-share2 or custom id
+ * ya-share2 class will be added if you init share block
+ * via  ya-share2 api
+ * @see {@link https://tech.yandex.ru/share/doc/dg/api-docpage/}
  */
-var manageShareButton = function () {
+var yshare,
+manageShareButton = function () {
 	"use strict";
-	var d = document,
+	var w = globalRoot,
+	d = document,
+	gEBI = "getElementById",
 	gEBCN = "getElementsByClassName",
 	aEL = "addEventListener",
-	rEL = "removeEventListener",
 	btn = d[gEBCN]("btn-share-buttons")[0] || "",
-	pluso = d[gEBCN]("pluso")[0] || "",
-	ya_share2 = d[gEBCN]("ya-share2")[0] || "",
-	showShare = function (block, btn) {
-		setStyleVisibilityVisible(block);
-		setStyleOpacity(block, 1);
-		setStyleDisplayNone(btn);
-	},
-	loadShare = function (jsUrl, block, btn) {
-		var initScript = function () {
-			showShare(block, btn);
-		};
-		if (!scriptIsLoaded(jsUrl)) {
-			loadJS(jsUrl, initScript);
-		}
-	},
-	chooseProvider = function () {
-		var plusoJsUrl = getHTTP(true) + "://share.pluso.ru/pluso-like.js",
-		shareJsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
-		if (pluso) {
-			loadShare(plusoJsUrl, pluso, btn);
-		} else {
-			if (ya_share2) {
-				loadShare(shareJsUrl, ya_share2, btn);
-			}
-		}
-	},
-	addBtnHandlers = function () {
-		var handleShareBtn = function (ev) {
+	yaShare2Id = "ya-share2",
+	yaShare2 =  d[gEBI](yaShare2Id) || "",
+	addBtnHandler = function () {
+		var handleShareButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			btn[rEL]("click", handleShareBtn);
-			chooseProvider();
+			var initScript = function () {
+				if (w.Ya) {
+					try {
+						if (yshare) {
+							yshare.updateContent({
+								title: d.title || "",
+								description: d.title || "",
+								url: w.location.href || ""
+							});
+						} else {
+							yshare = Ya.share2(yaShare2Id, {
+								content: {
+									title: d.title || "",
+									description: d.title || "",
+									url: w.location.href || ""
+								}
+							});
+						}
+						setStyleVisibilityVisible(yaShare2);
+						setStyleOpacity(yaShare2, 1);
+						setStyleDisplayNone(btn);
+					} catch (err) {
+						/* console.log("cannot update or init Ya.share2", err); */
+					}
+				}
+			},
+			jsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
+			if (!scriptIsLoaded(jsUrl)) {
+				loadJS(jsUrl, initScript);
+			}
 		};
-		btn[aEL]("click", handleShareBtn);
+		btn[aEL]("click", handleShareButton);
 	};
-	if ((pluso || ya_share2) && btn) {
+	if (btn && yaShare2) {
 		/* console.log("triggered function: manageShareButton"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			addBtnHandlers();
+			addBtnHandler();
 		} else {
 			setStyleDisplayNone(btn);
 		}
@@ -1545,25 +1551,25 @@ var initDisqusOnScroll = function () {
 	locationHref = w.location.href || "",
 	disqusThreadShortname = disqusThread ? (disqusThread[ds].shortname || "") : "",
 	jsUrl = getHTTP(true) + "://" + disqusThreadShortname + ".disqus.com/embed.js",
-	initScript = function () {
-		setStyleDisplayNone(btn);
-		disqusThread[cL].add(isActiveClass);
-		LoadingSpinner.hide();
-	},
 	loadDisqus = function () {
 		LoadingSpinner.show();
+		var initScript = function () {
+			setStyleDisplayNone(btn);
+			disqusThread[cL].add(isActiveClass);
+			LoadingSpinner.hide();
+		};
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
 	},
-	addBtnHandlers = function () {
-		var h_btn = function (ev) {
+	addBtnHandler = function () {
+		var handleDisqusButton = function (ev) {
 			ev.preventDefault();
 			ev.stopPropagation();
-			btn[rEL]("click", h_btn);
+			btn[rEL]("click", handleDisqusButton);
 			loadDisqus();
 		};
-		btn[aEL]("click", h_btn);
+		btn[aEL]("click", handleDisqusButton);
 	},
 	hideDisqus = function () {
 		removeChildren(disqusThread);
@@ -1571,19 +1577,19 @@ var initDisqusOnScroll = function () {
 		appendFragment(msgText, disqusThread);
 		disqusThread.removeAttribute("id");
 		setStyleDisplayNone(btn[pN]);
-	};
-	if (disqusThread && btn && disqusThreadShortname && locationHref) {
+	}/* ,
+	handleDisqusWindow = function () {
+		if (fitsIntoViewport(disqusThread)) {
+			w[rEL]("scroll", handleDisqusWindow);
+			loadDisqus();
+		}
+	} */;
+	if (btn && disqusThread && disqusThreadShortname && locationHref) {
 		/* console.log("triggered function: initDisqusOnScroll"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			addBtnHandlers();
+			addBtnHandler();
 			/* if (!("undefined" !== typeof earlyDeviceSize && "small" === earlyDeviceSize)) {
-				var h_w = function () {
-					if (fitsIntoViewport(disqusThread)) {
-						w[rEL]("scroll", h_w);
-						loadDisqus();
-					}
-				};
-				w[aEL]("scroll", h_w);
+				w[aEL]("scroll", handleDisqusWindow);
 			} */
 		} else {
 			hideDisqus();
@@ -1594,8 +1600,7 @@ document.ready().then(initDisqusOnScroll);
 /*!
  * init vk-like on click
  */
-var VK,
-manageVKLikeButton = function () {
+var manageVKLikeButton = function () {
 	"use strict";
 	var w = globalRoot,
 	d = document,
@@ -1607,10 +1612,9 @@ manageVKLikeButton = function () {
 	VKLikeId = "vk-like",
 	VKLike = d[gEBI](VKLikeId) || "",
 	btn = d[gEBCN]("btn-show-vk-like")[0] || "",
-	jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
 	initScript = function () {
-		try {
-			if (w.VK) {
+		if (w.VK) {
+			try {
 				VK.init({
 					apiId: (VKLike[ds].apiid || ""),
 					nameTransportPath: "/xd_receiver.htm",
@@ -1620,34 +1624,30 @@ manageVKLikeButton = function () {
 					type: "button",
 					height: 24
 				});
+				setStyleVisibilityVisible(VKLike);
+				setStyleOpacity(VKLike, 1);
+				setStyleDisplayNone(btn);
+			} catch (err) {
+				/* console.log("cannot init VK", err); */
 			}
-			setStyleVisibilityVisible(VKLike);
-			setStyleOpacity(VKLike, 1);
-			setStyleDisplayNone(btn);
-		} catch(e) {
-			setStyleVisibilityHidden(VKLike);
-			setStyleOpacity(VKLike, 0);
-			setStyleDisplayBlock(btn);
 		}
 	},
-	addBtnHandlers = function () {
-		if (!scriptIsLoaded(jsUrl)) {
-			loadJS(jsUrl, initScript);
-		}
-	},
-	initVk = function () {
-		var h_a = function (ev) {
+	addBtnHandler = function () {
+		var handleVKLikeButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			btn[rEL]("click", h_a);
-			addBtnHandlers();
+			btn[rEL]("click", handleVKLikeButton);
+			var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122";
+			if (!scriptIsLoaded(jsUrl)) {
+				loadJS(jsUrl, initScript);
+			}
 		};
-		btn[aEL]("click", h_a);
+		btn[aEL]("click", handleVKLikeButton);
 	};
-	if (VKLike && btn) {
+	if (btn && VKLike) {
 		/* console.log("triggered function: manageVKLikeButton"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			initVk();
+			addBtnHandler();
 		} else {
 			setStyleDisplayNone(btn);
 		}
@@ -1823,10 +1823,10 @@ document.ready().then(initKamilAutocomplete);
  */
 var initManUp = function () {
 	"use strict";
+	var initScript = function () {};
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
 		/* console.log("triggered function: initManUp"); */
-		var initScript = function () {},
-		jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
+		var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
@@ -1841,8 +1841,9 @@ var showPageFinishProgress = function () {
 	var d = document,
 	gEBI = "getElementById",
 	container = d[gEBI]("container") || "";
-	/* console.log("triggered function: showPageFinishProgress"); */
-	setStyleOpacity(container, 1);
-	progressBar.complete();
+	if (container) {
+		setStyleOpacity(container, 1);
+		progressBar.complete();
+	}
 };
 globalRoot.addEventListener("load", showPageFinishProgress);

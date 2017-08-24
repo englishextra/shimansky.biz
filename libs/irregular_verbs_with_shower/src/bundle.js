@@ -17,7 +17,7 @@ require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
 scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
 setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
 Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge,
-VK, ymaps, zenscroll */
+VK, Ya, ymaps, zenscroll */
 /*property console, split */
 /*!
  * define global root
@@ -328,7 +328,7 @@ manageExternalLinks = function (ctx) {
 			}
 		}
 	},
-	arrangeAllExternalLinks = function () {
+	initScript = function () {
 		for (var i = 0, l = link.length; i < l; i += 1) {
 			arrangeExternalLink(link[i]);
 		}
@@ -336,7 +336,7 @@ manageExternalLinks = function (ctx) {
 	};
 	if (link) {
 		/* console.log("triggered function: manageExternalLinks"); */
-		arrangeAllExternalLinks();
+		initScript();
 	}
 };
 document.ready().then(manageExternalLinks);
@@ -372,24 +372,24 @@ var initUiTotop = function () {
 	btnClass = "ui-totop",
 	btnTitle = "Наверх",
 	isActiveClass = "is-active",
-	handleUiTotopWindow = function (_this) {
-		var logicHandleUiTotopWindow = function () {
-			var btn = d[gEBCN](btnClass)[0] || "",
-			scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
-			windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
-			if (scrollPosition && windowHeight && btn) {
-				if (scrollPosition > windowHeight) {
-					btn[cL].add(isActiveClass);
-				} else {
-					btn[cL].remove(isActiveClass);
-				}
-			}
-		},
-		throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
-		throttleLogicHandleUiTotopWindow();
-	},
 	renderUiTotop = function () {
-		var handleUiTotopAnchor = function (ev) {
+		var handleUiTotopWindow = function (_this) {
+			var logicHandleUiTotopWindow = function () {
+				var btn = d[gEBCN](btnClass)[0] || "",
+				scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
+				windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
+				if (scrollPosition && windowHeight && btn) {
+					if (scrollPosition > windowHeight) {
+						btn[cL].add(isActiveClass);
+					} else {
+						btn[cL].remove(isActiveClass);
+					}
+				}
+			},
+			throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
+			throttleLogicHandleUiTotopWindow();
+		},
+		handleUiTotopAnchor = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
 			scroll2Top(0, 20000);
@@ -420,54 +420,65 @@ var initUiTotop = function () {
 };
 document.ready().then(initUiTotop);
 /*!
- * init pluso-engine or ya-share on click
+ * init share btn
+ * class ya-share2 automatically triggers Ya.share2,
+ * so use either default class ya-share2 or custom id
+ * ya-share2 class will be added if you init share block
+ * via  ya-share2 api
+ * @see {@link https://tech.yandex.ru/share/doc/dg/api-docpage/}
  */
-var manageShareButton = function () {
+var yshare,
+manageShareButton = function () {
 	"use strict";
-	var d = document,
+	var w = globalRoot,
+	d = document,
+	gEBI = "getElementById",
 	gEBCN = "getElementsByClassName",
 	aEL = "addEventListener",
-	rEL = "removeEventListener",
 	btn = d[gEBCN]("btn-share-buttons")[0] || "",
-	pluso = d[gEBCN]("pluso")[0] || "",
-	ya_share2 = d[gEBCN]("ya-share2")[0] || "",
-	showShare = function (block, btn) {
-		setStyleVisibilityVisible(block);
-		setStyleOpacity(block, 1);
-		setStyleDisplayNone(btn);
-	},
-	loadShare = function (jsUrl, block, btn) {
-		var initScript = function () {
-			showShare(block, btn);
-		};
-		if (!scriptIsLoaded(jsUrl)) {
-			loadJS(jsUrl, initScript);
-		}
-	},
-	chooseProvider = function () {
-		var plusoJsUrl = getHTTP(true) + "://share.pluso.ru/pluso-like.js",
-		shareJsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
-		if (pluso) {
-			loadShare(plusoJsUrl, pluso, btn);
-		} else {
-			if (ya_share2) {
-				loadShare(shareJsUrl, ya_share2, btn);
-			}
-		}
-	},
-	addBtnHandlers = function () {
-		var handleShareBtn = function (ev) {
+	yaShare2Id = "ya-share2",
+	yaShare2 =  d[gEBI](yaShare2Id) || "",
+	addBtnHandler = function () {
+		var handleShareButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			btn[rEL]("click", handleShareBtn);
-			chooseProvider();
+			var initScript = function () {
+				if (w.Ya) {
+					try {
+						if (yshare) {
+							yshare.updateContent({
+								title: d.title || "",
+								description: d.title || "",
+								url: w.location.href || ""
+							});
+						} else {
+							yshare = Ya.share2(yaShare2Id, {
+								content: {
+									title: d.title || "",
+									description: d.title || "",
+									url: w.location.href || ""
+								}
+							});
+						}
+						setStyleVisibilityVisible(yaShare2);
+						setStyleOpacity(yaShare2, 1);
+						setStyleDisplayNone(btn);
+					} catch (err) {
+						/* console.log("cannot update or init Ya.share2", err); */
+					}
+				}
+			},
+			jsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
+			if (!scriptIsLoaded(jsUrl)) {
+				loadJS(jsUrl, initScript);
+			}
 		};
-		btn[aEL]("click", handleShareBtn);
+		btn[aEL]("click", handleShareButton);
 	};
-	if ((pluso || ya_share2) && btn) {
+	if (btn && yaShare2) {
 		/* console.log("triggered function: manageShareButton"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			addBtnHandlers();
+			addBtnHandler();
 		} else {
 			setStyleDisplayNone(btn);
 		}
@@ -479,10 +490,10 @@ document.ready().then(manageShareButton);
  */
 var initManUp = function () {
 	"use strict";
+	var initScript = function () {};
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
 		/* console.log("triggered function: initManUp"); */
-		var initScript = function () {},
-		jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
+		var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
@@ -497,8 +508,9 @@ var showPageFinishProgress = function () {
 	var d = document,
 	gEBI = "getElementById",
 	page = d[gEBI]("page") || "";
-	/* console.log("triggered function: showPageFinishProgress"); */
-	setStyleOpacity(page, 1);
-	progressBar.complete();
+	if (page) {
+		setStyleOpacity(page, 1);
+		progressBar.complete();
+	}
 };
 globalRoot.addEventListener("load", showPageFinishProgress);

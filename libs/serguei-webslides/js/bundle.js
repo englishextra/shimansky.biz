@@ -17,7 +17,7 @@ require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
 scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
 setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
 Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge,
-VK, ymaps, zenscroll */
+VK, Ya, ymaps, zenscroll */
 /*property console, split */
 /*!
  * define global root
@@ -492,7 +492,7 @@ var handleExternalLink = function (url, ev) {
 			}
 		}
 	},
-	    arrangeAllExternalLinks = function () {
+	    initScript = function () {
 		for (var i = 0, l = link.length; i < l; i += 1) {
 			arrangeExternalLink(link[i]);
 		}
@@ -500,7 +500,7 @@ var handleExternalLink = function (url, ev) {
 	};
 	if (link) {
 		/* console.log("triggered function: manageExternalLinks"); */
-		arrangeAllExternalLinks();
+		initScript();
 	}
 };
 document.ready().then(manageExternalLinks);
@@ -955,16 +955,16 @@ var manageDataQrcodeImages = function (ctx) {
 				e.src = imgSrc;
 			}
 		}
+	},
+	    initScript = function () {
+		for (var i = 0, l = img.length; i < l; i += 1) {
+			generateImg(img[i]);
+		}
+		/* forEach(img, generateImg, false); */
 	};
 	if (img) {
 		/* console.log("triggered function: manageDataQrcodeImages"); */
-		var initScript = function () {
-			for (var i = 0, l = img.length; i < l; i += 1) {
-				generateImg(img[i]);
-			}
-			/* forEach(img, generateImg, false); */
-		},
-		    jsUrl = "../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
+		var jsUrl = "../cdn/qrjs2/0.1.3/js/qrjs2.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
 		}
@@ -980,9 +980,10 @@ var showPageFinishProgress = function () {
 	var d = document,
 	    gEBI = "getElementById",
 	    page = d[gEBI]("page") || "";
-	/* console.log("triggered function: showPageFinishProgress"); */
-	setStyleOpacity(page, 1);
-	progressBar.complete();
+	if (page) {
+		setStyleOpacity(page, 1);
+		progressBar.complete();
+	}
 };
 globalRoot.addEventListener("load", showPageFinishProgress);
 

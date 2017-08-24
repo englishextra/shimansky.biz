@@ -17,7 +17,7 @@ require, routie, safelyParseJSON, scriptIsLoaded, scroll2Top,
 scrollToTop, setImmediate, setStyleDisplayBlock, setStyleDisplayNone,
 setStyleOpacity, setStyleVisibilityHidden, setStyleVisibilityVisible, t,
 Tablesort, throttle, Timers, ToProgress, truncString, unescape, verge,
-VK, ymaps, zenscroll */
+VK, Ya, ymaps, zenscroll */
 /*property console, split */
 /*!
  * define global root
@@ -147,27 +147,27 @@ var initParallax = function () {
 	d = document,
 	gEBCN = "getElementsByClassName",
 	mq = w.matchMedia("(min-width: 768px)"),
-	s = d[gEBCN]("scene1")[0] || "",
-	p = d[gEBCN]("parallax")[0] || "",
-	m = d[gEBCN]("parallax-disabled")[0] || "",
+	scene1 = d[gEBCN]("scene1")[0] || "",
+	parallax = d[gEBCN]("parallax")[0] || "",
+	parallaxDisabled = d[gEBCN]("parallax-disabled")[0] || "",
 	initScript = function () {
 		if (mq.matches) {
-			setStyleDisplayBlock(p);
-			setStyleDisplayNone(m);
-			if (s) {
-				if (w.Parallax) {
-					var prlx;
-					prlx = new Parallax(s);
-				}
+			setStyleDisplayBlock(parallax);
+			setStyleDisplayNone(parallaxDisabled);
+			if (w.Parallax) {
+				var prlx;
+				prlx = new Parallax(scene1);
 			}
 		} else {
-			setStyleDisplayNone(p);
-			setStyleDisplayBlock(m);
+			setStyleDisplayNone(parallax);
+			setStyleDisplayBlock(parallaxDisabled);
 		}
-	},
-	jsUrl = "/cdn/parallax/2.1.3/js/parallax.fixed.min.js";
-	if (!scriptIsLoaded(jsUrl)) {
-		loadJS(jsUrl, initScript);
+	};
+	if (scene1 && parallax && parallaxDisabled) {
+		var jsUrl = "/cdn/parallax/2.1.3/js/parallax.fixed.min.js";
+		if (!scriptIsLoaded(jsUrl)) {
+			loadJS(jsUrl, initScript);
+		}
 	}
 };
 document.ready().then(initParallax);
@@ -189,23 +189,17 @@ var showPageFinishProgress = function () {
 			timers = null;
 			setStyleDisplayNone(progress);
 		}, 100);
-	},
-	showPageOnImagesPreloaded = function () {
-		var timers = new Timers();
-		timers.interval(function () {
-			/* console.log("function showPageFinishProgress => started Interval"); */
-			if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
-				timers.clear();
-				timers = null;
-				/* console.log("function showPageFinishProgress; imagesPreloaded=" + imagesPreloaded); */
-				showPage();
-			}
-		}, 100);
 	};
 	if (page) {
-		/* console.log("triggered function: showPageFinishProgress"); */
 		if ("undefined" !== typeof imagesPreloaded) {
-			showPageOnImagesPreloaded();
+			var timers = new Timers();
+			timers.interval(function () {
+				if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
+					timers.clear();
+					timers = null;
+					showPage();
+				}
+			}, 100);
 		} else {
 			showPage();
 		}
