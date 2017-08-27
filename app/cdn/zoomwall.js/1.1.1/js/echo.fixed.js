@@ -57,7 +57,7 @@
 		/*
 		 * Echo the images and callbacks
 		 */
-		var echoImages = function () {
+		var echoImageAll = function () {
 			for (var i = 0; i < echoStore.length; i++) {
 				var self = echoStore[i];
 				if (scrolledIntoView(self)) {
@@ -74,17 +74,17 @@
 			},
 			render: function () {
 				if (d.addEventListener) {
-					/* d.addEventListener("DOMContentLoaded", echoImages, false); */
+					/* d.addEventListener("DOMContentLoaded", echoImageAll, false); */
 				} else {
-					/* w.onload = echoImages; */
-					/* w.addEventListener("load", echoImages); */
+					/* w.onload = echoImageAll; */
+					/* w.addEventListener("load", echoImageAll); */
 				}
-				echoImages();
+				echoImageAll();
 			},
 			listen: function () {
 				if (!isBindedEcho) {
-					/* w.onscroll = echoImages; */
-					w.addEventListener("scroll", echoImages);
+					/* w.onscroll = echoImageAll; */
+					w.addEventListener("scroll", echoImageAll);
 					d.documentElement.classList.add(isBindedEchoClass);
 				}
 			}
@@ -94,13 +94,13 @@
 		 */
 		/* var lazyImgs = d.querySelectorAll("img[data-echo]"); */
 		var lazyImgs = d.getElementsByClassName(imgClass) || "";
-		var walkLazyImgs = function () {
+		var walkLazyImageAll = function () {
 			for (var i = 0; i < lazyImgs.length; i++) {
 				new Echo(lazyImgs[i]).init();
 			}
 		};
 		if (lazyImgs) {
-			walkLazyImgs();
+			walkLazyImageAll();
 		}
 	};
 	root.echo = echo;

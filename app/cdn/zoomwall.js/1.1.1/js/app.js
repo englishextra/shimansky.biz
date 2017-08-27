@@ -1,8 +1,9 @@
-/*!
- * make gallery and attach zoomwall.js (gallery maker) and echo.js (lazyloader)
- */
-var zoomwallGallery = document.getElementById("zoomwall") || "";
-if (zoomwallGallery) {
+(function(w, d){
+	"use strict";
+	/*!
+	 * make gallery and attach zoomwall.js (gallery maker) and echo.js (lazyloader)
+	 */
+	var zoomwallGallery = d.getElementById("zoomwall") || "";
 	var imgClass = "data-src-img"; // lazyloader finds images using class this name
 	var jsonHighresKeyName = "highres"; // should be same img data attribute as in json high resolution key name
 	var jsonSrcKeyName = "src"; // will be an initial img src from json
@@ -18,14 +19,27 @@ if (zoomwallGallery) {
 			throw new Error("cannot fetch", jsonUrl);
 		}
 	}).then(function (text) {
-		var jsonObj = JSON.parse(text);
 		var generateGallery = new Promise(function (resolve, reject) {
-			var df = document.createDocumentFragment();
+			var jsonObj;
+			try {
+				jsonObj = JSON.parse(text);
+				if (!jsonObj[0][jsonHighresKeyName]) {
+					throw new Error("incomplete JSON data: no " + jsonHighresKeyName);
+				} else {
+					if (!jsonObj[0][jsonSrcKeyName]) {
+						throw new Error("incomplete JSON data: no " + jsonSrcKeyName);
+					}
+				}
+			} catch (err) {
+				console.log("cannot init generateGallery", err);
+				return;
+			}
+			var df = d.createDocumentFragment();
 			var key;
 			for (key in jsonObj) {
 				if (jsonObj.hasOwnProperty(key)) {
 					if (jsonObj[key][jsonSrcKeyName] && jsonObj[key][jsonHighresKeyName]) {
-						var img = document.createElement("img");
+						var img = d.createElement("img");
 						if ((/^([0-9]+)(\x|\ )([0-9]+)$/).test(jsonObj[key][jsonSrcKeyName])) {
 							img.src = ["data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20",
 								jsonObj[key][jsonSrcKeyName].replace("x", "%20"),
@@ -36,19 +50,19 @@ if (zoomwallGallery) {
 						img.dataset[jsonHighresKeyName] = jsonObj[key][jsonHighresKeyName];
 						img.classList.add(imgClass);
 						df.appendChild(img);
-						df.appendChild(document.createTextNode("\n"));
+						df.appendChild(d.createTextNode("\n"));
 					}
 				}
 			}
 			key = null;
 			/* var i;
 			for (i = 0; i < jsonObj.length; i += 1) {
-				var img = document.createElement("img");
+				var img = d.createElement("img");
 				img.src = jsonObj[i].src;
 				img.dataset[jsonHighresKeyName] = jsonObj[i][jsonHighresKeyName];
 				img.classList.add(imgClass);
 				df.appendChild(img);
-				df.appendChild(document.createTextNode("\n"));
+				df.appendChild(d.createTextNode("\n"));
 			}
 			i = null; */
 			if (zoomwallGallery.appendChild(df)) {
@@ -63,7 +77,9 @@ if (zoomwallGallery) {
 			var timers = setTimeout(function () {
 				clearTimeout(timers);
 				timers = null;
-				zoomwall.create(zoomwallGallery, true, jsonHighresKeyName);
+				if (zoomwallGallery) {
+					zoomwall.create(zoomwallGallery, true, jsonHighresKeyName);
+				}
 			}, 200);
 		}).then(function (result) {
 			var timers = setTimeout(function () {
@@ -78,8 +94,7 @@ if (zoomwallGallery) {
 		console.log("cannot parse", jsonUrl);
 	});
 	/* var initEcho = function () {
-		"use strict";
 		echo(imgClass, jsonHighresKeyName);
 	};
-	window.addEventListener("load", initEcho); */
-}
+	w.addEventListener("load", initEcho); */
+}("undefined" !== typeof window ? window : this, document));
