@@ -755,9 +755,9 @@ var showPageFinishProgress = function () {
 	var d = document,
 	gEBI = "getElementById",
 	container = d[gEBI]("container") || "",
-	showContainer = function () {
+	showPage = function () {
 		setStyleOpacity(container, 1);
-		progressBar.complete();
+		progressBar.increase(20);
 	};
 	if (container) {
 		if ("undefined" !== typeof imagesPreloaded) {
@@ -766,12 +766,15 @@ var showPageFinishProgress = function () {
 				if ("undefined" !== typeof imagesPreloaded && imagesPreloaded) {
 					timers.clear();
 					timers = null;
-					showContainer();
+					showPage();
 				}
 			}, 100);
 		} else {
-			showContainer();
+			showPage();
 		}
 	}
 };
-globalRoot.addEventListener("load", showPageFinishProgress);
+document.ready().then(showPageFinishProgress);
+globalRoot.addEventListener("load", function () {
+	progressBar.complete();
+});

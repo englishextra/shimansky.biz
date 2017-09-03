@@ -1812,18 +1812,6 @@ var loadRefreshDisqus = function () {
 	btn = d[gEBCN]("btn-show-disqus")[0] || "",
 	locationHref = w.location.href || "",
 	disqusThreadShortname = disqusThread ? (disqusThread[ds].shortname || "") : "",
-	showDisqus = function () {
-		disqusThread[cL].add(isActiveClass);
-		setStyleDisplayNone(btn);
-		LoadingSpinner.hide();
-	},
-	hideDisqus = function () {
-		removeChildren(disqusThread);
-		var msgText = d.createRange().createContextualFragment("<p>Комментарии доступны только в веб версии этой страницы.</p>");
-		appendFragment(msgText, disqusThread);
-		disqusThread.removeAttribute("id");
-		setStyleDisplayNone(btn[pN]);
-	},
 	initScript = function () {
 		if (w.DISQUS) {
 			try {
@@ -1834,7 +1822,6 @@ var loadRefreshDisqus = function () {
 						this.page.url = locationHref;
 					}
 				});
-				showDisqus();
 			} catch (err) {
 				/* console.log("cannot reset DISQUS", err); */
 			}
@@ -1844,6 +1831,9 @@ var loadRefreshDisqus = function () {
 		/* console.log("triggered function: loadRefreshDisqus"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
 			LoadingSpinner.show();
+			disqusThread[cL].add(isActiveClass);
+			setStyleDisplayNone(btn);
+			LoadingSpinner.hide();
 			var jsUrl = getHTTP(true) + "://" + disqusThreadShortname + ".disqus.com/embed.js";
 			if (!scriptIsLoaded(jsUrl)) {
 				loadJS(jsUrl, initScript);
@@ -1851,7 +1841,11 @@ var loadRefreshDisqus = function () {
 				initScript();
 			}
 		} else {
-			hideDisqus();
+			removeChildren(disqusThread);
+			var msgText = d.createRange().createContextualFragment("<p>Комментарии доступны только в веб версии этой страницы.</p>");
+			appendFragment(msgText, disqusThread);
+			disqusThread.removeAttribute("id");
+			setStyleDisplayNone(btn[pN]);
 		}
 	}
 },
@@ -2403,7 +2397,7 @@ var showPageFinishProgress = function () {
 	page = d[gEBI]("page") || "",
 	showPage = function () {
 		setStyleOpacity(page, 1);
-		progressBar.complete();
+		progressBar.increase(20);
 	};
 	if (page) {
 		if ("undefined" !== typeof imagesPreloaded) {
@@ -2420,4 +2414,7 @@ var showPageFinishProgress = function () {
 		}
 	}
 };
-globalRoot.addEventListener("load", showPageFinishProgress);
+document.ready().then(showPageFinishProgress);
+globalRoot.addEventListener("load", function () {
+	progressBar.complete();
+});

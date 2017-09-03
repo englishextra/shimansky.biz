@@ -712,7 +712,10 @@ var showPageFinishProgress = function () {
 	page = d[gEBI]("page") || "";
 	if (page) {
 		setStyleOpacity(page, 1);
-		progressBar.complete();
+		progressBar.increase(20);
 	}
 };
-globalRoot.addEventListener("load", showPageFinishProgress);
+document.ready().then(showPageFinishProgress);
+globalRoot.addEventListener("load", function () {
+	progressBar.complete();
+});

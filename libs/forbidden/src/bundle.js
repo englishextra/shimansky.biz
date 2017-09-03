@@ -796,7 +796,7 @@ var showPageFinishProgress = function () {
 	showPage = function () {
 		setStyleOpacity(page, 1);
 		setStyleOpacity(holder, 1);
-		progressBar.complete();
+		progressBar.increase(20);
 	};
 	if (page && holder) {
 		if ("undefined" !== typeof imagesPreloaded) {
@@ -813,4 +813,7 @@ var showPageFinishProgress = function () {
 		}
 	}
 };
-globalRoot.addEventListener("load", showPageFinishProgress);
+document.ready().then(showPageFinishProgress);
+globalRoot.addEventListener("load", function () {
+	progressBar.complete();
+});
