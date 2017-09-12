@@ -1268,8 +1268,8 @@ var handleDataSrcImageAll = function () {
 	}
 },
     handleDataSrcImageAllWindow = function () {
-	var throttlehandleDataSrcImageAll = throttle(handleDataSrcImageAll, 100);
-	throttlehandleDataSrcImageAll();
+	var throttleHandleDataSrcImageAll = throttle(handleDataSrcImageAll, 100);
+	throttleHandleDataSrcImageAll();
 },
     manageDataSrcImageAll = function () {
 	"use strict";
@@ -2459,8 +2459,13 @@ var renderNavigation = function () {
 					"next": "js-carousel__next"
 				});
 				if (carouselRenderParent) {
-					handleDataSrcImageAll();
 					manageExternalLinkAll(carouselRenderParent);
+					var timers = new Timers();
+					timers.timeout(function () {
+						timers.clear();
+						timers = null;
+						handleDataSrcImageAll();
+					}, 500);
 				}
 			});
 		}
@@ -2958,8 +2963,13 @@ var initRouting = function () {
 				if (asideTemplate && asideRender) {
 					insertFromTemplate(asideObj, asideTemplateId, asideRenderId, function () {
 						if (asideRenderParent) {
-							handleDataSrcImageAll();
 							manageExternalLinkAll(asideRenderParent);
+							var timers = new Timers();
+							timers.timeout(function () {
+								timers.clear();
+								timers = null;
+								handleDataSrcImageAll();
+							}, 500);
 						}
 					});
 				}
@@ -3000,9 +3010,14 @@ var initRouting = function () {
 					}
 					insertTextAsFragment(renderMasonry, contentsGridRender, function () {
 						if (contentsGridRenderParent) {
-							handleDataSrcImageAll();
 							initMasonry(contentsGridRenderParent);
 							manageExternalLinkAll(contentsGridRenderParent);
+							var timers = new Timers();
+							timers.timeout(function () {
+								timers.clear();
+								timers = null;
+								handleDataSrcImageAll();
+							}, 500);
 						}
 					});
 				} else {
@@ -3014,13 +3029,18 @@ var initRouting = function () {
     * put when templates rendered
     */
 			if (appContentParent) {
-				handleDataSrcImageAll();
-				handleDataSrcIframeAll();
 				manageExternalLinkAll(appContentParent);
 				manageImgLightboxLinks(appContentParent);
 				manageIframeLightboxLinks(appContentParent);
 				manageChaptersSelect(appContentParent);
 				manageExpandingLayers(appContentParent);
+				handleDataSrcIframeAll();
+				var timers = new Timers();
+				timers.timeout(function () {
+					timers.clear();
+					timers = null;
+					handleDataSrcImageAll();
+				}, 500);
 			}
 			LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));
 		};
@@ -3313,18 +3333,16 @@ document.ready().then(initUiTotop);
 /*!
  * init manUP.js
  */
-var initManUp = function () {
+/* var initManUp = function () {
 	"use strict";
-
 	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		/* console.log("triggered function: initManUp"); */
 		var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl);
 		}
 	}
 };
-document.ready().then(initManUp);
+document.ready().then(initManUp); */
 /*!
  * show page, finish ToProgress
  */
