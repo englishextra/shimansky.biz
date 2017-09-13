@@ -25,12 +25,9 @@
 		<link rel="yandex-tableau-widget" href="/yandex-tableau.json" />
 		<link rel="image_src" href="/image_src.jpg" type="image/jpeg" title="Английский без регистрации" />
 		<link rel="sitemap" href="/sitemap.xml" type="application/xml" />
-		<!-- <link rel="stylesheet" href="//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:700&amp;subset=cyrillic" /> -->
 		<style>
-			body,a{color:transparent;}body{background-color:#2B2B2B;}.wrapper img{display:none;}
+			body,a{color:transparent;}body{background-color:#2B2B2B;}img,svg{display:none;}
 		</style>
-		<!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css" /> -->
-		<!-- <link rel="stylesheet" href="./libs/john-locke/css/bundle.min.css" /> -->
 		<script>
 			var imagesPreloaded=false;(function(m){m="[object Array]"===Object.prototype.toString.apply(m)?m:[m];var t=function(){return imagesPreloaded=true;},f=function(){return imagesPreloaded=false;},c=[];for(var i=0,l=m.length;i<l;i++){c[i]=new Image();c[i].onabort=f;c[i].onerror=f;c[i].onload=t;c[i].src=m[i];}}(["./libs/john-locke/img/arrow-120x72.png","./libs/john-locke/img/background-1920x1080.jpg","./libs/john-locke/img/dots-8x8.png","./libs/john-locke/img/hero-1920x1080.jpg","./libs/john-locke/img/john-locke-614x792.png","./libs/john-locke/img/logo-108x108.png","./libs/john-locke/img/matreshka-266x500.png","./libs/john-locke/img/notebook-384x554.png","./libs/john-locke/img/pen-202x2400.png","./libs/john-locke/img/phone-256x512.png","./libs/john-locke/img/ripple-200x200.svg","./libs/john-locke/img/signature-600x244.png","./libs/john-locke/img/tutor-192x192.png","./libs/john-locke/img/vk-192x192.png"]));
 		</script>
@@ -68,11 +65,11 @@
 			<div class="footer animated duration-3s bounceInDown">
 				<p><a href="https://github.com/englishextra" rel="content-repository">© englishextra, 2006—2017</a></p>
 			</div>
-			<div class="vk animated duration-3s bounceInRight">
-				<a href="https://vk.com/englishextragithubio" rel="external" title="Группа в ВК - Английский без регистрации"><img src="./libs/john-locke/img/vk-192x192.png" class="animated pulse" alt="" /></a>
+			<div class="vk animated duration-3s bounceInUp">
+				<a href="https://vk.com/englishextragithubio" rel="external" target="_blank" title="Группа в ВК - Английский без регистрации"><img src="./libs/john-locke/img/vk-192x192.png" class="animated pulse" alt="" /></a>
 			</div>
-			<div class="tutor animated duration-3s bounceInRight">
-				<a href="https://englishextra.github.io/serguei/" rel="external" title="Репетитор английского в Тушино"><img src="./libs/john-locke/img/tutor-192x192.png" class="animated pulse" alt="" /></a>
+			<div class="tutor animated duration-3s bounceInUp">
+				<a href="https://englishextra.github.io/serguei/" rel="external" target="_blank" title="Репетитор английского в Тушино"><img src="./libs/john-locke/img/tutor-192x192.png" class="animated pulse" alt="" /></a>
 			</div>
 			<div class="phone animated duration-3s bounceInDown">
 				<img src="./libs/john-locke/img/phone-256x512.png" class="animated duration-5s swing" alt="" />
@@ -81,42 +78,37 @@
 				<a href="./app/" rel="contents" title="Апп - Английский без регистрации"><img src="./libs/john-locke/img/logo-108x108.png" class="animated infinite pulse" alt="" /></a>
 			</div>
 			<div class="arrow animated duration-3s bounceInDown"><img src="./libs/john-locke/img/arrow-120x72.png" class="animated duration-5s swing" alt="" /></div>
+			<div class="qrcode animated duration-3s bounceInRight"></div>
+			<div id="vk_like"></div>
+			<div class="ya-share2" data-direction="vertical" data-services="vkontakte,facebook,odnoklassniki,moimir"></div>
 		</div>
-		<!-- <script src="//cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js"></script> -->
-		<!-- <script src="./cdn/parallax-js/3.1.0/js/parallax.fixed.min.js"></script> -->
 		<script>
-			/*!
-			 * @see {@link https://gist.github.com/Aymkdn/98acfbb46fbe7c1f00cdd3c753520ea8}
-			 */
 			(function(root,document){"use strict";var loadJsCss=function(files,callback){var _this=this;_this.files=files;_this.js=[];_this.head=document.getElementsByTagName("head")[0]||"";_this.body=document.body||"";_this.ref=document.getElementsByTagName("script")[0]||"";_this.callback=callback||function(){};_this.loadStyle=function(file){var link=document.createElement("link");link.rel="stylesheet";link.type="text/css";link.href=file;_this.head.appendChild(link);};_this.loadScript=function(i){var script=document.createElement("script");script.type="text/javascript";script.async=true;script.src=_this.js[i];var loadNextScript=function(){if(++i<_this.js.length){_this.loadScript(i);}else{_this.callback();}};script.onload=function(){loadNextScript();};_this.head.appendChild(script);if(_this.ref.parentNode){_this.ref.parentNode.insertBefore(script,_this.ref);}else{(_this.body||_this.head).appendChild(script);}};var i,l;for(i=0,l=_this.files.length;i<l;i+=1){if((/\.js$|\.js\?/).test(_this.files[i])){_this.js.push(_this.files[i]);}if((/\.css$|\.css\?|\/css\?/).test(_this.files[i])){_this.loadStyle(_this.files[i]);}}i=null;l=null;if(_this.js.length>0){_this.loadScript(0);}else{_this.after();}};root.loadJsCss=loadJsCss;}("undefined" !== typeof window ? window : this,document));
 			(function(root, document){
 				"use strict";
-				var scriptsArray = ["//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:700&amp;subset=cyrillic",
-					"./libs/john-locke/css/bundle.min.css"];
-				if (!("classList" in document.createElement("_"))) {
-					scriptsArray.push("//cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
-				}
-				scriptsArray.push("//cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js");
 				var aEL = "addEventListener";
+				var gEBI = "getElementById";
+				var gEBCN = "getElementsByClassName";
+				var vkLikeHolder = document[gEBI]("vk_like") || "";
 				var handleWindow = function () {
-					var gEBI = "getElementById";
-					var gEBCN = "getElementsByClassName";
 					var cL = "classList";
 					var pN = "parentNode";
+					var cE = "createElement";
+					var aC = "appendChild";
 					/* var wrapper = document[gEBCN]("wrapper")[0] || "";
 					if (wrapper) {
 						wrapper.style.opacity = 1;
 					} */
 					var ripple = document[gEBCN]("ripple")[0] || "";
 					var parent = ripple ? ripple[pN] || "" : "";
-					var timer;
-					var removeRipple = function () {
-						clearTimeout(timer);
-						timer = null;
-						parent.removeChild(ripple);
-					};
 					var slot;
 					var hideRipple = function () {
+						var timer;
+						var removeRipple = function () {
+							clearTimeout(timer);
+							timer = null;
+							parent.removeChild(ripple);
+						};
 						if (imagesPreloaded) {
 							clearInterval(slot);
 							slot = null;
@@ -134,14 +126,82 @@
 							slot = setInterval(hideRipple, 100);
 						}
 					}
+					var qrcodeHolder = document[gEBCN]("qrcode")[0] || "";
+					var locationHref = root.location.href || "";
+					var newImg = document[cE]("img");
+					var newTitle = document.title ? ("Ссылка на страницу «" + document.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "";
+					var newSrc = "//chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+					newImg.alt = newTitle;
+					if (qrcodeHolder && root.QRCode) {
+						if (document.implementation.hasFeature("http://www.w3.org/2000/svg","1.1")) {
+							newSrc = QRCode.generateSVG(locationHref, {
+									ecclevel: "M",
+									fillcolor: "#FFFFFF",
+									textcolor: "#191919",
+									margin: 4,
+									modulesize: 8
+								});
+							var XMLS = new XMLSerializer();
+							newSrc = XMLS.serializeToString(newSrc);
+							newSrc = "data:image/svg+xml;base64," + root.btoa(unescape(encodeURIComponent(newSrc)));
+							newImg.src = newSrc;
+						} else {
+							newSrc = QRCode.generatePNG(locationHref, {
+									ecclevel: "M",
+									format: "html",
+									fillcolor: "#FFFFFF",
+									textcolor: "#1F1F1F",
+									margin: 4,
+									modulesize: 8
+								});
+							newImg.src = newSrc;
+						}
+					} else {
+						newImg.src = newSrc;
+					}
+					newImg.title = newTitle;
+					qrcodeHolder[aC](newImg);
+					if (/^http/.test(window.location.protocol || "") &&
+						!(/^(localhost|127.0.0.1)/).test(window.location.hostname || "") &&
+						vkLikeHolder && root.VK) {
+						try {
+							VK.init({
+								apiId: 4367728,
+								nameTransportPath: "/xd_receiver.htm",
+								onlyWidgets: true
+							});
+							VK.Widgets.Like("vk_like", {
+								type: "button",
+								height: 24
+							});
+						} catch (err) {
+							console.log("cannot init VK", err);
+						}
+					}
 				};
-				var onScriptsLoaded = function () {
-					root[aEL]("load", handleWindow);
-				};
+				var scriptsArray = ["//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:400,700%7CRoboto+Condensed:700&amp;subset=cyrillic",
+					"./libs/john-locke/css/bundle.min.css"];
+				if (!("classList" in document.createElement("_"))) {
+					scriptsArray.push("//cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
+				}
+				scriptsArray.push("//cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js",
+					"//cdn.jsdelivr.net/npm/qrjs2@0.1.3/qrjs2.min.js");
+				if (/^http/.test(window.location.protocol || "") &&
+						!(/^(localhost|127.0.0.1)/).test(window.location.hostname || "") &&
+						vkLikeHolder) {
+					scriptsArray.push("//vk.com/js/api/openapi.js?147");
+				}
+				var yaShare2Holder = document[gEBCN]("ya-share2") || "";
+				if (yaShare2Holder) {
+					scriptsArray.push("//yastatic.net/share2/share.js");
+				}
 				var load;
-				load = new loadJsCss(scriptsArray, onScriptsLoaded);
+				load = new loadJsCss(scriptsArray, function () {
+					root[aEL]("load", handleWindow);
+				});
 			}("undefined" !== typeof window ? window : this, document));
 		</script>
+		<!-- <script src="/companion.fixed.min.js" type="application/javascript" async="" data-service-worker="/service-worker.min.js"></script> -->
 		<!-- Yandex.Metrika counter --><script>if(/^http/.test(window.location.protocol||"")&&!(/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){(function(d,w,c){(w[c]=w[c]||[]).push(function(){try{w.yaCounter23664397=new Ya.Metrika({id:23664397,webvisor:true,clickmap:true,trackLinks:true,accurateTrackBounce:true,trackHash:true});}catch(e){}});var n=d.getElementsByTagName("script")[0],s=d.createElement("script"),f=function(){n.parentNode.insertBefore(s,n);};s.type="text/javascript";s.async=true;s.src=(d.location.protocol=="https:"?"https:":"http:")+"//mc.yandex.ru/metrika/watch.js";if(w.opera=="[object Opera]"){d.addEventListener("DOMContentLoaded",f,false);}else{f();}}(document,window,"yandex_metrika_callbacks"));}</script><noscript><div><img src="//mc.yandex.ru/watch/23664397" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter --><!-- Google Analytics --><!-- <script>if(/^http/.test(window.location.protocol||"")&&!(/^(localhost|127.0.0.1)/).test(window.location.hostname||"")){(function(i,s,o,g,r,a,m){i.GoogleAnalyticsObject=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments);};i[r].l=1*new Date();a=s.createElement(o);m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);}(window,document,"script","//www.google-analytics.com/analytics.js","ga"));ga("create","UA-47269668-1","auto");ga("send","pageview");}</script> --><!-- /Google Analytics -->
 	</body>
 </html>
