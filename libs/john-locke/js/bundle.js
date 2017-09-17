@@ -1,3 +1,8 @@
+/*!
+ * modified To load JS and CSS files with vanilla JavaScript
+ * @see {@link https://gist.github.com/Aymkdn/98acfbb46fbe7c1f00cdd3c753520ea8}
+ * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
+ */
 (function (root, document) {
 	"use strict";
 	var loadJsCss = function (files, callback) {
@@ -30,6 +35,21 @@
 		}
 	};root.loadJsCss = loadJsCss;
 })("undefined" !== typeof window ? window : this, document);
+/*!
+ * @see {@link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection}
+ */
+var supportsPassive = false;
+try {
+	var opts = Object.defineProperty({}, "passive", {
+		get: function () {
+			supportsPassive = true;
+		}
+	});
+	root.addEventListener("test", null, opts);
+} catch (e) {}
+/*!
+ * app logic
+ */
 (function (root, document) {
 	"use strict";
 
@@ -181,7 +201,7 @@
 			};
 			if (downloadAppImgSrc && downloadAppLinkHref) {
 				downloadAppLink.href = downloadAppLinkHref;
-				downloadAppLink.rel = "external";
+				downloadAppLink.rel = "noopener";
 				downloadAppLink.target = "_blank";
 				downloadAppLink.title = "Скачать приложение";
 				downloadAppImg.src = downloadAppImgSrc;
@@ -211,8 +231,17 @@
 		if (scene && root.Parallax) {
 			parallax = new Parallax(scene);
 		}
-		var changeLocationToContents = function () {
-			root.location = "./pages/contents.html";
+		var start = document[gEBCN]("start")[0] || "";
+		var hand = document[gEBCN]("hand")[0] || "";
+		var revealStart = function () {
+			if (start) {
+				start[cL].add("bounceInUp");
+				start.style.display = "block";
+			}
+			if (hand) {
+				hand[cL].add("bounceInUp");
+				hand.style.display = "block";
+			}
 		};
 		if (wrapper) {
 			if (root.WheelIndicator) {
@@ -221,13 +250,13 @@
 					elem: wrapper,
 					callback: function (e) {
 						if ("down" === e.direction) {
-							changeLocationToContents();
+							revealStart();
 						}
 					}
 				});
 			}
 			if (root.tocca) {
-				root[aEL]("swipeup", changeLocationToContents);
+				root[aEL]("swipeup", revealStart, supportsPassive ? { passive: true } : false);
 			}
 		}
 	};
@@ -238,9 +267,13 @@
 	if ("undefined" === typeof window.Element && !("dataset" in document.documentElement)) {
 		scriptsArray.push("//cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
 	}
+	if (!supportsPassive) {
+		scriptsArray.push("//cdnjs.cloudflare.com/ajax/libs/dom4/1.8.3/dom4.js");
+	}
 	scriptsArray.push("//cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js", "//cdn.jsdelivr.net/npm/qrjs2@0.1.3/qrjs2.min.js", "//cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
 	if (hasWheel) {
-		scriptsArray.push("//cdn.jsdelivr.net/npm/wheel-indicator@1.1.4/lib/wheel-indicator.js");
+		/* scriptsArray.push("//cdn.jsdelivr.net/npm/wheel-indicator@1.1.4/lib/wheel-indicator.min.js"); */
+		scriptsArray.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
 	}
 	if (hasTouch) {
 		scriptsArray.push("//cdnjs.cloudflare.com/ajax/libs/Tocca.js/2.0.1/Tocca.min.js");
