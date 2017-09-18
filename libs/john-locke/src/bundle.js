@@ -271,7 +271,8 @@
 							if ("down" === e.direction) {
 								revealStart();
 							}
-						}
+						},
+						preventMouse: false
 					});
 			}
 			if (root.tocca) {
@@ -281,8 +282,7 @@
 	};
 	var scriptsArray = ["//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:400,700%7CRoboto+Condensed:700&amp;subset=cyrillic",
 		"./libs/john-locke/css/bundle.min.css",
-		"//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css",
-		"//cdn.rawgit.com/kimmobrunfeldt/progressbar.js/0.5.6/dist/progressbar.js"];
+		"//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"];
 	if (!("classList" in document.createElement("_"))) {
 		scriptsArray.push("//cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
 	}
@@ -297,7 +297,7 @@
 		"//cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
 	if (hasWheel) {
 		/* scriptsArray.push("//cdn.jsdelivr.net/npm/wheel-indicator@1.1.4/lib/wheel-indicator.min.js"); */
-		scriptsArray.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
+		scriptsArray.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator-passive.fixed.min.js");
 	}
 	if (hasTouch) {
 		scriptsArray.push("//cdnjs.cloudflare.com/ajax/libs/Tocca.js/2.0.1/Tocca.min.js");
