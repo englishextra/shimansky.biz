@@ -42,6 +42,7 @@
 (function (root, document) {
 	"use strict";
 	var gEBCN = "getElementsByClassName";
+	var gA = "getAttribute";
 	var supportsSvgAsImg = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1") || "";
 	var toStringFn = {}.toString;
 	var supportsSvgSmilAnimation = !!document.createElementNS &&
@@ -51,7 +52,7 @@
 		if (svgNosmilImages) {
 			var i;
 			for (i = 0; i < svgNosmilImages.length; i += 1) {
-				svgNosmilImages[i].src = svgNosmilImages[i].src.slice(0, -3) + "png";
+				svgNosmilImages[i].src = svgNosmilImages[i][gA]("data-fallback-src");
 			}
 			i = null;
 		}
@@ -61,24 +62,47 @@
 		if (svgSmilImages) {
 			var j;
 			for (j = 0; j < svgSmilImages.length; j += 1) {
-				svgSmilImages[j].src = svgSmilImages[j].src.slice(0, -3) + "png";
+				svgSmilImages[j].src = svgSmilImages[j][gA]("data-fallback-src");
 			}
 			j = null;
 		}
 	}
-	/* var img = new Image();
-	var url = "./libs/john-locke/img/start-1200x1200.svg";
-	img.onload = function () {
-		var _this = this;
-		var imgWidth = _this.width;
-		var imgHeight = _this.height;
-		var canvas = start ? start[gEBTN]("canvas")[0] || "" : "";
-		var ctx = canvas.getContext('2d');
-		if (ctx && imgWidth && imgHeight) {
-			ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
+	var gEBTN = "getElementsByTagName";
+	var drawImageFromUrl = function (canvasObj, url) {
+		if (!url) {
+			return;
 		}
+		if (!canvasObj) {
+			return;
+		}
+		var img = new Image();
+		img.onload = function () {
+			var ctx = canvasObj.getContext("2d");
+			if (ctx) {
+				ctx.drawImage(img, 0, 0, canvasObj.width, canvasObj.height);
+			}
+		};
+		img.src = url;
+	};
+	var canvasAll = document[gEBTN]("canvas") || "";
+	var cssnum = document.styleSheets.length || 0;
+	var slot;
+	var drawCanvasAll = function () {
+		if (document.styleSheets.length > cssnum) {
+			clearInterval(slot);
+			slot = null;
+			var k;
+			for (k = 0; k < canvasAll.length; k += 1) {
+				if (canvasAll[k][gA]("data-src")) {
+					drawImageFromUrl(canvasAll[k], canvasAll[k][gA]("data-src"));
+				}
+			}
+			k = null;
+		}
+	};
+	if (canvasAll && cssnum) {
+		slot = setInterval(drawCanvasAll, 100);
 	}
-	img.src = url; */
 	var cN = "className";
 	var pN = "parentNode";
 	var ripple = document[gEBCN]("ripple")[0] || "";
@@ -92,11 +116,11 @@
 		}
 	};
 	var wrapper = document[gEBCN]("wrapper")[0] || "";
-	var slot;
+	var slot2;
 	var hideRipple = function () {
 		if (imagesPreloaded) {
-			clearInterval(slot);
-			slot = null;
+			clearInterval(slot2);
+			slot2 = null;
 			/* if (wrapper) {
 				wrapper.style.opacity = 1;
 			} */
@@ -108,7 +132,7 @@
 		}
 	};
 	if ("undefined" !== typeof imagesPreloaded) {
-		slot = setInterval(hideRipple, 100);
+		slot2 = setInterval(hideRipple, 100);
 	}
 	var hasTouch = "ontouchstart" in document.documentElement ? true : false;
 	var hasWheel = "onwheel" in document.createElement("div") || void 0 !== document.onmousewheel ? true : false;
@@ -242,6 +266,9 @@
 				downloadAppLink.rel = "noopener";
 				downloadAppLink.target = "_blank";
 				downloadAppLink.title = "Скачать приложение";
+				if (!supportsSvgAsImg) {
+					downloadAppImgSrc = downloadAppImgSrc.slice(0, -3) + "png";
+				}
 				downloadAppImg.src = downloadAppImgSrc;
 				timer2 = setTimeout(showDownloadApp, 1000);
 			}
