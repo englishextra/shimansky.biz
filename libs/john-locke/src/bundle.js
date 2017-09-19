@@ -37,31 +37,49 @@
 }
 	("undefined" !== typeof window ? window : this)); */
 /*!
- * check for passive support
- * @see {@link https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md#feature-detection}
- */
-(function (root) {
-	"use strict";
-	root.supportsPassive = false;
-	try {
-		var opts = Object.defineProperty({}, "passive", {
-				get: function () {
-					root.supportsPassive = true;
-				}
-			});
-		root.addEventListener("test", null, opts);
-	} catch (err) {
-		console.log(err);
-	}
-}
-	("undefined" !== typeof window ? window : this));
-/*!
  * app logic
  */
 (function (root, document) {
 	"use strict";
 	var gEBCN = "getElementsByClassName";
-	var cL = "classList";
+	var supportsSvgAsImg = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1") || "";
+	var toStringFn = {}.toString;
+	var supportsSvgSmilAnimation = !!document.createElementNS &&
+		(/SVGAnimate/).test(toStringFn.call(document.createElementNS("http://www.w3.org/2000/svg", "animate"))) || "";
+	if (!supportsSvgAsImg) {
+		var svgNosmilImages = document[gEBCN]("svg-nosmil-img") || "";
+		if (svgNosmilImages) {
+			var i;
+			for (i = 0; i < svgNosmilImages.length; i += 1) {
+				svgNosmilImages[i].src = svgNosmilImages[i].src.slice(0, -3) + "png";
+			}
+			i = null;
+		}
+	}
+	if (!supportsSvgSmilAnimation) {
+		var svgSmilImages = document[gEBCN]("svg-smil-img") || "";
+		if (svgSmilImages) {
+			var j;
+			for (j = 0; j < svgSmilImages.length; j += 1) {
+				svgSmilImages[j].src = svgSmilImages[j].src.slice(0, -3) + "png";
+			}
+			j = null;
+		}
+	}
+	/* var img = new Image();
+	var url = "./libs/john-locke/img/start-1200x1200.svg";
+	img.onload = function () {
+		var _this = this;
+		var imgWidth = _this.width;
+		var imgHeight = _this.height;
+		var canvas = start ? start[gEBTN]("canvas")[0] || "" : "";
+		var ctx = canvas.getContext('2d');
+		if (ctx && imgWidth && imgHeight) {
+			ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
+		}
+	}
+	img.src = url; */
+	var cN = "className";
 	var pN = "parentNode";
 	var ripple = document[gEBCN]("ripple")[0] || "";
 	var rippleParent = ripple ? ripple[pN] || "" : "";
@@ -83,7 +101,7 @@
 				wrapper.style.opacity = 1;
 			} */
 			if (ripple) {
-				ripple[cL].add("bounceOutUp");
+				ripple[cN] += " bounceOutUp";
 			}
 			timer3 = setTimeout(removeRipple, 5000);
 			/* progressBar.increase(20); */
@@ -93,10 +111,11 @@
 		slot = setInterval(hideRipple, 100);
 	}
 	var hasTouch = "ontouchstart" in document.documentElement ? true : false;
-	var hasWheel = "onwheel" in document.documentElement ? true : false;
+	var hasWheel = "onwheel" in document.createElement("div") || void 0 !== document.onmousewheel ? true : false;
 	var gEBI = "getElementById";
 	var vkLike = document[gEBI]("vk-like") || "";
 	var run = function () {
+		var cL = "classList";
 		var cE = "createElement";
 		var aC = "appendChild";
 		/* progressBar.increase(20); */
@@ -280,15 +299,29 @@
 			}
 		}
 	};
-	var scriptsArray = ["//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:400,700%7CRoboto+Condensed:700&amp;subset=cyrillic",
+	var scriptsArray = ["//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:400,700%7CRoboto+Condensed:700&subset=cyrillic",
 		"./libs/john-locke/css/bundle.min.css",
 		"//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"];
 	if (!("classList" in document.createElement("_"))) {
 		scriptsArray.push("//cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
 	}
 	if (("undefined" === typeof window.Element && !("dataset" in document.documentElement))) {
-		scriptsArray.push("//cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
+		scriptsArray.push("//cdn.jsdelivr.net/npm/element-dataset@2.2.6/lib/browser/index.cjs.min.js");
 	}
+	var supportsPassive = function () {
+		try {
+			var opts = Object.defineProperty({}, "passive", {
+					get: function () {
+						return true;
+					}
+				});
+			root.addEventListener("test", null, opts);
+		} catch (err) {
+			console.log(err);
+		}
+		return false;
+	}
+	();
 	if (!supportsPassive) {
 		scriptsArray.push("//cdnjs.cloudflare.com/ajax/libs/dom4/1.8.3/dom4.js");
 	}
