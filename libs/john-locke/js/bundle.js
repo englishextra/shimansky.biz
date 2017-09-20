@@ -319,9 +319,10 @@
 		if (scene && root.Parallax) {
 			parallax = new Parallax(scene);
 		}
-		var start = document[gEBCN]("start")[0] || "";
-		var hand = document[gEBCN]("hand")[0] || "";
+		var guesture = document[gEBCN]("guesture")[0] || "";
 		var revealStart = function () {
+			var start = document[gEBCN]("start")[0] || "";
+			var hand = document[gEBCN]("hand")[0] || "";
 			if (start) {
 				start[cL].add("bounceInUp");
 				start.style.display = "block";
@@ -330,8 +331,24 @@
 				hand[cL].add("bounceInUp");
 				hand.style.display = "block";
 			}
+			if (guesture) {
+				guesture[cL].add("bounceOutUp");
+			}
 		};
 		if (wrapper) {
+			var mousewheeldown = document[gEBCN]("mousewheeldown")[0] || "";
+			var swipeup = document[gEBCN]("swipeup")[0] || "";
+			if (hasTouch) {
+				mousewheeldown.style.display = "none";
+			} else {
+				if (hasWheel) {
+					swipeup.style.display = "none";
+				}
+			}
+			if (hasTouch || hasWheel) {
+				guesture[cL].add("bounceInUp");
+				guesture.style.display = "block";
+			}
 			if (root.WheelIndicator) {
 				var indicator;
 				indicator = new WheelIndicator({
@@ -347,6 +364,24 @@
 			if (root.tocca) {
 				root[aEL]("swipeup", revealStart, supportsPassive ? { passive: true } : false);
 			}
+		}
+		var rEL = "removeEventListener";
+		var btnShare = document[gEBCN]("btn-share")[0] || "";
+		var btnShareLink = btnShare ? btnShare[gEBTN]("a")[0] || "" : "";
+		var showShareButtons = function (ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			btnShareLink[rEL]("click", showShareButtons);
+			var yaShare2 = document[gEBCN]("ya-share2")[0] || "";
+			if (yaShare2) {
+				var load2;
+				load2 = new loadJsCss(["//yastatic.net/share2/share.js"], function () {
+					btnShare[cL].add("bounceOutUp");
+				});
+			}
+		};
+		if (btnShareLink) {
+			btnShareLink[aEL]("click", showShareButtons);
 		}
 	};
 	var scriptsArray = ["//fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:400,700%7CRoboto+Condensed:700&subset=cyrillic", "./libs/john-locke/css/bundle.min.css", "//cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"];
@@ -383,10 +418,10 @@
 	if (vkLike) {
 		scriptsArray.push("//vk.com/js/api/openapi.js?147");
 	}
-	var yaShare2 = document[gEBCN]("ya-share2")[0] || "";
-	if (yaShare2) {
-		scriptsArray.push("//yastatic.net/share2/share.js");
-	}
+	/* var yaShare2 = document[gEBCN]("ya-share2")[0] || "";
+ if (yaShare2) {
+ 	scriptsArray.push("//yastatic.net/share2/share.js");
+ } */
 	var load;
 	load = new loadJsCss(scriptsArray, run);
 })("undefined" !== typeof window ? window : this, document);

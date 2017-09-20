@@ -72,7 +72,7 @@ a {
 	left: 0;
 	opacity: 1;
 	overflow: hidden;
-	background-color: $TitleBarAndAppBarLight;
+	background-color: transparent;
 	background-image: url(../img/hero-960x1080.jpg);
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -85,9 +85,9 @@ a {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-color: $color-hex-englishextra-logo-bg;
 	opacity: 1;
 	overflow: hidden;
+	background-color: $color-hex-englishextra-logo-bg;
 	background-image: url(../img/monolith-960x1080.jpg);
 	background-position: center center;
 	background-repeat: no-repeat;
@@ -426,6 +426,29 @@ a {
 	height: 3.800rem;
 }
 
+.hand a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.guesture {
+	display: none;
+	width: 6.400rem;
+	height: 6.400rem;
+	font-size: 0;
+	margin: 0;
+	position: absolute;
+	top: calc(50% + 6.400rem);
+	left: calc(50% - 3.200rem);
+}
+
+.guesture img,
+.guesture svg {
+	display: block;
+	width: 6.400rem;
+	height: 6.400rem;
+}
+
 .vk {
 	width: 3.200rem;
 	height: 3.200rem;
@@ -441,6 +464,25 @@ a {
 }
 
 .vk a {
+	font-size: 0;
+}
+
+.btn-share {
+	width: 3.200rem;
+	height: 3.200rem;
+	position: absolute;
+	top: 1.600rem;
+	left: 10.667rem;
+}
+
+.btn-share img,
+.btn-share svg {
+	display: block;
+	width: 3.200rem;
+	height: 3.200rem;
+}
+
+.btn-share a {
 	font-size: 0;
 }
 
@@ -509,7 +551,6 @@ a {
 	top: -3.333rem;
 	left: 25%;
 }
-
 .ripple img {
 	display: block;
 	width: 16.000rem;
@@ -517,10 +558,10 @@ a {
 } */
 
 .ya-share2 {
-	width: 3.200rem;
+	height: 3.200rem;
 	position: absolute;
-	bottom: 0;
-	right: 0;
+	top: 1.600rem;
+	left: 10.667rem;
 }
 
 .vk-like {
