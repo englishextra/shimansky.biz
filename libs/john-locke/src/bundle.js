@@ -38,7 +38,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
  * @see {@link https://github.com/djyde/ToProgress/blob/master/ToProgress.js}
  * passes jshint
  */
-(function (root) {
+(function (root, document, undefined) {
 	"use strict";
 	var ToProgress = (function () {
 		var TP = function () {
@@ -51,6 +51,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			var getElementsByClassName = "getElementsByClassName";
 			var firstChild = "firstChild";
 			var addEventListener = "addEventListener";
+			var removeEventListener = "removeEventListener";
 			function whichTransitionEvent() {
 				var t,
 				el = document[createElement]("fakeelement");
@@ -161,7 +162,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				if (transitionEvent) {
 					this.progressBar[addEventListener](transitionEvent, function (e) {
 						that.reset();
-						that.progressBar.removeEventListener(e.type, TP);
+						that.progressBar[removeEventListener](e.type, TP);
 					});
 				}
 			};
@@ -185,7 +186,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		());
 	root.ToProgress = ToProgress;
 }
-	("undefined" !== typeof window ? window : this));
+	("undefined" !== typeof window ? window : this, document));
 /*!
  * modified Returns a function, that, as long as it continues to be invoked, will not
  * be triggered. The function will be called after it stops being called for
@@ -263,7 +264,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
  * passes jshint
  */
-(function (root) {
+(function (root, document) {
 	"use strict";
 	var loadJsCss = function (files, callback) {
 		var _this = this;
@@ -328,7 +329,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	};
 	root.loadJsCss = loadJsCss;
 }
-	("undefined" !== typeof window ? window : this));
+	("undefined" !== typeof window ? window : this, document));
 /*!
  * app logic
  */
@@ -373,12 +374,16 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 	var parentNode = "parentNode";
 
+	var removeChild = "removeChild";
+
+	var remove = "remove";
+
 	var removeElement = function (elem) {
 		if (elem) {
-			if ("undefined" !== typeof elem.remove) {
+			if ("undefined" !== typeof elem[remove]) {
 				return elem.remove();
 			} else {
-				return elem[parentNode] && elem[parentNode].removeChild(elem);
+				return elem[parentNode] && elem[parentNode][removeChild](elem);
 			}
 		}
 	};
@@ -768,16 +773,16 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		}
 
 		var scriptIsLoaded = function (_src) {
-			var a,
+			var scriptAll,
 			i,
 			l;
-			for (a = document[getElementsByTagName]("script") || "", i = 0, l = a[length]; i < l; i += 1) {
-				if (a[i][getAttribute]("src") === _src) {
-					a = i = l = null;
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[length]; i < l; i += 1) {
+				if (scriptAll[i][getAttribute]("src") === _src) {
+					scriptAll = i = l = null;
 					return true;
 				}
 			}
-			a = i = l = null;
+			scriptAll = i = l = null;
 			return false;
 		};
 
@@ -800,10 +805,12 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 		root[addEventListener]("click", hideOtherIsSocial);
 
+		var yaShare2Id = "ya-share2";
+
+		var yaShare2 =  document[getElementById](yaShare2Id) || "";
+
 		var btnShare = document[getElementsByClassName]("btn-share")[0] || "";
 		var btnShareLink = btnShare ? btnShare[getElementsByTagName]("a")[0] || "" : "";
-		var yaShare2Id = "ya-share2";
-		var yaShare2 =  document[getElementById](yaShare2Id) || "";
 		var yshare;
 		var showYaShare2 = function (ev) {
 			ev.preventDefault();
@@ -830,7 +837,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 								});
 							}
 						} catch (err) {
-							/* console.log("cannot update or init Ya.share2", err); */
+							console.log("cannot update or init Ya", err);
 						}
 					}
 				};
@@ -852,11 +859,14 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 		var dataset = "dataset";
 
+		var vkLikeClass = "vk-like";
+		var vkLike = document[getElementsByClassName](vkLikeClass)[0] || "";
+
 		var btnLike = document[getElementsByClassName]("btn-like")[0] || "";
 		var btnLikeLink = btnLike ? btnLike[getElementsByTagName]("a")[0] || "" : "";
-		var vkLikeClass = "vk-like";
 		var vkLikeId = "vk-like";
-		var vkLike = document[getElementsByClassName](vkLikeClass)[0] || "";
+
+		var vlike;
 		var showVkLike = function (ev) {
 			ev.preventDefault();
 			ev.stopPropagation();
@@ -864,19 +874,22 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				vkLike[classList].toggle(isActiveClass);
 				hideOtherIsSocial(vkLike);
 				var initScript = function () {
-					if (vkLike && root.VK) {
-						try {
-							VK.init({
-								apiId: (vkLike[dataset].apiid || ""),
-								nameTransportPath: "/xd_receiver.htm",
-								onlyWidgets: true
-							});
-							VK.Widgets.Like(vkLikeId, {
-								type: "button",
-								height: 24
-							});
-						} catch (err) {
-							/* console.log("cannot init VK", err); */
+					if (root.VK) {
+						if (!vlike) {
+							try {
+								VK.init({
+									apiId: (vkLike[dataset].apiid || ""),
+									nameTransportPath: "/xd_receiver.htm",
+									onlyWidgets: true
+								});
+								VK.Widgets.Like(vkLikeId, {
+									type: "button",
+									height: 24
+								});
+								vlike = true;
+							} catch (err) {
+								console.log("cannot init VK", err);
+							}
 						}
 					}
 				};
@@ -884,6 +897,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
 				}
 			};
 			var debounceLogicShowVkLike = debounce(logicShowVkLike, 200);
@@ -913,6 +928,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	}
 
 	var supportsPassive = false;
+
 	try {
 		var opts = Object.defineProperty && Object.defineProperty({}, 'passive', {
 				get: function () {
