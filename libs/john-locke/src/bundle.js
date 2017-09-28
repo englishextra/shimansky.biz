@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global debounce, imagesPreloaded, loadJsCss, Parallax, platform, QRCode,
-ToProgress, unescape, VK, WheelIndicator, Ya */
+/*global debounce, doesFontExist, imagesPreloaded, loadJsCss, Parallax,
+platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
 /*property console, split */
 /*!
  * safe way to handle console.log
@@ -52,6 +52,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			var firstChild = "firstChild";
 			var addEventListener = "addEventListener";
 			var removeEventListener = "removeEventListener";
+			var opacity = "opacity";
 			function whichTransitionEvent() {
 				var t,
 				el = document[createElement]("fakeelement");
@@ -73,12 +74,12 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			function ToProgress(opt, selector) {
 				this.progress = 0;
 				this.options = {
-					id: 'top-progress-bar',
-					color: '#F44336',
-					height: '2px',
+					id: "top-progress-bar",
+					color: "#F44336",
+					height: "2px",
 					duration: 0.2
 				};
-				if (opt && typeof opt === 'object') {
+				if (opt && typeof opt === "object") {
 					for (var key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
@@ -86,7 +87,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 					}
 				}
 				this.options.opacityDuration = this.options.duration * 3;
-				this.progressBar = document[createElement]('div');
+				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
 					for (var property in style) {
@@ -128,7 +129,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				}
 			}
 			ToProgress[prototype].transit = function () {
-				this.progressBar[style].width = this.progress + '%';
+				this.progressBar[style].width = this.progress + "%";
 			};
 			ToProgress[prototype].getProgress = function () {
 				return this.progress;
@@ -174,10 +175,10 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				}
 			};
 			ToProgress[prototype].hide = function () {
-				this.progressBar[style].opacity = '0';
+				this.progressBar[style][opacity] = "0";
 			};
 			ToProgress[prototype].show = function () {
-				this.progressBar[style].opacity = '1';
+				this.progressBar[style][opacity] = "1";
 			};
 			return ToProgress;
 		};
@@ -187,6 +188,33 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	root.ToProgress = ToProgress;
 }
 	("undefined" !== typeof window ? window : this, document));
+/*!
+ * modified Detect Whether a Font is Installed
+ * @param {String} fontName The name of the font to check
+ * @return {Boolean}
+ * @author Kirupa <sam@samclarke.com>
+ * @see {@link https://www.kirupa.com/html5/detect_whether_font_is_installed.htm}
+ * passes jshint
+ */
+(function (root, document) {
+	"use strict";
+	var doesFontExist = function (fontName) {
+		var canvas = document.createElement("canvas");
+		var context = canvas.getContext("2d");
+		var text = "abcdefghijklmnopqrstuvwxyz0123456789";
+		context.font = "72px monospace";
+		var baselineSize = context.measureText(text).width;
+		context.font = "72px '" + fontName + "', monospace";
+		var newSize = context.measureText(text).width;
+		canvas = null;
+		if (newSize == baselineSize) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+	root.doesFontExist = doesFontExist;
+})("undefined" !== typeof window ? window : this, document);
 /*!
  * modified Returns a function, that, as long as it continues to be invoked, will not
  * be triggered. The function will be called after it stops being called for
@@ -202,7 +230,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
  * @see {@link https://github.com/component/debounce/blob/master/index.js}
  * passes jshint
  */
-
 (function (root) {
 	"use strict";
 	var debounce = function (func, wait, immediate) {
@@ -324,7 +351,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		if (_this.js[length] > 0) {
 			_this.loadScript(0);
 		} else {
-			_this.after();
+			_this.callback();
 		}
 	};
 	root.loadJsCss = loadJsCss;
@@ -336,16 +363,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 (function (root, document, undefined) {
 	"use strict";
 
-	var style = "style";
-
-	var createElement = "createElement";
-
-	var appendChild = "appendChild";
-
-	var getElementsByTagName = "getElementsByTagName";
-
-	var addEventListener = "addEventListener";
-
 	var progressBar = new ToProgress({
 			id: "top-progress-bar",
 			color: "#FF2C40",
@@ -353,24 +370,39 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			duration: 0.2
 		});
 
-	var createElementNS = "createElementNS";
-
-	var toStringFn = {}.toString;
-	var supportsSvgSmilAnimation = !!document[createElementNS] && (/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
-
 	var hideProgressBar = function () {
 		progressBar.finish();
 		progressBar.hide();
 	};
 
+	var slotOnImagesPreloaded;
+	var onImagesPreloaded = function () {
+		if (imagesPreloaded) {
+			clearInterval(slotOnImagesPreloaded);
+			slotOnImagesPreloaded = null;
+			progressBar.increase(20);
+		}
+	};
+
+	var addEventListener = "addEventListener";
+
+	var createElementNS = "createElementNS";
+
+	var toStringFn = {}.toString;
+	var supportsSvgSmilAnimation = !!document[createElementNS] && (/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
+
 	if (!supportsSvgSmilAnimation) {
+
 		progressBar.increase(20);
+
+		if ("undefined" !== typeof imagesPreloaded) {
+			slotOnImagesPreloaded = setInterval(onImagesPreloaded, 100);
+		}
+
 		root[addEventListener]("load", hideProgressBar);
 	}
 
 	var getElementsByClassName = "getElementsByClassName";
-
-	var className = "className";
 
 	var parentNode = "parentNode";
 
@@ -381,7 +413,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	var removeElement = function (elem) {
 		if (elem) {
 			if ("undefined" !== typeof elem[remove]) {
-				return elem.remove();
+				return elem[remove]();
 			} else {
 				return elem[parentNode] && elem[parentNode][removeChild](elem);
 			}
@@ -414,46 +446,35 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		removeLoading();
 	};
 
+	var className = "className";
+
 	var bounceOutUpClass = "bounceOutUp";
 
-	var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
-
-	var slotHidePreloaders;
 	var hidePreloaders = function () {
-		if (imagesPreloaded) {
-			clearInterval(slotHidePreloaders);
-			slotHidePreloaders = null;
-			/* if (wrapper) {
-				wrapper[style].opacity = 1;
-			} */
-			if (ripple) {
-				ripple[className] += " " + bounceOutUpClass;
-				timerDeferRemoveRipple = setTimeout(deferRemoveRipple, 5000);
-			}
-			if (loading) {
-				loading[className] += " " + bounceOutUpClass;
-				timerDeferRemoveLoading = setTimeout(deferRemoveLoading, 5000);
-			}
-			if (!supportsSvgSmilAnimation) {
-				progressBar.increase(20);
-			}
+		if (ripple) {
+			ripple[className] += " " + bounceOutUpClass;
+			timerDeferRemoveRipple = setTimeout(deferRemoveRipple, 5000);
+		}
+		if (loading) {
+			loading[className] += " " + bounceOutUpClass;
+			timerDeferRemoveLoading = setTimeout(deferRemoveLoading, 5000);
 		}
 	};
-	if ("undefined" !== typeof imagesPreloaded) {
-		if (!supportsSvgSmilAnimation) {
-			removeRipple();
-			removeLoading();
-		}
-		slotHidePreloaders = setInterval(hidePreloaders, 100);
+
+	if (!supportsSvgSmilAnimation) {
+		removeRipple();
+		removeLoading();
+	} else {
+		root[addEventListener]("load", hidePreloaders);
 	}
 
 	var getAttribute = "getAttribute";
 
 	var src = "src";
 
-	var supportsSvgAsImg = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1") || "";
-
 	var length = "length";
+
+	var supportsSvgAsImg = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1") || "";
 
 	if (!supportsSvgAsImg) {
 		var svgNosmilImages = document[getElementsByClassName]("svg-nosmil-img") || "";
@@ -493,12 +514,16 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		img[src] = url;
 	};
 
+	var getElementsByTagName = "getElementsByTagName";
+
+	var styleSheets = "styleSheets";
+
 	var canvasAll = document[getElementsByTagName]("canvas") || "";
-	var styleSheetsLength = document.styleSheets[length] || 0;
+	var styleSheetsLength = document[styleSheets][length] || 0;
 
 	var slotDrawCanvasAll;
 	var drawCanvasAll = function () {
-		if (document.styleSheets[length] > styleSheetsLength) {
+		if (document[styleSheets][length] > styleSheetsLength) {
 			clearInterval(slotDrawCanvasAll);
 			slotDrawCanvasAll = null;
 			var i,
@@ -515,46 +540,13 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		slotDrawCanvasAll = setInterval(drawCanvasAll, 100);
 	}
 
-	/* var displayParentOnElementWidthChange = function (parent, element, elementWidth, displayStyle, additionalClass, timeout, interval) {
-		var timer;
-		var defer = function () {
-			clearTimeout(timer);
-			timer = null;
-			parent[style].opacity = 1;
-		};
-		var slot;
-		var tick = function () {
-			var position = element.getBoundingClientRect() || "";
-			var currentWidth = position.width || element.offsetWidth;
-			if (currentWidth > 0 && elementWidth !== currentWidth) {
-				clearInterval(slot);
-				slot = null;alert(currentWidth)
-				parent.className += " " + additionalClass;
-				timer = setTimeout(defer, 100);
-			}
-		};
-		var slot = setInterval(tick, 100);
-	};
-	var quote = document[getElementsByClassName]("quote")[0] || "";
-	var quoteParagraph = quote ? quote[getElementsByTagName]("p")[0] || "" : "";
-	var quoteParagraphWidth = quoteParagraph.getBoundingClientRect().width || quoteParagraph.offsetWidth;
-	displayParentOnElementWidthChange(quote, quoteParagraph, quoteParagraphWidth, "block", "bounceInDown", 200, 100);
-	var intro = document[getElementsByClassName]("intro")[0] || "";
-	var introHeading = intro ? intro[getElementsByTagName]("h1")[0] || "" : "";
-	var introHeadingWidth = introHeading.getBoundingClientRect().width || introHeading.offsetWidth;
-	displayParentOnElementWidthChange(intro, introHeading, introHeadingWidth, "block", "bounceInLeft", 200, 100);
-	var footer = document[getElementsByClassName]("footer")[0] || "";
-	var footerParagraph = footer ? footer[getElementsByTagName]("p")[0] || "" : "";
-	var footerParagraphWidth = footerParagraph.getBoundingClientRect().width || footerParagraph.offsetWidth;
-	displayParentOnElementWidthChange(footer, footerParagraph, footerParagraphWidth, "block", "bounceInDown", 200, 100); */
-
 	var documentElement = "documentElement";
+
+	var createElement = "createElement";
 
 	var hasTouch = "ontouchstart" in document[documentElement] || "";
 
 	var hasWheel = "onwheel" in document[createElement]("div") || void 0 !== document.onmousewheel || "";
-
-	var href = "href";
 
 	var getHTTP = function (force) {
 		force = force || "";
@@ -562,20 +554,30 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		return "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : force ? "http" : "";
 	};
 
+	var forcedHTTP = getHTTP(true);
+
 	var run = function () {
 
 		if (!supportsSvgSmilAnimation) {
 			progressBar.increase(20);
 		}
 
+		var style = "style";
+
+		var visibility = "visibility";
+
+		var opacity = "opacity";
+
 		var qrcode = document[getElementsByClassName]("qrcode")[0] || "";
 		var timerShowQrcode;
 		var showQrcode = function () {
 			clearTimeout(timerShowQrcode);
 			timerShowQrcode = null;
-			qrcode[style].visibility = "visible";
-			qrcode[style].opacity = 1;
+			qrcode[style][visibility] = "visible";
+			qrcode[style][opacity] = 1;
 		};
+
+		var href = "href";
 
 		var locationHref = root.location[href] || "";
 
@@ -583,10 +585,12 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 		var documentTitle = document[title] || "";
 
+		var appendChild = "appendChild";
+
 		if (qrcode) {
 			var qrcodeImg = document[createElement]("img");
 			var qrcodeImgTitle = documentTitle ? ("Ссылка на страницу «" + documentTitle.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "";
-			var qrcodeImgSrc = getHTTP(true) + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+			var qrcodeImgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
 			qrcodeImg.alt = qrcodeImgTitle;
 			if (root.QRCode) {
 				if (supportsSvgAsImg) {
@@ -645,13 +649,11 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var showDownloadApp = function () {
 			clearTimeout(timerShowDownloadApp);
 			timerShowDownloadApp = null;
-			downloadApp[style].visibility = "visible";
-			downloadApp[style].opacity = 1;
+			downloadApp[style][visibility] = "visible";
+			downloadApp[style][opacity] = 1;
 		};
 
 		if (navigatorUserAgent && downloadApp && downloadAppLink && downloadAppImg && root.platform) {
-			var downloadAppImgSrc;
-			var downloadAppLinkHref;
 			var platformName = platform.name || "";
 			var platformDescription = platform.description || "";
 			document[title] = documentTitle +
@@ -669,6 +671,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			/* console.log(navigatorUserAgent);
 			console.log(platform.os);
 			console.log(platformName + "|" + platformOsFamily + "|" + platformOsVersion + "|" + platformOsArchitecture + "|" + platformDescription); */
+			var downloadAppImgSrc;
+			var downloadAppLinkHref;
 			if (platformOsFamily.indexOf("Windows Phone", 0) !== -1  && "10.0" === platformOsVersion) {
 				downloadAppImgSrc = "./libs/products/img/download_wp_app_144x52.svg";
 				downloadAppLinkHref = "https://github.com/englishextra/englishextra-app/releases/download/v1.0.0/englishextra.Windows10_1.0.0.0_x86_debug.appx";
@@ -739,6 +743,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 		};
 
+		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
+
 		if (wrapper) {
 			var mousewheeldown = document[getElementsByClassName]("mousewheeldown")[0] || "";
 			var swipeup = document[getElementsByClassName]("swipeup")[0] || "";
@@ -804,8 +810,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		root[addEventListener]("click", hideOtherIsSocial);
-		
-		var bounceInDownClass = "bounceInDown";
 
 		var yaShare2Id = "ya-share2";
 
@@ -843,7 +847,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 						}
 					}
 				};
-				var jsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
+				var jsUrl = forcedHTTP + "://yastatic.net/share2/share.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -856,8 +860,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		if (btnShare && btnShareLink && yaShare2) {
-			btnShare[classList].add(bounceInDownClass);
-			btnShare[style].display = "block";
+			btnShare[style][visibility] = "visible";
+			btnShare[style][opacity] = 1;
 			btnShareLink[addEventListener]("click", showYaShare2);
 		}
 
@@ -897,7 +901,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 						}
 					}
 				};
-				var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?147";
+				var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?147";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -910,58 +914,150 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		if (btnLike && btnLikeLink && vkLike) {
-			btnLike[classList].add(bounceInDownClass);
-			btnLike[style].display = "block";
+			btnLike[style][visibility] = "visible";
+			btnLike[style][opacity] = 1;
 			btnLikeLink[addEventListener]("click", showVkLike);
 		}
 	};
 
-	var scriptsArray = [
-		getHTTP(true) + "://fonts.googleapis.com/css?family=PT+Serif:400,400i%7CRoboto:400,700%7CRoboto+Condensed:700&subset=cyrillic",
-		"./libs/john-locke/css/bundle.min.css",
-		getHTTP(true) + "://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css"];
+	var scripts = [
+		forcedHTTP + "://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.0/gh-fork-ribbon.min.css",
+		"./libs/john-locke/css/bundle.min.css"];
 
 	var supportsClassList = "classList" in document[createElement]("_") || "";
 
 	if (!supportsClassList) {
-		scriptsArray.push(getHTTP(true) + "://cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
+		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
 	}
 
 	var supportsDataset = "undefined" !== typeof root.Element && "dataset" in document[documentElement] || "";
 
 	if (!supportsDataset) {
-		scriptsArray.push(getHTTP(true) + "://cdn.jsdelivr.net/npm/element-dataset@2.2.6/lib/browser/index.cjs.min.js");
+		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/element-dataset@2.2.6/lib/browser/index.cjs.min.js");
 	}
 
-	var supportsPassive = false;
+	var defineProperty = "defineProperty";
 
-	try {
-		var opts = Object.defineProperty && Object.defineProperty({}, 'passive', {
-				get: function () {
-					supportsPassive = true;
-				}
-			});
-		root[addEventListener]('test', function () {}, opts);
-	} catch (err) {}
+	var supportsPassive = (function () {
+		var support = false;
+		try {
+			var opts = Object[defineProperty] && Object[defineProperty]({}, "passive", {
+					get: function () {
+						support = true;
+					}
+				});
+			root[addEventListener]("test", function () {}, opts);
+		} catch (err) {}
+		return support;
+
+	}
+		());
 
 	if (!supportsPassive) {
-		scriptsArray.push(getHTTP(true) + "://cdnjs.cloudflare.com/ajax/libs/dom4/1.8.3/dom4.js");
+		scripts.push(forcedHTTP + "://cdnjs.cloudflare.com/ajax/libs/dom4/1.8.3/dom4.js");
 	}
 
-	scriptsArray.push(getHTTP(true) + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js",
-		getHTTP(true) + "://cdn.jsdelivr.net/npm/qrjs2@0.1.3/qrjs2.min.js",
-		getHTTP(true) + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
+	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js",
+		forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.3/qrjs2.min.js",
+		forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
 
 	if (hasTouch) {
-		scriptsArray.push(getHTTP(true) + "://cdnjs.cloudflare.com/ajax/libs/Tocca.js/2.0.1/Tocca.min.js");
+		scripts.push(forcedHTTP + "://cdnjs.cloudflare.com/ajax/libs/Tocca.js/2.0.1/Tocca.min.js");
 	} else {
 		if (hasWheel) {
-			/* scriptsArray.push(getHTTP(true) + "://cdn.jsdelivr.net/npm/wheel-indicator@1.1.4/lib/wheel-indicator.min.js"); */
-			scriptsArray.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator-passive.fixed.min.js");
+			/* scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/wheel-indicator@1.1.4/lib/wheel-indicator.min.js"); */
+			scripts.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator-passive.fixed.min.js");
 		}
 	}
 
+	/*!
+	 * load scripts after webfonts loaded using doesFontExist
+	 */
+
+	var checkFontIsLoadedCallback = function () {
+
+		var slotCheckFontIsLoaded;
+		var initScriptsLoading = function () {
+			clearInterval(slotCheckFontIsLoaded);
+			slotCheckFontIsLoaded = null;
+			if (!supportsSvgSmilAnimation) {
+				progressBar.increase(20);
+			}
+			var load;
+			load = new loadJsCss(scripts, run);
+		};
+
+		var supportsCanvas = (function () {
+			var elem = document.createElement("canvas");
+			return !!(elem.getContext && elem.getContext("2d"));
+		}
+			());
+
+		var checkFontIsLoaded = function () {
+
+			if (supportsCanvas) {
+				if (doesFontExist("Roboto") && doesFontExist("Roboto Condensed") && doesFontExist("PT Serif")) {
+					initScriptsLoading();
+				}
+			} else {
+				initScriptsLoading();
+			}
+		};
+
+		slotCheckFontIsLoaded = setInterval(checkFontIsLoaded, 100);
+	};
+
 	var load;
-	load = new loadJsCss(scriptsArray, run);
+	load = new loadJsCss(
+			[forcedHTTP + "://fonts.googleapis.com/css?family=PT+Serif:400%7CRoboto:400,700%7CRoboto+Condensed:700&subset=cyrillic"],
+			checkFontIsLoadedCallback
+		);
+
+	/*!
+	 * load scripts after webfonts loaded using webfontloader
+	 */
+
+	/* root.WebFontConfig = {
+		google: {
+			families: [
+				"PT Serif:400:cyrillic",
+				"Roboto:400,700:cyrillic",
+				"Roboto Condensed:700:cyrillic"
+			]
+		},
+		listeners: [],
+		active: function () {
+			this.called_ready = true;
+			for (var i = 0; i < this.listeners.length; i++) {
+				this.listeners[i]();
+			}
+		},
+		ready: function (callback) {
+			if (this.called_ready) {
+				callback();
+			} else {
+				this.listeners.push(callback);
+			}
+		}
+	};
+
+	var checkFontIsLoadedCallback = function () {
+
+		var initScriptsLoading = function () {
+			if (!supportsSvgSmilAnimation) {
+				progressBar.increase(20);
+			}
+			var load;
+			load = new loadJsCss(scripts, run);
+		};
+
+		root.WebFontConfig.ready(initScriptsLoading);
+	};
+
+	var load;
+	load = new loadJsCss(
+			[forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"],
+			checkFontIsLoadedCallback
+		); */
 }
 	("undefined" !== typeof window ? window : this, document));

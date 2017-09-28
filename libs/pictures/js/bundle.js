@@ -1524,7 +1524,7 @@ var initPhotoswipe = function () {
 						captionEl.children[0].innerText = "";
 						return false;
 					}
-					captionEl.children[0].innerHTML = item.title + "<br/><small>Photo: " + item.author + "</small>";
+					captionEl.children[0].innerHTML = item.title + "<br /><small>Photo: " + item.author + "</small>";
 					return true;
 				}
 			};
@@ -1879,10 +1879,10 @@ var showPageFinishProgress = function () {
 		progressBar.increase(20);
 	};
 	if (grid) {
-		if ("undefined" !== typeof imagesPreloaded) {
+		if ("undefined" !== typeof localImagesPreloaded) {
 			var timers = new Timers();
 			timers.interval(function () {
-				if ("undefined" !== typeof imagesPreloaded && localImagesPreloaded) {
+				if (localImagesPreloaded) {
 					timers.clear();
 					timers = null;
 					showPage();

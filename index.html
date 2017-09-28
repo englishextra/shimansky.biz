@@ -27,7 +27,6 @@
 		<link rel="sitemap" href="/sitemap.xml" type="application/xml" />
 		<style>
 			body,a{overflow-y:hidden;color:transparent;}body{background-color:#2B2B2B;}img,svg,canvas{display:none;}
-			/* .wrapper{opacity:0;} */
 			html,
 			body {
 				height: 100%;
@@ -64,6 +63,24 @@
 				top: 4.133rem;
 				left: 25%;
 				margin: 0;
+			}
+			.quote p {
+				font-family: "PT Serif";
+				font-weight: 400;
+			}
+			.intro h1 {
+				font-family: "Roboto Condensed";
+				font-weight: 700;
+				text-transform: uppercase;
+			}
+			.intro span {
+				font-family: "Roboto";
+				font-weight: 400;
+				text-transform: none;
+			}
+			.footer p {
+				font-family: "Roboto";
+				font-weight: 700;
 			}
 			@media only screen {
 				html {
@@ -203,11 +220,11 @@
 			</div>
 			<div class="intro animated duration-5s bounceInLeft" role="navigation" aria-label="Site">
 				<h1>
-					<a href="./pages/contents.html" rel="contents" title="Содержание - Английский без регистрации">статьи<br/>по грамматике<br/>английского<br/><span>для русскоговорящих</span></a>
+					<a href="./pages/contents.html" rel="contents" title="Содержание - Английский без регистрации">статьи<br />по грамматике<br />английского<br /><span>для русскоговорящих</span></a>
 				</h1>
 			</div>
 			<div class="quote animated bounceInDown">
-				<p>«Великое искусство научиться многому —<br/>это браться сразу за немногое.» (Джон Локк)</p>
+				<p>«Великое искусство научиться многому —<br />это браться сразу за немногое.» (Джон Локк)</p>
 			</div>
 			<div class="start animated">
 				<a href="./pages/contents.html" rel="contents" title="Содержание - Английский без регистрации">
@@ -226,7 +243,7 @@
 			</div>
 			<div class="footer animated duration-3s bounceInDown">
 				<p>
-					<a href="https://github.com/englishextra/englishextra.github.io" target="_blank" rel="noopener">© englishextra, 2006—2017</a>
+					<a href="javascript:void(0);" onclick="var a='mailto',b=':',c='englishextra2',k='&#64;',q='yahoo',s='.',v='com';this.href=a+b+c+k+q+s+v;">&#169;&#160;2006&#8212;2017&#160;englishextra.</a>
 				</p>
 			</div>
 			<!-- <div class="btn-vk animated duration-3s bounceInUp">
@@ -247,11 +264,11 @@
 			<div class="arrow animated duration-3s bounceInDown">
 				<svg class="animated duration-5s swing"><use xlink:href="#arrow"></use></svg>
 			</div>
-			<div class="btn-share animated">
-				<a href="javascript:void(0);" title="Поделиться"><svg class="animated duration-5s swing"><use xlink:href="#btn-share"></use></svg></a>
+			<div class="btn-share">
+				<a href="javascript:void(0);" title="Поделиться"><svg><use xlink:href="#btn-share"></use></svg></a>
 			</div>
-			<div class="btn-like animated">
-				<a href="javascript:void(0);" title="Нравиться"><svg class="animated duration-5s swing"><use xlink:href="#btn-like"></use></svg></a>
+			<div class="btn-like">
+				<a href="javascript:void(0);" title="Нравиться"><svg><use xlink:href="#btn-like"></use></svg></a>
 			</div>
 			<!-- <div class="logo animated duration-3s bounceInLeft">
 				<a href="./app/#/contents" rel="contents" title="Апп - Английский без регистрации"><img src="./libs/john-locke/img/logo-108x108.png" class="animated infinite pulse" alt="" /></a>
