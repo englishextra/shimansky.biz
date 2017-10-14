@@ -556,6 +556,33 @@ platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
 			progressBar.increase(20);
 		}
 
+		var documentTitle = document[title] || "";
+
+		var navigatorUserAgent = navigator.userAgent || "";
+
+		var getHumanDate = function () {
+			var newDate = new Date();
+			var newDay = newDate.getDate();
+			var newYear = newDate.getFullYear();
+			var newMonth = newDate.getMonth();
+			newMonth += 1;
+			if (10 > newDay) {
+				newDay = "0" + newDay;
+			}
+			if (10 > newMonth) {
+				newMonth = "0" + newMonth;
+			}
+			return newYear + "-" + newMonth + "-" + newDay;
+		}();
+
+		var platformName = "";
+		var platformDescription = "";
+		if (navigatorUserAgent && root.platform) {
+			platformName = platform.name || "";
+			platformDescription = platform.description || "";
+			document[title] = documentTitle + " [" + (getHumanDate ? " " + getHumanDate : "") + (platformDescription ? " " + platformDescription : "") + (hasTouch || hasWheel ? " with" : "") + (hasTouch ? " touch" : "") + (hasTouch && hasWheel ? "," : "") + (hasWheel ? " mousewheel" : "") + "]";
+		}
+
 		var qrcode = document[getElementsByClassName]("qrcode")[0] || "";
 		var timerShowQrcode;
 		var showQrcode = function () {
@@ -566,8 +593,6 @@ platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		var locationHref = root.location[href] || "";
-
-		var documentTitle = document[title] || "";
 
 		if (qrcode) {
 			var qrcodeImg = document[createElement]("img");
@@ -609,22 +634,6 @@ platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
 		var downloadApp = document[getElementsByClassName]("download-app")[0] || "";
 		var downloadAppLink = downloadApp ? downloadApp[getElementsByTagName]("a")[0] || "" : "";
 		var downloadAppImg = downloadApp ? downloadApp[getElementsByTagName]("img")[0] || "" : "";
-		var navigatorUserAgent = navigator.userAgent || "";
-
-		var getHumanDate = function () {
-			var newDate = new Date();
-			var newDay = newDate.getDate();
-			var newYear = newDate.getFullYear();
-			var newMonth = newDate.getMonth();
-			newMonth += 1;
-			if (10 > newDay) {
-				newDay = "0" + newDay;
-			}
-			if (10 > newMonth) {
-				newMonth = "0" + newMonth;
-			}
-			return newYear + "-" + newMonth + "-" + newDay;
-		}();
 
 		var timerhowDownloadApp;
 		var showDownloadApp = function () {
@@ -635,9 +644,6 @@ platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		if (navigatorUserAgent && downloadApp && downloadAppLink && downloadAppImg && root.platform) {
-			var platformName = platform.name || "";
-			var platformDescription = platform.description || "";
-			document[title] = documentTitle + " [" + (getHumanDate ? " " + getHumanDate : "") + (platformDescription ? " " + platformDescription : "") + (hasTouch || hasWheel ? " with" : "") + (hasTouch ? " touch" : "") + (hasTouch && hasWheel ? "," : "") + (hasWheel ? " mousewheel" : "") + "]";
 			var platformOsFamily = platform.os.family || "";
 			var platformOsVersion = platform.os.version || "";
 			var platformOsArchitecture = platform.os.architecture || "";
@@ -936,7 +942,7 @@ platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
 	}();
 
 	if (!supportsPassive) {
-		scripts.push(forcedHTTP + "://cdnjs.cloudflare.com/ajax/libs/dom4/1.8.3/dom4.js");
+		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/dom4@1.8.5/build/dom4.max.min.js");
 	}
 
 	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.3/qrjs2.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
@@ -1003,7 +1009,7 @@ platform, QRCode, ToProgress, unescape, VK, WheelIndicator, Ya */
  	listeners: [],
  	active: function () {
  		this.called_ready = true;
- 		for (var i = 0; i < this.listeners.length; i++) {
+ 		for (var i = 0; i < this.listeners[length]; i++) {
  			this.listeners[i]();
  		}
  	},
