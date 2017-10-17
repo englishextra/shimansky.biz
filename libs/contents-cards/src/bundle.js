@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global doesFontExist, echo, Headers, loadJsCss, Minigrid, platform,
-Promise, t */
+Promise, t, ToProgress, WheelIndicator, Ya */
 /*property console, split */
 /*!
  * safe way to handle console.log
@@ -588,7 +588,6 @@ Promise, t */
 	var documentElement = "documentElement";
 	var createElement = "createElement";
 	var length = "length";
-	var addEventListener = "addEventListener";
 
 	var progressBar = new ToProgress({
 			id: "top-progress-bar",
@@ -604,25 +603,36 @@ Promise, t */
 
 	progressBar.increase(20);
 
+	var hasTouch = "ontouchstart" in document[documentElement] || "";
+
+	var hasWheel = "onwheel" in document[createElement]("div") || void 0 !== document.onmousewheel || "";
+
 	var run = function () {
 
+		var body = "body";
+		var addEventListener = "addEventListener";
 		var getElementById = "getElementById";
 		var getElementsByClassName = "getElementsByClassName";
+		var getElementsByTagName = "getElementsByTagName";
+		var getAttribute = "getAttribute";
 		var appendChild = "appendChild";
 		var parentNode = "parentNode";
 		var classList = "classList";
-		var dataset = "dataset";
-		var href = "href";
-		var src = "src";
-		var alt = "alt";
 		var title = "title";
 		var style = "style";
-		var createTextNode = "createTextNode";
-		var hasOwnProperty = "hasOwnProperty";
+		var visibility = "visibility";
+		var opacity = "opacity";
+		var href = "href";
 		var innerHTML = "innerHTML";
 		var createContextualFragment = "createContextualFragment";
 		var createDocumentFragment = "createDocumentFragment";
 		var styleSheets = "styleSheets";
+
+		var docElem = document[documentElement] || "";
+		if (docElem && docElem[classList]) {
+			docElem[classList].remove("no-js");
+			docElem[classList].add("js");
+		}
 
 		progressBar.increase(20);
 
@@ -676,8 +686,6 @@ Promise, t */
 		var jsonWidthKeyName = "width";
 		var jsonHeightKeyName = "height";
 		var cardWrapClass = "card-wrap";
-		var cardClass = "card";
-		var cardContentClass = "card-content";
 		var jsonUrl = "./libs/contents-cards/json/contents.json";
 
 		var safelyParseJSON = function (response) {
@@ -747,6 +755,16 @@ Promise, t */
 			}
 		};
 
+		var countObjKeys = function (obj) {
+			var count = 0;
+			for (var prop in obj) {
+				if (obj.hasOwnProperty(prop)) {
+					++count;
+				}
+			}
+			return count;
+		};
+
 		var generateCardGrid = function (text) {
 
 			return new Promise(function (resolve, reject) {
@@ -759,10 +777,14 @@ Promise, t */
 						throw new Error("incomplete JSON data: no " + jsonHrefKeyName);
 					} else if (!jsonObj.pages[0][jsonSrcKeyName]) {
 						throw new Error("incomplete JSON data: no " + jsonSrcKeyName);
-					} else if (!jsonObj.pages[0][jsonSrcKeyName]) {
+					} else if (!jsonObj.pages[0][jsonWidthKeyName]) {
+						throw new Error("incomplete JSON data: no " + jsonWidthKeyName);
+					} else if (!jsonObj.pages[0][jsonHeightKeyName]) {
+						throw new Error("incomplete JSON data: no " + jsonHeightKeyName);
+					} else if (!jsonObj.pages[0][jsonTitleKeyName]) {
 						throw new Error("incomplete JSON data: no " + jsonTitleKeyName);
 					} else {
-						if (!jsonObj.pages[0][jsonSrcKeyName]) {
+						if (!jsonObj.pages[0][jsonTextKeyName]) {
 							throw new Error("incomplete JSON data: no " + jsonTextKeyName);
 						}
 					}
@@ -777,8 +799,9 @@ Promise, t */
 				 * attention to last param: if false cloneNode will be used
 				 * and setting listeners or changing its CSS will not be possible
 				 */
+				var pagesKeysNumber = countObjKeys(jsonObj.pages);
 				insertFromTemplate(jsonObj, "template_card_grid", "target_card_grid", function () {
-					if (document[getElementsByClassName](cardWrapClass)[length] > 0) {
+					if (pagesKeysNumber === document[getElementsByClassName](cardWrapClass)[length]) {
 						resolve();
 					} else {
 						reject();
@@ -788,7 +811,17 @@ Promise, t */
 				/*!
 				 * render with creating DOM Nodes
 				 */
-				/* jsonObj = jsonObj.pages;
+				/* var dataset = "dataset";
+				var href = "href";
+				var src = "src";
+				var alt = "alt";
+				var createTextNode = "createTextNode";
+				var hasOwnProperty = "hasOwnProperty";
+
+				var cardClass = "card";
+				var cardContentClass = "card-content";
+
+				jsonObj = jsonObj.pages;
 
 				var df = document[createDocumentFragment]();
 
@@ -915,8 +948,6 @@ Promise, t */
 							"}"].join(""));
 				styleSheet.insertRule(cssRule, 0);
 			}
-
-			progressBar.increase(20);
 		};
 
 		var timerSetLazyloading;
@@ -925,8 +956,6 @@ Promise, t */
 			timerSetLazyloading = null;
 
 			echo(imgClass, jsonSrcKeyName);
-
-			hideProgressBar();
 		};
 
 		var myHeaders = new Headers();
@@ -944,7 +973,7 @@ Promise, t */
 			generateCardGrid(text).then(function (result) {
 				return result;
 			}).then(function (result) {
-				timerCreateGrid = setTimeout(createGrid, 100);
+				timerCreateGrid = setTimeout(createGrid, 200);
 			}).then(function (result) {
 				timerSetLazyloading = setTimeout(setLazyloading, 200);
 			}).catch (function (err) {
@@ -953,6 +982,396 @@ Promise, t */
 		}).catch (function (err) {
 			console.log("cannot parse", jsonUrl);
 		});
+
+		var locationHref = root.location[href] || "";
+
+		var scriptIsLoaded = function (_src) {
+			var scriptAll,
+			i,
+			l;
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[length]; i < l; i += 1) {
+				if (scriptAll[i][getAttribute]("src") === _src) {
+					scriptAll = i = l = null;
+					return true;
+				}
+			}
+			scriptAll = i = l = null;
+			return false;
+		};
+
+		var isActiveClass = "is-active";
+
+		var hideOtherIsSocial = function (_this) {
+			_this = _this || this;
+			var isSocialAll = document[getElementsByClassName]("is-social") || "";
+			if (isSocialAll) {
+				var k,
+				n;
+				for (k = 0, n = isSocialAll[length]; k < n; k += 1) {
+					if (_this !== isSocialAll[k]) {
+						isSocialAll[k][classList].remove(isActiveClass);
+					}
+				}
+				k = n = null;
+			}
+		};
+
+		root[addEventListener]("click", hideOtherIsSocial);
+
+		var debounce = function (func, wait, immediate) {
+			var timeout;
+			var args;
+			var context;
+			var timestamp;
+			var result;
+			if (undefined === wait || null === wait) {
+				wait = 100;
+			}
+			function later() {
+				var last = Date.now() - timestamp;
+				if (last < wait && last >= 0) {
+					timeout = setTimeout(later, wait - last);
+				} else {
+					timeout = null;
+					if (!immediate) {
+						result = func.apply(context, args);
+						context = args = null;
+					}
+				}
+			}
+			var debounced = function () {
+				context = this;
+				args = arguments;
+				timestamp = Date.now();
+				var callNow = immediate && !timeout;
+				if (!timeout) {
+					timeout = setTimeout(later, wait);
+				}
+				if (callNow) {
+					result = func.apply(context, args);
+					context = args = null;
+				}
+				return result;
+			};
+			debounced.clear = function () {
+				if (timeout) {
+					clearTimeout(timeout);
+					timeout = null;
+				}
+			};
+			debounced.flush = function () {
+				if (timeout) {
+					result = func.apply(context, args);
+					context = args = null;
+					clearTimeout(timeout);
+					timeout = null;
+				}
+			};
+			return debounced;
+		};
+
+		var yaShare2Id = "ya-share2";
+
+		var yaShare2 = document[getElementById](yaShare2Id) || "";
+
+		var btnShare = document[getElementsByClassName]("btn-share")[0] || "";
+		var btnShareLink = btnShare ? btnShare[getElementsByTagName]("a")[0] || "" : "";
+		var yshare;
+		var showYaShare2 = function (ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			var logic = function () {
+				yaShare2[classList].toggle(isActiveClass);
+				hideOtherIsSocial(yaShare2);
+				var initScript = function () {
+					if (root.Ya) {
+						try {
+							if (yshare) {
+								yshare.updateContent({
+									title: documentTitle,
+									description: documentTitle,
+									url: locationHref
+								});
+							} else {
+								yshare = Ya.share2(yaShare2Id, {
+									content: {
+										title: documentTitle,
+										description: documentTitle,
+										url: locationHref
+									}
+								});
+							}
+						} catch (err) {
+							console.log("cannot update or init Ya", err);
+						}
+					}
+				};
+				var jsUrl = forcedHTTP + "://yastatic.net/share2/share.js";
+				if (!scriptIsLoaded(jsUrl)) {
+					var load;
+					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
+				}
+			};
+			var debounceLogic = debounce(logic, 200);
+			debounceLogic();
+		};
+
+		if (btnShare && btnShareLink && yaShare2) {
+			btnShare[style][visibility] = "visible";
+			btnShare[style][opacity] = 1;
+			btnShareLink[addEventListener]("click", showYaShare2);
+		}
+
+		var throttle = function (func, wait) {
+			var ctx;
+			var args;
+			var rtn;
+			var timeoutID;
+			var last = 0;
+			return function throttled() {
+				ctx = this;
+				args = arguments;
+				var delta = new Date() - last;
+				if (!timeoutID) {
+					if (delta >= wait) {
+						call();
+					} else {
+						timeoutID = setTimeout(call, wait - delta);
+					}
+				}
+				return rtn;
+			};
+			function call() {
+				timeoutID = 0;
+				last = +new Date();
+				rtn = func.apply(ctx, args);
+				ctx = null;
+				args = null;
+			}
+		};
+
+		var titleBar = document[getElementsByClassName]("title-bar")[0] || "";
+		var titleBarHeight = titleBar.offsetHeight || 0;
+		var isFixedClass = "is-fixed";
+
+		/*!
+		 * set fixed on scroll/swipedependong on titleBar position
+		 */
+		/* var handleTitleBar = function () {
+			var logic = function () {
+				if ((document[body].scrollTop || document[documentElement].scrollTop || 0) > titleBarHeight) {
+					titleBar[classList].add(isFixedClass);
+				} else {
+					titleBar[classList].remove(isFixedClass);
+				}
+			};
+			var throttleLogic = throttle(logic, 100);
+			throttleLogic();
+		};
+		if (titleBar) {
+			root[addEventListener]("scroll", handleTitleBar, {passive: true});
+		} */
+
+		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
+
+		/*!
+		 * set fixed depending on scroll/swipe direction
+		 * and titleBar position
+		 * needs animate.css classes
+		 */
+		/* var animatedClass = "animated";
+		var duration4msClass = "duration-4ms";
+		var slideInDownClass = "slideInDown";
+		var slideOutUpClass = "slideOutUp";
+
+		var hideTitleBar = function () {
+			var logic = function () {
+				titleBar[classList].remove(slideInDownClass);
+				if ((document[body].scrollTop || document[documentElement].scrollTop || 0) > titleBarHeight) {
+					titleBar[classList].add(slideOutUpClass);
+				} else {
+					titleBar[classList].remove(isFixedClass);
+					titleBar[classList].remove(slideOutUpClass);
+				}
+			};
+			var throttleLogic = throttle(logic, 100);
+			throttleLogic();
+		};
+		var revealTitleBar = function () {
+			var logic = function () {
+				titleBar[classList].remove(slideOutUpClass);
+				if ((document[body].scrollTop || document[documentElement].scrollTop || 0) > titleBarHeight) {
+					titleBar[classList].add(isFixedClass);
+					titleBar[classList].add(slideInDownClass);
+				} else {
+					titleBar[classList].remove(isFixedClass);
+					titleBar[classList].remove(slideInDownClass);
+				}
+			};
+			var throttleLogic = throttle(logic, 100);
+			throttleLogic();
+		};
+		if (wrapper && titleBar) {
+			titleBar[classList].add(animatedClass);
+			titleBar[classList].add(duration4msClass);
+			if (hasTouch) {
+				if (root.tocca) {
+					root[addEventListener]("swipeup", hideTitleBar, {passive: true});
+					root[addEventListener]("swipedown", revealTitleBar, {passive: true});
+				}
+			} else {
+				if (hasWheel) {
+					if (root.WheelIndicator) {
+						var indicator;
+						indicator = new WheelIndicator({
+								elem: wrapper,
+								callback: function (e) {
+									if ("down" === e.direction) {
+										hideTitleBar();
+									}
+									if ("up" === e.direction) {
+										revealTitleBar();
+									}
+								},
+								preventMouse: false
+							});
+					}
+				}
+			}
+		} */
+
+		/*!
+		 * set fixed or hidden class depending on scroll/swipe direction
+		 * and titleBar position
+		 * needs transition top 0.4s ease out in CSS for .title-bar
+		 */
+		var isHiddenClass = "is-hidden";
+
+		var hideTitleBar = function () {
+			var logic = function () {
+				if ((document[body].scrollTop || document[documentElement].scrollTop || 0) > titleBarHeight) {
+					titleBar[classList].add(isHiddenClass);
+				} else {
+					titleBar[classList].remove(isFixedClass);
+					titleBar[classList].remove(isHiddenClass);
+				}
+			};
+			var throttleLogic = throttle(logic, 100);
+			throttleLogic();
+		};
+		var revealTitleBar = function () {
+			var logic = function () {
+				titleBar[classList].remove(isHiddenClass);
+				if ((document[body].scrollTop || document[documentElement].scrollTop || 0) > titleBarHeight) {
+					titleBar[classList].add(isFixedClass);
+				} else {
+					titleBar[classList].remove(isFixedClass);
+				}
+			};
+			var throttleLogic = throttle(logic, 100);
+			throttleLogic();
+		};
+		if (wrapper && titleBar) {
+			if (hasTouch) {
+				if (root.tocca) {
+					root[addEventListener]("swipeup", hideTitleBar, {
+						passive: true
+					});
+					root[addEventListener]("swipedown", revealTitleBar, {
+						passive: true
+					});
+				}
+			} else {
+				if (hasWheel) {
+					if (root.WheelIndicator) {
+						var indicator;
+						indicator = new WheelIndicator({
+								elem: wrapper,
+								callback: function (e) {
+									if ("down" === e.direction) {
+										hideTitleBar();
+									}
+									if ("up" === e.direction) {
+										revealTitleBar();
+									}
+								},
+								preventMouse: false
+							});
+					}
+				}
+			}
+		}
+
+		var scroll2Top = function (scrollTargetY, speed, easing) {
+			var scrollY = root.scrollY || document.documentElement.scrollTop;
+			var posY = scrollTargetY || 0;
+			var rate = speed || 2000;
+			var soothing = easing || "easeOutSine";
+			var currentTime = 0;
+			var time = Math.max(0.1, Math.min(Math.abs(scrollY - posY) / rate, 0.8));
+			var easingEquations = {
+				easeOutSine: function (pos) {
+					return Math.sin(pos * (Math.PI / 2));
+				},
+				easeInOutSine: function (pos) {
+					return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+				},
+				easeInOutQuint: function (pos) {
+					if ((pos /= 0.5) < 1) {
+						return 0.5 * Math.pow(pos, 5);
+					}
+					return 0.5 * (Math.pow((pos - 2), 5) + 2);
+				}
+			};
+			function tick() {
+				currentTime += 1 / 60;
+				var p = currentTime / time;
+				var t = easingEquations[soothing](p);
+				if (p < 1) {
+					requestAnimationFrame(tick);
+					root.scrollTo(0, scrollY + ((posY - scrollY) * t));
+				} else {
+					root.scrollTo(0, posY);
+				}
+			}
+			tick();
+		};
+
+		var docBody = document[body] || "";
+		var btnClass = "btn-totop";
+		var btnTotop = document[getElementsByClassName](btnClass)[0] || "";
+		var handleBtnTotop = function (evt) {
+			evt.stopPropagation();
+			evt.preventDefault();
+			scroll2Top(0, 20000);
+			if (titleBar) {
+				titleBar[classList].remove(isHiddenClass);
+			}
+		};
+		var handleBtnTotopWindow = function (_this) {
+			var logic = function () {
+				var btn = document[getElementsByClassName](btnClass)[0] || "";
+				var scrollPosition = _this.pageYOffset || docElem.scrollTop || docBody.scrollTop || "";
+				var windowHeight = _this.innerHeight || docElem.clientHeight || docBody.clientHeight || "";
+				if (scrollPosition && windowHeight && btn) {
+					if (scrollPosition > windowHeight) {
+						btn[classList].add(isActiveClass);
+					} else {
+						btn[classList].remove(isActiveClass);
+					}
+				}
+			};
+			var throttleLogic = throttle(logic, 100);
+			throttleLogic();
+		};
+		if (btnTotop) {
+			btnTotop[addEventListener]("click", handleBtnTotop);
+			root[addEventListener]("scroll", handleBtnTotopWindow, {passive: true});
+		}
+
+		hideProgressBar();
 	};
 
 	var defineProperty = "defineProperty";
@@ -1008,6 +1427,14 @@ Promise, t */
 
 	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
 
+	if (hasTouch) {
+		scripts.push(forcedHTTP + "://cdnjs.cloudflare.com/ajax/libs/Tocca.js/2.0.1/Tocca.min.js");
+	} else {
+		if (hasWheel) {
+			scripts.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
+		}
+	}
+
 	/*!
 	 * load scripts after webfonts loaded using doesFontExist
 	 */
@@ -1058,7 +1485,7 @@ Promise, t */
 	/* root.WebFontConfig = {
 		google: {
 			families: [
-				"Roboto:400:cyrillic"
+				"Roboto:400,700:cyrillic"
 			]
 		},
 		listeners: [],
