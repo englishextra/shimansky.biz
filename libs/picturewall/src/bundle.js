@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global doesFontExist, echo, Headers, loadJsCss, platform, Promise, t,
-ToProgress, WheelIndicator, zoomwall */
+ToProgress, VK, WheelIndicator, Ya, zoomwall */
 /*property console, split */
 /*!
  * safe way to handle console.log
@@ -42,17 +42,17 @@ ToProgress, WheelIndicator, zoomwall */
 	"use strict";
 	var ToProgress = (function () {
 		var TP = function () {
-			var style = "style";
-			var createElement = "createElement";
+			var addEventListener = "addEventListener";
 			var appendChild = "appendChild";
-			var prototype = "prototype";
-			var hasOwnProperty = "hasOwnProperty";
+			var createElement = "createElement";
+			var firstChild = "firstChild";
 			var getElementById = "getElementById";
 			var getElementsByClassName = "getElementsByClassName";
-			var firstChild = "firstChild";
-			var addEventListener = "addEventListener";
-			var removeEventListener = "removeEventListener";
+			var hasOwnProperty = "hasOwnProperty";
 			var opacity = "opacity";
+			var prototype = "prototype";
+			var removeEventListener = "removeEventListener";
+			var style = "style";
 			function whichTransitionEvent() {
 				var t,
 				el = document[createElement]("fakeelement");
@@ -199,18 +199,18 @@ ToProgress, WheelIndicator, zoomwall */
  */
 (function (root, document) {
 	"use strict";
-	var parentNode = "parentNode";
 	var addEventListener = "addEventListener";
-	var classList = "classList";
-	var getElementsByClassName = "getElementsByClassName";
 	var children = "children";
-	var getComputedStyle = "getComputedStyle";
-	var offsetTop = "offsetTop";
+	var classList = "classList";
 	var dataset = "dataset";
-	var nextElementSibling = "nextElementSibling";
-	var previousElementSibling = "previousElementSibling";
-	var length = "length";
+	var getComputedStyle = "getComputedStyle";
+	var getElementsByClassName = "getElementsByClassName";
 	var hasOwnProperty = "hasOwnProperty";
+	var length = "length";
+	var nextElementSibling = "nextElementSibling";
+	var offsetTop = "offsetTop";
+	var parentNode = "parentNode";
+	var previousElementSibling = "previousElementSibling";
 	var style = "style";
 	var zoomwall = {
 		create: function (blocks, enableKeys, dataAttributeHighresName, dataAttributeLowresName, done) {
@@ -495,17 +495,19 @@ ToProgress, WheelIndicator, zoomwall */
  */
 (function (root) {
 	"use strict";
-	var blockregex = /\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g,
-	valregex = /\{\{([=%])(.+?)\}\}/g;
+	var length = "length";
+	var replace = "replace";
+	var blockregex = /\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g;
+	var valregex = /\{\{([=%])(.+?)\}\}/g;
 	var t = function (template) {
 		this.t = template;
 	};
 	function scrub(val) {
-		return new Option(val).text.replace(/"/g, "&quot;");
+		return new Option(val).text[replace](/"/g, "&quot;");
 	}
 	function get_value(vars, key) {
 		var parts = key.split(".");
-		while (parts.length) {
+		while (parts[length]) {
 			if (!(parts[0]in vars)) {
 				return false;
 			}
@@ -514,7 +516,7 @@ ToProgress, WheelIndicator, zoomwall */
 		return vars;
 	}
 	function render(fragment, vars) {
-		return fragment.replace(blockregex, function (_, __, meta, key, inner, if_true, has_else, if_false) {
+		return fragment[replace](blockregex, function (_, __, meta, key, inner, if_true, has_else, if_false) {
 			var val = get_value(vars, key),
 			temp = "",
 			i;
@@ -569,18 +571,18 @@ ToProgress, WheelIndicator, zoomwall */
 (function (root, document) {
 	"use strict";
 	var echo = function (imgClass, dataAttributeName, throttleRate) {
-		imgClass = imgClass || "data-src-img";
-		dataAttributeName = dataAttributeName || "src";
-		throttleRate = throttleRate || 100;
+		var _imgClass = imgClass || "data-src-img";
+		var _dataAttributeName = dataAttributeName || "src";
+		var _throttleRate = throttleRate || 100;
 		var addEventListener = "addEventListener";
-		var dataset = "dataset";
-		var getElementsByClassName = "getElementsByClassName";
-		var getBoundingClientRect = "getBoundingClientRect";
 		var classList = "classList";
-		var getAttribute = "getAttribute";
-		var length = "length";
-		var documentElement = "documentElement";
+		var dataset = "dataset";
 		var defineProperty = "defineProperty";
+		var documentElement = "documentElement";
+		var getAttribute = "getAttribute";
+		var getBoundingClientRect = "getBoundingClientRect";
+		var getElementsByClassName = "getElementsByClassName";
+		var length = "length";
 		var Echo = function (elem) {
 			var _this = this;
 			_this.elem = elem;
@@ -598,7 +600,7 @@ ToProgress, WheelIndicator, zoomwall */
 			return ((coords.top >= 0 && coords.left >= 0 && coords.top) <= (root.innerHeight || document[documentElement].clientHeight));
 		};
 		var echoSrc = function (img, callback) {
-			img.src = img[dataset][dataAttributeName] || img[getAttribute]("data-" + dataAttributeName);
+			img.src = img[dataset][_dataAttributeName] || img[getAttribute]("data-" + _dataAttributeName);
 			if (callback) {
 				callback();
 			}
@@ -609,7 +611,7 @@ ToProgress, WheelIndicator, zoomwall */
 			}
 		};
 		var echoImageAll = function () {
-			for (var i = 0; i < echoStore.length; i++) {
+			for (var i = 0; i < echoStore[length]; i++) {
 				var self = echoStore[i];
 				if (scrolledIntoView(self)) {
 					echoSrc(self, removeEcho(self, i));
@@ -643,7 +645,7 @@ ToProgress, WheelIndicator, zoomwall */
 				args = null;
 			}
 		};
-		var throttleEchoImageAll = throttle(echoImageAll, throttleRate);
+		var throttleEchoImageAll = throttle(echoImageAll, _throttleRate);
 		var supportsPassive = (function () {
 				var support = false;
 				try {
@@ -671,7 +673,7 @@ ToProgress, WheelIndicator, zoomwall */
 				}
 			}
 		};
-		var lazyImgs = document[getElementsByClassName](imgClass) || "";
+		var lazyImgs = document[getElementsByClassName](_imgClass) || "";
 		var walkLazyImageAll = function () {
 			for (var i = 0; i < lazyImgs[length]; i++) {
 				new Echo(lazyImgs[i]).init();
@@ -721,13 +723,13 @@ ToProgress, WheelIndicator, zoomwall */
 	"use strict";
 	var loadJsCss = function (files, callback) {
 		var _this = this;
-		var getElementsByTagName = "getElementsByTagName";
-		var createElement = "createElement";
 		var appendChild = "appendChild";
 		var body = "body";
-		var parentNode = "parentNode";
+		var createElement = "createElement";
+		var getElementsByTagName = "getElementsByTagName";
 		var insertBefore = "insertBefore";
 		var length = "length";
+		var parentNode = "parentNode";
 		_this.files = files;
 		_this.js = [];
 		_this.head = document[getElementsByTagName]("head")[0] || "";
@@ -789,8 +791,8 @@ ToProgress, WheelIndicator, zoomwall */
 (function (root, document) {
 	"use strict";
 
-	var documentElement = "documentElement";
 	var createElement = "createElement";
+	var documentElement = "documentElement";
 	var length = "length";
 
 	var progressBar = new ToProgress({
@@ -811,20 +813,30 @@ ToProgress, WheelIndicator, zoomwall */
 
 	var hasWheel = "onwheel" in document[createElement]("div") || void 0 !== document.onmousewheel || "";
 
+	var getHTTP = function (force) {
+		var any = force || "";
+		var locationProtocol = root.location.protocol || "";
+		return "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : any ? "http" : "";
+	};
+
 	var run = function () {
 
-		var body = "body";
 		var addEventListener = "addEventListener";
-		var getElementById = "getElementById";
-		var getElementsByClassName = "getElementsByClassName";
 		var appendChild = "appendChild";
-		var parentNode = "parentNode";
+		var body = "body";
 		var classList = "classList";
-		var title = "title";
-		var style = "style";
-		var innerHTML = "innerHTML";
 		var createContextualFragment = "createContextualFragment";
 		var createDocumentFragment = "createDocumentFragment";
+		var dataset = "dataset";
+		var getAttribute = "getAttribute";
+		var getElementById = "getElementById";
+		var getElementsByClassName = "getElementsByClassName";
+		var getElementsByTagName = "getElementsByTagName";
+		var href = "href";
+		var innerHTML = "innerHTML";
+		var parentNode = "parentNode";
+		var style = "style";
+		var title = "title";
 
 		var docElem = document[documentElement] || "";
 		if (docElem && docElem[classList]) {
@@ -834,9 +846,202 @@ ToProgress, WheelIndicator, zoomwall */
 
 		progressBar.increase(20);
 
-		var hasTouch = "ontouchstart" in document[documentElement] || "";
+		/*jshint bitwise: false */
+		var parseLink = function (url, full) {
+			var _full = full || "";
+			return (function () {
+				var _replace = function (s) {
+					return s.replace(/^(#|\?)/, "").replace(/\:$/, "");
+				};
+				var _location = location || "";
+				var _protocol = function (protocol) {
+					switch (protocol) {
+					case "http:":
+						return _full ? ":" + 80 : 80;
+					case "https:":
+						return _full ? ":" + 443 : 443;
+					default:
+						return _full ? ":" + _location.port : _location.port;
+					}
+				};
+				var _isAbsolute = (0 === url.indexOf("//") || !!~url.indexOf("://"));
+				var _locationHref = root.location || "";
+				var _origin = function () {
+					var o = _locationHref.protocol + "//" + _locationHref.hostname + (_locationHref.port ? ":" + _locationHref.port : "");
+					return o || "";
+				};
+				var _isCrossDomain = function () {
+					var c = document[createElement]("a");
+					c.href = url;
+					var v = c.protocol + "//" + c.hostname + (c.port ? ":" + c.port : "");
+					return v !== _origin();
+				};
+				var _link = document[createElement]("a");
+				_link.href = url;
+				return {
+					href: _link.href,
+					origin: _origin(),
+					host: _link.host || _location.host,
+					port: ("0" === _link.port || "" === _link.port) ? _protocol(_link.protocol) : (_full ? _link.port : _replace(_link.port)),
+					hash: _full ? _link.hash : _replace(_link.hash),
+					hostname: _link.hostname || _location.hostname,
+					pathname: _link.pathname.charAt(0) !== "/" ? (_full ? "/" + _link.pathname : _link.pathname) : (_full ? _link.pathname : _link.pathname.slice(1)),
+					protocol: !_link.protocol || ":" === _link.protocol ? (_full ? _location.protocol : _replace(_location.protocol)) : (_full ? _link.protocol : _replace(_link.protocol)),
+					search: _full ? _link.search : _replace(_link.search),
+					query: _full ? _link.search : _replace(_link.search),
+					isAbsolute: _isAbsolute,
+					isRelative: !_isAbsolute,
+					isCrossDomain: _isCrossDomain(),
+					hasHTTP: /^(http|https):\/\//i.test(url) ? !0 : !1
+				};
+			}
+				());
+		};
+		/*jshint bitwise: true */
 
-		var hasWheel = "onwheel" in document[createElement]("div") || void 0 !== document.onmousewheel || "";
+		var isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
+		var isElectron = "undefined" !== typeof root && root.process && "renderer" === root.process.type || "";
+		var isNwjs = (function () {
+			if ("undefined" !== typeof isNodejs && isNodejs) {
+				try {
+					if ("undefined" !== typeof require("nw.gui")) {
+						return true;
+					}
+				} catch (e) {
+					return false;
+				}
+			}
+			return false;
+		}
+			());
+
+		var openDeviceBrowser = function (url) {
+			var triggerForElectron = function () {
+				var es = isElectron ? require("electron").shell : "";
+				return es ? es.openExternal(url) : "";
+			};
+			var triggerForNwjs = function () {
+				var ns = isNwjs ? require("nw.gui").Shell : "";
+				return ns ? ns.openExternal(url) : "";
+			};
+			var triggerForHTTP = function () {
+				return true;
+			};
+			var triggerForLocal = function () {
+				return root.open(url, "_system", "scrollbars=1,location=no");
+			};
+			if (isElectron) {
+				triggerForElectron();
+			} else if (isNwjs) {
+				triggerForNwjs();
+			} else {
+				var locationProtocol = root.location.protocol || "",
+				hasHTTP = locationProtocol ? "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : "" : "";
+				if (hasHTTP) {
+					triggerForHTTP();
+				} else {
+					triggerForLocal();
+				}
+			}
+		};
+
+		var debounce = function (func, wait, immediate) {
+			var timeout;
+			var args;
+			var context;
+			var timestamp;
+			var result;
+			if (undefined === wait || null === wait) {
+				wait = 100;
+			}
+			function later() {
+				var last = Date.now() - timestamp;
+				if (last < wait && last >= 0) {
+					timeout = setTimeout(later, wait - last);
+				} else {
+					timeout = null;
+					if (!immediate) {
+						result = func.apply(context, args);
+						context = args = null;
+					}
+				}
+			}
+			var debounced = function () {
+				context = this;
+				args = arguments;
+				timestamp = Date.now();
+				var callNow = immediate && !timeout;
+				if (!timeout) {
+					timeout = setTimeout(later, wait);
+				}
+				if (callNow) {
+					result = func.apply(context, args);
+					context = args = null;
+				}
+				return result;
+			};
+			debounced.clear = function () {
+				if (timeout) {
+					clearTimeout(timeout);
+					timeout = null;
+				}
+			};
+			debounced.flush = function () {
+				if (timeout) {
+					result = func.apply(context, args);
+					context = args = null;
+					clearTimeout(timeout);
+					timeout = null;
+				}
+			};
+			return debounced;
+		};
+
+		var isBindedClass = "is-binded";
+
+		var manageExternalLinkAll = function (ctx) {
+			var _ctx = ctx && ctx.nodeName ? ctx : "";
+			var linkTag = "a";
+			var externalLinks = _ctx ? _ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+			var arrange = function (e) {
+				var handleExternalLink = function (url, evt) {
+					evt.stopPropagation();
+					evt.preventDefault();
+					var logic = openDeviceBrowser.bind(null, url);
+					var debounceLogic = debounce(logic, 200);
+					debounceLogic();
+				};
+				if (!e[classList].contains(isBindedClass) &&
+						!e.target &&
+						!e.rel) {
+					var url = e[getAttribute]("href") || "";
+					if (url &&
+						parseLink(url).isCrossDomain &&
+						parseLink(url).hasHTTP) {
+						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
+						if ("undefined" !== typeof getHTTP && getHTTP()) {
+							e.target = "_blank";
+							e.rel = "noopener";
+						} else {
+							e[addEventListener]("click", handleExternalLink.bind(null, url));
+						}
+						e[classList].add(isBindedClass);
+					}
+				}
+			};
+			if (externalLinks) {
+				var i;
+				var l;
+				for (i = 0, l = externalLinks.length; i < l; i += 1) {
+					arrange(externalLinks[i]);
+				}
+				i = l = null;
+			}
+		};
+
+		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
+
+		manageExternalLinkAll(wrapper);
 
 		var documentTitle = document[title] || "";
 
@@ -933,7 +1138,7 @@ ToProgress, WheelIndicator, zoomwall */
 		};
 
 		var insertFromTemplate = function (parsedJson, templateId, targetId, callback, useInner) {
-			var inner = useInner || "";
+			var _useInner = useInner || "";
 			var template = document[getElementById](templateId) || "";
 			var target = document[getElementById](targetId) || "";
 			var cb = function () {
@@ -941,7 +1146,7 @@ ToProgress, WheelIndicator, zoomwall */
 			};
 			if (parsedJson && template && target) {
 				var targetRendered = renderTemplate(parsedJson, templateId, targetId);
-				if (inner) {
+				if (_useInner) {
 					target[innerHTML] = targetRendered;
 					cb();
 				} else {
@@ -1002,11 +1207,11 @@ ToProgress, WheelIndicator, zoomwall */
 				/*!
 				 * render with creating DOM Nodes
 				 */
-				/* var dataset = "dataset";
-				var src = "src";
-				var alt = "alt";
+				/* var alt = "alt";
 				var createTextNode = "createTextNode";
+				var dataset = "dataset";
 				var hasOwnProperty = "hasOwnProperty";
+				var src = "src";
 
 				jsonObj = jsonObj.pages;
 
@@ -1099,6 +1304,146 @@ ToProgress, WheelIndicator, zoomwall */
 			console.log("cannot parse", jsonUrl);
 		});
 
+		var locationHref = root.location[href] || "";
+
+		var scriptIsLoaded = function (scriptSrc) {
+			var scriptAll,
+			i,
+			l;
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[length]; i < l; i += 1) {
+				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
+					scriptAll = i = l = null;
+					return true;
+				}
+			}
+			scriptAll = i = l = null;
+			return false;
+		};
+
+		var isActiveClass = "is-active";
+
+		var hideOtherIsSocial = function (thisObj) {
+			var _thisObj = thisObj || this;
+			var isSocialAll = document[getElementsByClassName]("is-social") || "";
+			if (isSocialAll) {
+				var k,
+				n;
+				for (k = 0, n = isSocialAll[length]; k < n; k += 1) {
+					if (_thisObj !== isSocialAll[k]) {
+						isSocialAll[k][classList].remove(isActiveClass);
+					}
+				}
+				k = n = null;
+			}
+		};
+
+		root[addEventListener]("click", hideOtherIsSocial);
+
+		var yaShare2Id = "ya-share2";
+
+		var yaShare2 = document[getElementById](yaShare2Id) || "";
+
+		var btnShare = document[getElementsByClassName]("btn-share")[0] || "";
+		var btnShareLink = btnShare ? btnShare[getElementsByTagName]("a")[0] || "" : "";
+		var yshare;
+		var showYaShare2 = function (ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			var logic = function () {
+				yaShare2[classList].toggle(isActiveClass);
+				hideOtherIsSocial(yaShare2);
+				var initScript = function () {
+					if (root.Ya) {
+						try {
+							if (yshare) {
+								yshare.updateContent({
+									title: documentTitle,
+									description: documentTitle,
+									url: locationHref
+								});
+							} else {
+								yshare = Ya.share2(yaShare2Id, {
+									content: {
+										title: documentTitle,
+										description: documentTitle,
+										url: locationHref
+									}
+								});
+							}
+						} catch (err) {
+							console.log("cannot update or init Ya", err);
+						}
+					}
+				};
+				var jsUrl = forcedHTTP + "://yastatic.net/share2/share.js";
+				if (!scriptIsLoaded(jsUrl)) {
+					var load;
+					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
+				}
+			};
+			var debounceLogic = debounce(logic, 200);
+			debounceLogic();
+		};
+
+		if (btnShare && btnShareLink && yaShare2) {
+			btnShareLink[addEventListener]("click", showYaShare2);
+		}
+
+		var vkLikeClass = "vk-like";
+		var vkLike = document[getElementsByClassName](vkLikeClass)[0] || "";
+
+		var holderVkLikeClass = "holder-vk-like";
+		var holderVkLike = document[getElementsByClassName](holderVkLikeClass)[0] || "";
+
+		var btnLike = document[getElementsByClassName]("btn-like")[0] || "";
+		var btnLikeLink = btnLike ? btnLike[getElementsByTagName]("a")[0] || "" : "";
+		var vkLikeId = "vk-like";
+
+		var vlike;
+		var showVkLike = function (ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			var logic = function () {
+				holderVkLike[classList].toggle(isActiveClass);
+				hideOtherIsSocial(holderVkLike);
+				var initScript = function () {
+					if (root.VK) {
+						if (!vlike) {
+							try {
+								VK.init({
+									apiId: (vkLike[dataset].apiid || ""),
+									nameTransportPath: "/xd_receiver.htm",
+									onlyWidgets: true
+								});
+								VK.Widgets.Like(vkLikeId, {
+									type: "button",
+									height: 24
+								});
+								vlike = true;
+							} catch (err) {
+								console.log("cannot init VK", err);
+							}
+						}
+					}
+				};
+				var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?147";
+				if (!scriptIsLoaded(jsUrl)) {
+					var load;
+					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
+				}
+			};
+			var debounceLogic = debounce(logic, 200);
+			debounceLogic();
+		};
+
+		if (btnLike && btnLikeLink && vkLike) {
+			btnLikeLink[addEventListener]("click", showVkLike);
+		}
+
 		var throttle = function (func, wait) {
 			var ctx;
 			var args;
@@ -1148,8 +1493,6 @@ ToProgress, WheelIndicator, zoomwall */
 		if (titleBar) {
 			root[addEventListener]("scroll", handleTitleBar, {passive: true});
 		} */
-
-		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
 
 		/*!
 		 * set fixed depending on scroll/swipe direction
@@ -1279,8 +1622,6 @@ ToProgress, WheelIndicator, zoomwall */
 			}
 		}
 
-		var isActiveClass = "is-active";
-
 		var scroll2Top = function (scrollTargetY, speed, easing) {
 			var scrollY = root.scrollY || document.documentElement.scrollTop;
 			var posY = scrollTargetY || 0;
@@ -1355,12 +1696,6 @@ ToProgress, WheelIndicator, zoomwall */
 
 	var scripts = ["./libs/picturewall/css/bundle.min.css"];
 
-	var getHTTP = function (force) {
-		var any = force || "";
-		var locationProtocol = root.location.protocol || "";
-		return "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : any ? "http" : "";
-	};
-
 	var forcedHTTP = getHTTP(true);
 
 	var supportsClassList = "classList" in document[createElement]("_") || "";
@@ -1400,6 +1735,10 @@ ToProgress, WheelIndicator, zoomwall */
 
 	if (!root.fetch) {
 		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/fetch/2.0.1/fetch.min.js");
+	}
+
+	if (!root.requestAnimationFrame) {
+		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/request-animation-frame-polyfill@0.1.3/index.min.js");
 	}
 
 	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
@@ -1451,7 +1790,7 @@ ToProgress, WheelIndicator, zoomwall */
 
 	var load;
 	load = new loadJsCss(
-			[forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:400&subset=cyrillic"],
+			[forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic"],
 			onFontsLoadedCallback
 		);
 
