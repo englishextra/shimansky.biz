@@ -198,13 +198,17 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	"use strict";
 
 	var doesFontExist = function (fontName) {
-		var canvas = document.createElement("canvas");
-		var context = canvas.getContext("2d");
+		var createElement = "createElement";
+		var getContext = "getContext";
+		var measureText = "measureText";
+		var width = "width";
+		var canvas = document[createElement]("canvas");
+		var context = canvas[getContext]("2d");
 		var text = "abcdefghijklmnopqrstuvwxyz0123456789";
 		context.font = "72px monospace";
-		var baselineSize = context.measureText(text).width;
+		var baselineSize = context[measureText](text)[width];
 		context.font = "72px '" + fontName + "', monospace";
-		var newSize = context.measureText(text).width;
+		var newSize = context[measureText](text)[width];
 		canvas = null;
 		if (newSize == baselineSize) {
 			return false;
@@ -1089,7 +1093,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/dom4@1.8.5/build/dom4.max.min.js");
 	}
 
-	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.4/qrjs2.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
+	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.6/qrjs2.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
 
 	if (hasTouch) {
 		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/tocca@2.0.1/Tocca.min.js");
