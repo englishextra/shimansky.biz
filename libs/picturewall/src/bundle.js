@@ -624,6 +624,13 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			rtn,
 			timeoutID;
 			var last = 0;
+			function call() {
+				timeoutID = 0;
+				last = +new Date();
+				rtn = func.apply(ctx, args);
+				ctx = null;
+				args = null;
+			}
 			return function throttled() {
 				ctx = this;
 				args = arguments;
@@ -637,13 +644,6 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				}
 				return rtn;
 			};
-			function call() {
-				timeoutID = 0;
-				last = +new Date();
-				rtn = func.apply(ctx, args);
-				ctx = null;
-				args = null;
-			}
 		};
 		var throttleEchoImageAll = throttle(echoImageAll, _throttleRate);
 		var supportsPassive = (function () {
@@ -709,7 +709,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		context.font = "72px '" + fontName + "', monospace";
 		var newSize = context[measureText](text)[width];
 		canvas = null;
-		if (newSize == baselineSize) {
+		if (newSize === baselineSize) {
 			return false;
 		} else {
 			return true;
@@ -851,6 +851,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 		progressBar.increase(20);
 
+		var mo;
 		var observeMutations = function (ctx) {
 			var _ctx = ctx && ctx.nodeName ? ctx : "";
 			var getMutations = function (e) {
@@ -869,7 +870,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				}
 			};
 			if (_ctx) {
-				var mo = new MutationObserver(getMutations);
+				mo = new MutationObserver(getMutations);
 				mo.observe(_ctx, {
 					childList: !0,
 					subtree: !0,
@@ -1085,7 +1086,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 		var navigatorUserAgent = navigator.userAgent || "";
 
-		var getHumanDate = function () {
+		var getHumanDate = (function () {
 			var newDate = (new Date());
 			var newDay = newDate.getDate();
 			var newYear = newDate.getFullYear();
@@ -1099,7 +1100,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 			return newYear + "-" + newMonth + "-" + newDay;
 		}
-		();
+		());
 
 		var platformName = "";
 		var platformDescription = "";
@@ -1489,6 +1490,13 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			var rtn;
 			var timeoutID;
 			var last = 0;
+			function call() {
+				timeoutID = 0;
+				last = +new Date();
+				rtn = func.apply(ctx, args);
+				ctx = null;
+				args = null;
+			}
 			return function throttled() {
 				ctx = this;
 				args = arguments;
@@ -1502,13 +1510,6 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				}
 				return rtn;
 			};
-			function call() {
-				timeoutID = 0;
-				last = +new Date();
-				rtn = func.apply(ctx, args);
-				ctx = null;
-				args = null;
-			}
 		};
 
 		var titleBar = document[getElementsByClassName]("title-bar")[0] || "";

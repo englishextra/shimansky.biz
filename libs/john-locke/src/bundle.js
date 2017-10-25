@@ -211,7 +211,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		context.font = "72px '" + fontName + "', monospace";
 		var newSize = context[measureText](text)[width];
 		canvas = null;
-		if (newSize == baselineSize) {
+		if (newSize === baselineSize) {
 			return false;
 		} else {
 			return true;
@@ -723,7 +723,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 		var navigatorUserAgent = navigator.userAgent || "";
 
-		var getHumanDate = function () {
+		var getHumanDate = (function () {
 			var newDate = (new Date());
 			var newDay = newDate.getDate();
 			var newYear = newDate.getFullYear();
@@ -737,7 +737,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 			return newYear + "-" + newMonth + "-" + newDay;
 		}
-		();
+		());
 
 		var platformName = "";
 		var platformDescription = "";
