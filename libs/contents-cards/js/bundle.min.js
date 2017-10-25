@@ -34,8 +34,15 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 }("undefined" !== typeof window ? window : this));
 /*!
  * modified ToProgress v0.1.1
+ * arguments.callee changed to TP, a local wrapper function,
+ * so that public function name is now customizable;
+ * wrapped in curly brackets:
+ * else{document.body.appendChild(this.progressBar);};
+ * removed module check
  * @see {@link http://github.com/djyde/ToProgress}
  * @see {@link https://github.com/djyde/ToProgress/blob/master/ToProgress.js}
+ * @see {@link https://gist.github.com/englishextra/6a8c79c9efbf1f2f50523d46a918b785}
+ * @see {@link https://jsfiddle.net/englishextra/z5xhjde8/}
  * passes jshint
  */
 (function (root, document, undefined) {
@@ -416,10 +423,10 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		};
 		var throttle = function (func, wait) {
-			var ctx,
-			args,
-			rtn,
-			timeoutID;
+			var ctx;
+			var args;
+			var rtn;
+			var timeoutID;
 			var last = 0;
 			function call() {
 				timeoutID = 0;
