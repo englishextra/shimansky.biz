@@ -2,7 +2,7 @@
 /*jslint node: true */
 /*global doesFontExist, echo, Headers, loadJsCss, platform, Promise, t,
 ToProgress, VK, WheelIndicator, Ya, zoomwall */
-/*property console, split */
+/*property console, join, split */
 /*!
  * safe way to handle console.log
  * @see {@link https://github.com/paulmillr/console-polyfill}
@@ -17,9 +17,10 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 	var method;
 	var dummy = function () {};
 	var properties = ["memory"];
-	var methods = ("assert,clear,count,debug,dir,dirxml,error,exception,group," +
-		"groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd," +
-		"show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn").split(",");
+	var methods = ["assert,clear,count,debug,dir,dirxml,error,exception,group,",
+		"groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,",
+		"show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn"];
+	methods.join("").split(",");
 	for (; (prop = properties.pop()); ) {
 		if (!con[prop]) {
 			con[prop] = {};
@@ -502,6 +503,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
  */
 (function (root) {
 	"use strict";
+	var hasOwnProperty = "hasOwnProperty";
 	var length = "length";
 	var replace = "replace";
 	var blockregex = /\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g;
@@ -543,7 +545,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				_ = vars._key;
 				__ = vars._val;
 				for (i in val) {
-					if (val.hasOwnProperty(i)) {
+					if (val[hasOwnProperty](i)) {
 						vars._key = i;
 						vars._val = val[i];
 						temp += render(inner, vars);
@@ -993,56 +995,28 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 		};
 
-		var debounce = function (func, wait, immediate) {
+		var debounce = function (func, wait) {
 			var timeout;
 			var args;
 			var context;
 			var timestamp;
-			var result;
-			if (undefined === wait || null === wait) {
-				wait = 100;
-			}
-			function later() {
-				var last = Date.now() - timestamp;
-				if (last < wait && last >= 0) {
-					timeout = setTimeout(later, wait - last);
-				} else {
-					timeout = null;
-					if (!immediate) {
-						result = func.apply(context, args);
-						context = args = null;
-					}
-				}
-			}
-			var debounced = function () {
+			return function () {
 				context = this;
-				args = arguments;
-				timestamp = Date.now();
-				var callNow = immediate && !timeout;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = (new Date()) - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
 				if (!timeout) {
 					timeout = setTimeout(later, wait);
 				}
-				if (callNow) {
-					result = func.apply(context, args);
-					context = args = null;
-				}
-				return result;
 			};
-			debounced.clear = function () {
-				if (timeout) {
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			debounced.flush = function () {
-				if (timeout) {
-					result = func.apply(context, args);
-					context = args = null;
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			return debounced;
 		};
 
 		var isBindedClass = "is-binded";
