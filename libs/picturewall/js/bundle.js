@@ -2,7 +2,7 @@
 /*jslint node: true */
 /*global doesFontExist, echo, Headers, loadJsCss, platform, Promise, t,
 ToProgress, VK, WheelIndicator, Ya, zoomwall */
-/*property console, split */
+/*property console, join, split */
 /*!
  * safe way to handle console.log
  * @see {@link https://github.com/paulmillr/console-polyfill}
@@ -18,7 +18,8 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 	var method;
 	var dummy = function () {};
 	var properties = ["memory"];
-	var methods = ("assert,clear,count,debug,dir,dirxml,error,exception,group," + "groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd," + "show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn").split(",");
+	var methods = ["assert,clear,count,debug,dir,dirxml,error,exception,group,", "groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,", "show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn"];
+	methods.join("").split(",");
 	for (; prop = properties.pop();) {
 		if (!con[prop]) {
 			con[prop] = {};
@@ -49,7 +50,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 	var ToProgress = function () {
 		var TP = function () {
-			var addEventListener = "addEventListener";
+			var _addEventListener = "addEventListener";
 			var appendChild = "appendChild";
 			var createElement = "createElement";
 			var firstChild = "firstChild";
@@ -58,7 +59,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			var hasOwnProperty = "hasOwnProperty";
 			var opacity = "opacity";
 			var prototype = "prototype";
-			var removeEventListener = "removeEventListener";
+			var _removeEventListener = "removeEventListener";
 			var style = "style";
 			function whichTransitionEvent() {
 				var t,
@@ -168,9 +169,9 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				this.setProgress(100, callback);
 				this.hide();
 				if (transitionEvent) {
-					this.progressBar[addEventListener](transitionEvent, function (e) {
+					this.progressBar[_addEventListener](transitionEvent, function (e) {
 						that.reset();
-						that.progressBar[removeEventListener](e.type, TP);
+						that.progressBar[_removeEventListener](e.type, TP);
 					});
 				}
 			};
@@ -205,14 +206,14 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 (function (root, document) {
 	"use strict";
 
-	var addEventListener = "addEventListener";
+	var _addEventListener = "addEventListener";
 	var children = "children";
 	var classList = "classList";
 	var dataset = "dataset";
 	var getComputedStyle = "getComputedStyle";
 	var getElementsByClassName = "getElementsByClassName";
 	var hasOwnProperty = "hasOwnProperty";
-	var length = "length";
+	var _length = "length";
 	var nextElementSibling = "nextElementSibling";
 	var offsetTop = "offsetTop";
 	var parentNode = "parentNode";
@@ -225,13 +226,13 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			_this.dataAttributeLowresName = dataAttributeLowresName || "lowres";
 			zoomwall.resize(blocks[children]);
 			blocks[classList].remove("loading");
-			blocks[addEventListener]("click", function () {
-				if (_this[children] && _this[children][length] > 0) {
+			blocks[_addEventListener]("click", function () {
+				if (_this[children] && _this[children][_length] > 0) {
 					zoomwall.shrink(_this[children][0]);
 				}
 			});
-			for (var i = 0; i < blocks[children][length]; i++) {
-				blocks[children][i][addEventListener]("click", zoomwall.animate);
+			for (var i = 0; i < blocks[children][_length]; i++) {
+				blocks[children][i][_addEventListener]("click", zoomwall.animate);
 			}
 			if (enableKeys) {
 				zoomwall.keys(blocks);
@@ -249,7 +250,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				if (elem) {
 					switch (e.keyCode) {
 						case 27:
-							if (elem[children] && elem[children][length] > 0) {
+							if (elem[children] && elem[children][_length] > 0) {
 								zoomwall.shrink(elem[children][0]);
 							}
 							e.preventDefault();
@@ -265,11 +266,11 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 					}
 				}
 			};
-			document[addEventListener]("keydown", keyPager);
+			document[_addEventListener]("keydown", keyPager);
 			return keyPager;
 		},
 		resizeRow: function (row, width) {
-			if (row && row[length] > 1) {
+			if (row && row[_length] > 1) {
 				for (var i in row) {
 					if (row[hasOwnProperty](i)) {
 						row[i][style].width = parseInt(root[getComputedStyle](row[i]).width, 10) / width * 100 + "%";
@@ -290,7 +291,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		resize: function (blocks) {
 			var row = [];
 			var top = -1;
-			for (var c = 0; c < blocks[length]; c++) {
+			for (var c = 0; c < blocks[_length]; c++) {
 				var block = blocks[c];
 				if (block) {
 					if (top === -1) {
@@ -374,18 +375,18 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				offsetY -= parentTop;
 			}
 			var leftOffsetX = 0;
-			for (var i = 0; i < row[length] && row[i] !== block; i++) {
+			for (var i = 0; i < row[_length] && row[i] !== block; i++) {
 				leftOffsetX += parseInt(root[getComputedStyle](row[i]).width, 10) * scale;
 			}
 			leftOffsetX = parentWidth / 2 - blockWidth * scale / 2 - leftOffsetX;
 			var rightOffsetX = 0;
-			for (var j = row[length] - 1; j >= 0 && row[j] !== block; j--) {
+			for (var j = row[_length] - 1; j >= 0 && row[j] !== block; j--) {
 				rightOffsetX += parseInt(root[getComputedStyle](row[j]).width, 10) * scale;
 			}
 			rightOffsetX = parentWidth / 2 - blockWidth * scale / 2 - rightOffsetX;
 			var itemOffset = 0;
 			var prevWidth = 0;
-			for (var k = 0; k < row[length]; k++) {
+			for (var k = 0; k < row[_length]; k++) {
 				itemOffset += prevWidth * scale - prevWidth;
 				prevWidth = parseInt(root[getComputedStyle](row[k]).width, 10);
 				var percentageOffsetX = (itemOffset + leftOffsetX) / prevWidth * 100;
@@ -399,7 +400,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			var prevHeight;
 			itemOffset = 0;
 			prevWidth = 0;
-			var next2 = row[row[length] - 1][nextElementSibling];
+			var next2 = row[row[_length] - 1][nextElementSibling];
 			var nextRowTop = -1;
 			while (next2) {
 				var curTop = next2[offsetTop];
@@ -452,7 +453,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				zoomwall.shrink(_this);
 			} else {
 				var actives = _this[parentNode][getElementsByClassName]("active");
-				for (var i = 0; i < actives[length]; i++) {
+				for (var i = 0; i < actives[_length]; i++) {
 					actives[i][classList].remove("active");
 				}
 				zoomwall.expand(_this);
@@ -461,7 +462,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		},
 		page: function (blocks, isNext) {
 			var actives = blocks[getElementsByClassName]("active");
-			if (actives && actives[length] > 0) {
+			if (actives && actives[_length] > 0) {
 				var current = actives[0];
 				var next;
 				if (isNext) {
@@ -502,7 +503,8 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 (function (root) {
 	"use strict";
 
-	var length = "length";
+	var hasOwnProperty = "hasOwnProperty";
+	var _length = "length";
 	var replace = "replace";
 	var blockregex = /\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g;
 	var valregex = /\{\{([=%])(.+?)\}\}/g;
@@ -514,7 +516,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 	}
 	function get_value(vars, key) {
 		var parts = key.split(".");
-		while (parts[length]) {
+		while (parts[_length]) {
 			if (!(parts[0] in vars)) {
 				return false;
 			}
@@ -543,7 +545,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				_ = vars._key;
 				__ = vars._val;
 				for (i in val) {
-					if (val.hasOwnProperty(i)) {
+					if (val[hasOwnProperty](i)) {
 						vars._key = i;
 						vars._val = val[i];
 						temp += render(inner, vars);
@@ -581,7 +583,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		var _imgClass = imgClass || "data-src-img";
 		var _dataAttributeName = dataAttributeName || "src";
 		var _throttleRate = throttleRate || 100;
-		var addEventListener = "addEventListener";
+		var _addEventListener = "addEventListener";
 		var classList = "classList";
 		var dataset = "dataset";
 		var defineProperty = "defineProperty";
@@ -589,7 +591,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		var getAttribute = "getAttribute";
 		var getBoundingClientRect = "getBoundingClientRect";
 		var getElementsByClassName = "getElementsByClassName";
-		var length = "length";
+		var _length = "length";
 		var Echo = function (elem) {
 			var _this = this;
 			_this.elem = elem;
@@ -617,7 +619,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 		};
 		var echoImageAll = function () {
-			for (var i = 0; i < echoStore[length]; i++) {
+			for (var i = 0; i < echoStore[_length]; i++) {
 				var self = echoStore[i];
 				if (scrolledIntoView(self)) {
 					echoSrc(self, removeEcho(self, i));
@@ -660,7 +662,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 						support = true;
 					}
 				});
-				root[addEventListener]("test", function () {}, opts);
+				root[_addEventListener]("test", function () {}, opts);
 			} catch (err) {}
 			return support;
 		}();
@@ -673,14 +675,14 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			},
 			listen: function () {
 				if (!isBindedEcho) {
-					root[addEventListener]("scroll", throttleEchoImageAll, supportsPassive ? { passive: true } : false);
+					root[_addEventListener]("scroll", throttleEchoImageAll, supportsPassive ? { passive: true } : false);
 					document[documentElement][classList].add(isBindedEchoClass);
 				}
 			}
 		};
 		var lazyImgs = document[getElementsByClassName](_imgClass) || "";
 		var walkLazyImageAll = function () {
-			for (var i = 0; i < lazyImgs[length]; i++) {
+			for (var i = 0; i < lazyImgs[_length]; i++) {
 				new Echo(lazyImgs[i]).init();
 			}
 		};
@@ -737,7 +739,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		var createElement = "createElement";
 		var getElementsByTagName = "getElementsByTagName";
 		var insertBefore = "insertBefore";
-		var length = "length";
+		var _length = "length";
 		var parentNode = "parentNode";
 		_this.files = files;
 		_this.js = [];
@@ -758,7 +760,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			script.async = true;
 			script.src = _this.js[i];
 			var loadNextScript = function () {
-				if (++i < _this.js[length]) {
+				if (++i < _this.js[_length]) {
 					_this.loadScript(i);
 				} else {
 					_this.callback();
@@ -775,7 +777,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 		};
 		var i, l;
-		for (i = 0, l = _this.files[length]; i < l; i += 1) {
+		for (i = 0, l = _this.files[_length]; i < l; i += 1) {
 			if (/\.js$|\.js\?/.test(_this.files[i])) {
 				_this.js.push(_this.files[i]);
 			}
@@ -784,7 +786,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 		}
 		i = l = null;
-		if (_this.js[length] > 0) {
+		if (_this.js[_length] > 0) {
 			_this.loadScript(0);
 		} else {
 			_this.callback();
@@ -798,10 +800,10 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 (function (root, document) {
 	"use strict";
 
-	var addEventListener = "addEventListener";
+	var _addEventListener = "addEventListener";
 	var createElement = "createElement";
 	var documentElement = "documentElement";
-	var length = "length";
+	var _length = "length";
 
 	var progressBar = new ToProgress({
 		id: "top-progress-bar",
@@ -856,27 +858,27 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 		progressBar.increase(20);
 
-		var mo;
-		var observeMutations = function (ctx) {
-			var _ctx = ctx && ctx.nodeName ? ctx : "";
+		var observeMutations = function (scope) {
+			var context = scope && scope.nodeName ? scope : "";
+			var mo;
 			var getMutations = function (e) {
 				var triggerOnMutation = function (m) {
 					console.log("mutations observer: " + m.type);
 					console.log(m.type, "target: " + m.target.tagName + ("." + m.target[className] || "#" + m.target.id || ""));
-					console.log(m.type, "added: " + m.addedNodes[length] + " nodes");
-					console.log(m.type, "removed: " + m.removedNodes[length] + " nodes");
+					console.log(m.type, "added: " + m.addedNodes[_length] + " nodes");
+					console.log(m.type, "removed: " + m.removedNodes[_length] + " nodes");
 					if ("childList" === m.type || "subtree" === m.type) {
 						mo.disconnect();
 						hideProgressBar();
 					}
 				};
-				for (var i = 0, l = e[length]; i < l; i += 1) {
+				for (var i = 0, l = e[_length]; i < l; i += 1) {
 					triggerOnMutation(e[i]);
 				}
 			};
-			if (_ctx) {
+			if (context) {
 				mo = new MutationObserver(getMutations);
-				mo.observe(_ctx, {
+				mo.observe(context, {
 					childList: !0,
 					subtree: !0,
 					attributes: !1,
@@ -987,64 +989,36 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 		};
 
-		var debounce = function (func, wait, immediate) {
+		var debounce = function (func, wait) {
 			var timeout;
 			var args;
 			var context;
 			var timestamp;
-			var result;
-			if (undefined === wait || null === wait) {
-				wait = 100;
-			}
-			function later() {
-				var last = Date.now() - timestamp;
-				if (last < wait && last >= 0) {
-					timeout = setTimeout(later, wait - last);
-				} else {
-					timeout = null;
-					if (!immediate) {
-						result = func.apply(context, args);
-						context = args = null;
-					}
-				}
-			}
-			var debounced = function () {
+			return function () {
 				context = this;
-				args = arguments;
-				timestamp = Date.now();
-				var callNow = immediate && !timeout;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = new Date() - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
 				if (!timeout) {
 					timeout = setTimeout(later, wait);
 				}
-				if (callNow) {
-					result = func.apply(context, args);
-					context = args = null;
-				}
-				return result;
 			};
-			debounced.clear = function () {
-				if (timeout) {
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			debounced.flush = function () {
-				if (timeout) {
-					result = func.apply(context, args);
-					context = args = null;
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			return debounced;
 		};
 
 		var isBindedClass = "is-binded";
 
-		var manageExternalLinkAll = function (ctx) {
-			var _ctx = ctx && ctx.nodeName ? ctx : "";
+		var manageExternalLinkAll = function (scope) {
+			var context = scope && scope.nodeName ? scope : "";
 			var linkTag = "a";
-			var externalLinks = _ctx ? _ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+			var externalLinks = context ? context[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
 			var arrange = function (e) {
 				var handleExternalLink = function (url, evt) {
 					evt.stopPropagation();
@@ -1061,7 +1035,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 							e.target = "_blank";
 							e.rel = "noopener";
 						} else {
-							e[addEventListener]("click", handleExternalLink.bind(null, url));
+							e[_addEventListener]("click", handleExternalLink.bind(null, url));
 						}
 						e[classList].add(isBindedClass);
 					}
@@ -1331,7 +1305,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 		var scriptIsLoaded = function (scriptSrc) {
 			var scriptAll, i, l;
-			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[length]; i < l; i += 1) {
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
 				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
 					scriptAll = i = l = null;
 					return true;
@@ -1348,7 +1322,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			var isSocialAll = document[getElementsByClassName]("is-social") || "";
 			if (isSocialAll) {
 				var k, n;
-				for (k = 0, n = isSocialAll[length]; k < n; k += 1) {
+				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
 					if (_thisObj !== isSocialAll[k]) {
 						isSocialAll[k][classList].remove(isActiveClass);
 					}
@@ -1357,7 +1331,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			}
 		};
 
-		root[addEventListener]("click", hideOtherIsSocial);
+		root[_addEventListener]("click", hideOtherIsSocial);
 
 		var yaShare2Id = "ya-share2";
 
@@ -1408,7 +1382,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		};
 
 		if (btnShare && btnShareLink && yaShare2) {
-			btnShareLink[addEventListener]("click", showYaShare2);
+			btnShareLink[_addEventListener]("click", showYaShare2);
 		}
 
 		var vkLikeClass = "vk-like";
@@ -1461,7 +1435,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		};
 
 		if (btnLike && btnLikeLink && vkLike) {
-			btnLikeLink[addEventListener]("click", showVkLike);
+			btnLikeLink[_addEventListener]("click", showVkLike);
 		}
 
 		var throttle = function (func, wait) {
@@ -1511,7 +1485,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
   	throttleLogic();
   };
   if (titleBar) {
-  	root[addEventListener]("scroll", handleTitleBar, {passive: true});
+  	root[_addEventListener]("scroll", handleTitleBar, {passive: true});
   } */
 
 		/*!
@@ -1555,8 +1529,8 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
   	titleBar[classList].add(duration4msClass);
   	if (hasTouch) {
   		if (root.tocca) {
-  			root[addEventListener]("swipeup", hideTitleBar, {passive: true});
-  			root[addEventListener]("swipedown", revealTitleBar, {passive: true});
+  			root[_addEventListener]("swipeup", hideTitleBar, {passive: true});
+  			root[_addEventListener]("swipedown", revealTitleBar, {passive: true});
   		}
   	} else {
   		if (hasWheel) {
@@ -1621,11 +1595,11 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			throttleLogic();
 		};
 		if (titleBar) {
-			root[addEventListener]("scroll", resetTitleBar, { passive: true });
+			root[_addEventListener]("scroll", resetTitleBar, { passive: true });
 			if (hasTouch) {
 				if (root.tocca) {
-					root[addEventListener]("swipeup", hideTitleBar, { passive: true });
-					root[addEventListener]("swipedown", revealTitleBar, { passive: true });
+					root[_addEventListener]("swipeup", hideTitleBar, { passive: true });
+					root[_addEventListener]("swipedown", revealTitleBar, { passive: true });
 				}
 			} else {
 				if (hasWheel) {
@@ -1708,8 +1682,8 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			throttleLogic();
 		};
 		if (btnTotop) {
-			btnTotop[addEventListener]("click", handleBtnTotop);
-			root[addEventListener]("scroll", handleBtnTotopWindow, { passive: true });
+			btnTotop[_addEventListener]("click", handleBtnTotop);
+			root[_addEventListener]("scroll", handleBtnTotopWindow, { passive: true });
 		}
 	};
 
@@ -1741,7 +1715,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 					support = true;
 				}
 			});
-			root[addEventListener]("test", function () {}, opts);
+			root[_addEventListener]("test", function () {}, opts);
 		} catch (err) {}
 		return support;
 	}();
@@ -1824,7 +1798,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
  	listeners: [],
  	active: function () {
  		this.called_ready = true;
- 		for (var i = 0; i < this.listeners[length]; i++) {
+ 		for (var i = 0; i < this.listeners[_length]; i++) {
  			this.listeners[i]();
  		}
  	},

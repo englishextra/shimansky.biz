@@ -64,7 +64,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * @see {@link https://habrahabr.ru/post/327246/}
  * @see {@link https://codepen.io/iGetPass/pen/apZPMo}
  */
-(function(root){"use strict";var d=document,gEBCN="getElementsByClassName",aEL="addEventListener";var Carousel=function(setting){var _this=this;if(d[gEBCN](setting.wrap)[0]===null){console.error("Carousel not fount selector "+setting.wrap);return;}var privates={};this.prev_slide=function(){--privates.opt.position;if(privates.opt.position<0){privates.opt.position=privates.opt.max_position-1;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};this.next_slide=function(){++privates.opt.position;if(privates.opt.position>=privates.opt.max_position){privates.opt.position=0;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};privates.setting=setting;privates.sel={"main":d[gEBCN](privates.setting.main)[0],"wrap":d[gEBCN](privates.setting.wrap)[0],"children":d[gEBCN](privates.setting.wrap)[0].children,"prev":d[gEBCN](privates.setting.prev)[0],"next":d[gEBCN](privates.setting.next)[0]};privates.opt={"position":0,"max_position":d[gEBCN](privates.setting.wrap)[0].children.length};if(privates.sel.prev!==null){privates.sel.prev[aEL]("click",function(){_this.prev_slide();});}if(privates.sel.next!==null){privates.sel.next[aEL]("click",function(){_this.next_slide();});}};root.Carousel=Carousel;}(globalRoot));
+(function(root){"use strict";var d=document,getElementsByClassName="getElementsByClassName",_addEventListener="addEventListener";var Carousel=function(setting){var _this=this;if(d[getElementsByClassName](setting.wrap)[0]===null){console.error("Carousel not fount selector "+setting.wrap);return;}var privates={};this.prev_slide=function(){--privates.opt.position;if(privates.opt.position<0){privates.opt.position=privates.opt.max_position-1;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};this.next_slide=function(){++privates.opt.position;if(privates.opt.position>=privates.opt.max_position){privates.opt.position=0;}privates.sel.wrap.style.transform="translateX(-"+privates.opt.position+"00%)";};privates.setting=setting;privates.sel={"main":d[getElementsByClassName](privates.setting.main)[0],"wrap":d[getElementsByClassName](privates.setting.wrap)[0],"children":d[getElementsByClassName](privates.setting.wrap)[0].children,"prev":d[getElementsByClassName](privates.setting.prev)[0],"next":d[getElementsByClassName](privates.setting.next)[0]};privates.opt={"position":0,"max_position":d[getElementsByClassName](privates.setting.wrap)[0].children.length};if(privates.sel.prev!==null){privates.sel.prev[_addEventListener]("click",function(){_this.prev_slide();});}if(privates.sel.next!==null){privates.sel.next[_addEventListener]("click",function(){_this.next_slide();});}};root.Carousel=Carousel;}(globalRoot));
 /*!
  * modified Simple lightbox effect in pure JS
  * @see {@link https://github.com/squeral/lightbox}
@@ -74,7 +74,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * new IframeLightbox(elem)
  * passes jshint
  */
-(function(root){"use strict";var d=document,aEL="addEventListener",gEBI="getElementById",gEBCN="getElementsByClassName",cE="createElement",cL="classList",aC="appendChild",ds="dataset",containerClass="iframe-lightbox",isLoadedClass="is-loaded",isOpenedClass="is-opened",isShowingClass="is-showing";var IframeLightbox=function(elem,rate){if(elem.nodeName){this.trigger=elem;this.rate=rate||500;this.el=d[gEBCN](containerClass)[0]||"";this.body=this.el?this.el[gEBCN]("body")[0]:"";this.content=this.el?this.el[gEBCN]("content")[0]:"";this.href=elem[ds].src||"";this.paddingBottom=elem[ds].paddingBottom||"";this.init();}else{return;}};IframeLightbox.prototype.init=function(){var _this=this;if(!this.el){this.create();}var debounce=function(func,wait){var timeout,args,context,timestamp;return function(){context=this;args=[].slice.call(arguments,0);timestamp=new Date();var later=function(){var last=(new Date())-timestamp;if(last<wait){timeout=setTimeout(later,wait-last);}else{timeout=null;func.apply(context,args);}};if(!timeout){timeout=setTimeout(later,wait);}};};var handleOpenIframeLightbox=function(e){e.preventDefault();_this.open();};var debounceHandleOpenIframeLightbox=debounce(handleOpenIframeLightbox,this.rate);this.trigger[aEL]("click",debounceHandleOpenIframeLightbox);};IframeLightbox.prototype.create=function(){var _this=this,bd=d[cE]("div");this.el=d[cE]("div");this.content=d[cE]("div");this.body=d[cE]("div");this.el[cL].add(containerClass);bd[cL].add("backdrop");this.content[cL].add("content");this.body[cL].add("body");this.el[aC](bd);this.content[aC](this.body);this.contentHolder=d[cE]("div");this.contentHolder[cL].add("content-holder");this.contentHolder[aC](this.content);this.el[aC](this.contentHolder);d.body[aC](this.el);bd[aEL]("click",function(){_this.close();});var clearBody=function(){if(_this.isOpen()){return;}_this.el[cL].remove(isShowingClass);_this.body.innerHTML="";};this.el[aEL]("transitionend",clearBody,false);this.el[aEL]("webkitTransitionEnd",clearBody,false);this.el[aEL]("mozTransitionEnd",clearBody,false);this.el[aEL]("msTransitionEnd",clearBody,false);};IframeLightbox.prototype.loadIframe=function(){this.iframeId=containerClass+Date.now();this.body.innerHTML='<iframe src="'+this.href+'" name="'+this.iframeId+'" id="'+this.iframeId+'" onload="this.style.opacity=1;" style="opacity:0;border:none;" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" frameborder="no" title="Embedded Content"></iframe>';(function(iframeId,body){d[gEBI](iframeId).onload=function(){this.style.opacity=1;body[cL].add(isLoadedClass);};}(this.iframeId,this.body));};IframeLightbox.prototype.open=function(){this.loadIframe();if(this.paddingBottom){this.content.style.paddingBottom=this.paddingBottom;}else{this.content.removeAttribute("style");}this.el[cL].add(isShowingClass);this.el[cL].add(isOpenedClass);};IframeLightbox.prototype.close=function(){this.el[cL].remove(isOpenedClass);this.body[cL].remove(isLoadedClass);};IframeLightbox.prototype.isOpen=function(){return this.el[cL].contains(isOpenedClass);};root.IframeLightbox=IframeLightbox;}(globalRoot));
+(function(root){"use strict";var d=document,_addEventListener="addEventListener",getElementById="getElementById",getElementsByClassName="getElementsByClassName",createElement="createElement",classList="classList",appendChild="appendChild",dataset="dataset",containerClass="iframe-lightbox",isLoadedClass="is-loaded",isOpenedClass="is-opened",isShowingClass="is-showing";var IframeLightbox=function(elem,rate){if(elem.nodeName){this.trigger=elem;this.rate=rate||500;this.el=d[getElementsByClassName](containerClass)[0]||"";this.body=this.el?this.el[getElementsByClassName]("body")[0]:"";this.content=this.el?this.el[getElementsByClassName]("content")[0]:"";this.href=elem[dataset].src||"";this.paddingBottom=elem[dataset].paddingBottom||"";this.init();}else{return;}};IframeLightbox.prototype.init=function(){var _this=this;if(!this.el){this.create();}var debounce=function(func,wait){var timeout,args,context,timestamp;return function(){context=this;args=[].slice.call(arguments,0);timestamp=new Date();var later=function(){var last=(new Date())-timestamp;if(last<wait){timeout=setTimeout(later,wait-last);}else{timeout=null;func.apply(context,args);}};if(!timeout){timeout=setTimeout(later,wait);}};};var handleOpenIframeLightbox=function(e){e.preventDefault();_this.open();};var debounceHandleOpenIframeLightbox=debounce(handleOpenIframeLightbox,this.rate);this.trigger[_addEventListener]("click",debounceHandleOpenIframeLightbox);};IframeLightbox.prototype.create=function(){var _this=this,bd=d[createElement]("div");this.el=d[createElement]("div");this.content=d[createElement]("div");this.body=d[createElement]("div");this.el[classList].add(containerClass);bd[classList].add("backdrop");this.content[classList].add("content");this.body[classList].add("body");this.el[appendChild](bd);this.content[appendChild](this.body);this.contentHolder=d[createElement]("div");this.contentHolder[classList].add("content-holder");this.contentHolder[appendChild](this.content);this.el[appendChild](this.contentHolder);d.body[appendChild](this.el);bd[_addEventListener]("click",function(){_this.close();});var clearBody=function(){if(_this.isOpen()){return;}_this.el[classList].remove(isShowingClass);_this.body.innerHTML="";};this.el[_addEventListener]("transitionend",clearBody,false);this.el[_addEventListener]("webkitTransitionEnd",clearBody,false);this.el[_addEventListener]("mozTransitionEnd",clearBody,false);this.el[_addEventListener]("msTransitionEnd",clearBody,false);};IframeLightbox.prototype.loadIframe=function(){this.iframeId=containerClass+Date.now();this.body.innerHTML='<iframe src="'+this.href+'" name="'+this.iframeId+'" id="'+this.iframeId+'" onload="this.style.opacity=1;" style="opacity:0;border:none;" scrolling="no" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" frameborder="no" title="Embedded Content"></iframe>';(function(iframeId,body){d[getElementById](iframeId).onload=function(){this.style.opacity=1;body[classList].add(isLoadedClass);};}(this.iframeId,this.body));};IframeLightbox.prototype.open=function(){this.loadIframe();if(this.paddingBottom){this.content.style.paddingBottom=this.paddingBottom;}else{this.content.removeAttribute("style");}this.el[classList].add(isShowingClass);this.el[classList].add(isOpenedClass);};IframeLightbox.prototype.close=function(){this.el[classList].remove(isOpenedClass);this.body[classList].remove(isLoadedClass);};IframeLightbox.prototype.isOpen=function(){return this.el[classList].contains(isOpenedClass);};root.IframeLightbox=IframeLightbox;}(globalRoot));
 /*!
  * modified scrollToY
  * @see {@link http://stackoverflow.com/questions/8917921/cross-browser-javascript-not-jquery-scroll-to-top-animation}
@@ -234,7 +234,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * @param {Boolean} [sameWidth] set same width as of master, default is false
  * alignToMasterBottomLeft(masterId, servantId, sameWidth)
  */
-(function(root){var alignToMasterBottomLeft=function(masterId,servantId,sameWidth){sameWidth=sameWidth||"";var d=document,gEBI="getElementById",master=d[gEBI](masterId)||"",servant=d[gEBI](servantId)||"";if(master&&servant){var style=servant.style||"";if(style){if(sameWidth){style.width=servant.offsetWidth+"px";}style.left=master.offsetLeft+"px";style.top=(master.offsetTop+master.offsetHeight)+"px";}}};root.alignToMasterBottomLeft=alignToMasterBottomLeft;}(globalRoot));
+(function(root){var alignToMasterBottomLeft=function(masterId,servantId,sameWidth){sameWidth=sameWidth||"";var d=document,getElementById="getElementById",master=d[getElementById](masterId)||"",servant=d[getElementById](servantId)||"";if(master&&servant){var style=servant.style||"";if(style){if(sameWidth){style.width=servant.offsetWidth+"px";}style.left=master.offsetLeft+"px";style.top=(master.offsetTop+master.offsetHeight)+"px";}}};root.alignToMasterBottomLeft=alignToMasterBottomLeft;}(globalRoot));
 /*!
  * remove all children of parent element
  * @see {@link https://gist.github.com/englishextra/da26bf39bc90fd29435e8ae0b409ddc3}
@@ -249,7 +249,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * @param {Object} a target HTML Element
  * appendFragment(e,a)
  */
-(function(root){"use strict";var appendFragment=function(e,a){var d=document;a=a||d.getElementsByTagNames("body")[0]||"";return (function(){if(e){var d=document,df=d.createDocumentFragment()||"",aC="appendChild";if("string"===typeof e){e=d.createTextNode(e);}df[aC](e);a[aC](df);}}());};root.appendFragment=appendFragment;}(globalRoot));
+(function(root){"use strict";var appendFragment=function(e,a){var d=document;a=a||d.getElementsByTagNames("body")[0]||"";return (function(){if(e){var d=document,df=d.createDocumentFragment()||"",appendChild="appendChild";if("string"===typeof e){e=d.createTextNode(e);}df[appendChild](e);a[appendChild](df);}}());};root.appendFragment=appendFragment;}(globalRoot));
 /*!
  * insert text response as fragment into element
  * @see {@link https://gist.github.com/englishextra/4e13afb8ce184ad28d77f6b5eed71d1f}
@@ -258,7 +258,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * @param {Object} [callback] callback function
  * insertTextAsFragment(t,c,f)
  */
-(function(root){"use strict";var insertTextAsFragment=function(text,container,callback){var d=document,b=d.body||"",aC="appendChild",iH="innerHTML",pN="parentNode",cb=function(){return callback&&"function"===typeof callback&&callback();};try{var clonedContainer=container.cloneNode(!1);if(d.createRange){var rg=d.createRange();rg.selectNode(b);var df=rg.createContextualFragment(text);clonedContainer[aC](df);return container[pN]?container[pN].replaceChild(clonedContainer,container):container[iH]=text,cb();}else{clonedContainer[iH]=text;return container[pN]?container[pN].replaceChild(d.createDocumentFragment[aC](clonedContainer),container):container[iH]=text,cb();}}catch(e){console.log(e);}return!1;};root.insertTextAsFragment=insertTextAsFragment;}(globalRoot));
+(function(root){"use strict";var insertTextAsFragment=function(text,container,callback){var d=document,b=d.body||"",appendChild="appendChild",innerHTML="innerHTML",parentNode="parentNode",cb=function(){return callback&&"function"===typeof callback&&callback();};try{var clonedContainer=container.cloneNode(!1);if(d.createRange){var rg=d.createRange();rg.selectNode(b);var df=rg.createContextualFragment(text);clonedContainer[appendChild](df);return container[parentNode]?container[parentNode].replaceChild(clonedContainer,container):container[innerHTML]=text,cb();}else{clonedContainer[innerHTML]=text;return container[parentNode]?container[parentNode].replaceChild(d.createDocumentFragment[appendChild](clonedContainer),container):container[innerHTML]=text,cb();}}catch(e){console.log(e);}return!1;};root.insertTextAsFragment=insertTextAsFragment;}(globalRoot));
 /*!
  * get current protocol - "http" or "https", else return ""
  * @param {Boolean} [force] When set to "true", and the result is empty,
@@ -329,7 +329,7 @@ var globalRoot = "undefined" !== typeof window ? window : this;
  * @param {Object} [onerror] on error callback function
  * insertExternalHTML(selector,url,callback,onerror)
  */
-(function(root){"use strict";var insertExternalHTML=function(id,url,callback,onerror){var d=document,b=d.body||"",gEBI="getElementById",cN="cloneNode",aC="appendChild",pN="parentNode",iH="innerHTML",rC="replaceChild",cR="createRange",cCF="createContextualFragment",cDF="createDocumentFragment",container=d[gEBI](id.replace(/^#/,""))||"",arrange=function(){var x=root.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");x.overrideMimeType("text/html;charset=utf-8");x.open("GET",url,!0);x.withCredentials=!1;x.onreadystatechange=function(){var cb=function(){return callback&&"function"===typeof callback&&callback();};if(x.status==="404"||x.status===0){console.log("Error XMLHttpRequest-ing file",x.status);return onerror&&"function"===typeof onerror&&onerror();}else if(x.readyState===4&&x.status===200&&x.responseText){var frag=x.responseText;try{var clonedContainer=container[cN](!1);if(d[cR]){var rg=d[cR]();rg.selectNode(b);var df=rg[cCF](frag);clonedContainer[aC](df);return container[pN]?container[pN][rC](clonedContainer,container):container[iH]=frag,cb();}else{clonedContainer[iH]=frag;return container[pN]?container[pN][rC](d[cDF][aC](clonedContainer),container):container[iH]=frag,cb();}}catch(e){console.log(e);}return;}};x.send(null);};if(container){arrange();}};root.insertExternalHTML=insertExternalHTML;}(globalRoot));
+(function(root){"use strict";var insertExternalHTML=function(id,url,callback,onerror){var d=document,b=d.body||"",getElementById="getElementById",cN="cloneNode",appendChild="appendChild",parentNode="parentNode",innerHTML="innerHTML",replaceChild="replaceChild",createRange="createRange",createContextualFragment="createContextualFragment",createDocumentFragment="createDocumentFragment",container=d[getElementById](id.replace(/^#/,""))||"",arrange=function(){var x=root.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");x.overrideMimeType("text/html;charset=utf-8");x.open("GET",url,!0);x.withCredentials=!1;x.onreadystatechange=function(){var cb=function(){return callback&&"function"===typeof callback&&callback();};if(x.status==="404"||x.status===0){console.log("Error XMLHttpRequest-ing file",x.status);return onerror&&"function"===typeof onerror&&onerror();}else if(x.readyState===4&&x.status===200&&x.responseText){var frag=x.responseText;try{var clonedContainer=container[cN](!1);if(d[createRange]){var rg=d[createRange]();rg.selectNode(b);var df=rg[createContextualFragment](frag);clonedContainer[appendChild](df);return container[parentNode]?container[parentNode][replaceChild](clonedContainer,container):container[innerHTML]=frag,cb();}else{clonedContainer[innerHTML]=frag;return container[parentNode]?container[parentNode][replaceChild](d[createDocumentFragment][appendChild](clonedContainer),container):container[innerHTML]=frag,cb();}}catch(e){console.log(e);}return;}};x.send(null);};if(container){arrange();}};root.insertExternalHTML=insertExternalHTML;}(globalRoot));
 /*!
  * Open external links in default browser out of Electron / nwjs
  * @see {@link https://gist.github.com/englishextra/b9a8140e1c1b8aa01772375aeacbf49b}
@@ -411,31 +411,30 @@ if (document.title) {
  */
 var LoadingSpinner = (function () {
 	"use strict";
-	var d = document,
-	b = d.body || "",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	cE = "createElement",
-	spinnerClass = "loading-spinner",
-	spinner = d[gEBCN](spinnerClass)[0] || "",
-	isActiveClass = "is-active-loading-spinner";
-	/* console.log("triggered function: LoadingSpinner"); */
+	var d = document;
+	var b = d.body || "";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var createElement = "createElement";
+	var spinnerClass = "loading-spinner";
+	var spinner = d[getElementsByClassName](spinnerClass)[0] || "";
+	var isActiveClass = "is-active-loading-spinner";
 	if (!spinner) {
-		spinner = d[cE]("div");
-		spinner[cL].add(spinnerClass);
+		spinner = d[createElement]("div");
+		spinner[classList].add(spinnerClass);
 		appendFragment(spinner, b);
 	}
 	return {
 		show: function () {
-			return b[cL].contains(isActiveClass) || b[cL].add(isActiveClass);
+			return b[classList].contains(isActiveClass) || b[classList].add(isActiveClass);
 		},
-		hide: function (callback, delay) {
-			delay = delay || 500;
+		hide: function (callback, timeout) {
+			var delay = timeout || 500;
 			var timers = new Timers();
 			timers.timeout(function () {
 				timers.clear();
 				timers = null;
-				b[cL].remove(isActiveClass);
+				b[classList].remove(isActiveClass);
 				if (callback && "function" === typeof callback) {
 					callback();
 				}
@@ -451,10 +450,10 @@ var LoadingSpinner = (function () {
  */
 var renderTemplate = function (parsedJson, templateId, targetId) {
 	"use strict";
-	var d = document,
-	gEBI = "getElementById",
-	template = d[gEBI](templateId) || "",
-	target = d[gEBI](targetId) || "";
+	var d = document;
+	var getElementById = "getElementById";
+	var template = d[getElementById](templateId) || "";
+	var target = d[getElementById](targetId) || "";
 	parsedJson = safelyParseJSON(parsedJson);
 	if (parsedJson && template && target) {
 		var targetHtml = template.innerHTML || "",
@@ -471,11 +470,11 @@ var renderTemplate = function (parsedJson, templateId, targetId) {
 var insertFromTemplate = function (parsedJson, templateId, targetId, callback, useInner) {
 	"use strict";
 	useInner = useInner || "";
-	var d = document,
-	gEBI = "getElementById",
-	template = d[gEBI](templateId) || "",
-	target = d[gEBI](targetId) || "",
-	cb = function () {
+	var d = document;
+	var getElementById = "getElementById";
+	var template = d[getElementById](templateId) || "";
+	var target = d[getElementById](targetId) || "";
+	var cb = function () {
 		return callback && "function" === typeof callback && callback();
 	};
 	if (parsedJson && template && target) {
@@ -494,40 +493,39 @@ var insertFromTemplate = function (parsedJson, templateId, targetId, callback, u
  */
 var handleDataSrcImageAll = function () {
 	"use strict";
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	ds = "dataset",
-	imgClass = "data-src-img",
-	img = d[gEBCN](imgClass) || "",
-	isActiveClass = "is-active",
-	isBindedClass = "is-binded",
-	arrange = function (e) {
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var dataset = "dataset";
+	var imgClass = "data-src-img";
+	var img = d[getElementsByClassName](imgClass) || "";
+	var isActiveClass = "is-active";
+	var isBindedClass = "is-binded";
+	var arrange = function (e) {
 		/*!
 		 * true if elem is in same y-axis as the viewport or within 100px of it
 		 * @see {@link https://github.com/ryanve/verge}
 		 */
 		if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
-			if (!e[cL].contains(isBindedClass)) {
-				var srcString = e[ds].src || "";
+			if (!e[classList].contains(isBindedClass)) {
+				var srcString = e[dataset].src || "";
 				if (srcString) {
 					if (parseLink(srcString).isAbsolute && !parseLink(srcString).hasHTTP) {
-						e[ds].src = srcString.replace(/^/, getHTTP(true) + ":");
-						srcString = e[ds].src;
+						e[dataset].src = srcString.replace(/^/, getHTTP(true) + ":");
+						srcString = e[dataset].src;
 					}
 					imagePromise(srcString).then(function () {
 						e.src = srcString;
 					}).catch (function (err) {
 						console.log("cannot load image with imagePromise:", srcString, err);
 					});
-					e[cL].add(isActiveClass);
-					e[cL].add(isBindedClass);
+					e[classList].add(isActiveClass);
+					e[classList].add(isBindedClass);
 				}
 			}
 		}
 	};
 	if (img) {
-		/* console.log("triggered function: manageDataSrcImageAll"); */
 		for (var i = 0, l = img.length; i < l; i += 1) {
 			arrange(img[i]);
 		}
@@ -540,13 +538,13 @@ handleDataSrcImageAllWindow = function () {
 },
 manageDataSrcImageAll = function () {
 	"use strict";
-	var w = globalRoot,
-	aEL = "addEventListener",
-	rEL = "removeEventListener";
-	w[rEL]("scroll", handleDataSrcImageAllWindow, {passive: true});
-	w[rEL]("resize", handleDataSrcImageAllWindow);
-	w[aEL]("scroll", handleDataSrcImageAllWindow, {passive: true});
-	w[aEL]("resize", handleDataSrcImageAllWindow);
+	var w = globalRoot;
+	var _addEventListener = "addEventListener";
+	var _removeEventListener = "removeEventListener";
+	w[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
+	w[_removeEventListener]("resize", handleDataSrcImageAllWindow);
+	w[_addEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
+	w[_addEventListener]("resize", handleDataSrcImageAllWindow);
 	var timers = new Timers();
 	timers.timeout(function () {
 		timers.clear();
@@ -563,41 +561,40 @@ globalRoot.addEventListener("load", manageDataSrcImageAll);
  */
 var handleDataSrcIframeAll = function () {
 	"use strict";
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	ds = "dataset",
-	sA = "setAttribute",
-	iframeClass = "data-src-iframe",
-	iframe = d[gEBCN](iframeClass) || "",
-	isBindedClass = "is-binded",
-	arrange = function (e) {
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var dataset = "dataset";
+	var setAttribute = "setAttribute";
+	var iframeClass = "data-src-iframe";
+	var iframe = d[getElementsByClassName](iframeClass) || "";
+	var isBindedClass = "is-binded";
+	var arrange = function (e) {
 		/*!
 		 * true if elem is in same y-axis as the viewport or within 100px of it
 		 * @see {@link https://github.com/ryanve/verge}
 		 */
 		if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
-			if (!e[cL].contains(isBindedClass)) {
-				var srcString = e[ds].src || "";
+			if (!e[classList].contains(isBindedClass)) {
+				var srcString = e[dataset].src || "";
 				if (srcString) {
 					if (parseLink(srcString).isAbsolute && !parseLink(srcString).hasHTTP) {
-						e[ds].src = srcString.replace(/^/, getHTTP(true) + ":");
-						srcString = e[ds].src;
+						e[dataset].src = srcString.replace(/^/, getHTTP(true) + ":");
+						srcString = e[dataset].src;
 					}
 					e.src = srcString;
-					e[cL].add(isBindedClass);
-					e[sA]("frameborder", "no");
-					e[sA]("style", "border:none;");
-					e[sA]("webkitallowfullscreen", "true");
-					e[sA]("mozallowfullscreen", "true");
-					e[sA]("scrolling", "no");
-					e[sA]("allowfullscreen", "true");
+					e[classList].add(isBindedClass);
+					e[setAttribute]("frameborder", "no");
+					e[setAttribute]("style", "border:none;");
+					e[setAttribute]("webkitallowfullscreen", "true");
+					e[setAttribute]("mozallowfullscreen", "true");
+					e[setAttribute]("scrolling", "no");
+					e[setAttribute]("allowfullscreen", "true");
 				}
 			}
 		}
 	};
 	if (iframe) {
-		/* console.log("triggered function: manageDataSrcIframeAll"); */
 		for (var i = 0, l = iframe.length; i < l; i += 1) {
 			arrange(iframe[i]);
 		}
@@ -608,16 +605,15 @@ handleDataSrcIframeAllWindow = function () {
 	var throttlehandleDataSrcIframeAll = throttle(handleDataSrcIframeAll, 100);
 	throttlehandleDataSrcIframeAll();
 },
-manageDataSrcIframeAll = function (ctx) {
+manageDataSrcIframeAll = function () {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var w = globalRoot,
-	aEL = "addEventListener",
-	rEL = "removeEventListener";
-	w[rEL]("scroll", handleDataSrcIframeAllWindow, {passive: true});
-	w[rEL]("resize", handleDataSrcIframeAllWindow);
-	w[aEL]("scroll", handleDataSrcIframeAllWindow, {passive: true});
-	w[aEL]("resize", handleDataSrcIframeAllWindow);
+	var w = globalRoot;
+	var _addEventListener = "addEventListener";
+	var _removeEventListener = "removeEventListener";
+	w[_removeEventListener]("scroll", handleDataSrcIframeAllWindow, {passive: true});
+	w[_removeEventListener]("resize", handleDataSrcIframeAllWindow);
+	w[_addEventListener]("scroll", handleDataSrcIframeAllWindow, {passive: true});
+	w[_addEventListener]("resize", handleDataSrcIframeAllWindow);
 	var timers = new Timers();
 	timers.timeout(function () {
 		timers.clear();
@@ -633,23 +629,22 @@ globalRoot.addEventListener("load", manageDataSrcIframeAll);
  * replace iframe src with data-src
  * @param {Object} [ctx] context HTML Element
  */
-var manageIframeLightboxLinks = function (ctx) {
+var manageIframeLightboxLinks = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	linkClass = "iframe-lightbox-link",
-	link = ctx ? ctx[gEBCN](linkClass) || "" : d[gEBCN](linkClass) || "",
-	isBindedClass = "is-binded",
-	arrange = function (e) {
-		if (!e[cL].contains(isBindedClass)) {
+	var ctx = scope && scope.nodeName ? scope : "";
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var linkClass = "iframe-lightbox-link";
+	var link = ctx ? ctx[getElementsByClassName](linkClass) || "" : d[getElementsByClassName](linkClass) || "";
+	var isBindedClass = "is-binded";
+	var arrange = function (e) {
+		if (!e[classList].contains(isBindedClass)) {
 			e.lightbox = new IframeLightbox(e);
-			e[cL].add(isBindedClass);
+			e[classList].add(isBindedClass);
 		}
 	};
 	if (link) {
-		/* console.log("triggered function: manageIframeLightboxLibks"); */
 		for (var i = 0, l = link.length; i < l; i += 1) {
 			arrange(link[i]);
 		}
@@ -666,38 +661,37 @@ var handleExternalLink = function (url, ev) {
 	"use strict";
 	ev.stopPropagation();
 	ev.preventDefault();
-	var logicHandleExternalLink = openDeviceBrowser.bind(null, url),
-	debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
+	var logicHandleExternalLink = openDeviceBrowser.bind(null, url);
+	var debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
 	debounceLogicHandleExternalLink();
 },
-manageExternalLinkAll = function (ctx) {
+manageExternalLinkAll = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var d = document,
-	gEBTN = "getElementsByTagName",
-	linkTag = "a",
-	link = ctx ? ctx[gEBTN](linkTag) || "" : d[gEBTN](linkTag) || "",
-	cL = "classList",
-	aEL = "addEventListener",
-	gA = "getAttribute",
-	isBindedClass = "is-binded",
-	arrange = function (e) {
-		if (!e[cL].contains(isBindedClass)) {
-			var url = e[gA]("href") || "";
+	var ctx = scope && scope.nodeName ? scope : "";
+	var d = document;
+	var getElementsByTagName = "getElementsByTagName";
+	var getAttribute = "getAttribute";
+	var classList = "classList";
+	var _addEventListener = "addEventListener";
+	var linkTag = "a";
+	var link = ctx ? ctx[getElementsByTagName](linkTag) || "" : d[getElementsByTagName](linkTag) || "";
+	var isBindedClass = "is-binded";
+	var arrange = function (e) {
+		if (!e[classList].contains(isBindedClass)) {
+			var url = e[getAttribute]("href") || "";
 			if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
 				e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
 					e.target = "_blank";
 					e.rel = "noopener";
 				} else {
-					e[aEL]("click", handleExternalLink.bind(null, url));
+					e[_addEventListener]("click", handleExternalLink.bind(null, url));
 				}
-				e[cL].add(isBindedClass);
+				e[classList].add(isBindedClass);
 			}
 		}
 	};
 	if (link) {
-		/* console.log("triggered function: manageExternalLinkAll"); */
 		for (var i = 0, l = link.length; i < l; i += 1) {
 			arrange(link[i]);
 		}
@@ -710,26 +704,26 @@ document.ready().then(manageExternalLinkAll);
  */
 var hideImgLightbox = function () {
 	"use strict";
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	gEBTN = "getElementsByTagName",
-	cL = "classList",
-	container = d[gEBCN]("img-lightbox-container")[0] || "",
-	img = container ? container[gEBTN]("img")[0] || "" : "",
-	an = "animated",
-	an1 = "fadeIn",
-	an2 = "fadeInUp",
-	an3 = "fadeOut",
-	an4 = "fadeOutDown",
-	dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-	hideContainer = function () {
-		container[cL].remove(an1);
-		container[cL].add(an3);
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var getElementsByTagName = "getElementsByTagName";
+	var classList = "classList";
+	var container = d[getElementsByClassName]("img-lightbox-container")[0] || "";
+	var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
+	var an = "animated";
+	var an1 = "fadeIn";
+	var an2 = "fadeInUp";
+	var an3 = "fadeOut";
+	var an4 = "fadeOutDown";
+	var dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+	var hideContainer = function () {
+		container[classList].remove(an1);
+		container[classList].add(an3);
 		var hideImg = function () {
-			container[cL].remove(an);
-			container[cL].remove(an3);
-			img[cL].remove(an);
-			img[cL].remove(an4);
+			container[classList].remove(an);
+			container[classList].remove(an3);
+			img[classList].remove(an);
+			img[classList].remove(an4);
 			img.src = dummySrc;
 			container.style.display = "none";
 		};
@@ -741,8 +735,8 @@ var hideImgLightbox = function () {
 		}, 400);
 	};
 	if (container && img) {
-		img[cL].remove(an2);
-		img[cL].add(an4);
+		img[classList].remove(an2);
+		img[classList].add(an4);
 		var timers = new Timers();
 		timers.timeout(function () {
 			timers.clear();
@@ -755,52 +749,52 @@ handleImgLightboxContainer = function () {
 	"use strict";
 	var d = document;
 	var getElementsByClassName = "getElementsByClassName";
-	var removeEventListener = "removeEventListener";
+	var _removeEventListener = "removeEventListener";
 	var container = d[getElementsByClassName]("img-lightbox-container")[0] || "";
 	if (container) {
-		container[removeEventListener]("click", handleImgLightboxContainer);
+		container[_removeEventListener]("click", handleImgLightboxContainer);
 		hideImgLightbox();
 	}
 },
 handleImgLightboxWindow = function (ev) {
 	"use strict";
-	var w = globalRoot,
-	rEL = "removeEventListener";
-	w[rEL]("keyup", handleImgLightboxWindow);
+	var w = globalRoot;
+	var _removeEventListener = "removeEventListener";
+	w[_removeEventListener]("keyup", handleImgLightboxWindow);
 	if (27 === (ev.which || ev.keyCode)) {
 		hideImgLightbox();
 	}
 },
-manageImgLightboxLinks = function (ctx) {
+manageImgLightboxLinks = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var w = globalRoot,
-	d = document,
-	b = d.body || "",
-	gEBCN = "getElementsByClassName",
-	gEBTN = "getElementsByTagName",
-	cL = "classList",
-	cE = "createElement",
-	gA = "getAttribute",
-	aC = "appendChild",
-	aEL = "addEventListener",
-	linkClass = "img-lightbox-link",
-	link = ctx ? ctx[gEBCN](linkClass) || "" : d[gEBCN](linkClass) || "",
-	containerClass = "img-lightbox-container",
-	container = d[gEBCN](containerClass)[0] || "",
-	img = container ? container[gEBTN]("img")[0] || "" : "",
-	an = "animated",
-	an1 = "fadeIn",
-	an2 = "fadeInUp",
-	isBindedClass = "is-binded",
-	dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+	var ctx = scope && scope.nodeName ? scope : "";
+	var w = globalRoot;
+	var d = document;
+	var b = d.body || "";
+	var getElementsByClassName = "getElementsByClassName";
+	var getElementsByTagName = "getElementsByTagName";
+	var classList = "classList";
+	var createElement = "createElement";
+	var getAttribute = "getAttribute";
+	var appendChild = "appendChild";
+	var _addEventListener = "addEventListener";
+	var linkClass = "img-lightbox-link";
+	var link = ctx ? ctx[getElementsByClassName](linkClass) || "" : d[getElementsByClassName](linkClass) || "";
+	var containerClass = "img-lightbox-container";
+	var container = d[getElementsByClassName](containerClass)[0] || "";
+	var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
+	var an = "animated";
+	var an1 = "fadeIn";
+	var an2 = "fadeInUp";
+	var isBindedClass = "is-binded";
+	var dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 	if (!container) {
-		container = d[cE]("div");
-		img = d[cE]("img");
+		container = d[createElement]("div");
+		img = d[createElement]("img");
 		img.src = dummySrc;
 		img.alt = "";
-		container[aC](img);
-		container[cL].add(containerClass);
+		container[appendChild](img);
+		container[classList].add(containerClass);
 		appendFragment(container, b);
 	}
 	var arrange = function (e) {
@@ -809,13 +803,13 @@ manageImgLightboxLinks = function (ctx) {
 			ev.preventDefault();
 			var _this = this;
 			var logicHandleImgLightboxLink = function () {
-				var hrefString = _this[gA]("href") || "";
+				var hrefString = _this[getAttribute]("href") || "";
 				if (container && img && hrefString) {
 					LoadingSpinner.show();
-					container[cL].add(an);
-					container[cL].add(an1);
-					img[cL].add(an);
-					img[cL].add(an2);
+					container[classList].add(an);
+					container[classList].add(an1);
+					img[classList].add(an);
+					img[classList].add(an2);
 					if (parseLink(hrefString).isAbsolute && !parseLink(hrefString).hasHTTP) {
 						hrefString = hrefString.replace(/^/, getHTTP(true) + ":");
 					}
@@ -824,28 +818,27 @@ manageImgLightboxLinks = function (ctx) {
 					}).catch (function (err) {
 						console.log("cannot load image with imagePromise:", hrefString, err);
 					});
-					w[aEL]("keyup", handleImgLightboxWindow);
-					container[aEL]("click", handleImgLightboxContainer);
+					w[_addEventListener]("keyup", handleImgLightboxWindow);
+					container[_addEventListener]("click", handleImgLightboxContainer);
 					container.style.display = "block";
 					LoadingSpinner.hide();
 				}
-			},
-			debounceLogicHandleImgLightboxLink = debounce(logicHandleImgLightboxLink, 200);
+			};
+			var debounceLogicHandleImgLightboxLink = debounce(logicHandleImgLightboxLink, 200);
 			debounceLogicHandleImgLightboxLink();
 		};
-		if (!e[cL].contains(isBindedClass)) {
-			var hrefString = e[gA]("href") || "";
+		if (!e[classList].contains(isBindedClass)) {
+			var hrefString = e[getAttribute]("href") || "";
 			if (hrefString) {
 				if (parseLink(hrefString).isAbsolute && !parseLink(hrefString).hasHTTP) {
 					e.setAttribute("href", hrefString.replace(/^/, getHTTP(true) + ":"));
 				}
-				e[aEL]("click", handleImgLightboxLink);
-				e[cL].add(isBindedClass);
+				e[_addEventListener]("click", handleImgLightboxLink);
+				e[classList].add(isBindedClass);
 			}
 		}
 	};
 	if (link) {
-		/* console.log("triggered function: manageImgLightboxLinks"); */
 		for (var j = 0, l = link.length; j < l; j += 1) {
 			arrange(link[j]);
 		}
@@ -858,18 +851,18 @@ manageImgLightboxLinks = function (ctx) {
  * in click event handlers of dropdown openers
  * @param {Object} [_this] node element, if empty will affect everyone
  */
-var handleOtherDropdownLists = function (_this) {
+var handleOtherDropdownLists = function (_self) {
 	"use strict";
-	_this = _this || this;
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	isActiveClass = "is-active",
-	isDropdownClass = "is-dropdown",
-	list = d[gEBCN](isDropdownClass) || "",
-	removeActiveClass = function (e) {
+	var _this = _self || this;
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var isActiveClass = "is-active";
+	var isDropdownClass = "is-dropdown";
+	var list = d[getElementsByClassName](isDropdownClass) || "";
+	var removeActiveClass = function (e) {
 		if (_this !== e) {
-			e[cL].remove(isActiveClass);
+			e[classList].remove(isActiveClass);
 		}
 	};
 	if (list) {
@@ -881,12 +874,12 @@ var handleOtherDropdownLists = function (_this) {
 },
 manageOtherDropdownListAll = function () {
 	"use strict";
-	var d = document,
-	gEBI = "getElementById",
-	aEL = "addEventListener",
-	container = d[gEBI]("container") || "";
+	var d = document;
+	var getElementById = "getElementById";
+	var _addEventListener = "addEventListener";
+	var container = d[getElementById]("container") || "";
 	if (container) {
-		container[aEL]("click", handleOtherDropdownLists);
+		container[_addEventListener]("click", handleOtherDropdownLists);
 	}
 };
 document.ready().then(manageOtherDropdownListAll);
@@ -897,35 +890,35 @@ globalRoot.addEventListener("hashchange", handleOtherDropdownLists);
  */
 var manageChaptersSelect = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBTN = "getElementsByTagName",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	pN = "parentNode",
-	cDF = "createDocumentFragment",
-	cE = "createElement",
-	cENS = "createElementNS",
-	sANS = "setAttributeNS",
-	cTN = "createTextNode",
-	aC = "appendChild",
-	aEL = "addEventListener",
-	chaptersSelect = d[gEBI]("chapters-select") || "",
-	holderChaptersSelect = d[gEBCN]("holder-chapters-select")[0] || "",
-	uiPanelContentsSelect = d[gEBCN]("ui-panel-contents-select")[0] || "",
-	chaptersListClass = "chapters-list",
-	isBindedClass = "is-binded",
-	isFixedClass = "is-fixed",
-	isActiveClass = "is-active",
-	isDropdownClass = "is-dropdown",
-	rerenderChaptersSelect = function () {
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByTagName = "getElementsByTagName";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var parentNode = "parentNode";
+	var createDocumentFragment = "createDocumentFragment";
+	var createElement = "createElement";
+	var createElementNS = "createElementNS";
+	var setAttributeNS = "setAttributeNS";
+	var createTextNode = "createTextNode";
+	var appendChild = "appendChild";
+	var _addEventListener = "addEventListener";
+	var chaptersSelect = d[getElementById]("chapters-select") || "";
+	var holderChaptersSelect = d[getElementsByClassName]("holder-chapters-select")[0] || "";
+	var uiPanelContentsSelect = d[getElementsByClassName]("ui-panel-contents-select")[0] || "";
+	var chaptersListClass = "chapters-list";
+	var isFixedClass = "is-fixed";
+	var isActiveClass = "is-active";
+	var isDropdownClass = "is-dropdown";
+	/* var isBindedClass = "is-binded";
+	var rerenderChaptersSelect = function () {
 		var handleChaptersSelect = function () {
 			var _this = this;
-			var hashString = _this.options[_this.selectedIndex].value || "",
-			uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
+			var hashString = _this.options[_this.selectedIndex].value || "";
+			var uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[classList].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
 			if (hashString) {
-				var tragetObject = hashString ? (isValidId(hashString, true) ? d[gEBI](hashString.replace(/^#/,"")) || "" : "") : "";
+				var tragetObject = hashString ? (isValidId(hashString, true) ? d[getElementById](hashString.replace(/^#/,"")) || "" : "") : "";
 				if (tragetObject) {
 					scroll2Top(findPos(tragetObject).top - uiPanelContentsSelectHeight, 10000);
 				} else {
@@ -933,9 +926,9 @@ var manageChaptersSelect = function () {
 				}
 			}
 		};
-		if (!chaptersSelect[cL].contains(isBindedClass)) {
-			chaptersSelect[aEL]("change", handleChaptersSelect);
-			chaptersSelect[cL].add(isBindedClass);
+		if (!chaptersSelect[classList].contains(isBindedClass)) {
+			chaptersSelect[_addEventListener]("change", handleChaptersSelect);
+			chaptersSelect[classList].add(isBindedClass);
 		}
 		var rerenderOption = function (option) {
 			if (option) {
@@ -945,77 +938,75 @@ var manageChaptersSelect = function () {
 				removeChildren(option);
 				appendFragment(d.createTextNode(optionTextTruncated), option);
 			}
-		},
-		chaptersSelectOptions = chaptersSelect ? chaptersSelect[gEBTN]("option") || "" : "";
+		};
+		var chaptersSelectOptions = chaptersSelect ? chaptersSelect[getElementsByTagName]("option") || "" : "";
 		for (var i = 0, l = chaptersSelectOptions.length; i < l; i += 1) {
 			rerenderOption(chaptersSelectOptions[i]);
 		}
-		/* forEach(chaptersSelectOptions, rerenderOption, false); */
-	},
-	rerenderChaptersList = function () {
+	};*/
+	var rerenderChaptersList = function () {
 		var handleChaptersListItem = function (listObj, hashString) {
-			var uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
+			var uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[classList].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight * 2) : 0;
 			if (hashString) {
-				var tragetObject = hashString ? (isValidId(hashString, true) ? d[gEBI](hashString.replace(/^#/,"")) || "" : "") : "";
+				var tragetObject = hashString ? (isValidId(hashString, true) ? d[getElementById](hashString.replace(/^#/,"")) || "" : "") : "";
 				if (tragetObject) {
 					scroll2Top(findPos(tragetObject).top - uiPanelContentsSelectHeight, 10000);
 				} else {
 					w.location.hash = hashString;
 				}
 			}
-			listObj[cL].remove(isActiveClass);
-		},
-		chaptersList = d[cE]("ul"),
-		chaptersListItems = chaptersSelect ? chaptersSelect[gEBTN]("option") || "" : "",
-		chaptersListButtonDefaultText = "",
-		df = d[cDF](),
-		generateChaptersListItems = function (_this, i) {
+			listObj[classList].remove(isActiveClass);
+		};
+		var chaptersList = d[createElement]("ul");
+		var chaptersListItems = chaptersSelect ? chaptersSelect[getElementsByTagName]("option") || "" : "";
+		var chaptersListButtonDefaultText = "";
+		var df = d[createDocumentFragment]();
+		var generateChaptersListItems = function (_this, i) {
 			if (0 === i) {
 				chaptersListButtonDefaultText = _this.firstChild.textContent;
 			}
-			var chaptersListItem = d[cE]("li"),
+			var chaptersListItem = d[createElement]("li"),
 			chaptersListItemText = _this.firstChild.textContent || "",
 			chaptersListItemValue = _this.value,
 			chaptersListItemTextTruncated = truncString("" + chaptersListItemText, 28);
-			chaptersListItem[aC](d[cTN](chaptersListItemTextTruncated));
+			chaptersListItem[appendChild](d[createTextNode](chaptersListItemTextTruncated));
 			chaptersListItem.title = chaptersListItemText;
-			chaptersListItem[aEL]("click", handleChaptersListItem.bind(null, chaptersList, chaptersListItemValue));
-			df[aC](chaptersListItem);
-			df[aC](d.createTextNode("\n"));
+			chaptersListItem[_addEventListener]("click", handleChaptersListItem.bind(null, chaptersList, chaptersListItemValue));
+			df[appendChild](chaptersListItem);
+			df[appendChild](d.createTextNode("\n"));
 		};
 		for (var i = 0, l = chaptersListItems.length; i < l; i += 1) {
 			generateChaptersListItems(chaptersListItems[i], i);
 		}
 		/* forEach(chaptersListItems, generateChaptersListItems, false); */
 		appendFragment(df, chaptersList);
-		chaptersList[cL].add(chaptersListClass);
-		chaptersList[cL].add(isDropdownClass);
-		holderChaptersSelect.replaceChild(chaptersList, chaptersSelect[pN][pN]);
-		var chaptersListButton = d[cE]("a");
-		chaptersListButton[aC](d[cTN](chaptersListButtonDefaultText));
-		chaptersList[pN].insertBefore(chaptersListButton, chaptersList);
+		chaptersList[classList].add(chaptersListClass);
+		chaptersList[classList].add(isDropdownClass);
+		holderChaptersSelect.replaceChild(chaptersList, chaptersSelect[parentNode][parentNode]);
+		var chaptersListButton = d[createElement]("a");
+		chaptersListButton[appendChild](d[createTextNode](chaptersListButtonDefaultText));
+		chaptersList[parentNode].insertBefore(chaptersListButton, chaptersList);
 		/*jshint -W107 */
 		chaptersListButton.href = "javascript:void(0);";
 		/*jshint +W107 */
 		var insertChevronDownSmallSvg = function (targetObj) {
-			var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
-			use = d[cENS]("http://www.w3.org/2000/svg", "use");
-			svg[cL].add("ui-icon");
-			use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-ChevronDownSmall");
-			svg[aC](use);
-			targetObj[aC](svg);
+			var svg = d[createElementNS]("http://www.w3.org/2000/svg", "svg"),
+			use = d[createElementNS]("http://www.w3.org/2000/svg", "use");
+			svg[classList].add("ui-icon");
+			use[setAttributeNS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-ChevronDownSmall");
+			svg[appendChild](use);
+			targetObj[appendChild](svg);
 		};
 		insertChevronDownSmallSvg(chaptersListButton);
 		var handleChaptersListItemsButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			chaptersList[cL].toggle(isActiveClass);
+			chaptersList[classList].toggle(isActiveClass);
 			handleOtherDropdownLists(chaptersList);
 		};
-		chaptersListButton[aEL]("click", handleChaptersListItemsButton);
+		chaptersListButton[_addEventListener]("click", handleChaptersListItemsButton);
 	};
 	if (holderChaptersSelect && chaptersSelect) {
-		/* console.log("triggered function: manageChaptersSelect"); */
 		/* rerenderChaptersSelect(); */
 		rerenderChaptersList();
 	}
@@ -1024,35 +1015,34 @@ var manageChaptersSelect = function () {
  * add click event on hidden-layer show btn
  * @param {Object} [ctx] context HTML Element
  */
-var manageExpandingLayers = function (ctx) {
+var manageExpandingLayers = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	aEL = "addEventListener",
-	cL = "classList",
-	pN = "parentNode",
-	btnClass = "btn-expand-hidden-layer",
-	btn = ctx ? ctx[gEBCN](btnClass) || "" : d[gEBCN](btnClass) || "",
-	isBindedClass = "is-binded",
-	isActiveClass = "is-active",
-	arrange = function (e) {
+	var ctx = scope && scope.nodeName ? scope : "";
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var _addEventListener = "addEventListener";
+	var classList = "classList";
+	var parentNode = "parentNode";
+	var btnClass = "btn-expand-hidden-layer";
+	var btn = ctx ? ctx[getElementsByClassName](btnClass) || "" : d[getElementsByClassName](btnClass) || "";
+	var isBindedClass = "is-binded";
+	var isActiveClass = "is-active";
+	var arrange = function (e) {
 		var handleExpandingLayerAll = function () {
 			var _this = this;
-			var s = _this[pN] ? _this[pN].nextElementSibling : "";
+			var s = _this[parentNode] ? _this[parentNode].nextElementSibling : "";
 			if (s) {
-				_this[cL].toggle(isActiveClass);
-				s[cL].toggle(isActiveClass);
+				_this[classList].toggle(isActiveClass);
+				s[classList].toggle(isActiveClass);
 			}
 			return;
 		};
-		if (!e[cL].contains(isBindedClass)) {
-			e[aEL]("click", handleExpandingLayerAll);
-			e[cL].add(isBindedClass);
+		if (!e[classList].contains(isBindedClass)) {
+			e[_addEventListener]("click", handleExpandingLayerAll);
+			e[classList].add(isBindedClass);
 		}
 	};
 	if (btn) {
-		/* console.log("triggered function: manageExpandingLayers"); */
 		for (var i = 0, l = btn.length; i < l; i += 1) {
 			arrange(btn[i]);
 		}
@@ -1069,23 +1059,22 @@ var manageExpandingLayers = function (ctx) {
  * use timed out layout property after initialising
  * to level the horizontal gaps
  */
-var msnry,
-pckry,
-initMasonry = function (ctx) {
+var msnry;
+var pckry;
+var initMasonry = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var w = globalRoot,
-	d = document,
-	gEBCN = "getElementsByClassName",
-	gridClass = "masonry-grid",
-	gridItemClass = "masonry-grid-item",
-	gridItemSelector = ".masonry-grid-item",
-	gridSizerSelector = ".masonry-grid-sizer",
-	grid = ctx ? ctx[gEBCN](gridClass)[0] || "" : d[gEBCN](gridClass)[0] || "",
-	gridItem = ctx ? ctx[gEBCN](gridItemClass)[0] || "" : d[gEBCN](gridItemClass)[0] || "",
-	initScript = function () {
+	var ctx = scope && scope.nodeName ? scope : "";
+	var w = globalRoot;
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var gridClass = "masonry-grid";
+	var gridItemClass = "masonry-grid-item";
+	var gridItemSelector = ".masonry-grid-item";
+	var gridSizerSelector = ".masonry-grid-sizer";
+	var grid = ctx ? ctx[getElementsByClassName](gridClass)[0] || "" : d[getElementsByClassName](gridClass)[0] || "";
+	var gridItem = ctx ? ctx[getElementsByClassName](gridItemClass)[0] || "" : d[getElementsByClassName](gridItemClass)[0] || "";
+	var initScript = function () {
 		if (w.Masonry) {
-			/* console.log("function initMasonry.arrangeItems => initialised msnry"); */
 			if (msnry) {
 				msnry.destroy();
 			}
@@ -1097,33 +1086,31 @@ initMasonry = function (ctx) {
 				});
 		} else {
 			if (w.Packery) {
-				/* console.log("function initMasonry.arrangeItems => initialised pckry"); */
-			if (pckry) {
-				pckry.destroy();
-			}
-			pckry = new Packery(grid, {
-					itemSelector: gridItemSelector,
-					columnWidth: gridSizerSelector,
-					gutter: 0,
-					percentPosition: true
-				});
-			}
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				if ("undefined" !== typeof msnry && msnry) {
-					msnry.layout();
-				} else {
-					if ("undefined" !== typeof pckry && pckry) {
-						pckry.layout();
-					}
+				if (pckry) {
+					pckry.destroy();
 				}
-			}, 500);
+				pckry = new Packery(grid, {
+						itemSelector: gridItemSelector,
+						columnWidth: gridSizerSelector,
+						gutter: 0,
+						percentPosition: true
+					});
+			}
 		}
+		var timers = new Timers();
+		timers.timeout(function () {
+			timers.clear();
+			timers = null;
+			if ("undefined" !== typeof msnry && msnry) {
+				msnry.layout();
+			} else {
+				if ("undefined" !== typeof pckry && pckry) {
+					pckry.layout();
+				}
+			}
+		}, 500);
 	};
 	if (grid && gridItem) {
-		/* console.log("triggered function: initMasonryGrid"); */
 		/* var jsUrl = "./cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
 		var jsUrl = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
@@ -1136,40 +1123,40 @@ initMasonry = function (ctx) {
 /*!
  * load or refresh disqus_thread on click
  */
-var manageDisqusButton = function (ctx) {
+var manageDisqusButton = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	ds = "dataset",
-	aC = "appendChild",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
-	cE = "createElement",
-	btnClass = "btn-show-disqus",
-	btn = ctx ? ctx[gEBCN](btnClass)[0] || "" : d[gEBCN](btnClass)[0] || "",
-	disqusThread = d[gEBI]("disqus_thread") || "",
-	isBindedClass = "is-binded",
-	isActiveClass = "is-active",
-	locationHref = w.location.href || "",
-	disqusThreadShortname = disqusThread ? (disqusThread[ds].shortname || "") : "",
-	hideDisqusButton = function () {
-		disqusThread[cL].add(isActiveClass);
+	var ctx = scope && scope.nodeName ? scope : "";
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var dataset = "dataset";
+	var appendChild = "appendChild";
+	var _addEventListener = "addEventListener";
+	var _removeEventListener = "removeEventListener";
+	var createElement = "createElement";
+	var btnClass = "btn-show-disqus";
+	var btn = ctx ? ctx[getElementsByClassName](btnClass)[0] || "" : d[getElementsByClassName](btnClass)[0] || "";
+	var disqusThread = d[getElementById]("disqus_thread") || "";
+	var isBindedClass = "is-binded";
+	var isActiveClass = "is-active";
+	var locationHref = w.location.href || "";
+	var disqusThreadShortname = disqusThread ? (disqusThread[dataset].shortname || "") : "";
+	var hideDisqusButton = function () {
+		disqusThread[classList].add(isActiveClass);
 		btn.style.display = "none";
 		LoadingSpinner.hide();
-	},
-	hideDisqusThread = function () {
+	};
+	var hideDisqusThread = function () {
 		removeChildren(disqusThread);
-		var replacementText = d[cE]("p");
-		replacementText[aC](d.createTextNode("Комментарии доступны только в веб версии этой страницы."));
+		var replacementText = d[createElement]("p");
+		replacementText[appendChild](d.createTextNode("Комментарии доступны только в веб версии этой страницы."));
 		appendFragment(replacementText, disqusThread);
 		disqusThread.removeAttribute("id");
 		hideDisqusButton();
-	},
-	addBtnHandler = function () {
+	};
+	var addBtnHandler = function () {
 		var handleDisqusButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
@@ -1184,31 +1171,30 @@ var manageDisqusButton = function (ctx) {
 									this.page.url = locationHref;
 								}
 							});
-							btn[rEL]("click", handleDisqusButton);
+							btn[_removeEventListener]("click", handleDisqusButton);
 							LoadingSpinner.show();
 							hideDisqusButton();
 						} catch (err) {
 							/* console.log("cannot reset DISQUS", err); */
 						}
 					}
-				},
-				jsUrl = getHTTP(true) + "://" + disqusThreadShortname + ".disqus.com/embed.js";
+				};
+				var jsUrl = getHTTP(true) + "://" + disqusThreadShortname + ".disqus.com/embed.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					loadJS(jsUrl, initScript);
 				} else {
 					initScript();
 				}
-			},
-			debounceLogicHandleDisqusButton = debounce(logicHandleDisqusButton, 200);
+			};
+			var debounceLogicHandleDisqusButton = debounce(logicHandleDisqusButton, 200);
 			debounceLogicHandleDisqusButton();
 		};
-		btn[aEL]("click", handleDisqusButton);
-		btn[cL].add(isBindedClass);
+		btn[_addEventListener]("click", handleDisqusButton);
+		btn[classList].add(isBindedClass);
 	};
 	if (disqusThread && btn && disqusThreadShortname && locationHref) {
-		/* console.log("triggered function: manageDisqusButton"); */
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			if (!btn[cL].contains(isBindedClass)) {
+			if (!btn[classList].contains(isBindedClass)) {
 				addBtnHandler();
 			}
 		} else {
@@ -1224,25 +1210,25 @@ var manageDisqusButton = function (ctx) {
  */
 var notiBar = function (opt) {
 	"use strict";
-	var d = document,
-	b = d.body || "",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	cE = "createElement",
-	cENS = "createElementNS",
-	sANS = "setAttributeNS",
-	aC = "appendChild",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
-	notibarClass = "notibar",
-	notibarContainer = d[gEBCN](notibarClass)[0] || "",
-	messageClass = "message",
-	closeButtonClass = "close",
-	defaultKey = "_notibar_dismiss_",
-	defaultDatum = "ok",
-	animatedClass = "animated",
-	fadeInDownClass = "fadeInDown",
-	fadeOutUpClass = "fadeOutUp";
+	var d = document;
+	var b = d.body || "";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var createElement = "createElement";
+	var createElementNS = "createElementNS";
+	var setAttributeNS = "setAttributeNS";
+	var appendChild = "appendChild";
+	var _addEventListener = "addEventListener";
+	var _removeEventListener = "removeEventListener";
+	var notibarClass = "notibar";
+	var notibarContainer = d[getElementsByClassName](notibarClass)[0] || "";
+	var messageClass = "message";
+	var closeButtonClass = "close";
+	var defaultKey = "_notibar_dismiss_";
+	var defaultDatum = "ok";
+	var animatedClass = "animated";
+	var fadeInDownClass = "fadeInDown";
+	var fadeOutUpClass = "fadeOutUp";
 	if ("string" === typeof opt) {
 		opt = {
 			"message": opt
@@ -1267,28 +1253,28 @@ var notiBar = function (opt) {
 	if (notibarContainer) {
 		removeChildren(notibarContainer);
 	} else {
-		notibarContainer = d[cE]("div");
-		notibarContainer[cL].add(notibarClass);
-		notibarContainer[cL].add(animatedClass);
+		notibarContainer = d[createElement]("div");
+		notibarContainer[classList].add(notibarClass);
+		notibarContainer[classList].add(animatedClass);
 	}
-	var msgContainer = d[cE]("div");
-	msgContainer[cL].add(messageClass);
+	var msgContainer = d[createElement]("div");
+	msgContainer[classList].add(messageClass);
 	var msgContent = settings.message || "";
 	if ("string" === typeof msgContent) {
 		msgContent = d.createTextNode(msgContent);
 	}
-	msgContainer[aC](msgContent);
-	notibarContainer[aC](msgContainer);
+	msgContainer[appendChild](msgContent);
+	notibarContainer[appendChild](msgContainer);
 	var insertCancelSvg = function (targetObj) {
-		var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
-		use = d[cENS]("http://www.w3.org/2000/svg", "use");
-		svg[cL].add("ui-icon");
-		use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Cancel");
-		svg[aC](use);
-		targetObj[aC](svg);
+		var svg = d[createElementNS]("http://www.w3.org/2000/svg", "svg"),
+		use = d[createElementNS]("http://www.w3.org/2000/svg", "use");
+		svg[classList].add("ui-icon");
+		use[setAttributeNS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Cancel");
+		svg[appendChild](use);
+		targetObj[appendChild](svg);
 	},
-	closeButton = d[cE]("a");
-	closeButton[cL].add(closeButtonClass);
+	closeButton = d[createElement]("a");
+	closeButton[classList].add(closeButtonClass);
 	insertCancelSvg(closeButton);
 	var setCookie = function () {
 		if (settings.days) {
@@ -1298,27 +1284,26 @@ var notiBar = function (opt) {
 		} else {
 			Cookies.set(settings.key, settings.datum);
 		}
-	},
-	hideMessage = function () {
-		var notibarContainer = d[gEBCN](notibarClass)[0] || "";
+	};
+	var hideMessage = function () {
+		var notibarContainer = d[getElementsByClassName](notibarClass)[0] || "";
 		if (notibarContainer) {
-			notibarContainer[cL].remove(fadeInDownClass);
-			notibarContainer[cL].add(fadeOutUpClass);
+			notibarContainer[classList].remove(fadeInDownClass);
+			notibarContainer[classList].add(fadeOutUpClass);
 			removeChildren(notibarContainer);
 		}
-	},
-	handleCloseButton = function () {
-		closeButton[rEL]("click", handleCloseButton);
+	};
+	var handleCloseButton = function () {
+		closeButton[_removeEventListener]("click", handleCloseButton);
 		hideMessage();
 		setCookie();
 	};
-	closeButton[aEL]("click", handleCloseButton);
-	notibarContainer[aC](closeButton);
+	closeButton[_addEventListener]("click", handleCloseButton);
+	notibarContainer[appendChild](closeButton);
 	if (b) {
-		/* console.log("triggered function: notiBar"); */
 		appendFragment(notibarContainer, b);
-		notibarContainer[cL].remove(fadeOutUpClass);
-		notibarContainer[cL].add(fadeInDownClass);
+		notibarContainer[classList].remove(fadeOutUpClass);
+		notibarContainer[classList].add(fadeInDownClass);
 		var timers = new Timers();
 		timers.timeout(function () {
 			timers.clear();
@@ -1332,38 +1317,38 @@ var notiBar = function (opt) {
  */
 var initNotibarMsg = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	aC = "appendChild",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
-	cE = "createElement",
-	uiPanelContentsSelect = d[gEBCN]("ui-panel-contents-select")[0] || "",
-	cookieKey = "_notibar_dismiss_",
-	cookieDatum = "Выбрать статью можно щелкнув по самофиксирующейся планке с заголовком текущей страницы.",
-	locationOrigin = parseLink(w.location.href).origin,
-	isFixedClass = "is-fixed",
-	arrange = function () {
+	var w = globalRoot;
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var appendChild = "appendChild";
+	var _addEventListener = "addEventListener";
+	var _removeEventListener = "removeEventListener";
+	var createElement = "createElement";
+	var uiPanelContentsSelect = d[getElementsByClassName]("ui-panel-contents-select")[0] || "";
+	var cookieKey = "_notibar_dismiss_";
+	var cookieDatum = "Выбрать статью можно щелкнув по самофиксирующейся планке с заголовком текущей страницы.";
+	var locationOrigin = parseLink(w.location.href).origin;
+	var isFixedClass = "is-fixed";
+	var arrange = function () {
 		var timers = new Timers();
 		timers.timeout(function () {
 			timers.clear();
 			timers = null;
-			var msgObj = d[cE]("a");
+			var msgObj = d[createElement]("a");
 			/*jshint -W107 */
 			msgObj.href = "javascript:void(0);";
 			/*jshint +W107 */
 			var handleMsgObj = function (ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
-				msgObj[rEL]("click", handleMsgObj);
-				var uiPanelContentsSelectPos = uiPanelContentsSelect ? findPos(uiPanelContentsSelect).top : 0,
-				uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[cL].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight) : 0;
+				msgObj[_removeEventListener]("click", handleMsgObj);
+				var uiPanelContentsSelectPos = uiPanelContentsSelect ? findPos(uiPanelContentsSelect).top : 0;
+				var uiPanelContentsSelectHeight = uiPanelContentsSelect ? (uiPanelContentsSelect[classList].contains(isFixedClass) ? uiPanelContentsSelect.offsetHeight : uiPanelContentsSelect.offsetHeight) : 0;
 				scroll2Top(uiPanelContentsSelectPos - uiPanelContentsSelectHeight, 2000);
 			};
-			msgObj[aEL]("click", handleMsgObj);
-			msgObj[aC](d.createTextNode(cookieDatum));
+			msgObj[_addEventListener]("click", handleMsgObj);
+			msgObj[appendChild](d.createTextNode(cookieDatum));
 			notiBar({
 				"message": msgObj,
 				"timeout": 5000,
@@ -1375,7 +1360,6 @@ var initNotibarMsg = function () {
 	};
 	if (locationOrigin && uiPanelContentsSelect) {
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			/* console.log("triggered function: initNotibarMsg"); */
 			arrange();
 		}
 	}
@@ -1386,22 +1370,21 @@ document.ready().then(initNotibarMsg);
  */
 var manageSearchInput = function () {
 	"use strict";
-	var d = document,
-	gEBI = "getElementById",
-	aEL = "addEventListener",
-	searchInput = d[gEBI]("text") || "",
-	handleSearchInputValue = function () {
+	var d = document;
+	var getElementById = "getElementById";
+	var _addEventListener = "addEventListener";
+	var searchInput = d[getElementById]("text") || "";
+	var handleSearchInputValue = function () {
 		var _this = this;
 		var logicHandleSearchInputValue = function () {
 			_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
-		},
-		debounceLogicHandleSearchInputValue = debounce(logicHandleSearchInputValue, 200);
+		};
+		var debounceLogicHandleSearchInputValue = debounce(logicHandleSearchInputValue, 200);
 		debounceLogicHandleSearchInputValue();
 	};
 	if (searchInput) {
-		/* console.log("triggered function: manageSearchInput"); */
 		searchInput.focus();
-		searchInput[aEL]("input", handleSearchInputValue);
+		searchInput[_addEventListener]("input", handleSearchInputValue);
 	}
 };
 document.ready().then(manageSearchInput);
@@ -1412,24 +1395,24 @@ document.ready().then(manageSearchInput);
  */
 var initKamilAutocomplete = function (jsonObj) {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBCN = "getElementsByClassName",
-	gEBTN = "getElementsByTagName",
-	cL = "classList",
-	cE = "createElement",
-	cTN = "createTextNode",
-	aC = "appendChild",
-	pN = "parentNode",
-	aEL = "addEventListener",
-	searchForm = d[gEBCN]("search-form")[0] || "",
-	textInputSelector = "#text",
-	textInput = d[gEBI]("text") || "",
-	container = d[gEBI]("container") || "",
-	typoAutcompleteListSelector = "kamil-typo-autocomplete",
-	typoAutcompleteListClass = "kamil-autocomplete",
-	initScript = function () {
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByClassName = "getElementsByClassName";
+	var getElementsByTagName = "getElementsByTagName";
+	var classList = "classList";
+	var createElement = "createElement";
+	var createTextNode = "createTextNode";
+	var appendChild = "appendChild";
+	var parentNode = "parentNode";
+	var _addEventListener = "addEventListener";
+	var searchForm = d[getElementsByClassName]("search-form")[0] || "";
+	var textInputSelector = "#text";
+	var textInput = d[getElementById]("text") || "";
+	var container = d[getElementById]("container") || "";
+	var typoAutcompleteListSelector = "kamil-typo-autocomplete";
+	var typoAutcompleteListClass = "kamil-autocomplete";
+	var initScript = function () {
 		var ac;
 		try {
 			if (!jsonObj[0].hasOwnProperty("title")) {
@@ -1447,30 +1430,30 @@ var initKamilAutocomplete = function (jsonObj) {
 		/*!
 		 * create typo suggestion list
 		 */
-		var typoAutcompleteList = d[cE]("ul"),
-		typoListItem = d[cE]("li"),
-		handleTypoSuggestion = function () {
+		var typoAutcompleteList = d[createElement]("ul");
+		var typoListItem = d[createElement]("li");
+		var handleTypoSuggestion = function () {
 			typoAutcompleteList.style.display = "none";
 			typoListItem.style.display = "none";
-		},
-		showTypoSuggestion = function () {
+		};
+		var showTypoSuggestion = function () {
 			typoAutcompleteList.style.display = "block";
 			typoListItem.style.display = "block";
 		};
-		typoAutcompleteList[cL].add(typoAutcompleteListClass);
+		typoAutcompleteList[classList].add(typoAutcompleteListClass);
 		typoAutcompleteList.id = typoAutcompleteListSelector;
 		handleTypoSuggestion();
-		typoAutcompleteList[aC](typoListItem);
-		textInput[pN].insertBefore(typoAutcompleteList, textInput.nextElementSibling);
+		typoAutcompleteList[appendChild](typoListItem);
+		textInput[parentNode].insertBefore(typoAutcompleteList, textInput.nextElementSibling);
 		/*!
 		 * this is an optional setup of every li
 		 * uset to set a description title attribute
 		 * comment out the title attribute setup below
 		 */
 		ac.renderItem = function (ul, item) {
-			var li = d[cE]("li");
+			var li = d[createElement]("li");
 			/* li.innerHTML = item.title; */
-			appendFragment(d[cTN]("" + item.title), li);
+			appendFragment(d[createTextNode]("" + item.title), li);
 			li.title = item.text;
 			ul.appendChild(li);
 			return li;
@@ -1480,12 +1463,12 @@ var initKamilAutocomplete = function (jsonObj) {
 		 */
 		ac.renderMenu = function (ul, items) {
 			items = items || "";
-			var itemsLength = items.length,
-			_this = this,
+			var itemsLength = items.length;
+			var _this = this;
 			/*!
 			 * limit output
 			 */
-			limitKamilOutput = function (e, i) {
+			var limitKamilOutput = function (e, i) {
 				if (i < 10) {
 					_this._renderItemData(ul, e, i);
 				}
@@ -1511,7 +1494,7 @@ var initKamilAutocomplete = function (jsonObj) {
 					}
 					showTypoSuggestion();
 					removeChildren(typoListItem);
-					appendFragment(d[cTN]("" + textInputValue), typoListItem);
+					appendFragment(d[createTextNode]("" + textInputValue), typoListItem);
 					if (textInputValue.match(/^\s*$/)) {
 						handleTypoSuggestion();
 					}
@@ -1523,16 +1506,16 @@ var initKamilAutocomplete = function (jsonObj) {
 					}
 					itemsLength += 1;
 				}
-			},
-			debounceLogicReplaceTypo = debounce(logicReplaceTypo, 200);
+			};
+			var debounceLogicReplaceTypo = debounce(logicReplaceTypo, 200);
 			debounceLogicReplaceTypo();
 			/*!
 			 * truncate text
 			 */
-			var lis = ul ? ul[gEBTN]("li") || "" : "",
-			truncateKamilText = function (e) {
-				var truncText = e.firstChild.textContent || "",
-				truncTextObj = d[cTN](truncString(truncText, 24));
+			var lis = ul ? ul[getElementsByTagName]("li") || "" : "";
+			var truncateKamilText = function (e) {
+				var truncText = e.firstChild.textContent || "";
+				var truncTextObj = d[createTextNode](truncString(truncText, 24));
 				e.replaceChild(truncTextObj, e.firstChild);
 				/* e.title = "" + truncText; */
 			};
@@ -1556,12 +1539,12 @@ var initKamilAutocomplete = function (jsonObj) {
 			textInput.value = typoListItem.textContent || "";
 			handleTypoSuggestion();
 		};
-		typoListItem[aEL]("click", handleTypoListItem);
+		typoListItem[_addEventListener]("click", handleTypoListItem);
 		/*!
 		 * hide suggestions on outside click
 		 */
 		if (container) {
-			container[aEL]("click", handleTypoSuggestion);
+			container[_addEventListener]("click", handleTypoSuggestion);
 		}
 		/*!
 		 * unless you specify property option in new Kamil
@@ -1570,8 +1553,8 @@ var initKamilAutocomplete = function (jsonObj) {
 		 * {"link":"/pages/contents.html","label":"some text to match"}]
 		 */
 		ac.on("kamilselect", function (e) {
-			var kamilItemLink = e.item.href || "",
-			handleKamilItem = function () {
+			var kamilItemLink = e.item.href || "";
+			var handleKamilItem = function () {
 				e.inputElement.value = "";
 				handleTypoSuggestion();
 				w.location.href = kamilItemLink;
@@ -1586,7 +1569,6 @@ var initKamilAutocomplete = function (jsonObj) {
 		});
 	};
 	if (searchForm && textInput) {
-		/* console.log("triggered function: initKamilAutocomplete"); */
 		var jsUrl = "./cdn/kamil/0.1.1/js/kamil.fixed.min.js";
 		if (!scriptIsLoaded(jsUrl)) {
 			loadJS(jsUrl, initScript);
@@ -1598,39 +1580,39 @@ var initKamilAutocomplete = function (jsonObj) {
  */
 var renderNavigation = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBTN = "getElementsByTagName",
-	cL = "classList",
-	pN = "parentNode",
-	aEL = "addEventListener",
-	navbar = d[gEBI]("navbar") || "",
-	navbarParent = navbar[pN] || "",
-	popularTemplateId = "template_navbar_popular",
-	popularTemplate = d[gEBI](popularTemplateId) || "",
-	popularRenderId = "render_navbar_popular",
-	popularRender = d[gEBI](popularRenderId) || "",
-	moreTemplateId = "template_navbar_more",
-	moreTemplate = d[gEBI](moreTemplateId) || "",
-	moreRenderId = "render_navbar_more",
-	moreRender = d[gEBI](moreRenderId) || "",
-	carouselTemplateId = "template_b_carousel",
-	carouselTemplate = d[gEBI](carouselTemplateId) || "",
-	carouselRenderId = "render_b_carousel",
-	carouselRender = d[gEBI](carouselRenderId) || "",
-	carouselRenderParent = carouselRender[pN] || "",
-	showRenderNavbarPopularId = "show_render_navbar_popular",
-	showRenderNavbarPopular = d[gEBI](showRenderNavbarPopularId) || "",
-	renderNavbarPopularId = "render_navbar_popular",
-	renderNavbarPopular = d[gEBI](renderNavbarPopularId) || "",
-	showRenderNavbarMoreId = "show_render_navbar_more",
-	showRenderNavbarMore = d[gEBI](showRenderNavbarMoreId) || "",
-	renderNavbarMoreId = "render_navbar_more",
-	renderNavbarMore = d[gEBI](renderNavbarMoreId) || "",
-	navigationJsonUrl = "./libs/pwa-englishextra/json/navigation.json",
-	isActiveClass = "is-active",
-	processNavigationJsonResponse = function (navigationJsonResponse) {
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByTagName = "getElementsByTagName";
+	var classList = "classList";
+	var parentNode = "parentNode";
+	var _addEventListener = "addEventListener";
+	var navbar = d[getElementById]("navbar") || "";
+	var navbarParent = navbar[parentNode] || "";
+	var popularTemplateId = "template_navbar_popular";
+	var popularTemplate = d[getElementById](popularTemplateId) || "";
+	var popularRenderId = "render_navbar_popular";
+	var popularRender = d[getElementById](popularRenderId) || "";
+	var moreTemplateId = "template_navbar_more";
+	var moreTemplate = d[getElementById](moreTemplateId) || "";
+	var moreRenderId = "render_navbar_more";
+	var moreRender = d[getElementById](moreRenderId) || "";
+	var carouselTemplateId = "template_b_carousel";
+	var carouselTemplate = d[getElementById](carouselTemplateId) || "";
+	var carouselRenderId = "render_b_carousel";
+	var carouselRender = d[getElementById](carouselRenderId) || "";
+	var carouselRenderParent = carouselRender[parentNode] || "";
+	var showRenderNavbarPopularId = "show_render_navbar_popular";
+	var showRenderNavbarPopular = d[getElementById](showRenderNavbarPopularId) || "";
+	var renderNavbarPopularId = "render_navbar_popular";
+	var renderNavbarPopular = d[getElementById](renderNavbarPopularId) || "";
+	var showRenderNavbarMoreId = "show_render_navbar_more";
+	var showRenderNavbarMore = d[getElementById](showRenderNavbarMoreId) || "";
+	var renderNavbarMoreId = "render_navbar_more";
+	var renderNavbarMore = d[getElementById](renderNavbarMoreId) || "";
+	var navigationJsonUrl = "./libs/pwa-englishextra/json/navigation.json";
+	var isActiveClass = "is-active";
+	var processNavigationJsonResponse = function (navigationJsonResponse) {
 		try {
 			var navigationJsonObj = JSON.parse(navigationJsonResponse);
 			if (!navigationJsonObj.navbar_popular) {
@@ -1648,9 +1630,9 @@ var renderNavigation = function () {
 			return;
 		}
 		var handleListItemAll = function (e) {
-			var items = e ? e[gEBTN]("li") || "" : "",
-			addHandler = function (e) {
-				e[aEL]("click", handleOtherDropdownLists);
+			var items = e ? e[getElementsByTagName]("li") || "" : "";
+			var addHandler = function (e) {
+				e[_addEventListener]("click", handleOtherDropdownLists);
 			};
 			if (items) {
 				for (var i = 0, l = items.length; i < l; i += 1) {
@@ -1658,26 +1640,26 @@ var renderNavigation = function () {
 				}
 				/* forEach(btn, addHandler, false); */
 			}
-		},
-		handleShowRenderNavbarPopularButton = function (ev) {
+		};
+		var handleShowRenderNavbarPopularButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			renderNavbarPopular[cL].toggle(isActiveClass);
+			renderNavbarPopular[classList].toggle(isActiveClass);
 			handleOtherDropdownLists(renderNavbarPopular);
-		},
-		handleShowRenderNavbarMoreButton = function (ev) {
+		};
+		var handleShowRenderNavbarMoreButton = function (ev) {
 			ev.stopPropagation();
 			ev.preventDefault();
-			renderNavbarMore[cL].toggle(isActiveClass);
+			renderNavbarMore[classList].toggle(isActiveClass);
 			handleOtherDropdownLists(renderNavbarMore);
-		},
-		alignNavbarListAll = function () {
+		};
+		var alignNavbarListAll = function () {
 			alignToMasterBottomLeft(showRenderNavbarPopularId, renderNavbarPopularId);
 			alignToMasterBottomLeft(showRenderNavbarMoreId, renderNavbarMoreId);
-		},
-		handleShowNavbarListsWindow = function () {
-			var logicHandleShowNavbarListsWindow = alignNavbarListAll,
-			throttleLogicHandleShowNavbarListsWindow = throttle(logicHandleShowNavbarListsWindow, 100);
+		};
+		var handleShowNavbarListsWindow = function () {
+			var logicHandleShowNavbarListsWindow = alignNavbarListAll;
+			var throttleLogicHandleShowNavbarListsWindow = throttle(logicHandleShowNavbarListsWindow, 100);
 			throttleLogicHandleShowNavbarListsWindow();
 		};
 		if (popularTemplate && popularRender) {
@@ -1687,9 +1669,9 @@ var renderNavigation = function () {
 						alignNavbarListAll();
 						handleListItemAll(renderNavbarPopular);
 						handleListItemAll(renderNavbarMore);
-						showRenderNavbarPopular[aEL]("click", handleShowRenderNavbarPopularButton);
-						showRenderNavbarMore[aEL]("click", handleShowRenderNavbarMoreButton);
-						w[aEL]("resize", handleShowNavbarListsWindow);
+						showRenderNavbarPopular[_addEventListener]("click", handleShowRenderNavbarPopularButton);
+						showRenderNavbarMore[_addEventListener]("click", handleShowRenderNavbarMoreButton);
+						w[_addEventListener]("resize", handleShowNavbarListsWindow);
 						if (navbarParent) {
 							manageExternalLinkAll(navbarParent);
 						}
@@ -1728,29 +1710,29 @@ document.ready().then(renderNavigation);
  */
 var fixUiPanelContentsSelect = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	aEL = "addEventListener",
-	uiPanelNavigation = d[gEBCN]("ui-panel-navigation")[0] || "",
-	holderHero = d[gEBCN]("holder-hero")[0] || "",
-	uiPanelContentsSelect = d[gEBCN]("ui-panel-contents-select")[0] || "",
-	criticalHeight = (uiPanelNavigation ? uiPanelNavigation.offsetHeight : 0) + (holderHero ? holderHero.offsetHeight : 0),
-	isFixedClass = "is-fixed",
-	handleUiPanelContentsSelect = function () {
+	var w = globalRoot;
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var _addEventListener = "addEventListener";
+	var uiPanelNavigation = d[getElementsByClassName]("ui-panel-navigation")[0] || "";
+	var holderHero = d[getElementsByClassName]("holder-hero")[0] || "";
+	var uiPanelContentsSelect = d[getElementsByClassName]("ui-panel-contents-select")[0] || "";
+	var criticalHeight = (uiPanelNavigation ? uiPanelNavigation.offsetHeight : 0) + (holderHero ? holderHero.offsetHeight : 0);
+	var isFixedClass = "is-fixed";
+	var handleUiPanelContentsSelect = function () {
 		var logicHandleUiPanelContentsSelect = function () {
 			if ((d.body.scrollTop || d.documentElement.scrollTop || 0) > criticalHeight) {
-				uiPanelContentsSelect[cL].add(isFixedClass);
+				uiPanelContentsSelect[classList].add(isFixedClass);
 			} else {
-				uiPanelContentsSelect[cL].remove(isFixedClass);
+				uiPanelContentsSelect[classList].remove(isFixedClass);
 			}
-		},
-		throttleLogicHandleUiPanelContentsSelect = throttle(logicHandleUiPanelContentsSelect, 100);
+		};
+		var throttleLogicHandleUiPanelContentsSelect = throttle(logicHandleUiPanelContentsSelect, 100);
 		throttleLogicHandleUiPanelContentsSelect();
 	};
 	if (uiPanelContentsSelect) {
-		w[aEL]("scroll", handleUiPanelContentsSelect, {passive: true});
+		w[_addEventListener]("scroll", handleUiPanelContentsSelect, {passive: true});
 	}
 };
 document.ready().then(fixUiPanelContentsSelect);
@@ -1760,18 +1742,18 @@ document.ready().then(fixUiPanelContentsSelect);
  * in click event handlers of social openers
  * @param {Object} [_this] node element, if empty will affect everyone
  */
-var handleOtherSocialButtons = function (_this) {
+var handleOtherSocialButtons = function (_self) {
 	"use strict";
-	_this = _this || this;
-	var d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	isActiveClass = "is-active",
-	isSocialClass = "is-social",
-	btn = d[gEBCN](isSocialClass) || "",
-	removeActiveClass = function (e) {
+	var _this = _self || this;
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var isActiveClass = "is-active";
+	var isSocialClass = "is-social";
+	var btn = d[getElementsByClassName](isSocialClass) || "";
+	var removeActiveClass = function (e) {
 		if (_this !== e) {
-			e[cL].remove(isActiveClass);
+			e[classList].remove(isActiveClass);
 		}
 	};
 	if (btn) {
@@ -1783,12 +1765,12 @@ var handleOtherSocialButtons = function (_this) {
 },
 manageOtherSocialButtonAll = function () {
 	"use strict";
-	var d = document,
-	gEBI = "getElementById",
-	aEL = "addEventListener",
-	container = d[gEBI]("container") || "";
+	var d = document;
+	var getElementById = "getElementById";
+	var _addEventListener = "addEventListener";
+	var container = d[getElementById]("container") || "";
 	if (container) {
-		container[aEL]("click", handleOtherSocialButtons);
+		container[_addEventListener]("click", handleOtherSocialButtons);
 	}
 };
 document.ready().then(manageOtherSocialButtonAll);
@@ -1799,28 +1781,28 @@ globalRoot.addEventListener("hashchange", handleOtherSocialButtons);
  */
 var manageLocationQrCodeImage = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	cE = "createElement",
-	aEL = "addEventListener",
-	btn = d[gEBCN]("btn-toggle-holder-location-qr-code")[0] || "",
-	holder = d[gEBCN]("holder-location-qr-code")[0] || "",
-	isActiveClass = "is-active",
-	isSocialClass = "is-social",
-	locationHref = w.location.href || "",
-	handleLocationQrCodeButton = function (ev) {
+	var w = globalRoot;
+	var d = document;
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var createElement = "createElement";
+	var _addEventListener = "addEventListener";
+	var btn = d[getElementsByClassName]("btn-toggle-holder-location-qr-code")[0] || "";
+	var holder = d[getElementsByClassName]("holder-location-qr-code")[0] || "";
+	var isActiveClass = "is-active";
+	var isSocialClass = "is-social";
+	var locationHref = w.location.href || "";
+	var handleLocationQrCodeButton = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		var logicHandleLocationQrCodeButton = function () {
-			holder[cL].toggle(isActiveClass);
-			holder[cL].add(isSocialClass);
+			holder[classList].toggle(isActiveClass);
+			holder[classList].add(isSocialClass);
 			handleOtherSocialButtons(holder);
-			var locationHref = w.location.href || "",
-			newImg = d[cE]("img"),
-			newTitle = d.title ? ("Ссылка на страницу «" + d.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "",
-			newSrc = getHTTP(true) + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+			var locationHref = w.location.href || "";
+			var newImg = d[createElement]("img");
+			var newTitle = d.title ? ("Ссылка на страницу «" + d.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "";
+			var newSrc = getHTTP(true) + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
 			newImg.alt = newTitle;
 			var initScript = function () {
 				if (w.QRCode) {
@@ -1850,25 +1832,24 @@ var manageLocationQrCodeImage = function () {
 				} else {
 					newImg.src = newSrc;
 				}
-				newImg[cL].add("qr-code-img");
+				newImg[classList].add("qr-code-img");
 				newImg.title = newTitle;
 				removeChildren(holder);
 				appendFragment(newImg, holder);
-			},
-			jsUrl = "./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js";
+			};
+			var jsUrl = "./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js";
 			if (!scriptIsLoaded(jsUrl)) {
 				loadJS(jsUrl, initScript);
 			} else {
 				initScript();
 			}
-		},
-		debounceLogicHandleLocationQrCodeButton = debounce(logicHandleLocationQrCodeButton, 200);
+		};
+		var debounceLogicHandleLocationQrCodeButton = debounce(logicHandleLocationQrCodeButton, 200);
 		debounceLogicHandleLocationQrCodeButton();
 	};
 	if (btn && holder && locationHref) {
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			/* console.log("triggered function: manageLocationQrCodeImage"); */
-			btn[aEL]("click", handleLocationQrCodeButton);
+			btn[_addEventListener]("click", handleLocationQrCodeButton);
 		}
 	}
 };
@@ -1881,27 +1862,27 @@ document.ready().then(manageLocationQrCodeImage);
  * via ya-share2 api
  * @see {@link https://tech.yandex.ru/share/doc/dg/api-docpage/}
  */
-var yshare,
-manageShareButton = function () {
+var yshare;
+var manageShareButton = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	aEL = "addEventListener",
-	btn = d[gEBCN]("btn-toggle-holder-share-buttons")[0] || "",
-	yaShare2Id = "ya-share2",
-	yaShare2 = d[gEBI](yaShare2Id) || "",
-	holder = d[gEBCN]("holder-share-buttons")[0] || "",
-	isActiveClass = "is-active",
-	isSocialClass = "is-social",
-	handleShareButton = function (ev) {
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var _addEventListener = "addEventListener";
+	var btn = d[getElementsByClassName]("btn-toggle-holder-share-buttons")[0] || "";
+	var yaShare2Id = "ya-share2";
+	var yaShare2 = d[getElementById](yaShare2Id) || "";
+	var holder = d[getElementsByClassName]("holder-share-buttons")[0] || "";
+	var isActiveClass = "is-active";
+	var isSocialClass = "is-social";
+	var handleShareButton = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		var logicHandleShareButton = function () {
-			holder[cL].toggle(isActiveClass);
-			holder[cL].add(isSocialClass);
+			holder[classList].toggle(isActiveClass);
+			holder[classList].add(isSocialClass);
 			handleOtherSocialButtons(holder);
 			var initScript = function () {
 				if (w.Ya) {
@@ -1925,21 +1906,20 @@ manageShareButton = function () {
 						console.log("cannot update or init Ya", err);
 					}
 				}
-			},
-			jsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
+			};
+			var jsUrl = getHTTP(true) + "://yastatic.net/share2/share.js";
 			if (!scriptIsLoaded(jsUrl)) {
 				loadJS(jsUrl, initScript);
 			} else {
 				initScript();
 			}
-		},
-		debounceLogicHandleShareButton = debounce(logicHandleShareButton, 200);
+		};
+		var debounceLogicHandleShareButton = debounce(logicHandleShareButton, 200);
 		debounceLogicHandleShareButton();
 	};
 	if (btn && holder && yaShare2) {
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			/* console.log("triggered function: manageShareButton"); */
-			btn[aEL]("click", handleShareButton);
+			btn[_addEventListener]("click", handleShareButton);
 		}
 	}
 };
@@ -1947,28 +1927,28 @@ document.ready().then(manageShareButton);
 /*!
  * init vk-like btn
  */
-var vlike,
-manageVKLikeButton = function () {
+var vlike;
+var manageVKLikeButton = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	dataset = "dataset",
-	aEL = "addEventListener",
-	btn = d[gEBCN]("btn-toggle-holder-vk-like")[0] || "",
-	holder = d[gEBCN]("holder-vk-like")[0] || "",
-	vkLikeId = "vk-like",
-	vkLike = d[gEBI](vkLikeId) || "",
-	isActiveClass = "is-active",
-	isSocialClass = "is-social",
-	handleVKLikeButton = function (ev) {
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var dataset = "dataset";
+	var _addEventListener = "addEventListener";
+	var btn = d[getElementsByClassName]("btn-toggle-holder-vk-like")[0] || "";
+	var holder = d[getElementsByClassName]("holder-vk-like")[0] || "";
+	var vkLikeId = "vk-like";
+	var vkLike = d[getElementById](vkLikeId) || "";
+	var isActiveClass = "is-active";
+	var isSocialClass = "is-social";
+	var handleVKLikeButton = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		var logicHandleVKLikeButton = function () {
-			holder[cL].toggle(isActiveClass);
-			holder[cL].add(isSocialClass);
+			holder[classList].toggle(isActiveClass);
+			holder[classList].add(isSocialClass);
 			handleOtherSocialButtons(holder);
 			var initScript = function () {
 				if (w.VK) {
@@ -1989,21 +1969,20 @@ manageVKLikeButton = function () {
 						}
 					}
 				}
-			},
-			jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122";
+			};
+			var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122";
 			if (!scriptIsLoaded(jsUrl)) {
 				loadJS(jsUrl, initScript);
 			} else {
 				initScript();
 			}
-		},
-		debounceLogicHandleVKLikeButton = debounce(logicHandleVKLikeButton, 200);
+		};
+		var debounceLogicHandleVKLikeButton = debounce(logicHandleVKLikeButton, 200);
 		debounceLogicHandleVKLikeButton();
 	};
 	if (btn && holder && vkLike) {
 		if ("undefined" !== typeof getHTTP && getHTTP()) {
-			/* console.log("triggered function: manageVKLikeButton"); */
-			btn[aEL]("click", handleVKLikeButton);
+			btn[_addEventListener]("click", handleVKLikeButton);
 		}
 	}
 };
@@ -2013,26 +1992,26 @@ document.ready().then(manageVKLikeButton);
  */
 var manageDebugGridButton = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	b = d.body || "",
-	gEBI = "getElementById",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	aEL = "addEventListener",
-	rEL = "removeEventListener",
-	container = d[gEBI]("container") || "",
-	page = d[gEBI]("page") || "",
-	btn = d[gEBCN]("btn-toggle-col-debug")[0] || "",
-	debugClass = "debug",
-	cookieKey = "_manageDebugGridButton_",
-	cookieDatum = "ok",
-	handleDebugGridButton = function (ev) {
+	var w = globalRoot;
+	var d = document;
+	var b = d.body || "";
+	var getElementById = "getElementById";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var _addEventListener = "addEventListener";
+	var _removeEventListener = "removeEventListener";
+	var container = d[getElementById]("container") || "";
+	var page = d[getElementById]("page") || "";
+	var btn = d[getElementsByClassName]("btn-toggle-col-debug")[0] || "";
+	var debugClass = "debug";
+	var cookieKey = "_manageDebugGridButton_";
+	var cookieDatum = "ok";
+	var handleDebugGridButton = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
-		container[cL].toggle(debugClass);
+		container[classList].toggle(debugClass);
 		var showDebugGridMessage = function () {
-			var col = d[gEBCN]("col")[0] || "",
+			var col = d[getElementsByClassName]("col")[0] || "",
 			elements = [b, page, container, col],
 			debugMessage = [],
 			renderElementsInfo = function (e) {
@@ -2053,25 +2032,24 @@ var manageDebugGridButton = function () {
 				"datum": cookieDatum,
 				"days": 0
 			});
-		},
-		handleDebugGridContainer = function () {
+		};
+		var handleDebugGridContainer = function () {
 			if (container) {
-				container[cL].remove(debugClass);
-				container[rEL]("click", handleDebugGridContainer);
+				container[classList].remove(debugClass);
+				container[_removeEventListener]("click", handleDebugGridContainer);
 			}
 		};
-		if (container[cL].contains(debugClass)) {
-			container[aEL]("click", handleDebugGridContainer);
+		if (container[classList].contains(debugClass)) {
+			container[_addEventListener]("click", handleDebugGridContainer);
 			showDebugGridMessage();
 		} else {
-			container[rEL]("click", handleDebugGridContainer);
+			container[_removeEventListener]("click", handleDebugGridContainer);
 		}
 	};
 	if (page && container && btn) {
-		/* console.log("triggered function: manageDebugGridButton"); */
 		var locationHref = w.location.href || "";
 		if (locationHref && parseLink(locationHref).hasHTTP && (/^(localhost|127.0.0.1)/).test(parseLink(locationHref).hostname)) {
-			btn[aEL]("click", handleDebugGridButton);
+			btn[_addEventListener]("click", handleDebugGridButton);
 		} else {
 			btn.style.display = "none";
 		}
@@ -2083,44 +2061,48 @@ document.ready().then(manageDebugGridButton);
  */
 var initRouting = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	gEBCN = "getElementsByClassName",
-	gEBTN = "getElementsByTagName",
-	cL = "classList",
-	cE = "createElement",
-	cTN = "createTextNode",
-	cDF = "createDocumentFragment",
-	cENS = "createElementNS",
-	sANS = "setAttributeNS",
-	aC = "appendChild",
-	/* iH = "innerHTML", */
-	pN = "parentNode",
-	aEL = "addEventListener",
-	appContentId = "app-content",
-	appContent = d[gEBI](appContentId) || "",
-	appContentParent = appContent[pN] || "",
-	/* contentsSelectTemplate = d[gEBI]("template_contents_select") || "", */
-	contentsSelectRender = d[gEBI]("render_contents_select") || "",
-	contentsSelect = d[gEBCN]("contents-select")[0] || "",
-	holderContentsSelect = d[gEBCN]("holder-contents-select")[0] || "",
-	contentsListClass = "contents-list",
-	searchTextInput = d[gEBI]("text") || "",
-	asideTemplateId = "template_aside",
-	asideRenderId = "render_aside",
-	commentsTemplateId = "template_comments",
-	commentsRenderId = "render_comments",
-	nextHrefTemplateId = "template_bottom_navigation",
-	nextHrefRenderId = "render_bottom_navigation",
-	contentsGridTemplateId = "template_contents_grid",
-	contentsGridRenderId = "render_contents_grid",
-	masonryGridClass = "masonry-grid",
-	isActiveClass = "is-active",
-	isDropdownClass = "is-dropdown",
-	routesJsonUrl = "./libs/pwa-englishextra/json/routes.json",
-	contentsListButtonDefaultText = contentsSelect ? (contentsSelect.options[0].firstChild.textContent || "") : "",
-	processRoutesJsonResponse = function (routesJsonResponse) {
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var getElementsByClassName = "getElementsByClassName";
+	var getElementsByTagName = "getElementsByTagName";
+	var classList = "classList";
+	var dataset = "dataset";
+	var _length = "length";
+	var title = "title";
+	var href = "href";
+	var createElement = "createElement";
+	var createTextNode = "createTextNode";
+	var createDocumentFragment = "createDocumentFragment";
+	var createElementNS = "createElementNS";
+	var setAttributeNS = "setAttributeNS";
+	var appendChild = "appendChild";
+	/* var innerHTML = "innerHTML"; */
+	var parentNode = "parentNode";
+	var _addEventListener = "addEventListener";
+	var appContentId = "app-content";
+	var appContent = d[getElementById](appContentId) || "";
+	var appContentParent = appContent[parentNode] || "";
+	/* var contentsSelectTemplate = d[getElementById]("template_contents_select") || ""; */
+	/* var contentsSelectRender = d[getElementById]("render_contents_select") || ""; */
+	var contentsSelect = d[getElementsByClassName]("contents-select")[0] || "";
+	var holderContentsSelect = d[getElementsByClassName]("holder-contents-select")[0] || "";
+	var contentsListClass = "contents-list";
+	var searchTextInput = d[getElementById]("text") || "";
+	var asideTemplateId = "template_aside";
+	var asideRenderId = "render_aside";
+	var commentsTemplateId = "template_comments";
+	var commentsRenderId = "render_comments";
+	var nextHrefTemplateId = "template_bottom_navigation";
+	var nextHrefRenderId = "render_bottom_navigation";
+	var contentsGridTemplateId = "template_contents_grid";
+	var contentsGridRenderId = "render_contents_grid";
+	var masonryGridClass = "masonry-grid";
+	var isActiveClass = "is-active";
+	var isDropdownClass = "is-dropdown";
+	var routesJsonUrl = "./libs/pwa-englishextra/json/routes.json";
+	var contentsListButtonDefaultText = contentsSelect ? (contentsSelect.options[0].firstChild.textContent || "") : "";
+	var processRoutesJsonResponse = function (routesJsonResponse) {
 		var routesJsonObj;
 		try {
 			routesJsonObj = JSON.parse(routesJsonResponse);
@@ -2137,11 +2119,11 @@ var initRouting = function () {
 			console.log("cannot init processRoutesJsonResponse", err);
 			return;
 		}
-		var renderMasonry,
-		renderComments,
-		triggerOnContentInserted = function (titleString, nextHrefString, asideObj, routesObj) {
-			/* var h1 = contentsSelect || d[gEBI]("h1") || "",
-			h1Pos = findPos(h1).top || 0;
+		var renderMasonry;
+		var renderComments;
+		var triggerOnContentInserted = function (titleString, nextHrefString, asideObj, routesObj) {
+			/* var h1 = contentsSelect || d[getElementById]("h1") || "";
+			var h1Pos = findPos(h1).top || 0;
 			if (h1) {
 				scroll2Top(h1Pos, 20000);
 			} else {
@@ -2149,12 +2131,12 @@ var initRouting = function () {
 			} */
 			/* scroll2Top(0, 20000); */
 			/* if (titleString) { */
-			d.title = (titleString ? titleString + " - " : "") + (initialDocumentTitle ? initialDocumentTitle + (userBrowsingDetails ? userBrowsingDetails : "") : "");
+			d[title] = (titleString ? titleString + " - " : "") + (initialDocumentTitle ? initialDocumentTitle + (userBrowsingDetails ? userBrowsingDetails : "") : "");
 			/* } */
 			var locationHash = w.location.hash || "";
 			if (contentsSelect) {
 				var optionMatched = false;
-				for (var i = 0, l = contentsSelect.options.length; i < l; i += 1) {
+				for (var i = 0, l = contentsSelect.options[_length]; i < l; i += 1) {
 					if (locationHash === contentsSelect.options[i].value) {
 						optionMatched = true;
 						contentsSelect.selectedIndex = i;
@@ -2174,37 +2156,37 @@ var initRouting = function () {
 					contentsSelect.selectedIndex = 0;
 				}
 			}
-			var contentsList = d[gEBCN](contentsListClass)[0] || "";
+			var contentsList = d[getElementsByClassName](contentsListClass)[0] || "";
 			if (contentsList) {
-				var contentsListButton = holderContentsSelect ? holderContentsSelect[gEBTN]("a")[0] || "" : "";
+				var contentsListButton = holderContentsSelect ? holderContentsSelect[getElementsByTagName]("a")[0] || "" : "";
 				if (contentsListButton) {
-					var itemMatched = false,
-					contentsListItems = contentsList ? contentsList[gEBTN]("li") || "" : "";
-					for (var j = 0, m = contentsListItems.length; j < m; j += 1) {
-						if (locationHash === contentsListItems[j].dataset.href) {
+					var itemMatched = false;
+					var contentsListItems = contentsList ? contentsList[getElementsByTagName]("li") || "" : "";
+					for (var j = 0, m = contentsListItems[_length]; j < m; j += 1) {
+						if (locationHash === contentsListItems[j][dataset][href]) {
 							itemMatched = true;
-							contentsListButton.replaceChild(d[cTN](contentsListItems[j].firstChild.textContent), contentsListButton.firstChild);
+							contentsListButton.replaceChild(d[createTextNode](contentsListItems[j].firstChild.textContent), contentsListButton.firstChild);
 							break;
 						}
 					}
 					/* for (var key2 in contentsListItems) {
 						if (contentsListItems.hasOwnProperty(key2)) {
-							if (locationHash === contentsListItems[key2].dataset.href) {
+							if (locationHash === contentsListItems[key2][dataset][href]) {
 								itemMatched = true;
-								contentsListButton.replaceChild(d[cTN](contentsListItems[key2].firstChild.textContent), contentsListButton.firstChild);
+								contentsListButton.replaceChild(d[createTextNode](contentsListItems[key2].firstChild.textContent), contentsListButton.firstChild);
 								break;
 							}
 						}
 					} */
 					if (!itemMatched) {
-						contentsListButton.replaceChild(d[cTN](contentsListButtonDefaultText), contentsListButton.firstChild);
+						contentsListButton.replaceChild(d[createTextNode](contentsListButtonDefaultText), contentsListButton.firstChild);
 					}
 				}
 			}
 			if (asideObj) {
-				var asideTemplate = d[gEBI](asideTemplateId) || "",
-				asideRender = d[gEBI](asideRenderId) || "",
-				asideRenderParent = asideRender[pN] || "";
+				var asideTemplate = d[getElementById](asideTemplateId) || "";
+				var asideRender = d[getElementById](asideRenderId) || "";
+				var asideRenderParent = asideRender[parentNode] || "";
 				if (asideTemplate && asideRender) {
 					insertFromTemplate(asideObj, asideTemplateId, asideRenderId, function () {
 						if (asideRenderParent) {
@@ -2220,17 +2202,17 @@ var initRouting = function () {
 				}
 			}
 			if (nextHrefString) {
-				var nextHrefTemplate = d[gEBI](nextHrefTemplateId) || "",
-				nextHrefRender = d[gEBI](nextHrefRenderId) || "";
+				var nextHrefTemplate = d[getElementById](nextHrefTemplateId) || "";
+				var nextHrefRender = d[getElementById](nextHrefRenderId) || "";
 				if (nextHrefTemplate && nextHrefRender) {
 					insertFromTemplate({
 						"next_href": nextHrefString
 					}, nextHrefTemplateId, nextHrefRenderId);
 				}
 			}
-			var commentsTemplate = d[gEBI](commentsTemplateId) || "",
-			commentsRender = d[gEBI](commentsRenderId) || "",
-			commentsRenderParent = commentsRender[pN] || "";
+			var commentsTemplate = d[getElementById](commentsTemplateId) || "";
+			var commentsRender = d[getElementById](commentsRenderId) || "";
+			var commentsRenderParent = commentsRender[parentNode] || "";
 			if (commentsTemplate && commentsRender) {
 				if (!renderComments) {
 					renderComments = renderTemplate({}, commentsTemplateId, commentsRenderId);
@@ -2241,12 +2223,12 @@ var initRouting = function () {
 					}
 				});
 			}
-			var masonryGrid = d[gEBCN](masonryGridClass)[0] || "",
-			masonryGridParent = masonryGrid[pN] || "";
+			var masonryGrid = d[getElementsByClassName](masonryGridClass)[0] || "";
+			var masonryGridParent = masonryGrid[parentNode] || "";
 			if (masonryGrid && masonryGridParent) {
-				var contentsGridTemplate = d[gEBI](contentsGridTemplateId) || "",
-				contentsGridRender = d[gEBI](contentsGridRenderId) || "",
-				contentsGridRenderParent = contentsGridRender[pN] || "";
+				var contentsGridTemplate = d[getElementById](contentsGridTemplateId) || "";
+				var contentsGridRender = d[getElementById](contentsGridRenderId) || "";
+				var contentsGridRenderParent = contentsGridRender[parentNode] || "";
 				if (contentsGridTemplate && contentsGridRender) {
 					if (!renderMasonry) {
 						if (routesObj) {
@@ -2297,35 +2279,35 @@ var initRouting = function () {
 			var locationHash = w.location.hash || "";
 			if (locationHash) {
 				var isNotfound = false;
-				for (var i = 0, l = routesJsonObj.hashes.length; i < l; i += 1) {
-					if (locationHash === routesJsonObj.hashes[i].href) {
+				for (var i = 0, l = routesJsonObj.hashes[_length]; i < l; i += 1) {
+					if (locationHash === routesJsonObj.hashes[i][href]) {
 						isNotfound = true;
 						LoadingSpinner.show();
-						insertExternalHTML(appContentId, routesJsonObj.hashes[i].url, triggerOnContentInserted.bind(null, routesJsonObj.hashes[i].title, routesJsonObj.hashes[i].next_href, routesJsonObj.hashes[i].aside, routesJsonObj));
+						insertExternalHTML(appContentId, routesJsonObj.hashes[i].url, triggerOnContentInserted.bind(null, routesJsonObj.hashes[i][title], routesJsonObj.hashes[i].next_href, routesJsonObj.hashes[i].aside, routesJsonObj));
 						break;
 					}
 				}
 				/* for (var key in routesJsonObj.hashes) {
 					if (routesJsonObj.hashes.hasOwnProperty(key)) {
-						if (locationHash === routesJsonObj.hashes[key].href) {
+						if (locationHash === routesJsonObj.hashes[key][href]) {
 							isNotfound = true;
 							LoadingSpinner.show();
-							insertExternalHTML(appContentId, routesJsonObj.hashes[key].url, triggerOnContentInserted.bind(null, routesJsonObj.hashes[key].title, routesJsonObj.hashes[key].next_href, routesJsonObj.hashes[key].aside, routesJsonObj));
+							insertExternalHTML(appContentId, routesJsonObj.hashes[key].url, triggerOnContentInserted.bind(null, routesJsonObj.hashes[key][title], routesJsonObj.hashes[key].next_href, routesJsonObj.hashes[key].aside, routesJsonObj));
 							break;
 						}
 					}
 				} */
 				if (false === isNotfound) {
-					var notfoundUrl = routesJsonObj.notfound.url,
-					notfoundTitle = routesJsonObj.notfound.title;
+					var notfoundUrl = routesJsonObj.notfound.url;
+					var notfoundTitle = routesJsonObj.notfound[title];
 					if (notfoundUrl /* && notfoundTitle */) {
 						LoadingSpinner.show();
 						insertExternalHTML(appContentId, notfoundUrl, triggerOnContentInserted.bind(null, notfoundTitle, null, null, routesJsonObj));
 					}
 				}
 			} else {
-				var homeUrl = routesJsonObj.home.url,
-				homeTitle = routesJsonObj.home.title;
+				var homeUrl = routesJsonObj.home.url;
+				var homeTitle = routesJsonObj.home[title];
 				if (homeUrl /* && homeTitle */) {
 					LoadingSpinner.show();
 					insertExternalHTML(appContentId, homeUrl, triggerOnContentInserted.bind(null, homeTitle, null, null, routesJsonObj));
@@ -2333,38 +2315,37 @@ var initRouting = function () {
 			}
 		};
 		handleRoutesWindow();
-		w[aEL]("hashchange", handleRoutesWindow);
-		var rerenderContentsSelect = function () {
+		w[_addEventListener]("hashchange", handleRoutesWindow);
+		/*var rerenderContentsSelect = function () {
 			var handleContentsSelect = function () {
 				var _this = this;
 				var hashString = _this.options[_this.selectedIndex].value || "";
 				if (hashString) {
-					var tragetObject = isValidId(hashString, true) ? d[gEBI](hashString.replace(/^#/, "")) || "" : "";
+					var tragetObject = isValidId(hashString, true) ? d[getElementById](hashString.replace(/^#/, "")) || "" : "";
 					if (tragetObject) {
 						scroll2Top(findPos(tragetObject).top, 10000);
 					} else {
 						w.location.hash = hashString;
 					}
 				}
-			},
-			df = d[cDF](),
-			generateContentsSelectOptions = function (e) {
-				if (e.title) {
-					var contentsOption = d[cE]("option");
-					contentsOption.value = e.href;
-					var contentsOptionText = e.title;
-					contentsOption.title = contentsOptionText;
+			};
+			var df = d[createDocumentFragment]();
+			var generateContentsSelectOptions = function (e) {
+				if (e[title]) {
+					var contentsOption = d[createElement]("option");
+					contentsOption.value = e[href];
+					var contentsOptionText = e[title];
+					contentsOption[title] = contentsOptionText;
 					var contentsOptionTextTruncated = truncString("" + contentsOptionText, 44);
-					contentsOption[aC](d.createTextNode(contentsOptionTextTruncated));
-					df[aC](contentsOption);
-					df[aC](d.createTextNode("\n"));
+					contentsOption[appendChild](d.createTextNode(contentsOptionTextTruncated));
+					df[appendChild](contentsOption);
+					df[appendChild](d.createTextNode("\n"));
 				}
 			};
-			for (var i = 0, l = routesJsonObj.hashes.length; i < l; i += 1) {
+			for (var i = 0, l = routesJsonObj.hashes[_length]; i < l; i += 1) {
 				generateContentsSelectOptions(routesJsonObj.hashes[i]);
 			}
-			/* forEach(routesJsonObj.hashes, generateContentsSelectOptions, false); */
-			appendFragment(df, contentsSelectRender);
+			appendFragment(df, contentsSelectRender);*/
 			/*!
 			 * insertFromTemplate used in renderTemplate
 			 * will remove event listener from select (parent) element,
@@ -2375,72 +2356,72 @@ var initRouting = function () {
 			 * with document fragment
 			 */
 			/* if (contentsSelectTemplate && contentsSelectRender) {
-				var contentsSelectHtml = contentsSelectTemplate[iH] || "",
-				renderContentsSelectTemplate = new t(contentsSelectHtml);
+				var contentsSelectHtml = contentsSelectTemplate[innerHTML] || "";
+				var renderContentsSelectTemplate = new t(contentsSelectHtml);
 				var contentsSelectRendered = renderContentsSelectTemplate.render(routesJsonObj);
-				contentsSelectRender[iH] = contentsSelectRendered;
+				contentsSelectRender[innerHTML] = contentsSelectRendered;
 			} */
-			contentsSelect[aEL]("change", handleContentsSelect);
-		};
+			/*contentsSelect[_addEventListener]("change", handleContentsSelect);
+		};*/
 		var rerenderContentsList = function () {
 			var handleContentsListItem = function (listObj, hashString) {
 				if (hashString) {
-					var tragetObject = isValidId(hashString, true) ? d[gEBI](hashString.replace(/^#/, "")) || "" : "";
+					var tragetObject = isValidId(hashString, true) ? d[getElementById](hashString.replace(/^#/, "")) || "" : "";
 					if (tragetObject) {
 						scroll2Top(findPos(tragetObject).top, 10000);
 					} else {
 						w.location.hash = hashString;
 					}
 				}
-				listObj[cL].remove(isActiveClass);
-			},
-			contentsList = d[cE]("ul"),
-			contentsListButtonText = contentsSelect.options[0].textContent || "",
-			df = d[cDF](),
-			generateContentsListItems = function (e) {
-				if (e.title) {
-					var contentsListItem = d[cE]("li"),
-					contentsListItemHref = e.href,
-					contentsListItemText = e.title;
-					contentsListItem.title = contentsListItemText;
-					contentsListItem.dataset.href = contentsListItemHref;
+				listObj[classList].remove(isActiveClass);
+			};
+			var contentsList = d[createElement]("ul");
+			var contentsListButtonText = contentsSelect.options[0].textContent || "";
+			var df = d[createDocumentFragment]();
+			var generateContentsListItems = function (e) {
+				if (e[title]) {
+					var contentsListItem = d[createElement]("li");
+					var contentsListItemHref = e[href];
+					var contentsListItemText = e[title];
+					contentsListItem[title] = contentsListItemText;
+					contentsListItem[dataset][href] = contentsListItemHref;
 					var contentsListItemTextTruncated = truncString("" + contentsListItemText, 44);
-					contentsListItem[aC](d.createTextNode(contentsListItemTextTruncated));
-					contentsListItem[aEL]("click", handleContentsListItem.bind(null, contentsList, contentsListItemHref));
-					df[aC](contentsListItem);
-					df[aC](d.createTextNode("\n"));
+					contentsListItem[appendChild](d.createTextNode(contentsListItemTextTruncated));
+					contentsListItem[_addEventListener]("click", handleContentsListItem.bind(null, contentsList, contentsListItemHref));
+					df[appendChild](contentsListItem);
+					df[appendChild](d.createTextNode("\n"));
 				}
 			};
-			for (var j = 0, m = routesJsonObj.hashes.length; j < m; j += 1) {
+			for (var j = 0, m = routesJsonObj.hashes[_length]; j < m; j += 1) {
 				generateContentsListItems(routesJsonObj.hashes[j]);
 			}
 			/* forEach(routesJsonObj.hashes, generateContentsListItems, false); */
 			appendFragment(df, contentsList);
-			contentsList[cL].add(contentsListClass);
-			contentsList[cL].add(isDropdownClass);
-			holderContentsSelect.replaceChild(contentsList, contentsSelect[pN][pN]);
-			var contentsListButton = d[cE]("a");
-			contentsListButton[aC](d[cTN](contentsListButtonText));
-			contentsList[pN].insertBefore(contentsListButton, contentsList);
+			contentsList[classList].add(contentsListClass);
+			contentsList[classList].add(isDropdownClass);
+			holderContentsSelect.replaceChild(contentsList, contentsSelect[parentNode][parentNode]);
+			var contentsListButton = d[createElement]("a");
+			contentsListButton[appendChild](d[createTextNode](contentsListButtonText));
+			contentsList[parentNode].insertBefore(contentsListButton, contentsList);
 			/*jshint -W107 */
-			contentsListButton.href = "javascript:void(0);";
+			contentsListButton[href] = "javascript:void(0);";
 			/*jshint +W107 */
 			var insertChevronDownSmallSvg = function (targetObj) {
-				var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
-				use = d[cENS]("http://www.w3.org/2000/svg", "use");
-				svg[cL].add("ui-icon");
-				use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-ChevronDownSmall");
-				svg[aC](use);
-				targetObj[aC](svg);
+				var svg = d[createElementNS]("http://www.w3.org/2000/svg", "svg");
+				var use = d[createElementNS]("http://www.w3.org/2000/svg", "use");
+				svg[classList].add("ui-icon");
+				use[setAttributeNS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-ChevronDownSmall");
+				svg[appendChild](use);
+				targetObj[appendChild](svg);
 			};
 			insertChevronDownSmallSvg(contentsListButton);
 			var handleContentsListItemsButton = function (ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
-				contentsList[cL].toggle(isActiveClass);
+				contentsList[classList].toggle(isActiveClass);
 				handleOtherDropdownLists(contentsList);
 			};
-			contentsListButton[aEL]("click", handleContentsListItemsButton);
+			contentsListButton[_addEventListener]("click", handleContentsListItemsButton);
 		};
 		if (contentsSelect) {
 			/* if (contentsSelectRender) {
@@ -2461,9 +2442,10 @@ document.ready().then(initRouting);
  * bind functions only for inserted DOM
  * @param {String} ctx HTML Element class or id string
  */
-/* var observeMutations = function (ctx) {
+/* var observeMutations = function (scope) {
 	"use strict";
-	ctx = ctx && ctx.nodeName ? ctx : "";
+	var ctx = scope && scope.nodeName ? scope : "";
+	var mo;
 	var getMutations = function (e) {
 		var triggerOnMutation = function (m) {
 			console.log("mutations observer: " + m.type);
@@ -2477,10 +2459,9 @@ document.ready().then(initRouting);
 		for (var i = 0, l = e.length; i < l; i += 1) {
 			triggerOnMutation(e[i]);
 		}
-		forEach(e, triggerOnMutation);
 	};
 	if (ctx) {
-		var mo = new MutationObserver(getMutations);
+		mo = new MutationObserver(getMutations);
 		mo.observe(ctx, {
 			childList: !0,
 			subtree: !0,
@@ -2499,12 +2480,12 @@ document.ready().then(initRouting);
  */
 /* var updateInsertedDom = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	gEBI = "getElementById",
-	pN = "parentNode",
-	ctx = d[gEBI]("app-content")[pN] || "",
-	locationHash = w.location.hash || "";
+	var w = globalRoot;
+	var d = document;
+	var getElementById = "getElementById";
+	var parentNode = "parentNode";
+	var ctx = d[getElementById]("app-content")[parentNode] || "";
+	var locationHash = w.location.hash || "";
 	if (ctx && locationHash) {
 		console.log("triggered function: updateInsertedDom");
 		observeMutations(ctx);
@@ -2516,61 +2497,60 @@ globalRoot.addEventListener("hashchange", updateInsertedDom); */
  */
 var initUiTotop = function () {
 	"use strict";
-	var w = globalRoot,
-	d = document,
-	h = d.documentElement || "",
-	b = d.body || "",
-	gEBCN = "getElementsByClassName",
-	cL = "classList",
-	cE = "createElement",
-	aC = "appendChild",
-	cENS = "createElementNS",
-	sANS = "setAttributeNS",
-	aEL = "addEventListener",
-	btnClass = "ui-totop",
-	btnTitle = "Наверх",
-	isActiveClass = "is-active",
-	anchor = d[cE]("a"),
-	insertUpSvg = function (targetObj) {
-		var svg = d[cENS]("http://www.w3.org/2000/svg", "svg"),
-		use = d[cENS]("http://www.w3.org/2000/svg", "use");
-		svg[cL].add("ui-icon");
-		use[sANS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Up");
-		svg[aC](use);
-		targetObj[aC](svg);
-	},
-	handleUiTotopAnchor = function (ev) {
+	var w = globalRoot;
+	var d = document;
+	var h = d.documentElement || "";
+	var b = d.body || "";
+	var getElementsByClassName = "getElementsByClassName";
+	var classList = "classList";
+	var createElement = "createElement";
+	var appendChild = "appendChild";
+	var createElementNS = "createElementNS";
+	var setAttributeNS = "setAttributeNS";
+	var _addEventListener = "addEventListener";
+	var btnClass = "ui-totop";
+	var btnTitle = "Наверх";
+	var isActiveClass = "is-active";
+	var anchor = d[createElement]("a");
+	var insertUpSvg = function (targetObj) {
+		var svg = d[createElementNS]("http://www.w3.org/2000/svg", "svg");
+		var use = d[createElementNS]("http://www.w3.org/2000/svg", "use");
+		svg[classList].add("ui-icon");
+		use[setAttributeNS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Up");
+		svg[appendChild](use);
+		targetObj[appendChild](svg);
+	};
+	var handleUiTotopAnchor = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
 		scroll2Top(0, 20000);
-	},
-	handleUiTotopWindow = function (_this) {
+	};
+	var handleUiTotopWindow = function (_this) {
 		var logicHandleUiTotopWindow = function () {
-			var btn = d[gEBCN](btnClass)[0] || "",
-			scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "",
-			windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
+			var btn = d[getElementsByClassName](btnClass)[0] || "";
+			var scrollPosition = _this.pageYOffset || h.scrollTop || b.scrollTop || "";
+			var windowHeight = _this.innerHeight || h.clientHeight || b.clientHeight || "";
 			if (scrollPosition && windowHeight && btn) {
 				if (scrollPosition > windowHeight) {
-					btn[cL].add(isActiveClass);
+					btn[classList].add(isActiveClass);
 				} else {
-					btn[cL].remove(isActiveClass);
+					btn[classList].remove(isActiveClass);
 				}
 			}
-		},
-		throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
+		};
+		var throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
 		throttleLogicHandleUiTotopWindow();
 	};
-	anchor[cL].add(btnClass);
+	anchor[classList].add(btnClass);
 	/*jshint -W107 */
 	anchor.href = "javascript:void(0);";
 	/*jshint +W107 */
 	anchor.title = btnTitle;
 	insertUpSvg(anchor);
-	b[aC](anchor);
+	b[appendChild](anchor);
 	if (b) {
-		/* console.log("triggered function: initUiTotop"); */
-		anchor[aEL]("click", handleUiTotopAnchor);
-		w[aEL]("scroll", handleUiTotopWindow, {passive: true});
+		anchor[_addEventListener]("click", handleUiTotopAnchor);
+		w[_addEventListener]("scroll", handleUiTotopWindow, {passive: true});
 	}
 };
 document.ready().then(initUiTotop);
@@ -2592,10 +2572,10 @@ document.ready().then(initManUp); */
  */
 var showPageFinishProgress = function () {
 	"use strict";
-	var d = document,
-	gEBI = "getElementById",
-	page = d[gEBI]("page") || "",
-	showPage = function () {
+	var d = document;
+	var getElementById = "getElementById";
+	var page = d[getElementById]("page") || "";
+	var showPage = function () {
 		page.style.opacity = 1;
 	};
 	if (page) {

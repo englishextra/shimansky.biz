@@ -2,7 +2,7 @@
 /*jslint node: true */
 /*global doesFontExist, loadJsCss, Parallax, platform, QRCode,
 ToProgress, unescape, VK, WheelIndicator, Ya */
-/*property console, split */
+/*property console, join, split */
 /*!
  * safe way to handle console.log
  * @see {@link https://github.com/paulmillr/console-polyfill}
@@ -18,7 +18,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	var method;
 	var dummy = function () {};
 	var properties = ["memory"];
-	var methods = ("assert,clear,count,debug,dir,dirxml,error,exception,group," + "groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd," + "show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn").split(",");
+	var methods = ["assert,clear,count,debug,dir,dirxml,error,exception,group,", "groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,", "show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn"];
+	methods.join("").split(",");
 	for (; prop = properties.pop();) {
 		if (!con[prop]) {
 			con[prop] = {};
@@ -49,7 +50,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 	var ToProgress = function () {
 		var TP = function () {
-			var addEventListener = "addEventListener";
+			var _addEventListener = "addEventListener";
 			var appendChild = "appendChild";
 			var createElement = "createElement";
 			var firstChild = "firstChild";
@@ -58,7 +59,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			var hasOwnProperty = "hasOwnProperty";
 			var opacity = "opacity";
 			var prototype = "prototype";
-			var removeEventListener = "removeEventListener";
+			var _removeEventListener = "removeEventListener";
 			var style = "style";
 			function whichTransitionEvent() {
 				var t,
@@ -168,9 +169,9 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				this.setProgress(100, callback);
 				this.hide();
 				if (transitionEvent) {
-					this.progressBar[addEventListener](transitionEvent, function (e) {
+					this.progressBar[_addEventListener](transitionEvent, function (e) {
 						that.reset();
-						that.progressBar[removeEventListener](e.type, TP);
+						that.progressBar[_removeEventListener](e.type, TP);
 					});
 				}
 			};
@@ -240,7 +241,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var createElement = "createElement";
 		var getElementsByTagName = "getElementsByTagName";
 		var insertBefore = "insertBefore";
-		var length = "length";
+		var _length = "length";
 		var parentNode = "parentNode";
 		_this.files = files;
 		_this.js = [];
@@ -261,7 +262,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			script.async = true;
 			script.src = _this.js[i];
 			var loadNextScript = function () {
-				if (++i < _this.js[length]) {
+				if (++i < _this.js[_length]) {
 					_this.loadScript(i);
 				} else {
 					_this.callback();
@@ -278,7 +279,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 		};
 		var i, l;
-		for (i = 0, l = _this.files[length]; i < l; i += 1) {
+		for (i = 0, l = _this.files[_length]; i < l; i += 1) {
 			if (/\.js$|\.js\?/.test(_this.files[i])) {
 				_this.js.push(_this.files[i]);
 			}
@@ -287,7 +288,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 		}
 		i = l = null;
-		if (_this.js[length] > 0) {
+		if (_this.js[_length] > 0) {
 			_this.loadScript(0);
 		} else {
 			_this.callback();
@@ -301,7 +302,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 (function (root, document, undefined) {
 	"use strict";
 
-	var addEventListener = "addEventListener";
+	var _addEventListener = "addEventListener";
 	var alt = "alt";
 	var className = "className";
 	var createElement = "createElement";
@@ -311,7 +312,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	var getElementsByClassName = "getElementsByClassName";
 	var getElementsByTagName = "getElementsByTagName";
 	var height = "height";
-	var length = "length";
+	var _length = "length";
 	var parentNode = "parentNode";
 	var remove = "remove";
 	var removeChild = "removeChild";
@@ -339,7 +340,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 		progressBar.increase(20);
 
-		root[addEventListener]("load", hideProgressBar);
+		root[_addEventListener]("load", hideProgressBar);
 	}
 
 	var removeElement = function (elem) {
@@ -395,7 +396,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		removeRipple();
 		removeLoading();
 	} else {
-		root[addEventListener]("load", hidePreloaders);
+		root[_addEventListener]("load", hidePreloaders);
 	}
 
 	var supportsSvgAsImg = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1") || "";
@@ -404,7 +405,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var svgNosmilImages = document[getElementsByClassName]("svg-nosmil-img") || "";
 		if (svgNosmilImages) {
 			var i, l;
-			for (i = 0, l = svgNosmilImages[length]; i < l; i += 1) {
+			for (i = 0, l = svgNosmilImages[_length]; i < l; i += 1) {
 				svgNosmilImages[i][src] = svgNosmilImages[i][getAttribute]("data-fallback-src");
 			}
 			i = l = null;
@@ -415,7 +416,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var svgSmilImages = document[getElementsByClassName]("svg-smil-img") || "";
 		if (svgSmilImages) {
 			var j, m;
-			for (j = 0, m = svgSmilImages[length]; j < m; j += 1) {
+			for (j = 0, m = svgSmilImages[_length]; j < m; j += 1) {
 				svgSmilImages[j][src] = svgSmilImages[j][getAttribute]("data-fallback-src");
 			}
 			j = m = null;
@@ -427,7 +428,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			return;
 		}
 		var img = new Image();
-		img[addEventListener]("load", function () {
+		img[_addEventListener]("load", function () {
 			var ctx = canvasObj.getContext("2d");
 			if (ctx) {
 				ctx.drawImage(img, 0, 0, canvasObj[width], canvasObj[height]);
@@ -454,7 +455,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 	var canvasAll = document[getElementsByTagName]("canvas") || "";
 
-	var styleSheetsLength = document[styleSheets][length] || 0;
+	var styleSheetsLength = document[styleSheets][_length] || 0;
 
 	var supportsCanvas = function () {
 		var elem = document[createElement]("canvas");
@@ -463,11 +464,11 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 	var slotDrawCanvasAll;
 	var drawCanvasAll = function () {
-		if (document[styleSheets][length] > styleSheetsLength) {
+		if (document[styleSheets][_length] > styleSheetsLength) {
 			clearInterval(slotDrawCanvasAll);
 			slotDrawCanvasAll = null;
 			var i, l, canvasObj, url;
-			for (i = 0, l = canvasAll[length]; i < l; i += 1) {
+			for (i = 0, l = canvasAll[_length]; i < l; i += 1) {
 				if (canvasAll[i][getAttribute]("data-src")) {
 					canvasObj = canvasAll[i];
 					url = canvasAll[i][getAttribute]("data-src");
@@ -616,64 +617,36 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 		};
 
-		var debounce = function (func, wait, immediate) {
+		var debounce = function (func, wait) {
 			var timeout;
 			var args;
 			var context;
 			var timestamp;
-			var result;
-			if (undefined === wait || null === wait) {
-				wait = 100;
-			}
-			function later() {
-				var last = Date.now() - timestamp;
-				if (last < wait && last >= 0) {
-					timeout = setTimeout(later, wait - last);
-				} else {
-					timeout = null;
-					if (!immediate) {
-						result = func.apply(context, args);
-						context = args = null;
-					}
-				}
-			}
-			var debounced = function () {
+			return function () {
 				context = this;
-				args = arguments;
-				timestamp = Date.now();
-				var callNow = immediate && !timeout;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = new Date() - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
 				if (!timeout) {
 					timeout = setTimeout(later, wait);
 				}
-				if (callNow) {
-					result = func.apply(context, args);
-					context = args = null;
-				}
-				return result;
 			};
-			debounced.clear = function () {
-				if (timeout) {
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			debounced.flush = function () {
-				if (timeout) {
-					result = func.apply(context, args);
-					context = args = null;
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			return debounced;
 		};
 
 		var isBindedClass = "is-binded";
 
-		var manageExternalLinkAll = function (ctx) {
-			var _ctx = ctx && ctx.nodeName ? ctx : "";
+		var manageExternalLinkAll = function (scope) {
+			var context = scope && scope.nodeName ? scope : "";
 			var linkTag = "a";
-			var externalLinks = _ctx ? _ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+			var externalLinks = context ? context[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
 			var arrange = function (e) {
 				var handleExternalLink = function (url, evt) {
 					evt.stopPropagation();
@@ -690,7 +663,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 							e.target = "_blank";
 							e.rel = "noopener";
 						} else {
-							e[addEventListener]("click", handleExternalLink.bind(null, url));
+							e[_addEventListener]("click", handleExternalLink.bind(null, url));
 						}
 						e[classList].add(isBindedClass);
 					}
@@ -902,8 +875,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			if (hasTouch) {
 				mousewheeldown[style].display = "none";
 				if (root.tocca) {
-					root[addEventListener]("swipeup", revealStart, { passive: true });
-					root[addEventListener]("swipedown", concealStart, { passive: true });
+					root[_addEventListener]("swipeup", revealStart, { passive: true });
+					root[_addEventListener]("swipedown", concealStart, { passive: true });
 				}
 			} else {
 				if (hasWheel) {
@@ -933,7 +906,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 
 		var scriptIsLoaded = function (scriptSrc) {
 			var scriptAll, i, l;
-			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[length]; i < l; i += 1) {
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
 				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
 					scriptAll = i = l = null;
 					return true;
@@ -950,7 +923,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			var isSocialAll = document[getElementsByClassName]("is-social") || "";
 			if (isSocialAll) {
 				var k, n;
-				for (k = 0, n = isSocialAll[length]; k < n; k += 1) {
+				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
 					if (_thisObj !== isSocialAll[k]) {
 						isSocialAll[k][classList].remove(isActiveClass);
 					}
@@ -959,7 +932,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 		};
 
-		root[addEventListener]("click", hideOtherIsSocial);
+		root[_addEventListener]("click", hideOtherIsSocial);
 
 		var yaShare2Id = "ya-share2";
 
@@ -1010,7 +983,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		if (btnShare && btnShareLink && yaShare2) {
-			btnShareLink[addEventListener]("click", showYaShare2);
+			btnShareLink[_addEventListener]("click", showYaShare2);
 		}
 
 		var vkLikeClass = "vk-like";
@@ -1063,7 +1036,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		if (btnLike && btnLikeLink && vkLike) {
-			btnLikeLink[addEventListener]("click", showVkLike);
+			btnLikeLink[_addEventListener]("click", showVkLike);
 		}
 	};
 
@@ -1091,7 +1064,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 					support = true;
 				}
 			});
-			root[addEventListener]("test", function () {}, opts);
+			root[_addEventListener]("test", function () {}, opts);
 		} catch (err) {}
 		return support;
 	}();
@@ -1161,7 +1134,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
  	listeners: [],
  	active: function () {
  		this.called_ready = true;
- 		for (var i = 0; i < this.listeners[length]; i++) {
+ 		for (var i = 0; i < this.listeners[_length]; i++) {
  			this.listeners[i]();
  		}
  	},

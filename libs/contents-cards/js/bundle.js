@@ -2,7 +2,7 @@
 /*jslint node: true */
 /*global doesFontExist, echo, Headers, loadJsCss, Minigrid, platform,
 Promise, t, ToProgress, VK, WheelIndicator, Ya */
-/*property console, split */
+/*property console, join, split */
 /*!
  * safe way to handle console.log
  * @see {@link https://github.com/paulmillr/console-polyfill}
@@ -18,7 +18,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 	var method;
 	var dummy = function () {};
 	var properties = ["memory"];
-	var methods = ("assert,clear,count,debug,dir,dirxml,error,exception,group," + "groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd," + "show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn").split(",");
+	var methods = ["assert,clear,count,debug,dir,dirxml,error,exception,group,", "groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,", "show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn"];
+	methods.join("").split(",");
 	for (; prop = properties.pop();) {
 		if (!con[prop]) {
 			con[prop] = {};
@@ -49,7 +50,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 
 	var ToProgress = function () {
 		var TP = function () {
-			var addEventListener = "addEventListener";
+			var _addEventListener = "addEventListener";
 			var appendChild = "appendChild";
 			var createElement = "createElement";
 			var firstChild = "firstChild";
@@ -58,7 +59,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			var hasOwnProperty = "hasOwnProperty";
 			var opacity = "opacity";
 			var prototype = "prototype";
-			var removeEventListener = "removeEventListener";
+			var _removeEventListener = "removeEventListener";
 			var style = "style";
 			function whichTransitionEvent() {
 				var t,
@@ -168,9 +169,9 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 				this.setProgress(100, callback);
 				this.hide();
 				if (transitionEvent) {
-					this.progressBar[addEventListener](transitionEvent, function (e) {
+					this.progressBar[_addEventListener](transitionEvent, function (e) {
 						that.reset();
-						that.progressBar[removeEventListener](e.type, TP);
+						that.progressBar[_removeEventListener](e.type, TP);
 					});
 				}
 			};
@@ -202,7 +203,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 
 	var getElementsByClassName = "getElementsByClassName";
 	var getElementById = "getElementById";
-	var length = "length";
+	var _length = "length";
 	function extend(a, b) {
 		for (var key in b) {
 			if (b.hasOwnProperty(key)) {
@@ -223,7 +224,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		if (!this.props.container) {
 			return false;
 		}
-		if (!this.props.nodeList || this.props.nodeList[length] === 0) {
+		if (!this.props.nodeList || this.props.nodeList[_length] === 0) {
 			return false;
 		}
 		var gutter = typeof this.props.gutter === "number" && isFinite(this.props.gutter) && Math.floor(this.props.gutter) === this.props.gutter ? this.props.gutter : 0;
@@ -294,7 +295,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 (function (root) {
 	"use strict";
 
-	var length = "length";
+	var hasOwnProperty = "hasOwnProperty";
+	var _length = "length";
 	var replace = "replace";
 	var blockregex = /\{\{(([@!]?)(.+?))\}\}(([\s\S]+?)(\{\{:\1\}\}([\s\S]+?))?)\{\{\/\1\}\}/g;
 	var valregex = /\{\{([=%])(.+?)\}\}/g;
@@ -306,7 +308,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 	}
 	function get_value(vars, key) {
 		var parts = key.split(".");
-		while (parts[length]) {
+		while (parts[_length]) {
 			if (!(parts[0] in vars)) {
 				return false;
 			}
@@ -335,7 +337,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 				_ = vars._key;
 				__ = vars._val;
 				for (i in val) {
-					if (val.hasOwnProperty(i)) {
+					if (val[hasOwnProperty](i)) {
 						vars._key = i;
 						vars._val = val[i];
 						temp += render(inner, vars);
@@ -373,7 +375,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		var _imgClass = imgClass || "data-src-img";
 		var _dataAttributeName = dataAttributeName || "src";
 		var _throttleRate = throttleRate || 100;
-		var addEventListener = "addEventListener";
+		var _addEventListener = "addEventListener";
 		var classList = "classList";
 		var dataset = "dataset";
 		var defineProperty = "defineProperty";
@@ -381,7 +383,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		var getAttribute = "getAttribute";
 		var getBoundingClientRect = "getBoundingClientRect";
 		var getElementsByClassName = "getElementsByClassName";
-		var length = "length";
+		var _length = "length";
 		var Echo = function (elem) {
 			var _this = this;
 			_this.elem = elem;
@@ -409,7 +411,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		};
 		var echoImageAll = function () {
-			for (var i = 0; i < echoStore[length]; i++) {
+			for (var i = 0; i < echoStore[_length]; i++) {
 				var self = echoStore[i];
 				if (scrolledIntoView(self)) {
 					echoSrc(self, removeEcho(self, i));
@@ -452,7 +454,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 						support = true;
 					}
 				});
-				root[addEventListener]("test", function () {}, opts);
+				root[_addEventListener]("test", function () {}, opts);
 			} catch (err) {}
 			return support;
 		}();
@@ -465,14 +467,14 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			},
 			listen: function () {
 				if (!isBindedEcho) {
-					root[addEventListener]("scroll", throttleEchoImageAll, supportsPassive ? { passive: true } : false);
+					root[_addEventListener]("scroll", throttleEchoImageAll, supportsPassive ? { passive: true } : false);
 					document[documentElement][classList].add(isBindedEchoClass);
 				}
 			}
 		};
 		var lazyImgs = document[getElementsByClassName](_imgClass) || "";
 		var walkLazyImageAll = function () {
-			for (var i = 0; i < lazyImgs[length]; i++) {
+			for (var i = 0; i < lazyImgs[_length]; i++) {
 				new Echo(lazyImgs[i]).init();
 			}
 		};
@@ -529,7 +531,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		var createElement = "createElement";
 		var getElementsByTagName = "getElementsByTagName";
 		var insertBefore = "insertBefore";
-		var length = "length";
+		var _length = "length";
 		var parentNode = "parentNode";
 		_this.files = files;
 		_this.js = [];
@@ -550,7 +552,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			script.async = true;
 			script.src = _this.js[i];
 			var loadNextScript = function () {
-				if (++i < _this.js[length]) {
+				if (++i < _this.js[_length]) {
 					_this.loadScript(i);
 				} else {
 					_this.callback();
@@ -567,7 +569,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		};
 		var i, l;
-		for (i = 0, l = _this.files[length]; i < l; i += 1) {
+		for (i = 0, l = _this.files[_length]; i < l; i += 1) {
 			if (/\.js$|\.js\?/.test(_this.files[i])) {
 				_this.js.push(_this.files[i]);
 			}
@@ -576,7 +578,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		}
 		i = l = null;
-		if (_this.js[length] > 0) {
+		if (_this.js[_length] > 0) {
 			_this.loadScript(0);
 		} else {
 			_this.callback();
@@ -590,11 +592,11 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 (function (root, document) {
 	"use strict";
 
-	var addEventListener = "addEventListener";
+	var _addEventListener = "addEventListener";
 	var createElement = "createElement";
 	var documentElement = "documentElement";
 	var getElementsByClassName = "getElementsByClassName";
-	var length = "length";
+	var _length = "length";
 
 	var progressBar = new ToProgress({
 		id: "top-progress-bar",
@@ -649,27 +651,27 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 
 		progressBar.increase(20);
 
-		var mo;
-		var observeMutations = function (ctx) {
-			var _ctx = ctx && ctx.nodeName ? ctx : "";
+		var observeMutations = function (scope) {
+			var context = scope && scope.nodeName ? scope : "";
+			var mo;
 			var getMutations = function (e) {
 				var triggerOnMutation = function (m) {
 					console.log("mutations observer: " + m.type);
 					console.log(m.type, "target: " + m.target.tagName + ("." + m.target[className] || "#" + m.target.id || ""));
-					console.log(m.type, "added: " + m.addedNodes[length] + " nodes");
-					console.log(m.type, "removed: " + m.removedNodes[length] + " nodes");
+					console.log(m.type, "added: " + m.addedNodes[_length] + " nodes");
+					console.log(m.type, "removed: " + m.removedNodes[_length] + " nodes");
 					if ("childList" === m.type || "subtree" === m.type) {
 						mo.disconnect();
 						hideProgressBar();
 					}
 				};
-				for (var i = 0, l = e[length]; i < l; i += 1) {
+				for (var i = 0, l = e[_length]; i < l; i += 1) {
 					triggerOnMutation(e[i]);
 				}
 			};
-			if (_ctx) {
+			if (context) {
 				mo = new MutationObserver(getMutations);
-				mo.observe(_ctx, {
+				mo.observe(context, {
 					childList: !0,
 					subtree: !0,
 					attributes: !1,
@@ -780,64 +782,36 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		};
 
-		var debounce = function (func, wait, immediate) {
+		var debounce = function (func, wait) {
 			var timeout;
 			var args;
 			var context;
 			var timestamp;
-			var result;
-			if (undefined === wait || null === wait) {
-				wait = 100;
-			}
-			function later() {
-				var last = Date.now() - timestamp;
-				if (last < wait && last >= 0) {
-					timeout = setTimeout(later, wait - last);
-				} else {
-					timeout = null;
-					if (!immediate) {
-						result = func.apply(context, args);
-						context = args = null;
-					}
-				}
-			}
-			var debounced = function () {
+			return function () {
 				context = this;
-				args = arguments;
-				timestamp = Date.now();
-				var callNow = immediate && !timeout;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = new Date() - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
 				if (!timeout) {
 					timeout = setTimeout(later, wait);
 				}
-				if (callNow) {
-					result = func.apply(context, args);
-					context = args = null;
-				}
-				return result;
 			};
-			debounced.clear = function () {
-				if (timeout) {
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			debounced.flush = function () {
-				if (timeout) {
-					result = func.apply(context, args);
-					context = args = null;
-					clearTimeout(timeout);
-					timeout = null;
-				}
-			};
-			return debounced;
 		};
 
 		var isBindedClass = "is-binded";
 
-		var manageExternalLinkAll = function (ctx) {
-			var _ctx = ctx && ctx.nodeName ? ctx : "";
+		var manageExternalLinkAll = function (scope) {
+			var context = scope && scope.nodeName ? scope : "";
 			var linkTag = "a";
-			var externalLinks = _ctx ? _ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+			var externalLinks = context ? context[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
 			var arrange = function (e) {
 				var handleExternalLink = function (url, evt) {
 					evt.stopPropagation();
@@ -854,7 +828,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 							e.target = "_blank";
 							e.rel = "noopener";
 						} else {
-							e[addEventListener]("click", handleExternalLink.bind(null, url));
+							e[_addEventListener]("click", handleExternalLink.bind(null, url));
 						}
 						e[classList].add(isBindedClass);
 					}
@@ -1129,7 +1103,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 				mgrid.mount();
 			};
 			initMinigrid();
-			root[addEventListener]("resize", updateMinigrid, { passive: true });
+			root[_addEventListener]("resize", updateMinigrid, { passive: true });
 
 			var toDashedAll = function (str) {
 				return str.replace(/([A-Z])/g, function ($1) {
@@ -1183,7 +1157,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 
 		var scriptIsLoaded = function (scriptSrc) {
 			var scriptAll, i, l;
-			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[length]; i < l; i += 1) {
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
 				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
 					scriptAll = i = l = null;
 					return true;
@@ -1200,7 +1174,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			var isSocialAll = document[getElementsByClassName]("is-social") || "";
 			if (isSocialAll) {
 				var k, n;
-				for (k = 0, n = isSocialAll[length]; k < n; k += 1) {
+				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
 					if (_thisObj !== isSocialAll[k]) {
 						isSocialAll[k][classList].remove(isActiveClass);
 					}
@@ -1209,7 +1183,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		};
 
-		root[addEventListener]("click", hideOtherIsSocial);
+		root[_addEventListener]("click", hideOtherIsSocial);
 
 		var yaShare2Id = "ya-share2";
 
@@ -1260,7 +1234,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		};
 
 		if (btnShare && btnShareLink && yaShare2) {
-			btnShareLink[addEventListener]("click", showYaShare2);
+			btnShareLink[_addEventListener]("click", showYaShare2);
 		}
 
 		var vkLikeClass = "vk-like";
@@ -1313,7 +1287,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		};
 
 		if (btnLike && btnLikeLink && vkLike) {
-			btnLikeLink[addEventListener]("click", showVkLike);
+			btnLikeLink[_addEventListener]("click", showVkLike);
 		}
 
 		var throttle = function (func, wait) {
@@ -1363,7 +1337,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
   	throttleLogic();
   };
   if (titleBar) {
-  	root[addEventListener]("scroll", handleTitleBar, {passive: true});
+  	root[_addEventListener]("scroll", handleTitleBar, {passive: true});
   } */
 
 		/*!
@@ -1407,8 +1381,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
   	titleBar[classList].add(duration4msClass);
   	if (hasTouch) {
   		if (root.tocca) {
-  			root[addEventListener]("swipeup", hideTitleBar, {passive: true});
-  			root[addEventListener]("swipedown", revealTitleBar, {passive: true});
+  			root[_addEventListener]("swipeup", hideTitleBar, {passive: true});
+  			root[_addEventListener]("swipedown", revealTitleBar, {passive: true});
   		}
   	} else {
   		if (hasWheel) {
@@ -1473,11 +1447,11 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			throttleLogic();
 		};
 		if (titleBar) {
-			root[addEventListener]("scroll", resetTitleBar, { passive: true });
+			root[_addEventListener]("scroll", resetTitleBar, { passive: true });
 			if (hasTouch) {
 				if (root.tocca) {
-					root[addEventListener]("swipeup", hideTitleBar, { passive: true });
-					root[addEventListener]("swipedown", revealTitleBar, { passive: true });
+					root[_addEventListener]("swipeup", hideTitleBar, { passive: true });
+					root[_addEventListener]("swipedown", revealTitleBar, { passive: true });
 				}
 			} else {
 				if (hasWheel) {
@@ -1560,8 +1534,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			throttleLogic();
 		};
 		if (btnTotop) {
-			btnTotop[addEventListener]("click", handleBtnTotop);
-			root[addEventListener]("scroll", handleBtnTotopWindow, { passive: true });
+			btnTotop[_addEventListener]("click", handleBtnTotop);
+			root[_addEventListener]("scroll", handleBtnTotopWindow, { passive: true });
 		}
 	};
 
@@ -1593,7 +1567,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 					support = true;
 				}
 			});
-			root[addEventListener]("test", function () {}, opts);
+			root[_addEventListener]("test", function () {}, opts);
 		} catch (err) {}
 		return support;
 	}();
@@ -1672,7 +1646,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
  	listeners: [],
  	active: function () {
  		this.called_ready = true;
- 		for (var i = 0; i < this.listeners[length]; i++) {
+ 		for (var i = 0; i < this.listeners[_length]; i++) {
  			this.listeners[i]();
  		}
  	},
