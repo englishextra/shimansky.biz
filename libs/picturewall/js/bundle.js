@@ -1698,7 +1698,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 	var supportsClassList = "classList" in document[createElement]("_") || "";
 
 	if (!supportsClassList) {
-		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/classlist.js@1.1.20150312/classList.min.js");
+		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.201711092/classList.min.js");
 	}
 
 	var supportsDataset = "undefined" !== typeof root.Element && "dataset" in document[documentElement] || "";
