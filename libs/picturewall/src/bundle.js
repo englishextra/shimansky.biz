@@ -1242,7 +1242,6 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			root[_addEventListener]("test", function () {}, opts);
 		} catch (err) {}
 		return support;
-
 	})();
 
 	if (!supportsPassive) {

@@ -1325,7 +1325,6 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			root[_addEventListener]("test", function () {}, opts);
 		} catch (err) {}
 		return support;
-
 	})();
 
 	if (!supportsPassive) {
