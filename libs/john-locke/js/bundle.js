@@ -302,12 +302,13 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 (function (root, document, undefined) {
 	"use strict";
 
+	var docElem = document.documentElement || "";
+
 	var _addEventListener = "addEventListener";
 	var alt = "alt";
 	var className = "className";
 	var createElement = "createElement";
 	var createElementNS = "createElementNS";
-	var documentElement = "documentElement";
 	var getAttribute = "getAttribute";
 	var getElementsByClassName = "getElementsByClassName";
 	var getElementsByTagName = "getElementsByTagName";
@@ -487,7 +488,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		slotDrawCanvasAll = setInterval(drawCanvasAll, 100);
 	}
 
-	var hasTouch = "ontouchstart" in document[documentElement] || "";
+	var hasTouch = "ontouchstart" in docElem || "";
 
 	var hasWheel = "onwheel" in document[createElement]("div") || void 0 !== document.onmousewheel || "";
 
@@ -510,7 +511,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var href = "href";
 		var title = "title";
 
-		var docElem = document[documentElement] || "";
 		if (docElem && docElem[classList]) {
 			docElem[classList].remove("no-js");
 			docElem[classList].add("js");
@@ -966,7 +966,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 								});
 							}
 						} catch (err) {
-							console.log("cannot update or init Ya", err);
+							/* console.log("cannot update or init Ya", err); */
 						}
 					}
 				};
@@ -1018,7 +1018,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 								});
 								vlike = true;
 							} catch (err) {
-								console.log("cannot init VK", err);
+								/* console.log("cannot init VK", err); */
 							}
 						}
 					}
@@ -1050,7 +1050,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.201711092/classList.min.js");
 	}
 
-	var supportsDataset = "undefined" !== typeof root.Element && "dataset" in document[documentElement] || "";
+	var supportsDataset = "undefined" !== typeof root.Element && "dataset" in docElem || "";
 
 	if (!supportsDataset) {
 		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/element-dataset@2.2.6/lib/browser/index.cjs.min.js");
@@ -1073,15 +1073,18 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/dom4@1.8.5/build/dom4.max.min.js");
 	}
 
-	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.6/qrjs2.min.js", forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js");
+	/* scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js",
+ 	forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.6/qrjs2.min.js",
+ 	forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js");
+ 	if (hasTouch) {
+ 	scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/tocca@2.0.1/Tocca.min.js");
+ } else {
+ 	if (hasWheel) {
+ 		scripts.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
+ 	}
+ } */
 
-	if (hasTouch) {
-		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/tocca@2.0.1/Tocca.min.js");
-	} else {
-		if (hasWheel) {
-			scripts.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
-		}
-	}
+	scripts.push("./libs/john-locke/js/vendors.min.js");
 
 	/*!
   * load scripts after webfonts loaded using doesFontExist

@@ -432,9 +432,9 @@ if (document.title) {
 	var scriptIsLoaded = function (s) {
 		for (var b = document.getElementsByTagName("script") || "", a = 0; a < b.length; a += 1) {
 			if (b[a].getAttribute("src") === s) {
-				return !0;
+				return true;
 			}
-		}return !1;
+		}return;
 	};root.scriptIsLoaded = scriptIsLoaded;
 })(globalRoot);
 /*!
@@ -465,7 +465,7 @@ if (document.title) {
 (function (root) {
 	"use strict";
 	var appendFragment = function (e, a) {
-		var d = document;a = a || d.getElementsByTagNames("body")[0] || "";return function () {
+		var d = document;a = a || d.getElementsByTagName("body")[0] || "";return function () {
 			if (e) {
 				var d = document,
 				    df = d.createDocumentFragment() || "",
@@ -650,12 +650,12 @@ if (document.title) {
 		if ("undefined" !== typeof isNodejs && isNodejs) {
 			try {
 				if ("undefined" !== typeof require("nw.gui")) {
-					return !0;
+					return true;
 				}
 			} catch (e) {
-				return !1;
+				return;
 			}
-		}return !1;
+		}return;
 	}(),
 	    openDeviceBrowser = function (url) {
 		var triggerForElectron = function () {
@@ -665,7 +665,7 @@ if (document.title) {
 			var ns = isNwjs ? require("nw.gui").Shell : "";return ns ? ns.openExternal(url) : "";
 		},
 		    triggerForHTTP = function () {
-			return !0;
+			return true;
 		},
 		    triggerForLocal = function () {
 			return root.open(url, "_system", "scrollbars=1,location=no");
@@ -722,8 +722,8 @@ var handleExternalLink = function (url, ev) {
 	var logicHandleExternalLink = openDeviceBrowser.bind(null, url);
 	var debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
 	debounceLogicHandleExternalLink();
-},
-    manageExternalLinkAll = function (scope) {
+};
+var manageExternalLinkAll = function (scope) {
 	"use strict";
 
 	var ctx = scope && scope.nodeName ? scope : "";
@@ -958,9 +958,9 @@ var addAppUpdatesLink = function () {
 	var appendChild = "appendChild";
 	var _addEventListener = "addEventListener";
 	var panel = d[getElementsByClassName]("panel-menu-more")[0] || "";
-	var items = panel ? panel[getElementsByTagName]("li") || "" : "",
-	    navigatorUserAgent = navigator.userAgent || "",
-	    linkHref;
+	var items = panel ? panel[getElementsByTagName]("li") || "" : "";
+	var navigatorUserAgent = navigator.userAgent || "";
+	var linkHref;
 	if (/Windows/i.test(navigatorUserAgent) && /(WOW64|Win64)/i.test(navigatorUserAgent)) {
 		linkHref = "https://github.com/englishextra/englishextra-app/releases/download/v1.0.0/englishextra-win32-x64-setup.exe";
 	} else if (/(x86_64|x86-64|x64;|amd64|AMD64|x64_64)/i.test(navigatorUserAgent) && /(Linux|X11)/i.test(navigatorUserAgent)) {
@@ -974,8 +974,8 @@ var addAppUpdatesLink = function () {
 	}
 	var arrange = function () {
 		var listItem = d[createElement]("li");
-		var link = d[createElement]("a"),
-		    linkText = "Скачать приложение сайта";
+		var link = d[createElement]("a");
+		var linkText = "Скачать приложение сайта";
 		link.title = "" + (parseLink(linkHref).hostname || "") + " откроется в новой вкладке";
 		link.href = linkHref;
 		var handleAppUpdatesLink = function () {
@@ -988,9 +988,9 @@ var addAppUpdatesLink = function () {
 			/*!
     * no prevent default and void .href above
     */
-			/*jshint -W107 */
+			/* jshint -W107 */
 			link.href = "javascript:void(0);";
-			/*jshint +W107 */
+			/* jshint +W107 */
 			link[_addEventListener]("click", handleAppUpdatesLink);
 		}
 		link[appendChild](d[createTextNode]("" + linkText));
@@ -1112,7 +1112,7 @@ var manageShareButton = function () {
 					setStyleOpacity(yaShare2, 1);
 					setStyleDisplayNone(btn);
 				} catch (err) {
-					console.log("cannot update or init Ya", err);
+					/* console.log("cannot update or init Ya", err); */
 				}
 			}
 		};
@@ -1143,8 +1143,8 @@ var manageVKLikeButton = function () {
 	var dataset = "dataset";
 	var _addEventListener = "addEventListener";
 	var _removeEventListener = "removeEventListener";
-	var VKLikeId = "vk-like";
-	var vkLike = d[getElementById](VKLikeId) || "";
+	var vkLikeId = "vk-like";
+	var vkLike = d[getElementById](vkLikeId) || "";
 	var btn = d[getElementsByClassName]("btn-show-vk-like")[0] || "";
 	var handleVKLikeButton = function (ev) {
 		ev.stopPropagation();
@@ -1161,12 +1161,12 @@ var manageVKLikeButton = function () {
 						nameTransportPath: "/xd_receiver.htm",
 						onlyWidgets: true
 					});
-					VK.Widgets.Like(VKLikeId, {
+					VK.Widgets.Like(vkLikeId, {
 						type: "button",
 						height: 24
 					});
 				} catch (err) {
-					console.log("cannot init VK", err);
+					/* console.log("cannot init VK", err); */
 				}
 			}
 		};

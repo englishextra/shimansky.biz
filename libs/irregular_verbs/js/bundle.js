@@ -313,9 +313,9 @@ if (document.title) {
 	var scriptIsLoaded = function (s) {
 		for (var b = document.getElementsByTagName("script") || "", a = 0; a < b.length; a += 1) {
 			if (b[a].getAttribute("src") === s) {
-				return !0;
+				return true;
 			}
-		}return !1;
+		}return;
 	};root.scriptIsLoaded = scriptIsLoaded;
 })(globalRoot);
 /*!
@@ -346,7 +346,7 @@ if (document.title) {
 (function (root) {
 	"use strict";
 	var appendFragment = function (e, a) {
-		var d = document;a = a || d.getElementsByTagNames("body")[0] || "";return function () {
+		var d = document;a = a || d.getElementsByTagName("body")[0] || "";return function () {
 			if (e) {
 				var d = document,
 				    df = d.createDocumentFragment() || "",
@@ -512,12 +512,12 @@ if (document.title) {
 		if ("undefined" !== typeof isNodejs && isNodejs) {
 			try {
 				if ("undefined" !== typeof require("nw.gui")) {
-					return !0;
+					return true;
 				}
 			} catch (e) {
-				return !1;
+				return;
 			}
-		}return !1;
+		}return;
 	}(),
 	    openDeviceBrowser = function (url) {
 		var triggerForElectron = function () {
@@ -527,7 +527,7 @@ if (document.title) {
 			var ns = isNwjs ? require("nw.gui").Shell : "";return ns ? ns.openExternal(url) : "";
 		},
 		    triggerForHTTP = function () {
-			return !0;
+			return true;
 		},
 		    triggerForLocal = function () {
 			return root.open(url, "_system", "scrollbars=1,location=no");
@@ -584,8 +584,8 @@ var handleExternalLink = function (url, ev) {
 	var logicHandleExternalLink = openDeviceBrowser.bind(null, url);
 	var debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
 	debounceLogicHandleExternalLink();
-},
-    manageExternalLinkAll = function (scope) {
+};
+var manageExternalLinkAll = function (scope) {
 	"use strict";
 
 	var ctx = scope && scope.nodeName ? scope : "";
@@ -630,17 +630,17 @@ var hideUiBtnsInFullScreen = function () {
 	var d = document;
 	var getElementsByClassName = "getElementsByClassName";
 	var cdPrev = d[getElementsByClassName]("cd-prev")[0] || "";
-	var cdNext = d[getElementsByClassName]("cd-next")[0] || "",
-	    btnNavMenu = d[getElementsByClassName]("btn-nav-menu")[0] || "",
-	    btnMenuMore = d[getElementsByClassName]("btn-menu-more")[0] || "",
-	    btnShowVKLike = d[getElementsByClassName]("btn-show-vk-like")[0] || "",
-	    btnShareButtons = d[getElementsByClassName]("btn-share-buttons")[0] || "",
-	    btnUiTotop = d[getElementsByClassName]("ui-totop")[0] || "",
-	    holderSearchForm = d[getElementsByClassName]("holder-search-form")[0] || "";
-	var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122",
-	    f = !1;
+	var cdNext = d[getElementsByClassName]("cd-next")[0] || "";
+	var btnNavMenu = d[getElementsByClassName]("btn-nav-menu")[0] || "";
+	var btnMenuMore = d[getElementsByClassName]("btn-menu-more")[0] || "";
+	var btnShowVKLike = d[getElementsByClassName]("btn-show-vk-like")[0] || "";
+	var btnShareButtons = d[getElementsByClassName]("btn-share-buttons")[0] || "";
+	var btnUiTotop = d[getElementsByClassName]("ui-totop")[0] || "";
+	var holderSearchForm = d[getElementsByClassName]("holder-search-form")[0] || "";
+	var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122";
+	var f = false;
 	if (!f) {
-		f = !0;
+		f = true;
 		/*!
    * Detecting if a browser is in full screen mode
    * @see {@link https://stackoverflow.com/questions/2863351/checking-if-browser-is-in-fullscreen}
@@ -932,7 +932,7 @@ var manageShareButton = function () {
 					setStyleOpacity(yaShare2, 1);
 					setStyleDisplayNone(btn);
 				} catch (err) {
-					console.log("cannot update or init Ya", err);
+					/* console.log("cannot update or init Ya", err); */
 				}
 			}
 		};
@@ -963,8 +963,8 @@ var manageVKLikeButton = function () {
 	var dataset = "dataset";
 	var _addEventListener = "addEventListener";
 	var _removeEventListener = "removeEventListener";
-	var VKLikeId = "vk-like";
-	var vkLike = d[getElementById](VKLikeId) || "";
+	var vkLikeId = "vk-like";
+	var vkLike = d[getElementById](vkLikeId) || "";
 	var btn = d[getElementsByClassName]("btn-show-vk-like")[0] || "";
 	var handleVKLikeButton = function (ev) {
 		ev.stopPropagation();
@@ -981,12 +981,12 @@ var manageVKLikeButton = function () {
 						nameTransportPath: "/xd_receiver.htm",
 						onlyWidgets: true
 					});
-					VK.Widgets.Like(VKLikeId, {
+					VK.Widgets.Like(vkLikeId, {
 						type: "button",
 						height: 24
 					});
 				} catch (err) {
-					console.log("cannot init VK", err);
+					/* console.log("cannot init VK", err); */
 				}
 			}
 		};
@@ -1004,19 +1004,6 @@ var manageVKLikeButton = function () {
 	}
 };
 document.ready().then(manageVKLikeButton);
-/*!
- * init manUP.js
- */
-/* var initManUp = function () {
-	"use strict";
-	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
-		if (!scriptIsLoaded(jsUrl)) {
-			loadJS(jsUrl);
-		}
-	}
-};
-document.ready().then(initManUp); */
 /*!
  * show page, finish ToProgress
  */

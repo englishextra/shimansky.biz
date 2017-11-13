@@ -639,9 +639,9 @@ if (document.title) {
 	var scriptIsLoaded = function (s) {
 		for (var b = document.getElementsByTagName("script") || "", a = 0; a < b.length; a += 1) {
 			if (b[a].getAttribute("src") === s) {
-				return !0;
+				return true;
 			}
-		}return !1;
+		}return;
 	};root.scriptIsLoaded = scriptIsLoaded;
 })(globalRoot);
 /*!
@@ -672,7 +672,7 @@ if (document.title) {
 (function (root) {
 	"use strict";
 	var appendFragment = function (e, a) {
-		var d = document;a = a || d.getElementsByTagNames("body")[0] || "";return function () {
+		var d = document;a = a || d.getElementsByTagName("body")[0] || "";return function () {
 			if (e) {
 				var d = document,
 				    df = d.createDocumentFragment() || "",
@@ -838,12 +838,12 @@ if (document.title) {
 		if ("undefined" !== typeof isNodejs && isNodejs) {
 			try {
 				if ("undefined" !== typeof require("nw.gui")) {
-					return !0;
+					return true;
 				}
 			} catch (e) {
-				return !1;
+				return;
 			}
-		}return !1;
+		}return;
 	}(),
 	    openDeviceBrowser = function (url) {
 		var triggerForElectron = function () {
@@ -853,7 +853,7 @@ if (document.title) {
 			var ns = isNwjs ? require("nw.gui").Shell : "";return ns ? ns.openExternal(url) : "";
 		},
 		    triggerForHTTP = function () {
-			return !0;
+			return true;
 		},
 		    triggerForLocal = function () {
 			return root.open(url, "_system", "scrollbars=1,location=no");
@@ -910,8 +910,8 @@ var handleExternalLink = function (url, ev) {
 	var logicHandleExternalLink = openDeviceBrowser.bind(null, url);
 	var debounceLogicHandleExternalLink = debounce(logicHandleExternalLink, 200);
 	debounceLogicHandleExternalLink();
-},
-    manageExternalLinkAll = function (scope) {
+};
+var manageExternalLinkAll = function (scope) {
 	"use strict";
 
 	var ctx = scope && scope.nodeName ? scope : "";
@@ -992,12 +992,12 @@ var handleDataSrcImageAll = function () {
 		}
 		/* forEach(img, arrange, false); */
 	}
-},
-    handleDataSrcImageAllWindow = function () {
+};
+var handleDataSrcImageAllWindow = function () {
 	var throttleHandleDataSrcImageAll = throttle(handleDataSrcImageAll, 100);
 	throttleHandleDataSrcImageAll();
-},
-    manageDataSrcImageAll = function () {
+};
+var manageDataSrcImageAll = function () {
 	"use strict";
 
 	var w = globalRoot;
@@ -1269,8 +1269,8 @@ document.ready().then(initMenuMore);
 /*!
  * init Masonry grid and rerender on imagesLoaded progress
  */
-var localImagesPreloaded,
-    initMasonry = function () {
+var localImagesPreloaded;
+var initMasonry = function () {
 	"use strict";
 
 	var w = globalRoot;
@@ -1646,21 +1646,11 @@ var initUiTotop = function () {
 	var classList = "classList";
 	var createElement = "createElement";
 	var appendChild = "appendChild";
-	/* var createElementNS = "createElementNS";
- var setAttributeNS = "setAttributeNS"; */
 	var _addEventListener = "addEventListener";
 	var btnClass = "ui-totop";
 	var btnTitle = "Наверх";
 	var isActiveClass = "is-active";
 	var anchor = d[createElement]("a");
-	/* var insertUpSvg = function (targetObj) {
- 	var svg = d[createElementNS]("http://www.w3.org/2000/svg", "svg");
- 	var use = d[createElementNS]("http://www.w3.org/2000/svg", "use");
- 	svg[classList].add("ui-icon");
- 	use[setAttributeNS]("http://www.w3.org/1999/xlink", "xlink:href", "#ui-icon-Up");
- 	svg[appendChild](use);
- 	targetObj[appendChild](svg);
- }; */
 	var handleUiTotopAnchor = function (ev) {
 		ev.stopPropagation();
 		ev.preventDefault();
@@ -1683,9 +1673,9 @@ var initUiTotop = function () {
 		throttleLogicHandleUiTotopWindow();
 	};
 	anchor[classList].add(btnClass);
-	/*jshint -W107 */
+	/* jshint -W107 */
 	anchor.href = "javascript:void(0);";
-	/*jshint +W107 */
+	/* jshint +W107 */
 	anchor.title = btnTitle;
 	/* insertUpSvg(anchor); */
 	b[appendChild](anchor);
@@ -1740,7 +1730,7 @@ var manageShareButton = function () {
 					setStyleOpacity(yaShare2, 1);
 					setStyleDisplayNone(btn);
 				} catch (err) {
-					console.log("cannot update or init Ya", err);
+					/* console.log("cannot update or init Ya", err); */
 				}
 			}
 		};
@@ -1771,8 +1761,8 @@ var manageVKLikeButton = function () {
 	var dataset = "dataset";
 	var _addEventListener = "addEventListener";
 	var _removeEventListener = "removeEventListener";
-	var VKLikeId = "vk-like";
-	var vkLike = d[getElementById](VKLikeId) || "";
+	var vkLikeId = "vk-like";
+	var vkLike = d[getElementById](vkLikeId) || "";
 	var btn = d[getElementsByClassName]("btn-show-vk-like")[0] || "";
 	var handleVKLikeButton = function (ev) {
 		ev.stopPropagation();
@@ -1789,12 +1779,12 @@ var manageVKLikeButton = function () {
 						nameTransportPath: "/xd_receiver.htm",
 						onlyWidgets: true
 					});
-					VK.Widgets.Like(VKLikeId, {
+					VK.Widgets.Like(vkLikeId, {
 						type: "button",
 						height: 24
 					});
 				} catch (err) {
-					console.log("cannot init VK", err);
+					/* console.log("cannot init VK", err); */
 				}
 			}
 		};
@@ -1812,19 +1802,6 @@ var manageVKLikeButton = function () {
 	}
 };
 document.ready().then(manageVKLikeButton);
-/*!
- * init manUP.js
- */
-/* var initManUp = function () {
-	"use strict";
-	if ("undefined" !== typeof getHTTP && getHTTP()) {
-		var jsUrl = "/cdn/ManUp.js/0.7/js/manup.fixed.min.js";
-		if (!scriptIsLoaded(jsUrl)) {
-			loadJS(jsUrl);
-		}
-	}
-};
-document.ready().then(initManUp); */
 /*!
  * show page, finish ToProgress
  */
