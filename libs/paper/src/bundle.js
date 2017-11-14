@@ -115,7 +115,8 @@ ToProgress, unescape, verge, VK, Ya*/
 					"width": "0%",
 					"transition": "width " + this.options.duration + "s" + ", opacity " + this.options.opacityDuration + "s",
 					"-moz-transition": "width " + this.options.duration + "s" + ", opacity " + this.options.opacityDuration + "s",
-					"-webkit-transition": "width " + this.options.duration + "s" + ", opacity " + this.options.opacityDuration + "s"
+					"-webkit-transition": "width " + this.options.duration + "s" + ", opacity " + this.options.opacityDuration + "s",
+					"z-index": this.options.zIndex
 				});
 				if (selector) {
 					var el;
@@ -397,7 +398,6 @@ ToProgress, unescape, verge, VK, Ya*/
 	var createElement = "createElement";
 	var createElementNS = "createElementNS";
 	var defineProperty = "defineProperty";
-	var getElementById = "getElementById";
 	var getOwnPropertyDescriptor = "getOwnPropertyDescriptor";
 	var querySelector = "querySelector";
 	var querySelectorAll = "querySelectorAll";	var _addEventListener = "addEventListener";
@@ -407,7 +407,8 @@ ToProgress, unescape, verge, VK, Ya*/
 			id: "top-progress-bar",
 			color: "#FF2C40",
 			height: "0.200rem",
-			duration: 0.2
+			duration: 0.2,
+			zIndex: 999
 		});
 
 	var hideProgressBar = function () {
@@ -433,6 +434,7 @@ ToProgress, unescape, verge, VK, Ya*/
 		var createTextNode = "createTextNode";
 		var dataset = "dataset";
 		var getAttribute = "getAttribute";
+		var getElementById = "getElementById";
 		var getElementsByClassName = "getElementsByClassName";
 		var getElementsByTagName = "getElementsByTagName";
 		var parentNode = "parentNode";
@@ -745,7 +747,6 @@ ToProgress, unescape, verge, VK, Ya*/
 		};
 
 		var LoadingSpinner = (function () {
-			var createElement = "createElement";
 			var spinnerClass = "loading-spinner";
 			var spinner = document[getElementsByClassName](spinnerClass)[0] || "";
 			var isActiveClass = "is-active-loading-spinner";
@@ -2100,8 +2101,8 @@ ToProgress, unescape, verge, VK, Ya*/
 		document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
 		/* !document.importNode || */
 		/* !("content" in document[createElement]("template")) || */
-		(root.attachEvent && !root.addEventListener) ||
-		!("onhashchange" in window) ||
+		(root.attachEvent && !root[_addEventListener]) ||
+		!("onhashchange" in root) ||
 		!Array.prototype.indexOf ||
 		!root.Promise ||
 		!root.fetch ||
