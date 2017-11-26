@@ -27,8 +27,6 @@ body {
 	width: 100%;
 	color: $color-hex-body-text;
 	background-color: $color-hex-page-bg;
-	-webkit-text-size-adjust: none;
-	-ms-text-size-adjust: none;
 	text-size-adjust: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
@@ -60,6 +58,20 @@ select:focus,
 select:active {
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
+}
+
+:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
+::-ms-expand {
+	display: none;
+}
+
+::-ms-value {
+	background: none;
+	color: $color-hex-body-text;
 }
 
 img {
@@ -139,23 +151,23 @@ u,
  * hide and show on mobile
  */
 
-.show-inline-on-mobile,
-.show-block-on-mobile {
+.page .show-inline-on-mobile,
+.page .show-block-on-mobile {
 	display: none;
 }
 
 @media handheld, only screen and (max-width: 800px) {
-	.hide-on-mobile {
+	.page .hide-on-mobile {
 		display: none;
 		width: 0;
 		height: 0;
 	}
 
-	.show-inline-on-mobile {
+	.page .show-inline-on-mobile {
 		display: inline;
 	}
 
-	.show-block-on-mobile {
+	.page .show-block-on-mobile {
 		display: block;
 	}
 }
@@ -739,6 +751,11 @@ u,
 	outline: none;
 }
 
+.holder-contents-select .contents-select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
+}
+
 .holder-contents-select .contents-select::-ms-expand {
 	display: none;
 }
@@ -1108,6 +1125,11 @@ u,
 	outline: none;
 	margin: 0;
 	padding: 0 2.133rem 0 0.267rem;
+}
+
+.holder-chapters-select .chapters-select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 #000;
 }
 
 .holder-chapters-select .chapters-select::-ms-expand {
@@ -1501,10 +1523,9 @@ u,
  */
 
 .holder-share-buttons {
-	display: inline-block;
+	display: block;
 	visibility: hidden;
 	opacity: 0;
-	height: 3.200rem;
 	position: fixed;
 	top: 9.600rem;
 	right: 3.200rem;

@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global doesFontExist, echo, Headers, loadJsCss, Minigrid, platform,
-Promise, t, ToProgress, VK, WheelIndicator, Ya */
+/*global doesFontExist, echo, Headers, loadCSS, loadJsCss, Minigrid, platform,
+Promise, t, ToProgress, VK, WheelIndicator, Ya*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -85,7 +85,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 					id: "top-progress-bar",
 					color: "#F44336",
 					height: "2px",
-					duration: 0.2
+					duration: 0.2,
+					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
 					for (var key in opt) {
@@ -227,6 +228,36 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 	root.doesFontExist = doesFontExist;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * load CSS async
+ * modified order of arguments, added callback option, removed CommonJS stuff
+ * @see {@link https://github.com/filamentgroup/loadCSS}
+ * @see {@link https://gist.github.com/englishextra/50592e9944bd2edc46fe5a82adec3396}
+ * @param {String} hrefString path string
+ * @param {Object} callback callback function
+ * @param {String} media media attribute string value
+ * @param {Object} [before] target HTML element
+ * loadCSS(hrefString,callback,media,before)
+ */
+(function (root, document) {
+	var loadCSS = function (_href, callback) {
+		"use strict";
+		var ref = document.getElementsByTagName("head")[0] || "";
+		var link = document.createElement("link");
+		link.rel = "stylesheet";
+		link.href = _href;
+		link.media = "all";
+		if (ref) {
+			ref.appendChild(link);
+			if (callback && "function" === typeof callback) {
+				link.onload = callback;
+			}
+			return link;
+		}
+		return;
+	};
+	root.loadCSS = loadCSS;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
  * passes jshint
@@ -303,6 +334,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 	"use strict";
 
 	var docElem = document.documentElement || "";
+	var docBody = document.body || "";
 
 	var createElement = "createElement";
 	var createElementNS = "createElementNS";
@@ -326,6 +358,11 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		progressBar.hide();
 	};
 
+	/* progressBar.complete = function () {
+		return this.finish(),
+		this.hide();
+	}; */
+
 	progressBar.increase(20);
 
 	var hasTouch = "ontouchstart" in docElem || "";
@@ -346,8 +383,10 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		var body = "body";
 		var classList = "classList";
 		var className = "className";
+		var cloneNode = "cloneNode";
 		var createContextualFragment = "createContextualFragment";
 		var createDocumentFragment = "createDocumentFragment";
+		var createRange = "createRange";
 		var dataset = "dataset";
 		var getAttribute = "getAttribute";
 		var getElementById = "getElementById";
@@ -360,12 +399,52 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		var styleSheets = "styleSheets";
 		var title = "title";
 
+		var isActiveClass = "is-active";
+		var isBindedClass = "is-binded";
+		var isFixedClass = "is-fixed";
+		var isHiddenClass = "is-hidden";
+
+		var documentTitle = document[title] || "";
+		var locationHref = root.location[href] || "";
+		var navigatorUserAgent = navigator.userAgent || "";
+
+		progressBar.increase(20);
+
 		if (docElem && docElem[classList]) {
 			docElem[classList].remove("no-js");
 			docElem[classList].add("js");
 		}
 
-		progressBar.increase(20);
+		var getHumanDate = (function () {
+			var newDate = (new Date());
+			var newDay = newDate.getDate();
+			var newYear = newDate.getFullYear();
+			var newMonth = newDate.getMonth();
+			(newMonth += 1);
+			if (10 > newDay) {
+				newDay = "0" + newDay;
+			}
+			if (10 > newMonth) {
+				newMonth = "0" + newMonth;
+			}
+			return newYear + "-" + newMonth + "-" + newDay;
+		})();
+
+		var platformName = "";
+		var platformDescription = "";
+		if (navigatorUserAgent && root.platform) {
+			platformName = platform.name || "";
+			platformDescription = platform.description || "";
+			document[title] = documentTitle +
+			" [" +
+			(getHumanDate ? " " + getHumanDate : "") +
+			(platformDescription ? " " + platformDescription : "") +
+			((hasTouch || hasWheel) ? " with" : "") +
+			(hasTouch ? " touch" : "") +
+			((hasTouch && hasWheel) ? "," : "") +
+			(hasWheel ? " mousewheel" : "") +
+			"]";
+		}
 
 		var observeMutations = function (scope) {
 			var context = scope && scope.nodeName ? scope : "";
@@ -498,6 +577,20 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			}
 		};
 
+		var scriptIsLoaded = function (scriptSrc) {
+			var scriptAll,
+			i,
+			l;
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
+				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
+					scriptAll = i = l = null;
+					return true;
+				}
+			}
+			scriptAll = i = l = null;
+			return false;
+		};
+
 		var debounce = function (func, wait) {
 			var timeout;
 			var args;
@@ -522,7 +615,68 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			};
 		};
 
-		var isBindedClass = "is-binded";
+		var throttle = function (func, wait) {
+			var ctx;
+			var args;
+			var rtn;
+			var timeoutID;
+			var last = 0;
+			function call() {
+				timeoutID = 0;
+				last = +new Date();
+				rtn = func.apply(ctx, args);
+				ctx = null;
+				args = null;
+			}
+			return function throttled() {
+				ctx = this;
+				args = arguments;
+				var delta = new Date() - last;
+				if (!timeoutID) {
+					if (delta >= wait) {
+						call();
+					} else {
+						timeoutID = setTimeout(call, wait - delta);
+					}
+				}
+				return rtn;
+			};
+		};
+
+		var scroll2Top = function (scrollTargetY, speed, easing) {
+			var scrollY = root.scrollY || docElem.scrollTop;
+			var posY = scrollTargetY || 0;
+			var rate = speed || 2000;
+			var soothing = easing || "easeOutSine";
+			var currentTime = 0;
+			var time = Math.max(0.1, Math.min(Math.abs(scrollY - posY) / rate, 0.8));
+			var easingEquations = {
+				easeOutSine: function (pos) {
+					return Math.sin(pos * (Math.PI / 2));
+				},
+				easeInOutSine: function (pos) {
+					return (-0.5 * (Math.cos(Math.PI * pos) - 1));
+				},
+				easeInOutQuint: function (pos) {
+					if ((pos /= 0.5) < 1) {
+						return 0.5 * Math.pow(pos, 5);
+					}
+					return 0.5 * (Math.pow((pos - 2), 5) + 2);
+				}
+			};
+			function tick() {
+				currentTime += 1 / 60;
+				var p = currentTime / time;
+				var t = easingEquations[soothing](p);
+				if (p < 1) {
+					requestAnimationFrame(tick);
+					root.scrollTo(0, scrollY + ((posY - scrollY) * t));
+				} else {
+					root.scrollTo(0, posY);
+				}
+			}
+			tick();
+		};
 
 		var manageExternalLinkAll = function (scope) {
 			var context = scope && scope.nodeName ? scope : "";
@@ -557,7 +711,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			if (externalLinks) {
 				var i;
 				var l;
-				for (i = 0, l = externalLinks.length; i < l; i += 1) {
+				for (i = 0, l = externalLinks[_length]; i < l; i += 1) {
 					arrange(externalLinks[i]);
 				}
 				i = l = null;
@@ -568,42 +722,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 
 		manageExternalLinkAll(wrapper);
 
-		var documentTitle = document[title] || "";
-
-		var navigatorUserAgent = navigator.userAgent || "";
-
-		var getHumanDate = (function () {
-			var newDate = (new Date());
-			var newDay = newDate.getDate();
-			var newYear = newDate.getFullYear();
-			var newMonth = newDate.getMonth();
-			(newMonth += 1);
-			if (10 > newDay) {
-				newDay = "0" + newDay;
-			}
-			if (10 > newMonth) {
-				newMonth = "0" + newMonth;
-			}
-			return newYear + "-" + newMonth + "-" + newDay;
-		})();
-
-		var platformName = "";
-		var platformDescription = "";
-		if (navigatorUserAgent && root.platform) {
-			platformName = platform.name || "";
-			platformDescription = platform.description || "";
-			document[title] = documentTitle +
-			" [" +
-			(getHumanDate ? " " + getHumanDate : "") +
-			(platformDescription ? " " + platformDescription : "") +
-			((hasTouch || hasWheel) ? " with" : "") +
-			(hasTouch ? " touch" : "") +
-			((hasTouch && hasWheel) ? "," : "") +
-			(hasWheel ? " mousewheel" : "") +
-			"]";
-		}
-
-		var imgClass = "data-src-img";
+		var dataSrcImgClass = "data-src-img";
 		var cardWrapClass = "card-wrap";
 		var jsonHrefKeyName = "href";
 		var jsonSrcKeyName = "src";
@@ -643,9 +762,9 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 				return callback && "function" === typeof callback && callback();
 			};
 			try {
-				var clonedContainer = container.cloneNode(!1);
-				if (document.createRange) {
-					var rg = document.createRange();
+				var clonedContainer = container[cloneNode](false);
+				if (document[createRange]) {
+					var rg = document[createRange]();
 					rg.selectNode(body);
 					var df = rg[createContextualFragment](text);
 					clonedContainer[appendChild](df);
@@ -788,7 +907,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 								}
 							}
 							img[dataset][jsonSrcKeyName] = jsonObj[key][jsonSrcKeyName];
-							img[classList].add(imgClass);
+							img[classList].add(dataSrcImgClass);
 							img[alt] = "";
 
 							card[appendChild](img);
@@ -883,7 +1002,7 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			clearTimeout(timerSetLazyloading);
 			timerSetLazyloading = null;
 
-			echo(imgClass, jsonSrcKeyName);
+			echo(dataSrcImgClass, jsonSrcKeyName);
 		};
 
 		var myHeaders = new Headers();
@@ -911,24 +1030,6 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			console.log("cannot parse", jsonUrl, err);
 		});
 
-		var locationHref = root.location[href] || "";
-
-		var scriptIsLoaded = function (scriptSrc) {
-			var scriptAll,
-			i,
-			l;
-			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
-				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
-					scriptAll = i = l = null;
-					return true;
-				}
-			}
-			scriptAll = i = l = null;
-			return false;
-		};
-
-		var isActiveClass = "is-active";
-
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
 			var isSocialAll = document[getElementsByClassName]("is-social") || "";
@@ -943,7 +1044,6 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 				k = n = null;
 			}
 		};
-
 		root[_addEventListener]("click", hideOtherIsSocial);
 
 		var yaShare2Id = "ya-share2";
@@ -1051,37 +1151,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			btnLikeLink[_addEventListener]("click", showVkLike);
 		}
 
-		var throttle = function (func, wait) {
-			var ctx;
-			var args;
-			var rtn;
-			var timeoutID;
-			var last = 0;
-			function call() {
-				timeoutID = 0;
-				last = +new Date();
-				rtn = func.apply(ctx, args);
-				ctx = null;
-				args = null;
-			}
-			return function throttled() {
-				ctx = this;
-				args = arguments;
-				var delta = new Date() - last;
-				if (!timeoutID) {
-					if (delta >= wait) {
-						call();
-					} else {
-						timeoutID = setTimeout(call, wait - delta);
-					}
-				}
-				return rtn;
-			};
-		};
-
 		var titleBar = document[getElementsByClassName]("title-bar")[0] || "";
 		var titleBarHeight = titleBar.offsetHeight || 0;
-		var isFixedClass = "is-fixed";
 
 		/*!
 		 * set fixed on scroll/swipedependong on titleBar position
@@ -1172,8 +1243,6 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		 * and titleBar position
 		 * needs transition top 0.4s ease out in CSS for .title-bar
 		 */
-		var isHiddenClass = "is-hidden";
-
 		var hideTitleBar = function () {
 			var logic = function () {
 				titleBar[classList].remove(isFixedClass);
@@ -1235,43 +1304,6 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 				}
 			}
 		}
-
-		var scroll2Top = function (scrollTargetY, speed, easing) {
-			var scrollY = root.scrollY || docElem.scrollTop;
-			var posY = scrollTargetY || 0;
-			var rate = speed || 2000;
-			var soothing = easing || "easeOutSine";
-			var currentTime = 0;
-			var time = Math.max(0.1, Math.min(Math.abs(scrollY - posY) / rate, 0.8));
-			var easingEquations = {
-				easeOutSine: function (pos) {
-					return Math.sin(pos * (Math.PI / 2));
-				},
-				easeInOutSine: function (pos) {
-					return (-0.5 * (Math.cos(Math.PI * pos) - 1));
-				},
-				easeInOutQuint: function (pos) {
-					if ((pos /= 0.5) < 1) {
-						return 0.5 * Math.pow(pos, 5);
-					}
-					return 0.5 * (Math.pow((pos - 2), 5) + 2);
-				}
-			};
-			function tick() {
-				currentTime += 1 / 60;
-				var p = currentTime / time;
-				var t = easingEquations[soothing](p);
-				if (p < 1) {
-					requestAnimationFrame(tick);
-					root.scrollTo(0, scrollY + ((posY - scrollY) * t));
-				} else {
-					root.scrollTo(0, posY);
-				}
-			}
-			tick();
-		};
-
-		var docBody = document[body] || "";
 
 		var btnClass = "btn-totop";
 		var btnTotop = document[getElementsByClassName](btnClass)[0] || "";
@@ -1347,18 +1379,12 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		scripts.push("../../cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 
-	/* scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js",
+	/* scripts.push("./cdn/platform/1.3.4/js/platform.fixed.min.js",
 		"./cdn/minigrid/3.1.1/js/minigrid.fixed.min.js",
 		"./cdn/echo.js/0.1.0/js/echo.fixed.min.js",
-		"./cdn/t.js/0.1.0/js/t.fixed.min.js");
-
-	if (hasTouch) {
-		scripts.push(forcedHTTP + "://cdnjs.cloudflare.com/ajax/libs/Tocca.js/2.0.1/Tocca.min.js");
-	} else {
-		if (hasWheel) {
-			scripts.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
-		}
-	} */
+		"./cdn/t.js/0.1.0/js/t.fixed.min.js",
+		"./cdn/Tocca.js/2.0.1/js/Tocca.fixed.min.js",
+		"./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js"); */
 
 	scripts.push("./libs/contents-cards/js/vendors.min.js");
 
@@ -1385,6 +1411,9 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		};
 
 		var checkFontIsLoaded = function () {
+			/*!
+			 * check only for fonts that are used in current page
+			 */
 			if (doesFontExist("Roboto")) {
 				onFontsLoaded();
 			}
@@ -1398,9 +1427,8 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya */
 		}
 	};
 
-	var load;
-	load = new loadJsCss(
-			[forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic"],
+	loadCSS(
+			forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic",
 			onFontsLoadedCallback
 		);
 

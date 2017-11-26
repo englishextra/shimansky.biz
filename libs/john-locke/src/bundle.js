@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global doesFontExist, loadJsCss, Parallax, platform, QRCode,
-ToProgress, unescape, VK, WheelIndicator, Ya */
+/*global doesFontExist, loadCSS, loadJsCss, Parallax, platform, QRCode,
+ToProgress, unescape, VK, WheelIndicator, Ya*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -85,7 +85,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 					id: "top-progress-bar",
 					color: "#F44336",
 					height: "2px",
-					duration: 0.2
+					duration: 0.2,
+					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
 					for (var key in opt) {
@@ -227,6 +228,36 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 	root.doesFontExist = doesFontExist;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * load CSS async
+ * modified order of arguments, added callback option, removed CommonJS stuff
+ * @see {@link https://github.com/filamentgroup/loadCSS}
+ * @see {@link https://gist.github.com/englishextra/50592e9944bd2edc46fe5a82adec3396}
+ * @param {String} hrefString path string
+ * @param {Object} callback callback function
+ * @param {String} media media attribute string value
+ * @param {Object} [before] target HTML element
+ * loadCSS(hrefString,callback,media,before)
+ */
+(function (root, document) {
+	var loadCSS = function (_href, callback) {
+		"use strict";
+		var ref = document.getElementsByTagName("head")[0] || "";
+		var link = document.createElement("link");
+		link.rel = "stylesheet";
+		link.href = _href;
+		link.media = "all";
+		if (ref) {
+			ref.appendChild(link);
+			if (callback && "function" === typeof callback) {
+				link.onload = callback;
+			}
+			return link;
+		}
+		return;
+	};
+	root.loadCSS = loadCSS;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
  * passes jshint
@@ -338,6 +369,11 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		progressBar.finish();
 		progressBar.hide();
 	};
+
+	/* progressBar.complete = function () {
+		return this.finish(),
+		this.hide();
+	}; */
 
 	var toStringFn = {}.toString;
 	var supportsSvgSmilAnimation = !!document[createElementNS] && (/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
@@ -522,13 +558,54 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var title = "title";
 		var visibility = "visibility";
 
+		var bounceInUpClass = "bounceInUp";
+		var bounceOutDownClass = "bounceOutDown";
+
+		var isActiveClass = "is-active";
+		var isBindedClass = "is-binded";
+
+		var documentTitle = document[title] || "";
+		var locationHref = root.location[href] || "";
+		var navigatorUserAgent = navigator.userAgent || "";
+
+		if (!supportsSvgSmilAnimation) {
+			progressBar.increase(20);
+		}
+
 		if (docElem && docElem[classList]) {
 			docElem[classList].remove("no-js");
 			docElem[classList].add("js");
 		}
 
-		if (!supportsSvgSmilAnimation) {
-			progressBar.increase(20);
+		var getHumanDate = (function () {
+			var newDate = (new Date());
+			var newDay = newDate.getDate();
+			var newYear = newDate.getFullYear();
+			var newMonth = newDate.getMonth();
+			(newMonth += 1);
+			if (10 > newDay) {
+				newDay = "0" + newDay;
+			}
+			if (10 > newMonth) {
+				newMonth = "0" + newMonth;
+			}
+			return newYear + "-" + newMonth + "-" + newDay;
+		})();
+
+		var platformName = "";
+		var platformDescription = "";
+		if (navigatorUserAgent && root.platform) {
+			platformName = platform.name || "";
+			platformDescription = platform.description || "";
+			document[title] = documentTitle +
+			" [" +
+			(getHumanDate ? " " + getHumanDate : "") +
+			(platformDescription ? " " + platformDescription : "") +
+			((hasTouch || hasWheel) ? " with" : "") +
+			(hasTouch ? " touch" : "") +
+			((hasTouch && hasWheel) ? "," : "") +
+			(hasWheel ? " mousewheel" : "") +
+			"]";
 		}
 
 		/*jshint bitwise: false */
@@ -652,7 +729,19 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			};
 		};
 
-		var isBindedClass = "is-binded";
+		var scriptIsLoaded = function (scriptSrc) {
+			var scriptAll,
+			i,
+			l;
+			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
+				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
+					scriptAll = i = l = null;
+					return true;
+				}
+			}
+			scriptAll = i = l = null;
+			return false;
+		};
 
 		var manageExternalLinkAll = function (scope) {
 			var context = scope && scope.nodeName ? scope : "";
@@ -687,7 +776,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			if (externalLinks) {
 				var i;
 				var l;
-				for (i = 0, l = externalLinks.length; i < l; i += 1) {
+				for (i = 0, l = externalLinks[_length]; i < l; i += 1) {
 					arrange(externalLinks[i]);
 				}
 				i = l = null;
@@ -697,41 +786,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
 
 		manageExternalLinkAll(wrapper);
-
-		var documentTitle = document[title] || "";
-
-		var navigatorUserAgent = navigator.userAgent || "";
-
-		var getHumanDate = (function () {
-			var newDate = (new Date());
-			var newDay = newDate.getDate();
-			var newYear = newDate.getFullYear();
-			var newMonth = newDate.getMonth();
-			(newMonth += 1);
-			if (10 > newDay) {
-				newDay = "0" + newDay;
-			}
-			if (10 > newMonth) {
-				newMonth = "0" + newMonth;
-			}
-			return newYear + "-" + newMonth + "-" + newDay;
-		})();
-
-		var platformName = "";
-		var platformDescription = "";
-		if (navigatorUserAgent && root.platform) {
-			platformName = platform.name || "";
-			platformDescription = platform.description || "";
-			document[title] = documentTitle +
-			" [" +
-			(getHumanDate ? " " + getHumanDate : "") +
-			(platformDescription ? " " + platformDescription : "") +
-			((hasTouch || hasWheel) ? " with" : "") +
-			(hasTouch ? " touch" : "") +
-			((hasTouch && hasWheel) ? "," : "") +
-			(hasWheel ? " mousewheel" : "") +
-			"]";
-		}
 
 		var qrcode = document[getElementsByClassName]("qrcode")[0] || "";
 
@@ -743,12 +797,10 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			qrcode[style][opacity] = 1;
 		};
 
-		var locationHref = root.location[href] || "";
-
 		if (qrcode) {
 			var qrcodeImg = document[createElement]("img");
 			var qrcodeImgTitle = documentTitle ? ("Ссылка на страницу «" + documentTitle.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "";
-			var qrcodeImgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+			var qrcodeImgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=512x512&chl=" + encodeURIComponent(locationHref);
 			qrcodeImg[alt] = qrcodeImgTitle;
 			if (root.QRCode) {
 				if (supportsSvgAsImg) {
@@ -849,9 +901,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			parallax = new Parallax(scene);
 		}
 
-		var bounceInUpClass = "bounceInUp";
-		var bounceOutDownClass = "bounceOutDown";
-
 		var guesture = document[getElementsByClassName]("guesture")[0] || "";
 
 		var start = document[getElementsByClassName]("start")[0] || "";
@@ -927,22 +976,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 			}
 		}
 
-		var scriptIsLoaded = function (scriptSrc) {
-			var scriptAll,
-			i,
-			l;
-			for (scriptAll = document[getElementsByTagName]("script") || "", i = 0, l = scriptAll[_length]; i < l; i += 1) {
-				if (scriptAll[i][getAttribute]("src") === scriptSrc) {
-					scriptAll = i = l = null;
-					return true;
-				}
-			}
-			scriptAll = i = l = null;
-			return false;
-		};
-
-		var isActiveClass = "is-active";
-
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
 			var isSocialAll = document[getElementsByClassName]("is-social") || "";
@@ -957,7 +990,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 				k = n = null;
 			}
 		};
-
 		root[_addEventListener]("click", hideOtherIsSocial);
 
 		var yaShare2Id = "ya-share2";
@@ -1113,17 +1145,11 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		scripts.push("../../cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 
-	/* scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/platform@1.3.4/platform.min.js",
-		forcedHTTP + "://cdn.jsdelivr.net/npm/qrjs2@0.1.6/qrjs2.min.js",
-		forcedHTTP + "://cdn.jsdelivr.net/npm/parallax-js@3.1.0/dist/parallax.min.js");
-
-	if (hasTouch) {
-		scripts.push(forcedHTTP + "://cdn.jsdelivr.net/npm/tocca@2.0.1/Tocca.min.js");
-	} else {
-		if (hasWheel) {
-			scripts.push("./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js");
-		}
-	} */
+	/* scripts.push("./cdn/platform/1.3.4/js/platform.fixed.min.js",
+		"./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js",
+		"./cdn/parallax-js/3.1.0/js/parallax.fixed.min.js",
+		"./cdn/Tocca.js/2.0.1/js/Tocca.fixed.min.js",
+		"./cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js"); */
 
 	scripts.push("./libs/john-locke/js/vendors.min.js");
 
@@ -1147,6 +1173,9 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		};
 
 		var checkFontIsLoaded = function () {
+			/*!
+			 * check only for fonts that are used in current page
+			 */
 			if (doesFontExist("Roboto") && doesFontExist("Roboto Condensed") && doesFontExist("PT Serif")) {
 				onFontsLoaded();
 			}
@@ -1160,9 +1189,8 @@ ToProgress, unescape, VK, WheelIndicator, Ya */
 		}
 	};
 
-	var load;
-	load = new loadJsCss(
-			[forcedHTTP + "://fonts.googleapis.com/css?family=PT+Serif:400%7CRoboto:400,700%7CRoboto+Condensed:700&subset=cyrillic"],
+	loadCSS(
+			forcedHTTP + "://fonts.googleapis.com/css?family=PT+Serif:400%7CRoboto:400,700%7CRoboto+Condensed:700&subset=cyrillic",
 			onFontsLoadedCallback
 		);
 

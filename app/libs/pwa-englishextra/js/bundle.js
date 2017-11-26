@@ -1,9 +1,8 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, Cookies, Carousel, DISQUS, doesFontExist,
-IframeLightbox, imagePromise, Kamil, loadJsCss, Masonry,
-Packery, Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK,
-Ya*/
+IframeLightbox, imagePromise, Kamil, loadCSS, loadJsCss, Masonry, Packery,
+Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -87,7 +86,8 @@ Ya*/
 					id: "top-progress-bar",
 					color: "#F44336",
 					height: "2px",
-					duration: 0.2
+					duration: 0.2,
+					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
 					for (var key in opt) {
@@ -207,6 +207,7 @@ Ya*/
 
 	var getElementsByClassName = "getElementsByClassName";
 	var _addEventListener = "addEventListener";
+	var _length = "length";
 	var Carousel = function (setting) {
 		var _this = this;
 		if (document[getElementsByClassName](setting.wrap)[0] === null) {
@@ -238,7 +239,7 @@ Ya*/
 		};
 		privates.opt = {
 			"position": 0,
-			"max_position": document[getElementsByClassName](privates.setting.wrap)[0].children.length
+			"max_position": document[getElementsByClassName](privates.setting.wrap)[0].children[_length]
 		};
 		if (privates.sel.prev !== null) {
 			privates.sel.prev[_addEventListener]("click", function () {
@@ -375,6 +376,37 @@ Ya*/
 	root.doesFontExist = doesFontExist;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * load CSS async
+ * modified order of arguments, added callback option, removed CommonJS stuff
+ * @see {@link https://github.com/filamentgroup/loadCSS}
+ * @see {@link https://gist.github.com/englishextra/50592e9944bd2edc46fe5a82adec3396}
+ * @param {String} hrefString path string
+ * @param {Object} callback callback function
+ * @param {String} media media attribute string value
+ * @param {Object} [before] target HTML element
+ * loadCSS(hrefString,callback,media,before)
+ */
+(function (root, document) {
+	var loadCSS = function (_href, callback) {
+		"use strict";
+
+		var ref = document.getElementsByTagName("head")[0] || "";
+		var link = document.createElement("link");
+		link.rel = "stylesheet";
+		link.href = _href;
+		link.media = "all";
+		if (ref) {
+			ref.appendChild(link);
+			if (callback && "function" === typeof callback) {
+				link.onload = callback;
+			}
+			return link;
+		}
+		return;
+	};
+	root.loadCSS = loadCSS;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
  * passes jshint
@@ -477,6 +509,11 @@ Ya*/
 		progressBar.hide();
 	};
 
+	/* progressBar.complete = function () {
+ 	return this.finish(),
+ 	this.hide();
+ }; */
+
 	progressBar.increase(20);
 
 	var getHTTP = function (force) {
@@ -510,6 +547,8 @@ Ya*/
 		var _addEventListener = "addEventListener";
 		var _removeEventListener = "removeEventListener";
 
+		progressBar.increase(20);
+
 		if (docElem && docElem[classList]) {
 			docElem[classList].remove("no-js");
 			docElem[classList].add("js");
@@ -521,7 +560,7 @@ Ya*/
 			var f = function (a) {
 				var b = a.split(" ");
 				if (selectors) {
-					for (var c = 0; c < b.length; c += 1) {
+					for (var c = 0; c < b[_length]; c += 1) {
 						a = b[c];
 						selectors.add(a);
 					}
@@ -530,7 +569,7 @@ Ya*/
 			var g = function (a) {
 				var b = a.split(" ");
 				if (selectors) {
-					for (var c = 0; c < b.length; c += 1) {
+					for (var c = 0; c < b[_length]; c += 1) {
 						a = b[c];
 						selectors.remove(a);
 					}
@@ -612,11 +651,11 @@ Ya*/
 			return selector;
 		}("touch");
 
-		var earlyFnGetYyyymmdd = function () {
-			var newDate = new Date(),
-			    newDay = newDate.getDate(),
-			    newYear = newDate.getFullYear(),
-			    newMonth = newDate.getMonth();
+		var getHumanDate = function () {
+			var newDate = new Date();
+			var newDay = newDate.getDate();
+			var newYear = newDate.getFullYear();
+			var newMonth = newDate.getMonth();
 			newMonth += 1;
 			if (10 > newDay) {
 				newDay = "0" + newDay;
@@ -629,7 +668,7 @@ Ya*/
 
 		var initialDocumentTitle = document.title || "";
 
-		var userBrowsingDetails = " [" + (earlyFnGetYyyymmdd ? earlyFnGetYyyymmdd : "") + (earlyDeviceType ? " " + earlyDeviceType : "") + (earlyDeviceFormfactor.orientation ? " " + earlyDeviceFormfactor.orientation : "") + (earlyDeviceFormfactor.size ? " " + earlyDeviceFormfactor.size : "") + (earlySvgSupport ? " " + earlySvgSupport : "") + (earlySvgasimgSupport ? " " + earlySvgasimgSupport : "") + (earlyHasTouch ? " " + earlyHasTouch : "") + "]";
+		var userBrowsingDetails = " [" + (getHumanDate ? getHumanDate : "") + (earlyDeviceType ? " " + earlyDeviceType : "") + (earlyDeviceFormfactor.orientation ? " " + earlyDeviceFormfactor.orientation : "") + (earlyDeviceFormfactor.size ? " " + earlyDeviceFormfactor.size : "") + (earlySvgSupport ? " " + earlySvgSupport : "") + (earlySvgasimgSupport ? " " + earlySvgasimgSupport : "") + (earlyHasTouch ? " " + earlyHasTouch : "") + "]";
 		if (document[title]) {
 			document[title] = document[title] + userBrowsingDetails;
 		}
@@ -900,7 +939,7 @@ Ya*/
 
 		var truncString = function (str, max, add) {
 			add = add || "\u2026";
-			return "string" === typeof str && str.length > max ? str.substring(0, max) + add : str;
+			return "string" === typeof str && str[_length] > max ? str.substring(0, max) + add : str;
 		};
 
 		var fixEnRuTypo = function (e, a, b) {
@@ -912,7 +951,7 @@ Ya*/
 				a = "f,dult`;pbqrkvyjghcnea[wxio]ms'.zF<DULT~:PBQRKVYJGHCNEA{WXIO}MS'>Z@#$^&|/?";
 				b = '\u0430\u0431\u0432\u0433\u0434\u0435\u0451\u0436\u0437\u0438\u0439\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044c\u044b\u044d\u044e\u044f\u0410\u0411\u0412\u0413\u0414\u0415\u0401\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042b\u042d\u042e\u042f"\u2116;:?/.,';
 			}
-			for (var d = 0; d < e.length; d++) {
+			for (var d = 0; d < e[_length]; d++) {
 				var f = a.indexOf(e.charAt(d));
 				if (c > f) {
 					c += e.charAt(d);
@@ -941,9 +980,9 @@ Ya*/
 				return callback && "function" === typeof callback && callback();
 			};
 			try {
-				var clonedContainer = container.cloneNode(!1);
-				if (document.createRange) {
-					var rg = document.createRange();
+				var clonedContainer = container[cloneNode](false);
+				if (document[createRange]) {
+					var rg = document[createRange]();
 					rg.selectNode(body);
 					var df = rg[createContextualFragment](text);
 					clonedContainer[appendChild](df);
@@ -1084,7 +1123,7 @@ Ya*/
 					}
 			};
 			if (img) {
-				for (var i = 0, l = img.length; i < l; i += 1) {
+				for (var i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
 				/* forEach(img, arrange, false); */
@@ -1139,7 +1178,7 @@ Ya*/
 					}
 			};
 			if (iframe) {
-				for (var i = 0, l = iframe.length; i < l; i += 1) {
+				for (var i = 0, l = iframe[_length]; i < l; i += 1) {
 					arrange(iframe[i]);
 				}
 				/* forEach(iframe, arrange, false); */
@@ -1176,7 +1215,7 @@ Ya*/
 				}
 			};
 			if (link) {
-				for (var i = 0, l = link.length; i < l; i += 1) {
+				for (var i = 0, l = link[_length]; i < l; i += 1) {
 					arrange(link[i]);
 				}
 				/* forEach(link, arrange, false); */
@@ -1212,7 +1251,7 @@ Ya*/
 				}
 			};
 			if (link) {
-				for (var i = 0, l = link.length; i < l; i += 1) {
+				for (var i = 0, l = link[_length]; i < l; i += 1) {
 					arrange(link[i]);
 				}
 				/* forEach(link, arrange, false); */
@@ -1335,7 +1374,7 @@ Ya*/
 				}
 			};
 			if (link) {
-				for (var j = 0, l = link.length; j < l; j += 1) {
+				for (var j = 0, l = link[_length]; j < l; j += 1) {
 					arrange(link[j]);
 				}
 				/* forEach(link, arrange, false); */
@@ -1353,7 +1392,7 @@ Ya*/
 				}
 			};
 			if (list) {
-				for (var i = 0, l = list.length; i < l; i += 1) {
+				for (var i = 0, l = list[_length]; i < l; i += 1) {
 					removeActiveClass(list[i]);
 				}
 				/* forEach(list, removeActiveClass, false); */
@@ -1405,7 +1444,7 @@ Ya*/
    		}
    	};
    	var chaptersSelectOptions = chaptersSelect ? chaptersSelect[getElementsByTagName]("option") || "" : "";
-   	for (var i = 0, l = chaptersSelectOptions.length; i < l; i += 1) {
+   	for (var i = 0, l = chaptersSelectOptions[_length]; i < l; i += 1) {
    		rerenderOption(chaptersSelectOptions[i]);
    	}
    }; */
@@ -1440,7 +1479,7 @@ Ya*/
 					df[appendChild](chaptersListItem);
 					df[appendChild](document[createTextNode]("\n"));
 				};
-				for (var i = 0, l = chaptersListItems.length; i < l; i += 1) {
+				for (var i = 0, l = chaptersListItems[_length]; i < l; i += 1) {
 					generateChaptersListItems(chaptersListItems[i], i);
 				}
 				/* forEach(chaptersListItems, generateChaptersListItems, false); */
@@ -1499,7 +1538,7 @@ Ya*/
 				}
 			};
 			if (btn) {
-				for (var i = 0, l = btn.length; i < l; i += 1) {
+				for (var i = 0, l = btn[_length]; i < l; i += 1) {
 					arrange(btn[i]);
 				}
 				/* forEach(btn, arrange, false); */
@@ -1845,7 +1884,7 @@ Ya*/
      */
 				ac.renderMenu = function (ul, stance) {
 					var items = stance || "";
-					var itemsLength = items.length;
+					var itemsLength = items[_length];
 					var _this = this;
 					/*!
       * limit output
@@ -1883,7 +1922,7 @@ Ya*/
 							/*!
         * hide typo suggestion
         */
-							if (textInput.value.length < 3 || textInput.value.match(/^\s*$/)) {
+							if (textInput.value[_length] < 3 || textInput.value.match(/^\s*$/)) {
 								handleTypoSuggestion();
 							}
 							itemsLength += 1;
@@ -1902,7 +1941,7 @@ Ya*/
 						/* e.title = "" + truncText; */
 					};
 					if (lis) {
-						for (var j = 0, m = lis.length; j < m; j += 1) {
+						for (var j = 0, m = lis[_length]; j < m; j += 1) {
 							truncateKamilText(lis[j]);
 						}
 						/* forEach(lis, truncateKamilText, false); */
@@ -2009,7 +2048,7 @@ Ya*/
 						e[_addEventListener]("click", handleOtherDropdownLists);
 					};
 					if (items) {
-						for (var i = 0, l = items.length; i < l; i += 1) {
+						for (var i = 0, l = items[_length]; i < l; i += 1) {
 							addHandler(items[i]);
 						}
 						/* forEach(btn, addHandler, false); */
@@ -2114,7 +2153,7 @@ Ya*/
 				}
 			};
 			if (btn) {
-				for (var i = 0, l = btn.length; i < l; i += 1) {
+				for (var i = 0, l = btn[_length]; i < l; i += 1) {
 					removeActiveClass(btn[i]);
 				}
 				/* forEach(btn, removeActiveClass, false); */
@@ -2145,7 +2184,7 @@ Ya*/
 					var locationHref = root.location.href || "";
 					var newImg = document[createElement]("img");
 					var newTitle = document[title] ? "Ссылка на страницу «" + document[title].replace(/\[[^\]]*?\]/g, "").trim() + "»" : "";
-					var newSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+					var newSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=512x512&chl=" + encodeURIComponent(locationHref);
 					newImg.alt = newTitle;
 					var initScript = function () {
 						if (root.QRCode) {
@@ -2331,7 +2370,7 @@ Ya*/
 							debugMessage.push(e.className ? "." + e.className : e.id ? "#" + e.id : e.tagName, " ", root.getComputedStyle(e).getPropertyValue("font-size"), " ", root.getComputedStyle(e).getPropertyValue("line-height"), " ", e.offsetWidth, "x", e.offsetHeight, " \u003e ");
 						}
 					};
-					for (var i = 0, l = elements.length; i < l; i += 1) {
+					for (var i = 0, l = elements[_length]; i < l; i += 1) {
 						renderElementsInfo(elements[i]);
 					}
 					/* forEach(elements, renderElementsInfo, false); */
@@ -2735,13 +2774,13 @@ Ya*/
   		var triggerOnMutation = function (m) {
   			console.log("mutations observer: " + m.type);
   			console.log(m.type, "target: " + m.target.tagName + ("." + m.target.className || "#" + m.target.id || ""));
-  			console.log(m.type, "added: " + m.addedNodes.length + " nodes");
-  			console.log(m.type, "removed: " + m.removedNodes.length + " nodes");
+  			console.log(m.type, "added: " + m.addedNodes[_length] + " nodes");
+  			console.log(m.type, "removed: " + m.removedNodes[_length] + " nodes");
   			if ("childList" === m.type || "subtree" === m.type) {
   				mo.disconnect();
   			}
   		};
-  		for (var i = 0, l = e.length; i < l; i += 1) {
+  		for (var i = 0, l = e[_length]; i < l; i += 1) {
   			triggerOnMutation(e[i]);
   		}
   	};
@@ -2885,9 +2924,12 @@ Ya*/
 		};
 
 		var checkFontIsLoaded = function () {
-			if (doesFontExist("Roboto") && doesFontExist("Roboto Mono")) {
-				onFontsLoaded();
-			}
+			/*!
+    * check only for fonts that are used in current page
+    */
+			if (doesFontExist("Roboto") /* && doesFontExist("Roboto Mono") */) {
+					onFontsLoaded();
+				}
 		};
 
 		if (supportsCanvas) {
@@ -2898,8 +2940,7 @@ Ya*/
 		}
 	};
 
-	var load;
-	load = new loadJsCss([forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,700i%7CRoboto+Mono:400,700&subset=cyrillic,latin-ext"], onFontsLoadedCallback);
+	loadCSS(forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,700i%7CRoboto+Mono:400,700&subset=cyrillic,latin-ext", onFontsLoadedCallback);
 
 	/*!
   * load scripts after webfonts loaded using webfontloader

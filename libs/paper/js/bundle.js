@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, Cookies, doesFontExist, IframeLightbox, imagePromise,
-Kamil, loadJsCss, Promise, QRCode, require, Tablesort, Timers,
+Kamil, loadCSS, loadJsCss, Promise, QRCode, require, Tablesort, Timers,
 ToProgress, unescape, verge, VK, Ya*/
 /*property console, join, split */
 /*!
@@ -86,7 +86,8 @@ ToProgress, unescape, verge, VK, Ya*/
 					id: "top-progress-bar",
 					color: "#F44336",
 					height: "2px",
-					duration: 0.2
+					duration: 0.2,
+					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
 					for (var key in opt) {
@@ -318,6 +319,37 @@ ToProgress, unescape, verge, VK, Ya*/
 	root.doesFontExist = doesFontExist;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * load CSS async
+ * modified order of arguments, added callback option, removed CommonJS stuff
+ * @see {@link https://github.com/filamentgroup/loadCSS}
+ * @see {@link https://gist.github.com/englishextra/50592e9944bd2edc46fe5a82adec3396}
+ * @param {String} hrefString path string
+ * @param {Object} callback callback function
+ * @param {String} media media attribute string value
+ * @param {Object} [before] target HTML element
+ * loadCSS(hrefString,callback,media,before)
+ */
+(function (root, document) {
+	var loadCSS = function (_href, callback) {
+		"use strict";
+
+		var ref = document.getElementsByTagName("head")[0] || "";
+		var link = document.createElement("link");
+		link.rel = "stylesheet";
+		link.href = _href;
+		link.media = "all";
+		if (ref) {
+			ref.appendChild(link);
+			if (callback && "function" === typeof callback) {
+				link.onload = callback;
+			}
+			return link;
+		}
+		return;
+	};
+	root.loadCSS = loadCSS;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
  * passes jshint
@@ -418,6 +450,11 @@ ToProgress, unescape, verge, VK, Ya*/
 		progressBar.hide();
 	};
 
+	/* progressBar.complete = function () {
+ 	return this.finish(),
+ 	this.hide();
+ }; */
+
 	progressBar.increase(20);
 
 	var getHTTP = function (force) {
@@ -433,6 +470,7 @@ ToProgress, unescape, verge, VK, Ya*/
 		var appendChild = "appendChild";
 		var classList = "classList";
 		var createDocumentFragment = "createDocumentFragment";
+		var createRange = "createRange";
 		var createTextNode = "createTextNode";
 		var dataset = "dataset";
 		var getAttribute = "getAttribute";
@@ -445,12 +483,12 @@ ToProgress, unescape, verge, VK, Ya*/
 		var title = "title";
 		var _removeEventListener = "removeEventListener";
 
+		progressBar.increase(20);
+
 		if (docElem && docElem[classList]) {
 			docElem[classList].remove("no-js");
 			docElem[classList].add("js");
 		}
-
-		progressBar.increase(20);
 
 		var earlyDeviceFormfactor = function (selectors) {
 			var orientation;
@@ -458,7 +496,7 @@ ToProgress, unescape, verge, VK, Ya*/
 			var f = function (a) {
 				var b = a.split(" ");
 				if (selectors) {
-					for (var c = 0; c < b.length; c += 1) {
+					for (var c = 0; c < b[_length]; c += 1) {
 						a = b[c];
 						selectors.add(a);
 					}
@@ -467,7 +505,7 @@ ToProgress, unescape, verge, VK, Ya*/
 			var g = function (a) {
 				var b = a.split(" ");
 				if (selectors) {
-					for (var c = 0; c < b.length; c += 1) {
+					for (var c = 0; c < b[_length]; c += 1) {
 						a = b[c];
 						selectors.remove(a);
 					}
@@ -549,11 +587,11 @@ ToProgress, unescape, verge, VK, Ya*/
 			return selector;
 		}("touch");
 
-		var earlyFnGetYyyymmdd = function () {
-			var newDate = new Date(),
-			    newDay = newDate.getDate(),
-			    newYear = newDate.getFullYear(),
-			    newMonth = newDate.getMonth();
+		var getHumanDate = function () {
+			var newDate = new Date();
+			var newDay = newDate.getDate();
+			var newYear = newDate.getFullYear();
+			var newMonth = newDate.getMonth();
 			newMonth += 1;
 			if (10 > newDay) {
 				newDay = "0" + newDay;
@@ -564,7 +602,7 @@ ToProgress, unescape, verge, VK, Ya*/
 			return newYear + "-" + newMonth + "-" + newDay;
 		}();
 
-		var userBrowsingDetails = " [" + (earlyFnGetYyyymmdd ? earlyFnGetYyyymmdd : "") + (earlyDeviceType ? " " + earlyDeviceType : "") + (earlyDeviceFormfactor.orientation ? " " + earlyDeviceFormfactor.orientation : "") + (earlyDeviceFormfactor.size ? " " + earlyDeviceFormfactor.size : "") + (earlySvgSupport ? " " + earlySvgSupport : "") + (earlySvgasimgSupport ? " " + earlySvgasimgSupport : "") + (earlyHasTouch ? " " + earlyHasTouch : "") + "]";
+		var userBrowsingDetails = " [" + (getHumanDate ? getHumanDate : "") + (earlyDeviceType ? " " + earlyDeviceType : "") + (earlyDeviceFormfactor.orientation ? " " + earlyDeviceFormfactor.orientation : "") + (earlyDeviceFormfactor.size ? " " + earlyDeviceFormfactor.size : "") + (earlySvgSupport ? " " + earlySvgSupport : "") + (earlySvgasimgSupport ? " " + earlySvgasimgSupport : "") + (earlyHasTouch ? " " + earlyHasTouch : "") + "]";
 		if (document[title]) {
 			document[title] = document[title] + userBrowsingDetails;
 		}
@@ -611,7 +649,7 @@ ToProgress, unescape, verge, VK, Ya*/
 
 		var truncString = function (str, max, add) {
 			add = add || "\u2026";
-			return "string" === typeof str && str.length > max ? str.substring(0, max) + add : str;
+			return "string" === typeof str && str[_length] > max ? str.substring(0, max) + add : str;
 		};
 
 		var fixEnRuTypo = function (e, a, b) {
@@ -623,7 +661,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				a = "f,dult`;pbqrkvyjghcnea[wxio]ms'.zF<DULT~:PBQRKVYJGHCNEA{WXIO}MS'>Z@#$^&|/?";
 				b = '\u0430\u0431\u0432\u0433\u0434\u0435\u0451\u0436\u0437\u0438\u0439\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044c\u044b\u044d\u044e\u044f\u0410\u0411\u0412\u0413\u0414\u0415\u0401\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042b\u042d\u042e\u042f"\u2116;:?/.,';
 			}
-			for (var d = 0; d < e.length; d++) {
+			for (var d = 0; d < e[_length]; d++) {
 				var f = a.indexOf(e.charAt(d));
 				if (c > f) {
 					c += e.charAt(d);
@@ -687,19 +725,6 @@ ToProgress, unescape, verge, VK, Ya*/
 				a.style.display = "none";
 			}
 		};
-
-		/* var setStyleOpacity = function (a, n) {
-  	n = n || 1;
-  	if (a) {
-  		a.style.opacity = n;
-  	}
-  }; */
-
-		/* var setStyleVisibilityVisible = function (a) {
-  	if (a) {
-  		a.style.visibility = "visible";
-  	}
-  }; */
 
 		var isValidId = function (a, full) {
 			return full ? /^\#[A-Za-z][-A-Za-z0-9_:.]*$/.test(a) ? !0 : !1 : /^[A-Za-z][-A-Za-z0-9_:.]*$/.test(a) ? !0 : !1;
@@ -928,7 +953,7 @@ ToProgress, unescape, verge, VK, Ya*/
 			if (externalLinks) {
 				var i;
 				var l;
-				for (i = 0, l = externalLinks.length; i < l; i += 1) {
+				for (i = 0, l = externalLinks[_length]; i < l; i += 1) {
 					arrange(externalLinks[i]);
 				}
 				i = l = null;
@@ -960,7 +985,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				container[classList].add(msgClass);
 			}
 			if ("string" === typeof msgObj) {
-				msgObj = document.createTextNode(msgObj);
+				msgObj = document[createTextNode](msgObj);
 			}
 			appendFragment(msgObj, container);
 			var clearContainer = function (cb) {
@@ -1056,7 +1081,7 @@ ToProgress, unescape, verge, VK, Ya*/
 							tblsort = new Tablesort(table);
 						}
 					};
-					for (var i = 0, l = tableSort.length; i < l; i += 1) {
+					for (var i = 0, l = tableSort[_length]; i < l; i += 1) {
 						arrange(tableSort[i]);
 					}
 				}
@@ -1188,7 +1213,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (link) {
-				for (var j = 0, l = link.length; j < l; j += 1) {
+				for (var j = 0, l = link[_length]; j < l; j += 1) {
 					arrange(link[j]);
 				}
 			}
@@ -1249,7 +1274,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (img) {
-				for (var i = 0, l = img.length; i < l; i += 1) {
+				for (var i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
 			}
@@ -1304,7 +1329,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (ifrm) {
-				for (var i = 0, l = ifrm.length; i < l; i += 1) {
+				for (var i = 0, l = ifrm[_length]; i < l; i += 1) {
 					arrange(ifrm[i]);
 				}
 			}
@@ -1343,7 +1368,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (link) {
-				for (var i = 0, l = link.length; i < l; i += 1) {
+				for (var i = 0, l = link[_length]; i < l; i += 1) {
 					arrange(link[i]);
 				}
 			}
@@ -1405,7 +1430,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				e[_addEventListener]("click", handleExpandingLayerAll);
 			};
 			if (btn) {
-				for (var i = 0, l = btn.length; i < l; i += 1) {
+				for (var i = 0, l = btn[_length]; i < l; i += 1) {
 					addHandler(btn[i]);
 				}
 			}
@@ -1422,7 +1447,7 @@ ToProgress, unescape, verge, VK, Ya*/
 					var locationHref = root.location.href || "";
 					var img = document[createElement]("img");
 					var imgTitle = document.title ? "Ссылка на страницу «" + document.title.replace(/\[[^\]]*?\]/g, "").trim() + "»" : "";
-					var imgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=300x300&chl=" + encodeURIComponent(locationHref);
+					var imgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=512x512&chl=" + encodeURIComponent(locationHref);
 					img.alt = imgTitle;
 					if (root.QRCode) {
 						if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
@@ -1547,7 +1572,7 @@ ToProgress, unescape, verge, VK, Ya*/
 						if (panelNavMenu[classList].contains(isActiveClass)) {
 							removeHolderAndAllActiveClass();
 						}
-						for (var j = 0, l = panelNavMenuItems.length; j < l; j += 1) {
+						for (var j = 0, l = panelNavMenuItems[_length]; j < l; j += 1) {
 							removeActiveClass(panelNavMenuItems[j]);
 						}
 						addActiveClass(e);
@@ -1559,7 +1584,7 @@ ToProgress, unescape, verge, VK, Ya*/
 						removeActiveClass(e);
 					}
 				};
-				for (var i = 0, l = panelNavMenuItems.length; i < l; i += 1) {
+				for (var i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
 					addItemHandler(panelNavMenuItems[i]);
 				}
 			};
@@ -1648,7 +1673,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				var addItemHandler = function (e) {
 					e[_addEventListener]("click", handleItem);
 				};
-				for (var i = 0, l = panelMenuMoreItems.length; i < l; i += 1) {
+				for (var i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
 					addItemHandler(panelMenuMoreItems[i]);
 				}
 			};
@@ -1894,7 +1919,7 @@ ToProgress, unescape, verge, VK, Ya*/
 					addHandler();
 				} else {
 					removeChildren(disqusThread);
-					var msgText = document.createRange().createContextualFragment("<p>Комментарии доступны только в веб версии этой страницы.</p>");
+					var msgText = document[createRange]().createContextualFragment("<p>Комментарии доступны только в веб версии этой страницы.</p>");
 					appendFragment(msgText, disqusThread);
 					disqusThread.removeAttribute("id");
 					setStyleDisplayNone(btn[parentNode]);
@@ -1945,7 +1970,7 @@ ToProgress, unescape, verge, VK, Ya*/
 				textInput[parentNode].insertBefore(suggestionUl, textInput.nextElementSibling);
 				ac.renderMenu = function (ul, stance) {
 					var items = stance || "";
-					var itemsLength = items.length;
+					var itemsLength = items[_length];
 					var _this = this;
 					var limitKamilOutput = function (e, i) {
 						if (i < 10) {
@@ -1970,7 +1995,7 @@ ToProgress, unescape, verge, VK, Ya*/
 						if (textValue.match(/^\s*$/)) {
 							handleTypoSuggestion();
 						}
-						if (textInput.value.length < 3 || textInput.value.match(/^\s*$/)) {
+						if (textInput.value[_length] < 3 || textInput.value.match(/^\s*$/)) {
 							handleTypoSuggestion();
 						}
 						itemsLength += 1;
@@ -1983,7 +2008,7 @@ ToProgress, unescape, verge, VK, Ya*/
 						e.title = "" + truncText;
 					};
 					if (lis) {
-						for (var j = 0, m = lis.length; j < m; j += 1) {
+						for (var j = 0, m = lis[_length]; j < m; j += 1) {
 							truncateKamilText(lis[j]);
 						}
 					}
@@ -2133,9 +2158,12 @@ ToProgress, unescape, verge, VK, Ya*/
 		};
 
 		var checkFontIsLoaded = function () {
-			if (doesFontExist("Roboto") && doesFontExist("Roboto Mono")) {
-				onFontsLoaded();
-			}
+			/*!
+    * check only for fonts that are used in current page
+    */
+			if (doesFontExist("Roboto") /* && doesFontExist("Roboto Mono") */) {
+					onFontsLoaded();
+				}
 		};
 
 		if (supportsCanvas) {
@@ -2146,8 +2174,7 @@ ToProgress, unescape, verge, VK, Ya*/
 		}
 	};
 
-	var load;
-	load = new loadJsCss([forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,700i%7CRoboto+Mono:400,700&subset=cyrillic,latin-ext"], onFontsLoadedCallback);
+	loadCSS(forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,700i%7CRoboto+Mono:400,700&subset=cyrillic,latin-ext", onFontsLoadedCallback);
 
 	/*!
   * load scripts after webfonts loaded using webfontloader

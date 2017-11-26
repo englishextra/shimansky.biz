@@ -748,7 +748,6 @@ if (typeof Set !== 'undefined' && isNative(Set)) {
 
 /*  */
 
-
 var uid = 0;
 
 /**
@@ -2714,7 +2713,6 @@ function callHook (vm, hook) {
 }
 
 /*  */
-
 
 var MAX_UPDATE_COUNT = 100;
 
@@ -4991,7 +4989,6 @@ function setAttribute (node, key, val) {
   node.setAttribute(key, val);
 }
 
-
 var nodeOps = Object.freeze({
 	createElement: createElement$1,
 	createElementNS: createElementNS,
@@ -6613,7 +6610,6 @@ function updateDOMProps (oldVnode, vnode) {
 }
 
 // check platforms/web/util/attrs.js acceptValue
-
 
 function shouldUpdateValue (
   elm,
@@ -9394,8 +9390,6 @@ var CodegenState = function CodegenState (options) {
   this.onceId = 0;
   this.staticRenderFns = [];
 };
-
-
 
 function generate (
   ast,

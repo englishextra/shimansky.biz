@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global doesFontExist, echo, Headers, loadJsCss, platform, Promise, t,
-ToProgress, VK, WheelIndicator, Ya, zoomwall */
+/*global doesFontExist, echo, Headers, loadCSS, loadJsCss, platform, Promise, t,
+ToProgress, VK, WheelIndicator, Ya, zoomwall*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -85,7 +85,8 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 					id: "top-progress-bar",
 					color: "#F44336",
 					height: "2px",
-					duration: 0.2
+					duration: 0.2,
+					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
 					for (var key in opt) {
@@ -228,6 +229,37 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 	root.doesFontExist = doesFontExist;
 })("undefined" !== typeof window ? window : this, document);
 /*!
+ * load CSS async
+ * modified order of arguments, added callback option, removed CommonJS stuff
+ * @see {@link https://github.com/filamentgroup/loadCSS}
+ * @see {@link https://gist.github.com/englishextra/50592e9944bd2edc46fe5a82adec3396}
+ * @param {String} hrefString path string
+ * @param {Object} callback callback function
+ * @param {String} media media attribute string value
+ * @param {Object} [before] target HTML element
+ * loadCSS(hrefString,callback,media,before)
+ */
+(function (root, document) {
+	var loadCSS = function (_href, callback) {
+		"use strict";
+
+		var ref = document.getElementsByTagName("head")[0] || "";
+		var link = document.createElement("link");
+		link.rel = "stylesheet";
+		link.href = _href;
+		link.media = "all";
+		if (ref) {
+			ref.appendChild(link);
+			if (callback && "function" === typeof callback) {
+				link.onload = callback;
+			}
+			return link;
+		}
+		return;
+	};
+	root.loadCSS = loadCSS;
+})("undefined" !== typeof window ? window : this, document);
+/*!
  * modified loadExt
  * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
  * passes jshint
@@ -327,6 +359,11 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		progressBar.hide();
 	};
 
+	/* progressBar.complete = function () {
+ 	return this.finish(),
+ 	this.hide();
+ }; */
+
 	progressBar.increase(20);
 
 	var hasTouch = "ontouchstart" in docElem || "";
@@ -347,8 +384,10 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		var body = "body";
 		var classList = "classList";
 		var className = "className";
+		var cloneNode = "cloneNode";
 		var createContextualFragment = "createContextualFragment";
 		var createDocumentFragment = "createDocumentFragment";
+		var createRange = "createRange";
 		var dataset = "dataset";
 		var getAttribute = "getAttribute";
 		var getElementById = "getElementById";
@@ -360,12 +399,39 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		var style = "style";
 		var title = "title";
 
+		progressBar.increase(20);
+
 		if (docElem && docElem[classList]) {
 			docElem[classList].remove("no-js");
 			docElem[classList].add("js");
 		}
 
-		progressBar.increase(20);
+		var documentTitle = document[title] || "";
+
+		var navigatorUserAgent = navigator.userAgent || "";
+
+		var getHumanDate = function () {
+			var newDate = new Date();
+			var newDay = newDate.getDate();
+			var newYear = newDate.getFullYear();
+			var newMonth = newDate.getMonth();
+			newMonth += 1;
+			if (10 > newDay) {
+				newDay = "0" + newDay;
+			}
+			if (10 > newMonth) {
+				newMonth = "0" + newMonth;
+			}
+			return newYear + "-" + newMonth + "-" + newDay;
+		}();
+
+		var platformName = "";
+		var platformDescription = "";
+		if (navigatorUserAgent && root.platform) {
+			platformName = platform.name || "";
+			platformDescription = platform.description || "";
+			document[title] = documentTitle + " [" + (getHumanDate ? " " + getHumanDate : "") + (platformDescription ? " " + platformDescription : "") + (hasTouch || hasWheel ? " with" : "") + (hasTouch ? " touch" : "") + (hasTouch && hasWheel ? "," : "") + (hasWheel ? " mousewheel" : "") + "]";
+		}
 
 		var observeMutations = function (scope) {
 			var context = scope && scope.nodeName ? scope : "";
@@ -553,7 +619,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 			if (externalLinks) {
 				var i;
 				var l;
-				for (i = 0, l = externalLinks.length; i < l; i += 1) {
+				for (i = 0, l = externalLinks[_length]; i < l; i += 1) {
 					arrange(externalLinks[i]);
 				}
 				i = l = null;
@@ -563,33 +629,6 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
 
 		manageExternalLinkAll(wrapper);
-
-		var documentTitle = document[title] || "";
-
-		var navigatorUserAgent = navigator.userAgent || "";
-
-		var getHumanDate = function () {
-			var newDate = new Date();
-			var newDay = newDate.getDate();
-			var newYear = newDate.getFullYear();
-			var newMonth = newDate.getMonth();
-			newMonth += 1;
-			if (10 > newDay) {
-				newDay = "0" + newDay;
-			}
-			if (10 > newMonth) {
-				newMonth = "0" + newMonth;
-			}
-			return newYear + "-" + newMonth + "-" + newDay;
-		}();
-
-		var platformName = "";
-		var platformDescription = "";
-		if (navigatorUserAgent && root.platform) {
-			platformName = platform.name || "";
-			platformDescription = platform.description || "";
-			document[title] = documentTitle + " [" + (getHumanDate ? " " + getHumanDate : "") + (platformDescription ? " " + platformDescription : "") + (hasTouch || hasWheel ? " with" : "") + (hasTouch ? " touch" : "") + (hasTouch && hasWheel ? "," : "") + (hasWheel ? " mousewheel" : "") + "]";
-		}
 
 		var imgClass = "data-src-img";
 		var jsonSrcKeyName = "src";
@@ -628,9 +667,9 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 				return callback && "function" === typeof callback && callback();
 			};
 			try {
-				var clonedContainer = container.cloneNode(!1);
-				if (document.createRange) {
-					var rg = document.createRange();
+				var clonedContainer = container[cloneNode](false);
+				if (document[createRange]) {
+					var rg = document[createRange]();
 					rg.selectNode(body);
 					var df = rg[createContextualFragment](text);
 					clonedContainer[appendChild](df);
@@ -1259,6 +1298,9 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		};
 
 		var checkFontIsLoaded = function () {
+			/*!
+    * check only for fonts that are used in current page
+    */
 			if (doesFontExist("Roboto")) {
 				onFontsLoaded();
 			}
@@ -1272,8 +1314,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
 		}
 	};
 
-	var load;
-	load = new loadJsCss([forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic"], onFontsLoadedCallback);
+	loadCSS(forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:400,700&subset=cyrillic", onFontsLoadedCallback);
 
 	/*!
   * load scripts after webfonts loaded using webfontloader
@@ -1303,7 +1344,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall */
  	var onFontsLoadedCallback = function () {
  		var onFontsLoaded = function () {
  		progressBar.increase(20);
- 		var load;
+ 			var load;
  		load = new loadJsCss(scripts, run);
  	};
  		root.WebFontConfig.ready(onFontsLoaded);
