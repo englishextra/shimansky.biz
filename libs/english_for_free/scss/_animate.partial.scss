@@ -1,6 +1,6 @@
-/*! @import "branding-animate.partial"; */
+/*! @import "english-for-free-animate.partial"; */
 
-/**
+/*!
  * some animations from animate.css
  * @see {@link https://github.com/daneden/animate.css}
  * daneden.github.io/animate.css/
@@ -25,22 +25,6 @@
 	animation-name: fadeIn;
 }
 
-@keyframes fadeInUp {
-	0% {
-		opacity: 0;
-		transform: translate3d(0, 100%, 0);
-	}
-
-	100% {
-		opacity: 1;
-		transform: none;
-	}
-}
-
-.fadeInUp {
-	animation-name: fadeInUp;
-}
-
 @keyframes fadeOut {
 	0% {
 		opacity: 1;
@@ -53,20 +37,5 @@
 
 .fadeOut {
 	animation-name: fadeOut;
-}
-
-@keyframes fadeOutDown {
-	0% {
-		opacity: 1;
-	}
-
-	100% {
-		opacity: 0;
-		transform: translate3d(0, 100%, 0);
-	}
-}
-
-.fadeOutDown {
-	animation-name: fadeOutDown;
 }
 
