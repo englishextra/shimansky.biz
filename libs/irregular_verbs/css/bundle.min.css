@@ -1347,28 +1347,6 @@ u,
 	line-height: 3.200rem;
 }
 
-/**
- * retina
- */
-
-/**
- * font for mobile
- * iosfonts.com/
- * google.com/design/spec/style/typography.html#typography-language-categorization
- * msdn.microsoft.com/en-us/library/windows/apps/hh202920%28v=vs.105%29.aspx
- */
-
-@media only screen and (max-width: 480px) {
-	body,
-	.slide .explanation {
-		font-family: "Roboto", "Segoe UI", "Segoe WP", "HelveticaNeue", "Roboto", "Source Sans Pro", "Open Sans", "Exo2", "Fira Sans", sans-serif;
-	}
-
-	.slide .phonetic {
-		font-family: "Roboto Mono", "Consolas", "Monaco", "Droid Sans Mono", "Inconsolata", "Source Code Pro", monospace;
-	}
-}
-
 /*!
  * @see {@link https://gist.github.com/englishextra/40b7c4ffde33bfb58aff259afe229d6a}
  */
