@@ -60,20 +60,6 @@ select:active {
 	outline: none;
 }
 
-:-moz-focusring {
-  color: transparent;
-  text-shadow: 0 0 0 #000;
-}
-
-::-ms-expand {
-	display: none;
-}
-
-::-ms-value {
-	background: none;
-	color: $color-hex-body-text;
-}
-
 img {
 	border: 0;
 	-ms-interpolation-mode: bicubic;
@@ -175,7 +161,7 @@ u,
 .wrapper {
 	width: 100%;
 	min-height: 100%;
-	background-color: $LeftNavBarLight;
+	background-color: $color-hex-page-bg;
 }
 
 .title-bar {
@@ -459,10 +445,6 @@ u,
 @media only screen and (min-width: 64.063em) {
 	html {
 		font-size: 15px;
-	}
-
-	.qrcode {
-		display: block;
 	}
 }
 

@@ -2516,20 +2516,6 @@ select:active {
 	outline: none;
 }
 
-:-moz-focusring {
-	color: transparent;
-	text-shadow: 0 0 0 #000;
-}
-
-::-ms-expand {
-	display: none;
-}
-
-::-ms-value {
-	background: none;
-	color: #191919;
-}
-
 img {
 	border: 0;
 	-ms-interpolation-mode: bicubic;
@@ -3040,6 +3026,7 @@ u,
 }
 
 .holder-search-form button[type^=submit] {
+	display: inline-block;
 	width: 2.400rem;
 	height: 2.400rem;
 	position: fixed;

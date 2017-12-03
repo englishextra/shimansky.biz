@@ -673,7 +673,7 @@ ToProgress, unescape, VK, Ya*/
 					isAbsolute: _isAbsolute,
 					isRelative: !_isAbsolute,
 					isCrossDomain: _isCrossDomain(),
-					hasHTTP: /^(http|https):\/\//i.test(url) ? !0 : !1
+					hasHTTP: (/^(http|https):\/\//i).test(url) ? true : false
 				};
 			})();
 		};
@@ -1188,7 +1188,8 @@ ToProgress, unescape, VK, Ya*/
 	})();
 
 	var needsPolyfills = (function () {
-		return !supportsPassive ||
+		return !String.prototype.startsWith ||
+		!supportsPassive ||
 		!root.requestAnimationFrame ||
 		!root.matchMedia ||
 		("undefined" === typeof root.Element && !("dataset" in docElem)) ||
