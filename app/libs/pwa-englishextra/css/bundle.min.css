@@ -3037,10 +3037,10 @@ body {
 	-webkit-tap-highlight-color: transparent;
 	outline: none;
 	overflow-x: hidden;
-	-webkit-user-select: none;
+	/* -webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
-	user-select: none;
+	user-select: none; */
 	margin: 0;
 	padding: 0;
 }
@@ -3113,17 +3113,17 @@ u,
 }
 
 ::-webkit-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 :-ms-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 ::placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
@@ -4367,7 +4367,7 @@ u,
 	width: 9.600rem;
 	font-family: inherit;
 	font-size: 0.867rem;
-	line-height: 1.200rem;
+	line-height: 1.133rem;
 	color: #878787;
 	border-color: #878787;
 	border-style: solid;
@@ -4897,7 +4897,7 @@ u,
 	position: fixed;
 	top: 0;
 	left: 0;
-	font-size: 0.867rem;
+	font-size: 0.933rem;
 	line-height: 1.333rem;
 	text-align: center;
 	word-break: keep-all;
@@ -5015,7 +5015,7 @@ u,
 
 @media only screen and (max-width: 40em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 }
 
@@ -5025,7 +5025,7 @@ u,
 
 @media only screen and (min-width: 40.063em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 
 	.holder-navbar,
@@ -5050,7 +5050,7 @@ u,
 
 	.col .textcenter,
 	.footer {
-		text-align: left;
+		text-align: center;
 	}
 
 	.padded-content,
@@ -5181,7 +5181,7 @@ u,
 
 @media only screen and (min-width: 120.063em) {
 	html {
-		font-size: 18px;
+		font-size: 19px;
 	}
 }
 

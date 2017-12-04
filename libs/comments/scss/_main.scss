@@ -102,7 +102,7 @@ u,
 }
 
 ::placeholder {
-	color: $color-hex-gray-text !important;
+	color: $PlaceholderText !important;
 	opacity: 1;
 }
 
@@ -429,6 +429,7 @@ u,
 .holder-panel-menu-more {
 	display: block;
 	visibility: hidden;
+	opacity: 0;
 	position: fixed;
 	top: 3.200rem;
 	left: 3.200rem;
@@ -436,7 +437,6 @@ u,
 	background-color: $LeftNavBarLight;
 	border: 0.067rem solid $AccentColor;
 	box-shadow: 0.133rem 0.133rem 0.133rem 0 $color-rgba-ui-bar-shadow;
-	opacity: 0;
 	transition: visibility 0s, opacity 0.2s ease;
 }
 
@@ -555,7 +555,8 @@ u,
 }
 
 .col p.subhead {
-	line-height: 1.750rem;
+	font-size: 1.200rem;
+	line-height: 1.600rem;
 }
 
 .col table.respond {
@@ -745,7 +746,7 @@ u,
 
 @media only screen and (max-width: 40em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 }
 
@@ -755,7 +756,7 @@ u,
 
 @media only screen and (min-width: 40.063em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 }
 
@@ -809,7 +810,7 @@ u,
 
 @media only screen and (min-width: 120.063em) {
 	html {
-		font-size: 18px;
+		font-size: 19px;
 	}
 }
 

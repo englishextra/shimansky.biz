@@ -831,17 +831,17 @@ u,
 }
 
 ::-webkit-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 :-ms-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 ::placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
@@ -1354,7 +1354,7 @@ u,
 
 @media only screen and (max-width: 40em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 }
 
@@ -1364,7 +1364,7 @@ u,
 
 @media only screen and (min-width: 40.063em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 }
 
@@ -1418,7 +1418,7 @@ u,
 
 @media only screen and (min-width: 120.063em) {
 	html {
-		font-size: 18px;
+		font-size: 19px;
 	}
 }
 

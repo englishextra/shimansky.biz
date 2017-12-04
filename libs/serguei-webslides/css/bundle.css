@@ -5458,17 +5458,17 @@ acronym {
 }
 
 ::-webkit-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 :-ms-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 ::placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
@@ -5692,7 +5692,7 @@ img[class*=" tile-"] {
 	background-image: url(../img/sprite-contacts-desktop.png);
 }
 
-.tile-mailto-512x512 {
+.tile-viber-512x512 {
 	background-position: 0 0%;
 	background-size: 100%;
 }

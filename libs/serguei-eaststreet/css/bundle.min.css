@@ -2785,17 +2785,17 @@ u,
 }
 
 ::-webkit-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 :-ms-input-placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
 ::placeholder {
-	color: #616161 !important;
+	color: #878787 !important;
 	opacity: 1;
 }
 
@@ -3915,7 +3915,7 @@ u,
 	width: 9.600rem;
 	font-family: inherit;
 	font-size: 0.867rem;
-	line-height: 1.200rem;
+	line-height: 1.133rem;
 	color: inherit;
 	border-color: transparent;
 	border-style: solid;
@@ -4341,7 +4341,7 @@ u,
 	position: fixed;
 	top: 0;
 	left: 0;
-	font-size: 0.867rem;
+	font-size: 0.933rem;
 	line-height: 1.333rem;
 	text-align: center;
 	word-break: keep-all;
@@ -4458,7 +4458,7 @@ u,
 
 @media only screen and (max-width: 40em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 }
 
@@ -4468,7 +4468,7 @@ u,
 
 @media only screen and (min-width: 40.063em) {
 	html {
-		font-size: 12px;
+		font-size: 13px;
 	}
 
 	.col {
@@ -4546,7 +4546,7 @@ u,
 
 @media only screen and (min-width: 120.063em) {
 	html {
-		font-size: 18px;
+		font-size: 19px;
 	}
 }
 
