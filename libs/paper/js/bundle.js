@@ -790,7 +790,7 @@ ToProgress, unescape, verge, VK, Ya*/
 					isAbsolute: _isAbsolute,
 					isRelative: !_isAbsolute,
 					isCrossDomain: _isCrossDomain(),
-					hasHTTP: /^(http|https):\/\//i.test(url) ? !0 : !1
+					hasHTTP: /^(http|https):\/\//i.test(url) ? true : false
 				};
 			}();
 		};
@@ -1130,22 +1130,22 @@ ToProgress, unescape, verge, VK, Ya*/
 		var hideImgLightbox = function () {
 			var container = document[getElementsByClassName]("img-lightbox-container")[0] || "";
 			var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
-			var an = "animated";
-			var an1 = "fadeIn";
-			var an2 = "fadeInUp";
-			var an3 = "fadeOut";
-			var an4 = "fadeOutDown";
+			var animatedClass = "animated";
+			var fadeInClass = "fadeIn";
+			var fadeInUpClass = "fadeInUp";
+			var fadeOutClass = "fadeOut";
+			var fadeOutDownClass = "fadeOutDown";
 			var dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 			var hideContainer = function () {
-				container[classList].remove(an1);
-				container[classList].add(an3);
+				container[classList].remove(fadeInClass);
+				container[classList].add(fadeOutClass);
 				var hideImg = function () {
-					container[classList].remove(an);
-					container[classList].remove(an3);
-					img[classList].remove(an);
-					img[classList].remove(an4);
+					container[classList].remove(animatedClass);
+					container[classList].remove(fadeOutClass);
+					img[classList].remove(animatedClass);
+					img[classList].remove(fadeOutDownClass);
 					img.src = dummySrc;
-					container.style.display = "none";
+					container[style].display = "none";
 				};
 				var timers = new Timers();
 				timers.timeout(function () {
@@ -1155,8 +1155,8 @@ ToProgress, unescape, verge, VK, Ya*/
 				}, 400);
 			};
 			if (container && img) {
-				img[classList].remove(an2);
-				img[classList].add(an4);
+				img[classList].remove(fadeInUpClass);
+				img[classList].add(fadeOutDownClass);
 				var timers = new Timers();
 				timers.timeout(function () {
 					timers.clear();
@@ -1185,9 +1185,9 @@ ToProgress, unescape, verge, VK, Ya*/
 			var containerClass = "img-lightbox-container";
 			var container = document[getElementsByClassName](containerClass)[0] || "";
 			var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
-			var an = "animated";
-			var an1 = "fadeIn";
-			var an2 = "fadeInUp";
+			var animatedClass = "animated";
+			var fadeInClass = "fadeIn";
+			var fadeInUpClass = "fadeInUp";
 			var isBindedClass = "is-binded";
 			var dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 			if (!container) {
@@ -1208,10 +1208,10 @@ ToProgress, unescape, verge, VK, Ya*/
 						var hrefString = _this[getAttribute]("href") || "";
 						if (container && img && hrefString) {
 							LoadingSpinner.show();
-							container[classList].add(an);
-							container[classList].add(an1);
-							img[classList].add(an);
-							img[classList].add(an2);
+							container[classList].add(animatedClass);
+							container[classList].add(fadeInClass);
+							img[classList].add(animatedClass);
+							img[classList].add(fadeInUpClass);
 							if (parseLink(hrefString).isAbsolute && !parseLink(hrefString).hasHTTP) {
 								hrefString = hrefString.replace(/^/, forcedHTTP + ":");
 							}
@@ -1222,7 +1222,7 @@ ToProgress, unescape, verge, VK, Ya*/
 							});
 							root[_addEventListener]("keyup", handleImgLightboxWindow);
 							container[_addEventListener]("click", handleImgLightboxContainer);
-							container.style.display = "block";
+							container[style].display = "block";
 							LoadingSpinner.hide();
 						}
 					};
@@ -1249,8 +1249,7 @@ ToProgress, unescape, verge, VK, Ya*/
 		manageImgLightboxLinks();
 
 		var handleDataSrcImageAll = function () {
-			var imgClass = "data-src-img";
-			var img = document[getElementsByClassName](imgClass) || "";
+			var img = document[getElementsByClassName]("data-src-img") || "";
 			var isActiveClass = "is-active";
 			var isBindedClass = "is-binded";
 			var arrange = function (e) {
@@ -1302,8 +1301,7 @@ ToProgress, unescape, verge, VK, Ya*/
 		manageDataSrcImageAll();
 
 		var handleDataSrcIframeAll = function () {
-			var imgClass = "data-src-iframe";
-			var ifrm = document[getElementsByClassName](imgClass) || "";
+			var ifrm = document[getElementsByClassName]("data-src-iframe") || "";
 			var isActiveClass = "is-active";
 			var isBindedClass = "is-binded";
 			var arrange = function (e) {
@@ -2114,7 +2112,7 @@ ToProgress, unescape, verge, VK, Ya*/
 	}();
 
 	var needsPolyfills = function () {
-		return !supportsPassive || !root.requestAnimationFrame || !root.matchMedia || "undefined" === typeof root.Element && !("dataset" in docElem) || !("classList" in document[createElement]("_")) || document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
+		return !String.prototype.startsWith || !supportsPassive || !root.requestAnimationFrame || !root.matchMedia || "undefined" === typeof root.Element && !("dataset" in docElem) || !("classList" in document[createElement]("_")) || document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
 		/* !document.importNode || */
 		/* !("content" in document[createElement]("template")) || */
 		root.attachEvent && !root[_addEventListener] || !("onhashchange" in root) || !Array.prototype.indexOf || !root.Promise || !root.fetch || !document[querySelectorAll] || !document[querySelector] || !Function.prototype.bind || Object[defineProperty] && Object[getOwnPropertyDescriptor] && Object[getOwnPropertyDescriptor](Element.prototype, "textContent") && !Object[getOwnPropertyDescriptor](Element.prototype, "textContent").get || !("undefined" !== typeof root.localStorage && "undefined" !== typeof root.sessionStorage) || !root.WeakMap || !root.MutationObserver;

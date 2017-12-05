@@ -276,9 +276,9 @@ ToProgress, unescape, VK, Ya*/
  * loadCSS(hrefString,callback,media,before)
  */
 (function (root, document) {
-	var loadCSS = function (_href, callback) {
-		"use strict";
+	"use strict";
 
+	var loadCSS = function (_href, callback) {
 		var ref = document.getElementsByTagName("head")[0] || "";
 		var link = document.createElement("link");
 		link.rel = "stylesheet";
@@ -673,7 +673,7 @@ ToProgress, unescape, VK, Ya*/
 					isAbsolute: _isAbsolute,
 					isRelative: !_isAbsolute,
 					isCrossDomain: _isCrossDomain(),
-					hasHTTP: /^(http|https):\/\//i.test(url) ? !0 : !1
+					hasHTTP: /^(http|https):\/\//i.test(url) ? true : false
 				};
 			}();
 		};
@@ -814,7 +814,8 @@ ToProgress, unescape, VK, Ya*/
 			if (dsContainer && cdPrev && cdNext) {
 				/* var jsUrl = "../../cdn/doSlide/1.1.4/js/do-slide.fixed.min.js";
     if (!scriptIsLoaded(jsUrl)) {
-    	loadJS(jsUrl, initScript);
+    	var load;
+    	load = new loadJsCss([jsUrl], initScript);
     } */
 				initScript();
 			}
@@ -1144,7 +1145,7 @@ ToProgress, unescape, VK, Ya*/
 	}();
 
 	var needsPolyfills = function () {
-		return !supportsPassive || !root.requestAnimationFrame || !root.matchMedia || "undefined" === typeof root.Element && !("dataset" in docElem) || !("classList" in document[createElement]("_")) || document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
+		return !String.prototype.startsWith || !supportsPassive || !root.requestAnimationFrame || !root.matchMedia || "undefined" === typeof root.Element && !("dataset" in docElem) || !("classList" in document[createElement]("_")) || document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
 		/* !document.importNode || */
 		/* !("content" in document[createElement]("template")) || */
 		root.attachEvent && !root[_addEventListener] || !("onhashchange" in root) || !Array.prototype.indexOf || !root.Promise || !root.fetch || !document[querySelectorAll] || !document[querySelector] || !Function.prototype.bind || Object[defineProperty] && Object[getOwnPropertyDescriptor] && Object[getOwnPropertyDescriptor](Element.prototype, "textContent") && !Object[getOwnPropertyDescriptor](Element.prototype, "textContent").get || !("undefined" !== typeof root.localStorage && "undefined" !== typeof root.sessionStorage) || !root.WeakMap || !root.MutationObserver;
