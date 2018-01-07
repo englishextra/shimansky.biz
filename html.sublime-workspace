@@ -419,33 +419,6 @@
 				"buffer_size": 69769,
 				"line_ending": "Unix"
 			}
-		},
-		{
-			"contents": "абстрактные\nныть\nзнакомство\nпримыкающий\nдвуличный\nархив\nнеловко\nбалет\nбальзамический\nбисквит\nбуй\nобладающий красивым задом\nкатегория\nпойманный\nбездна\nшоколад\nхор\nаккорд\nсхема\nклерк\nодежда\nуговаривать\nколлега\nпотреблять\nдвоюродная сестра\nсущество\nмусор\nискоренять\nкарликовый\nолицетворение\nвыход\nутонченный\nфасад\nсимулировать\nхлопьевидный\nпотасовка\nтюремное заключение\nизмерительный прибор\nголовная боль\nвысота\nгигиена\nгипербола\nиррациональный\nостров\nподсудность\nхаки\nмесить\nколенный\nсалат\nбиблиотекарь\nбиблиотека\nмолниеносный\nмэр\nропот\nтошнотворный\nзвукоподражание\nпаранойя\nв частности\nгруша\nусидчивость\nявление\nмор\nпредпочтения\nподготовительный\nпроизношение\nнабережная\nочередь\nтихо\nуволиться\nдовольно\nредко\nобласть\nотражение\nрегулярно\nсмаковать\nносорог\nритм\nлосось\nножницы\nскатываться\nспонтанность\nбелочка\nжелудок\nдочернее предприятие\nзамша\nсюрприз\nмеч\nсинкопа\nтемза\nхоть\nязык\nбоязнь числа 13\nволнообразный\nтранспорт с продовольствием\nвода\nсреда\nдерево\nксенофобия\nяхта\nзебра\n",
-			"settings":
-			{
-				"buffer_size": 975,
-				"line_ending": "Unix",
-				"name": "абстрактные"
-			}
-		},
-		{
-			"file": "tools/convertcase/index.html",
-			"settings":
-			{
-				"buffer_size": 2380,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "tools/convertcase/js/app.min.js",
-			"settings":
-			{
-				"buffer_size": 24201,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
 		}
 	],
 	"build_system": "",
@@ -632,6 +605,10 @@
 	},
 	"file_history":
 	[
+		"/D/server/html/tools/convertcase/js/app.min.js",
+		"/D/server/html/tools/convertcase/index.html",
+		"/D/server/sources/cdn/Tocca.js/2.0.1/js/Tocca.fixed.js",
+		"/D/server/sources/cdn/Tocca.js/2.0.1/js/Tocca.fixed.min.js",
 		"/C/Users/serguei/Desktop/noname1.htm",
 		"/D/server/sources/cdn/polyfills/js/polyfills.fixed.min.js",
 		"/D/server/html/libs/serguei-webslides/scss/_englishextra-ui-colors.scss",
@@ -657,7 +634,6 @@
 		"/D/server/html/libs/serguei-webslides/scss/_webslides-base.scss",
 		"/D/server/html/libs/serguei-webslides/scss/_webslides-base-fixes.scss",
 		"/D/server/html/libs/serguei-webslides/scss/_webslides-color-fixes.scss",
-		"/D/server/sources/cdn/Tocca.js/2.0.1/js/Tocca.fixed.js",
 		"/D/server/sources/cdn/verge/1.9.1/js/verge.fixed.js",
 		"/D/server/html/libs/serguei-webslides/scss/_webslides-typography.scss",
 		"/D/server/sources/cdn/verge/1.9.1/js/verge.fixed.min.js",
@@ -698,7 +674,6 @@
 		"/D/server/sources/cdn/echo.js/0.1.0/js/echo.fixed.js",
 		"/D/server/sources/cdn/zoomwall.js/1.1.1/js/zoomwall.fixed.min.js",
 		"/D/server/sources/cdn/zoomwall.js/1.1.1/js/zoomwall.fixed.js",
-		"/D/server/sources/cdn/Tocca.js/2.0.1/js/Tocca.fixed.min.js",
 		"/D/server/sources/cdn/parallax-js/3.1.0/js/parallax.fixed.min.js",
 		"/D/server/sources/cdn/parallax-js/3.1.0/js/parallax.fixed.js",
 		"/D/server/sources/cdn/wheel-indicator/1.1.4/js/wheel-indicator.fixed.min.js",
@@ -757,13 +732,11 @@
 		"/C/Users/serguei/Desktop/css3-perspective-playground/index.html",
 		"/D/server/html/picturewall.html",
 		"/D/server/html/contents.html",
-		"/D/server/html/app/index.html",
-		"/D/server/englishextra.bitbucket.io/app/index.html",
-		"/D/server/englishextra.github.io/app/index.html"
+		"/D/server/html/app/index.html"
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -778,6 +751,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"\\n\\n",
 			"googletag",
 			"sw.js",
 			"googletag.",
@@ -831,9 +805,10 @@
 		"highlight": true,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": false,
+		"regex": true,
 		"replace_history":
 		[
+			"\\n",
 			"<td>",
 			"load = new loadJsCss(",
 			"\\n",
@@ -865,7 +840,7 @@
 	"groups":
 	[
 		{
-			"selected": 47,
+			"selected": 45,
 			"sheets":
 			[
 				{
@@ -1060,7 +1035,7 @@
 						"translation.y": 64824.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 28,
+					"stack_index": 25,
 					"type": "text"
 				},
 				{
@@ -1254,7 +1229,7 @@
 						"translation.y": 18155.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 27,
+					"stack_index": 24,
 					"type": "text"
 				},
 				{
@@ -1365,7 +1340,7 @@
 						"translation.y": 20.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 29,
+					"stack_index": 26,
 					"type": "text"
 				},
 				{
@@ -1476,7 +1451,7 @@
 						"translation.y": 21665.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 26,
+					"stack_index": 23,
 					"type": "text"
 				},
 				{
@@ -1587,7 +1562,7 @@
 						"translation.y": 511.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 30,
+					"stack_index": 27,
 					"type": "text"
 				},
 				{
@@ -1698,7 +1673,7 @@
 						"translation.y": 20420.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 25,
+					"stack_index": 22,
 					"type": "text"
 				},
 				{
@@ -1809,7 +1784,7 @@
 						"translation.y": 496.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 31,
+					"stack_index": 28,
 					"type": "text"
 				},
 				{
@@ -1993,7 +1968,7 @@
 						"translation.y": 6772.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 24,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
@@ -2104,7 +2079,7 @@
 						"translation.y": 961.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 32,
+					"stack_index": 29,
 					"type": "text"
 				},
 				{
@@ -2220,7 +2195,7 @@
 						"translation.y": 7851.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 23,
+					"stack_index": 20,
 					"type": "text"
 				},
 				{
@@ -2424,7 +2399,7 @@
 						"translation.y": 7742.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 22,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
@@ -2613,7 +2588,7 @@
 						"translation.y": 7344.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 21,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
@@ -2724,7 +2699,7 @@
 						"translation.y": 1126.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 33,
+					"stack_index": 30,
 					"type": "text"
 				},
 				{
@@ -2835,7 +2810,7 @@
 						"translation.y": 1.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 20,
+					"stack_index": 17,
 					"type": "text"
 				},
 				{
@@ -2946,7 +2921,7 @@
 						"translation.y": 376.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 34,
+					"stack_index": 31,
 					"type": "text"
 				},
 				{
@@ -3145,7 +3120,7 @@
 						"translation.y": 6854.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 19,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
@@ -3258,7 +3233,7 @@
 						"translation.y": 691.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 35,
+					"stack_index": 32,
 					"type": "text"
 				},
 				{
@@ -3369,7 +3344,7 @@
 						"translation.y": 17960.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 18,
+					"stack_index": 15,
 					"type": "text"
 				},
 				{
@@ -3568,7 +3543,7 @@
 						"translation.y": 511.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 36,
+					"stack_index": 33,
 					"type": "text"
 				},
 				{
@@ -3757,7 +3732,7 @@
 						"translation.y": 5943.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 17,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
@@ -3956,7 +3931,7 @@
 						"translation.y": 526.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 37,
+					"stack_index": 34,
 					"type": "text"
 				},
 				{
@@ -4145,7 +4120,7 @@
 						"translation.y": 5939.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 16,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -4329,7 +4304,7 @@
 						"translation.y": 556.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 38,
+					"stack_index": 35,
 					"type": "text"
 				},
 				{
@@ -4528,7 +4503,7 @@
 						"translation.y": 35090.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -4727,7 +4702,7 @@
 						"translation.y": 485.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 39,
+					"stack_index": 36,
 					"type": "text"
 				},
 				{
@@ -4916,7 +4891,7 @@
 						"translation.y": 6902.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 11,
 					"type": "text"
 				},
 				{
@@ -5027,7 +5002,7 @@
 						"translation.y": 676.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 40,
+					"stack_index": 37,
 					"type": "text"
 				},
 				{
@@ -5216,7 +5191,7 @@
 						"translation.y": 6902.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -5415,7 +5390,7 @@
 						"translation.y": 676.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 41,
+					"stack_index": 38,
 					"type": "text"
 				},
 				{
@@ -5599,7 +5574,7 @@
 						"translation.y": 28700.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -5783,7 +5758,7 @@
 						"translation.y": 766.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 42,
+					"stack_index": 39,
 					"type": "text"
 				},
 				{
@@ -5982,7 +5957,7 @@
 						"translation.y": 14585.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -6181,7 +6156,7 @@
 						"translation.y": 421.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 43,
+					"stack_index": 40,
 					"type": "text"
 				},
 				{
@@ -6380,7 +6355,7 @@
 						"translation.y": 16100.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -6569,7 +6544,7 @@
 						"translation.y": 466.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 44,
+					"stack_index": 41,
 					"type": "text"
 				},
 				{
@@ -6680,7 +6655,7 @@
 						"translation.y": 16250.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -6864,7 +6839,7 @@
 						"translation.y": 466.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 45,
+					"stack_index": 42,
 					"type": "text"
 				},
 				{
@@ -6975,7 +6950,7 @@
 						"translation.y": 15590.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -7164,7 +7139,7 @@
 						"translation.y": 5405.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 46,
+					"stack_index": 43,
 					"type": "text"
 				},
 				{
@@ -7275,7 +7250,7 @@
 						"translation.y": 18080.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -7474,7 +7449,7 @@
 						"translation.y": 526.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 47,
+					"stack_index": 44,
 					"type": "text"
 				},
 				{
@@ -7585,7 +7560,7 @@
 						"translation.y": 18080.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -7784,7 +7759,7 @@
 						"translation.y": 526.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 48,
+					"stack_index": 45,
 					"type": "text"
 				},
 				{
@@ -7895,7 +7870,7 @@
 						"translation.y": 27200.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
@@ -8084,7 +8059,7 @@
 						"translation.y": 901.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -8262,535 +8237,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 46,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 975,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								907,
-								934
-							]
-						],
-						"settings":
-						{
-							"auto_name": "абстрактные",
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": -1,
-							"bracket_highlighter.locations":
-							{
-								"close":
-								{
-								},
-								"icon":
-								{
-								},
-								"open":
-								{
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
-							],
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 1247.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 47,
-					"file": "tools/convertcase/index.html",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2380,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								972,
-								972
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": -1,
-							"bracket_highlighter.clone_locations":
-							{
-								"close":
-								{
-									"1":
-									[
-										1688,
-										1694
-									]
-								},
-								"icon":
-								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/tag.png",
-										"region.orangish"
-									]
-								},
-								"open":
-								{
-									"1":
-									[
-										1584,
-										1590
-									]
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.clone_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
-							],
-							"bracket_highlighter.locations":
-							{
-								"close":
-								{
-									"1":
-									[
-										2033,
-										2036
-									]
-								},
-								"icon":
-								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/tag.png",
-										"region.orangish"
-									]
-								},
-								"open":
-								{
-									"1":
-									[
-										953,
-										956
-									]
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
-							],
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": false,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 45.0,
-						"zoom_level": 1.0
-					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 48,
-					"file": "tools/convertcase/js/app.min.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 24201,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								24017,
-								24017
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"bracket_highlighter.busy": false,
-							"bracket_highlighter.clone": -1,
-							"bracket_highlighter.clone_locations":
-							{
-								"close":
-								{
-									"1":
-									[
-										24189,
-										24190
-									]
-								},
-								"icon":
-								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/round_bracket.png",
-										"region.yellowish"
-									]
-								},
-								"open":
-								{
-									"1":
-									[
-										24038,
-										24039
-									]
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.clone_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
-							],
-							"bracket_highlighter.locations":
-							{
-								"close":
-								{
-									"1":
-									[
-										24016,
-										24017
-									]
-								},
-								"icon":
-								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/curly_bracket.png",
-										"region.purplish"
-									]
-								},
-								"open":
-								{
-									"1":
-									[
-										23781,
-										23782
-									]
-								},
-								"unmatched":
-								{
-								}
-							},
-							"bracket_highlighter.regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content"
-							],
-							"editorconfig": true,
-							"ensure_newline_at_eof_on_save": true,
-							"origin_encoding": "ASCII",
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": false,
-							"trim_trailing_white_space_on_save": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 9674.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
 					"type": "text"
 				}
 			]
