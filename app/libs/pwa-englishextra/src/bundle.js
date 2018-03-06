@@ -322,6 +322,7 @@ Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
  * passes jshint
  */
 (function (root) {
+	"use strict";
 	var Timers = function (ids) {
 		this.ids = ids || [];
 	};
@@ -2595,7 +2596,12 @@ Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
 						manageIframeLightboxLinks(appContentParent);
 						manageChaptersSelect(appContentParent);
 						manageExpandingLayers(appContentParent);
-						handleDataSrcIframeAll();
+						var timers2 = new Timers();
+						timers2.timeout(function () {
+							timers2.clear();
+							timers2 = null;
+							handleDataSrcIframeAll();
+						}, 500);
 						var timers = new Timers();
 						timers.timeout(function () {
 							timers.clear();

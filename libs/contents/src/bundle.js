@@ -266,6 +266,7 @@ ToProgress, unescape, verge, VK, Ya*/
  * passes jshint
  */
 (function (root) {
+	"use strict";
 	var Timers = function (ids) {
 		this.ids = ids || [];
 	};
@@ -1002,13 +1003,9 @@ ToProgress, unescape, verge, VK, Ya*/
 			throttleHandleDataSrcImageAll();
 		};
 		var manageDataSrcImageAll = function () {
-			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {
-				passive: true
-			});
+			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcImageAllWindow);
-			root[_addEventListener]("scroll", handleDataSrcImageAllWindow, {
-				passive: true
-			});
+			root[_addEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_addEventListener]("resize", handleDataSrcImageAllWindow);
 			var timers = new Timers();
 			timers.timeout(function () {

@@ -267,6 +267,7 @@ Ya*/
  * passes jshint
  */
 (function (root) {
+	"use strict";
 	var Timers = function (ids) {
 		this.ids = ids || [];
 	};
@@ -1385,13 +1386,9 @@ Ya*/
 			throttleHandleDataSrcImageAll();
 		};
 		var manageDataSrcImageAll = function () {
-			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {
-				passive: true
-			});
+			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcImageAllWindow);
-			root[_addEventListener]("scroll", handleDataSrcImageAllWindow, {
-				passive: true
-			});
+			root[_addEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_addEventListener]("resize", handleDataSrcImageAllWindow);
 			var timers = new Timers();
 			timers.timeout(function () {
@@ -1439,13 +1436,9 @@ Ya*/
 			throttlehandleDataSrcIframeAll();
 		};
 		var manageDataSrcIframeAll = function () {
-			root[_removeEventListener]("scroll", handleDataSrcIframeAllWindow, {
-				passive: true
-			});
+			root[_removeEventListener]("scroll", handleDataSrcIframeAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcIframeAllWindow);
-			root[_addEventListener]("scroll", handleDataSrcIframeAllWindow, {
-				passive: true
-			});
+			root[_addEventListener]("scroll", handleDataSrcIframeAllWindow, {passive: true});
 			root[_addEventListener]("resize", handleDataSrcIframeAllWindow);
 			var timers = new Timers();
 			timers.timeout(function () {
