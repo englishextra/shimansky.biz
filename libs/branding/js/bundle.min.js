@@ -1472,9 +1472,9 @@ Ya*/
 			var _this = this;
 			var hashString = _this.options[_this.selectedIndex].value || "";
 			if (hashString) {
-				var targetObject = hashString ? (isValidId(hashString, true) ? document[getElementById](hashString.replace(/^#/, "")) || "" : "") : "";
-				if (targetObject) {
-					scroll2Top(findPos(targetObject).top, 20000);
+				var targetObj = hashString ? (isValidId(hashString, true) ? document[getElementById](hashString.replace(/^#/, "")) || "" : "") : "";
+				if (targetObj) {
+					scroll2Top((targetObj ? findPos(targetObj).top : 0), 20000);
 				} else {
 					root.location.href = hashString;
 				}
@@ -2216,6 +2216,8 @@ Ya*/
 		initUiTotop();
 
 		hideProgressBar();
+
+		scroll2Top(0, 20000);
 	};
 
 	var scripts = ["../../libs/branding/css/bundle.min.css"];
