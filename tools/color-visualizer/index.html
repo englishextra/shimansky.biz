@@ -28,13 +28,13 @@
 				<textarea v-model="rowList" :style="all"></textarea>
 				<br>
 				<label>
-                Background Color:
-                <input v-model="bg" :style="all">
-            </label>
+        Background Color:
+        <input v-model="bg" :style="all">
+      </label>
 				<label>
-                Text Color:
-                <input v-model="txt" :style="all">
-            </label>
+        Text Color:
+        <input v-model="txt" :style="all">
+      </label>
 			</div>
 			<!-- helpers -->
 			<div :style="border" class="text__right">
@@ -104,19 +104,19 @@
 						<input type="range" min="10" max="300" value="100" v-model="size" :style="{'background-color': tc(txt)}">
 					</div>
 					<button @click="showNames =! showNames" :style="all">
-                    Show Hex Codes
-                </button>
+          Show Hex Codes
+        </button>
 					<!-- removed colors -->
 					<button v-if="removedColors.length" @click="undoRemovedColor()" :style="all">
-                    Undo Removed
-                </button>
+          Undo Removed
+        </button>
 					<ul v-if="removedColors.length" :style="all">
 						<li v-for="r in removedColors">{{ r.v }}</li>
 					</ul>
 					<!-- save list to file -->
 					<button v-if="showSaveBtn" @click="saveList()" :style="all">
-                    Save Current List
-                </button>
+          Save Current List
+        </button>
 				</div>
 			</div>
 		</section>

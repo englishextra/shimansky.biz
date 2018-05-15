@@ -1,6 +1,6 @@
 /*global cssbeautify:true, document:true, window:true, CodeMirror: true */
 var editor,viewer,formatId;function format(){'use strict';if(formatId){window.clearTimeout(formatId);}
-formatId=window.setTimeout(function(){var options,raw,beautified;options={indent:'    '};if(document.getElementById('tab').checked){options.indent='\t';}else if(document.getElementById('twospaces').checked){options.indent='  ';}
+formatId=window.setTimeout(function(){var options,raw,beautified;options={indent:'  '};if(document.getElementById('tab').checked){options.indent='\t';}else if(document.getElementById('twospaces').checked){options.indent=' ';}
 if(document.getElementById('openbrace-separate-line').checked){options.openbrace='separate-line';}
 if(document.getElementById('autosemicolon').checked){options.autosemicolon=true;}
 if(typeof editor===undefined){raw=document.getElementById('raw').value;}else{raw=editor.getValue();}
