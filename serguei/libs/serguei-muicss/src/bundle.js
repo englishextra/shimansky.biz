@@ -1,7 +1,7 @@
 /*global ActiveXObject, console, DISQUS, doesFontExist, hljs, IframeLightbox,
 imgLightbox, imagePromise, instgrm, JsonHashRouter, loadCSS, loadJsCss,
-Minigrid, Mustache, Promise, Timers, QRCode, require, ripple, t, twttr,
-unescape, verge, VK, WheelIndicator, Ya*/
+loadJsCssWithPromise, Minigrid, Mustache, Promise, Timers, QRCode, require,
+ripple, t, twttr, unescape, verge, VK, WheelIndicator, Ya*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -419,6 +419,81 @@ unescape, verge, VK, WheelIndicator, Ya*/
 		}
 	};
 	root.loadJsCss = loadJsCss;
+})("undefined" !== typeof window ? window : this, document);
+/*!
+ * modified loadExt with Promise
+ * @see {@link https://gist.github.com/englishextra/ff9dc7ab002312568742861cb80865c9}
+ * passes jshint
+ */
+(function (root, document) {
+	"use strict";
+	var loadJsCssWithPromise = function (fileArray) {
+		return new Promise(function (resolve, reject) {
+			var appendChild = "appendChild";
+			var body = "body";
+			var createElement = "createElement";
+			var getElementsByTagName = "getElementsByTagName";
+			var insertBefore = "insertBefore";
+			var _length = "length";
+			var parentNode = "parentNode";
+			var files = fileArray;
+			var js = [];
+			var _head = document[getElementsByTagName]("head")[0] || "";
+			var _body = document[body] || "";
+			var ref = document[getElementsByTagName]("script")[0] || "";
+			var loadStyle = function(file) {
+				var link = document[createElement]("link");
+				link.rel = "stylesheet";
+				link.type = "text/css";
+				link.href = file;
+				_head[appendChild](link);
+			};
+			var loadScript = function (i) {
+				var script = document[createElement]("script");
+				script.type = "text/javascript";
+				script.async = true;
+				script.src = js[i];
+				var loadNextScript = function () {
+					if (++i < js[_length]) {
+						loadScript(i);
+					}
+				};
+				script.onload = function () {
+					loadNextScript();
+				};
+				_head[appendChild](script);
+				if (ref[parentNode]) {
+					ref[parentNode][insertBefore](script, ref);
+				} else {
+					(_body || _head)[appendChild](script);
+				}
+			};
+			var fileList = [];
+			try {
+				var i,
+				l;
+				for (i = 0, l = files[_length]; i < l; i += 1) {
+					if ((/\.js$|\.js\?/).test(files[i])) {
+						js.push(files[i]);
+					}
+					if ((/\.css$|\.css\?|\/css\?/).test(files[i])) {
+						loadStyle(files[i]);
+					}
+					fileList.push(files[i]);
+				}
+				i = l = null;
+				if (js[_length] > 0) {
+					loadScript(0);
+				}
+				console.log("appended ", fileList.join(", "));
+				resolve(files[i]);
+			} catch (err) {
+				console.log("cannot ", err);
+				reject(err);
+			}
+		});
+	};
+	root.loadJsCssWithPromise = loadJsCssWithPromise;
 })("undefined" !== typeof window ? window : this, document);
 /*!
  * app logic
@@ -1313,7 +1388,7 @@ unescape, verge, VK, WheelIndicator, Ya*/
 			var context = scope && scope.nodeName ? scope : "";
 			var options = settings || {};
 			options.disconnect = options.disconnect || false;
-			options.timeout = options.timeout || 0;
+			options.timeout = options.timeout || null;
 			options.childList = options.childList || true;
 			options.subtree = options.subtree || true;
 			options.attributes = options.attributes || false;
@@ -1337,13 +1412,10 @@ unescape, verge, VK, WheelIndicator, Ya*/
 						}
 						if (callback && "function" === typeof callback) {
 							if (options.timeout && "number" === typeof options.timeout) {
-								var timers = new Timers();
-								timers.timeout(function () {
-									timers.clear();
+								var timers = setTimeout(function () {
+									clearTimeout(timers);
 									timers = null;
-									if (mgrid) {
-										callback();
-									}
+									callback();
 								}, options.timeout);
 							} else {
 								callback();
@@ -1371,29 +1443,38 @@ unescape, verge, VK, WheelIndicator, Ya*/
 		var mgrid;
 
 		var updateMinigrid = function (parent) {
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				if (mgrid) {
+			if (mgrid) {
+				var timers = setTimeout(function () {
+					clearTimeout(timers);
+					timers = null;
 					mgrid.mount();
-					if (parent && parent.nodeName) {
-						parent[classList].add(isActiveClass);
-					}
-				}
-			}, 500);
+				}, 500);
+			}
+			/*!
+			 * dont put that together with mgrid check
+			 */
+			if (parent && parent.nodeName) {
+				parent[classList].add(isActiveClass);
+			}
 		};
 
 		var handleDisqusEmbedInMinigrid = function () {
 			var disqusThread = document[getElementById]("disqus_thread") || "";
-			if (disqusThread) {
+			if (disqusThread[parentNode]) {
 				if (!disqusThread[parentNode][classList].contains(isBindedMinigridCardClass)) {
 					observeMutations(disqusThread[parentNode], updateMinigrid.bind(null, disqusThread[parentNode]));
 					disqusThread[parentNode][classList].add(isBindedMinigridCardClass);
 				}
+				if (!disqusThread[classList].contains(isBindedMinigridCardClass)) {
+					observeMutations(disqusThread, updateMinigrid.bind(null, disqusThread));
+					disqusThread[classList].add(isBindedMinigridCardClass);
+				}
 			}
 		};
-		var manageDisqusEmbed = function () {
+		var manageDisqusEmbed = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var disqusThread = document[getElementById]("disqus_thread") || "";
 			var locationHref = root.location.href || "";
 			var disqusThreadShortname = disqusThread ? (disqusThread[dataset].shortname || "") : "";
@@ -1415,20 +1496,27 @@ unescape, verge, VK, WheelIndicator, Ya*/
 								this.page.url = locationHref;
 							}
 						});
-						disqusThread[classList].add(isActiveClass);
+						disqusThread[classList].add("is-active-disqus-thread");
+						cb();
 					} catch (err) {
-						/* console.log("cannot reset DISQUS", err); */
+						/* console.log("cannot DISQUS.reset", err); */
 					}
 				}
-
 			};
 			if (disqusThread && disqusThreadShortname && locationHref) {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
 					handleDisqusEmbedInMinigrid();
 					var jsUrl = forcedHTTP + "://" + disqusThreadShortname + ".disqus.com/embed.js";
-					if (!scriptIsLoaded(jsUrl)) {
+					/* if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
+					} else {
+						initScript();
+					} */
+					if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
 					} else {
 						initScript();
 					}
@@ -1444,26 +1532,41 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				var i,
 				l;
 				for (i = 0, l = instagramMedia[_length]; i < l; i += 1) {
-					if (!instagramMedia[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
+					if (instagramMedia[i][parentNode] && !instagramMedia[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
 						observeMutations(instagramMedia[i][parentNode], updateMinigrid.bind(null, instagramMedia[i][parentNode]));
 						instagramMedia[i][parentNode][classList].add(isBindedMinigridCardClass);
 					}
 				}
 			}
 		};
-		var manageInstagramEmbeds = function () {
+		var manageInstagramEmbeds = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var instagramMedia = document[getElementsByClassName]("instagram-media")[0] || "";
 			var initScript = function () {
 				if (root.instgrm) {
-					instgrm.Embeds.process();
+					try {
+						instgrm.Embeds.process();
+						cb();
+					} catch (err) {
+						/* console.log("cannot instgrm.Embeds.process", err); */
+					}
 				}
 			};
 			if (instagramMedia) {
 				handleInstagramEmbedInMinigrid();
 				var jsUrl = forcedHTTP + "://" + "www.instagram.com/embed.js";
-				if (!scriptIsLoaded(jsUrl)) {
+				/* if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
+				} */
+				if (!scriptIsLoaded(jsUrl)) {
+					loadJsCssWithPromise([jsUrl]).then(function () {
+						initScript();
+					});
 				} else {
 					initScript();
 				}
@@ -1476,83 +1579,177 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				var i,
 				l;
 				for (i = 0, l = twitterTweet[_length]; i < l; i += 1) {
-					if (!twitterTweet[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
+					if (twitterTweet[i][parentNode] && !twitterTweet[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
 						observeMutations(twitterTweet[i][parentNode], updateMinigrid.bind(null, twitterTweet[i][parentNode]));
 						twitterTweet[i][parentNode][classList].add(isBindedMinigridCardClass);
 					}
 				}
 			}
 		};
-		var manageTwitterEmbeds = function () {
+		var manageTwitterEmbeds = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var twitterTweet = document[getElementsByClassName]("twitter-tweet")[0] || "";
 			var initScript = function () {
 				if (root.twttr) {
-					twttr.widgets.load();
+					try {
+						twttr.widgets.load();
+						cb();
+					} catch (err) {
+						/* console.log("cannot twttr.widgets.load", err); */
+					}
 				}
 			};
 			if (twitterTweet) {
 				handleTwitterEmbedInMinigrid();
 				var jsUrl = forcedHTTP + "://" + "platform.twitter.com/widgets.js";
-				if (!scriptIsLoaded(jsUrl)) {
+				/* if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
+				} */
+				if (!scriptIsLoaded(jsUrl)) {
+					loadJsCssWithPromise([jsUrl]).then(function () {
+						initScript();
+					});
 				} else {
 					initScript();
 				}
 			}
 		};
 
-		var toDashedAll = function (str) {
-			return str.replace((/([A-Z])/g), function ($1) {
-				return "-" + $1.toLowerCase();
-			});
-		};
-		var cardGridClass = "card-grid";
-		var cardWrapClass = "card-wrap";
-		/*!
-		 * takes too much CPU
-		 */
-		var docElemStyle = docElem[style];
-		var transitionProperty = typeof docElemStyle.transition === "string" ?
-			"transition" : "WebkitTransition";
-		var transformProperty = typeof docElemStyle.transform === "string" ?
-			"transform" : "WebkitTransform";
-		var styleSheet = document[styleSheets][0] || "";
-		if (styleSheet) {
-			var cssRule;
-			cssRule = toDashedAll([".",
-						cardWrapClass,
-						"{",
-						transitionProperty,
-						": ",
-						transformProperty,
-						" 0.4s ease-out;",
-						"}"].join(""));
-			/* styleSheet.insertRule(cssRule, 0); */
-		}
-		var manageMinigrid = function () {
-			var cardGrid = document[getElementsByClassName](cardGridClass)[0] || "";
-			var onMinigridCreated = function () {
-				cardGrid[style].visibility = "visible";
-				cardGrid[style].opacity = 1;
-			};
-			var initMinigrid = function () {
-				if (mgrid) {
-					mgrid = null;
-					root[_removeEventListener]("resize", updateMinigrid);
+		var handleVkEmbedInMinigrid = function () {
+			var vkPost = document[getElementsByClassName]("vk-post") || "";
+			if (vkPost) {
+				var i,
+				l;
+				for (i = 0, l = vkPost[_length]; i < l; i += 1) {
+					if (vkPost[i][parentNode] && !vkPost[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
+						observeMutations(vkPost[i][parentNode], updateMinigrid.bind(null, vkPost[i][parentNode]));
+						vkPost[i][parentNode][classList].add(isBindedMinigridCardClass);
+					}
 				}
-				mgrid = new Minigrid({
-						container: cardGridClass,
-						item: cardWrapClass,
-						gutter: 20,
-						done: onMinigridCreated
-					});
-				mgrid.mount();
-				root[_addEventListener]("resize", updateMinigrid, {passive: true});
-			};
-			if (cardGrid) {
-				initMinigrid();
 			}
+		};
+		var manageVkEmbeds = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
+			var vkPost = document[getElementsByClassName]("vk-post")[0] || "";
+			var initScript = function () {
+				var initVkPost = function (element_id, owner_id, post_id, hash) {
+					if (!VK.Widgets.Post(element_id, owner_id, post_id, hash)) {
+						initVkPost();
+					}
+				};
+				if (root.VK && VK.Widgets && VK.Widgets.Post) {
+					try {
+						var vkPost = document[getElementsByClassName]("vk-post") || "";
+						if (vkPost) {
+							var i,
+							l;
+							for (i = 0, l = vkPost[_length]; i < l; i += 1) {
+								if (!vkPost[i][classList].contains(isBindedClass)) {
+									initVkPost(vkPost[i].id, vkPost[i][dataset].vkOwnerid, vkPost[i][dataset].vkPostid, vkPost[i][dataset].vkHash);
+									vkPost[i][classList].add(isBindedClass);
+								}
+							}
+						}
+						cb();
+					} catch (err) {
+						/* console.log("cannot initVkPost", err); */
+					}
+				}
+			};
+			if (vkPost) {
+				handleVkEmbedInMinigrid();
+				var jsUrl = forcedHTTP + "://" + "vk.com/js/api/openapi.js?154";
+				/* if (!scriptIsLoaded(jsUrl)) {
+					var load;
+					load = new loadJsCss([jsUrl], initScript);
+				} else {
+					initScript();
+				} */
+				if (!scriptIsLoaded(jsUrl)) {
+					loadJsCssWithPromise([jsUrl]).then(function () {
+						initScript();
+					});
+				} else {
+					initScript();
+				}
+			}
+		};
+
+		var cardWrapClass = "card-wrap";
+
+		var addCardWrapCssRule;
+		addCardWrapCssRule = function () {
+			var toDashedAll = function (str) {
+				return str.replace((/([A-Z])/g), function ($1) {
+					return "-" + $1.toLowerCase();
+				});
+			};
+			var docElemStyle = docElem[style];
+			var transitionProperty = typeof docElemStyle.transition === "string" ?
+				"transition" : "WebkitTransition";
+			var transformProperty = typeof docElemStyle.transform === "string" ?
+				"transform" : "WebkitTransform";
+			var styleSheet = document[styleSheets][0] || "";
+			if (styleSheet) {
+				var cssRule;
+				cssRule = toDashedAll([".",
+							cardWrapClass,
+							"{",
+							transitionProperty,
+							": ",
+							transformProperty,
+							" 0.4s ease-out;",
+							"}"].join(""));
+				styleSheet.insertRule(cssRule, 0);
+			}
+		};
+
+		var cardGridClass = "card-grid";
+
+		var manageMinigrid = function (callback) {
+			return new Promise(function (resolve, reject) {
+				var cb = function () {
+					return callback && "function" === typeof callback && callback();
+				};
+				var cardGrid = document[getElementsByClassName](cardGridClass)[0] || "";
+				var onMinigridCreated = function () {
+					root[_addEventListener]("resize", updateMinigrid, {passive: true});
+					cardGrid[style].visibility = "visible";
+					cardGrid[style].opacity = 1;
+					addCardWrapCssRule();
+					cb();
+				};
+				var initMinigrid = function () {
+					try {
+						if (mgrid) {
+							mgrid = null;
+							root[_removeEventListener]("resize", updateMinigrid);
+						}
+						mgrid = new Minigrid({
+								container: cardGridClass,
+								item: cardWrapClass,
+								gutter: 20/* ,
+								done: onMinigridCreated */
+							});
+						mgrid.mount();
+						onMinigridCreated();
+						resolve();
+					} catch (err) {
+						reject(err);
+						throw new Error("cannot init initMinigrid", err);
+					}
+				};
+				if (cardGrid) {
+					initMinigrid();
+				}
+			});
 		};
 
 		var activeClass = "active";
@@ -1751,10 +1948,17 @@ unescape, verge, VK, WheelIndicator, Ya*/
 						removeChildren(holder);
 						appendFragment(newImg, holder);
 					};
-					/* var jsUrl = "./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js";
-					if (!scriptIsLoaded(jsUrl)) {
+					/* var jsUrl = "./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js"; */
+					/* if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
+					} else {
+						initScript();
+					} */
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
 					} else {
 						initScript();
 					} */
@@ -1830,7 +2034,7 @@ unescape, verge, VK, WheelIndicator, Ya*/
 									});
 								}
 							} catch (err) {
-								/* console.log("cannot update or init Ya", err); */
+								/* console.log("cannot yshare.updateContent or Ya.share2", err); */
 							}
 						}
 					};
@@ -1841,6 +2045,13 @@ unescape, verge, VK, WheelIndicator, Ya*/
 					} else {
 						initScript();
 					}
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
+					} else {
+						initScript();
+					} */
 				};
 				var debounceLogicHandleShareButton = debounce(logicHandleShareButton, 200);
 				debounceLogicHandleShareButton();
@@ -1867,32 +2078,37 @@ unescape, verge, VK, WheelIndicator, Ya*/
 					holder[classList].add(isCollapsableClass);
 					manageOtherCollapsableAll(holder);
 					var initScript = function () {
-						if (root.VK) {
-							if (!vlike) {
-								try {
-									VK.init({
-										apiId: (vkLike[dataset].apiid || ""),
-										nameTransportPath: "/xd_receiver.htm",
-										onlyWidgets: true
-									});
-									VK.Widgets.Like(vkLikeId, {
-										type: "button",
-										height: 24
-									});
-									vlike = true;
-								} catch (err) {
-									/* console.log("cannot init VK", err); */
-								}
+						if (root.VK && !vlike) {
+							try {
+								VK.init({
+									apiId: (vkLike[dataset].apiid || ""),
+									nameTransportPath: "/xd_receiver.htm",
+									onlyWidgets: true
+								});
+								VK.Widgets.Like(vkLikeId, {
+									type: "button",
+									height: 24
+								});
+								vlike = true;
+							} catch (err) {
+								/* console.log("cannot VK.init", err); */
 							}
 						}
 					};
-					var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?122";
+					var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?154";
 					if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
 					} else {
 						initScript();
 					}
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
+					} else {
+						initScript();
+					} */
 				};
 				var debounceLogicHandleVKLikeButton = debounce(logicHandleVKLikeButton, 200);
 				debounceLogicHandleVKLikeButton();
@@ -2058,7 +2274,23 @@ unescape, verge, VK, WheelIndicator, Ya*/
 						timers.timeout(function () {
 							timers.clear();
 							timers = null;
-							manageMinigrid();
+							/* manageMinigrid(function () {
+								manageInstagramEmbeds();
+								manageTwitterEmbeds();
+								manageVkEmbeds();
+								manageDisqusEmbed();
+							}); */
+							manageMinigrid().then(function () {
+								manageDisqusEmbed();
+							}).then(function () {
+								manageInstagramEmbeds();
+							}).then(function () {
+								manageTwitterEmbeds();
+							}).then(function () {
+								manageVkEmbeds();
+							}).catch (function (err) {
+								console.log("fail: manageMinigrid", err);
+							});
 							handleDataSrcIframeAll(appContentParent);
 							handleDataSrcImageAll(appContentParent);
 							manageExternalLinkAll(appContentParent);
@@ -2067,9 +2299,6 @@ unescape, verge, VK, WheelIndicator, Ya*/
 							manageDropdownButtonAll(appContentParent);
 							manageHljsCodeAll(appContentParent);
 							manageRippleEffect();
-							manageInstagramEmbeds();
-							manageTwitterEmbeds();
-							manageDisqusEmbed();
 						}, 500);
 					}
 					LoadingSpinner.hide();

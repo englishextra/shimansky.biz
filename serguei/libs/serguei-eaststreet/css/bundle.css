@@ -4550,28 +4550,28 @@ u,
  * copyright
  */
 
-.card-wrap.card-wrap--notice {
+.card-wrap.card-wrap--copyright {
 	color: inherit;
 	background-color: #F2F2F2;
 	padding: 1.000rem;
 	margin-top: 1.333rem;
 }
 
-.card-wrap.card-wrap--notice a {
+.card-wrap.card-wrap--copyright a {
 	color: inherit;
 	text-decoration: underline;
 }
 
-.card-wrap.card-wrap--notice h3:first-child {
+.card-wrap.card-wrap--copyright h3:first-child {
 	margin-top: 0;
 }
 
-.card-wrap.card-wrap--notice .mui--text-subhead {
+.card-wrap.card-wrap--copyright .mui--text-subhead {
 	font-size: 1.133rem;
 }
 
-.card-wrap.card-wrap--notice .mui--text-caption,
-.card-wrap.card-wrap--notice .copyright {
+.card-wrap.card-wrap--copyright .mui--text-caption,
+.card-wrap.card-wrap--copyright .copyright {
 	font-size: 0.800rem;
 	line-height: 1.067rem;
 }
@@ -4584,7 +4584,7 @@ u,
 	background-color: #F2F2F2;
 }
 
-#disqus_thread.is-active iframe {
+#disqus_thread.is-active-disqus-thread iframe {
 	margin-top: 0.533rem;
 	padding-right: 1.333rem;
 	padding-left: 1.333rem;

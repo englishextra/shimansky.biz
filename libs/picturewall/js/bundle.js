@@ -1,7 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
-/*global doesFontExist, echo, Headers, loadCSS, loadJsCss, platform, Promise, t,
-ToProgress, VK, WheelIndicator, Ya, zoomwall*/
+/*global doesFontExist, echo, Headers, loadCSS, loadJsCss, Mustache, platform,
+Promise, t, ToProgress, VK, WheelIndicator, Ya, zoomwall */
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -1002,7 +1002,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall*/
 								});
 							}
 						} catch (err) {
-							/* console.log("cannot update or init Ya", err); */
+							/* console.log("cannot yshare.updateContent or Ya.share2", err); */
 						}
 					}
 				};
@@ -1054,7 +1054,7 @@ ToProgress, VK, WheelIndicator, Ya, zoomwall*/
 								});
 								vlike = true;
 							} catch (err) {
-								/* console.log("cannot init VK", err); */
+								/* console.log("cannot VK.init", err); */
 							}
 						}
 					}

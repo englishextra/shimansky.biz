@@ -2076,13 +2076,13 @@ ToProgress, unescape, verge, VK, Ya, ymaps*/
 								});
 								vlike = true;
 							} catch (err) {
-								/* console.log("cannot init VK", err); */
+								/* console.log("cannot VK.init", err); */
 							}
 						}
 					}
 				};
 				if (page[classList].contains(isActiveVKLikeClass)) {
-					var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?122";
+					var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?154";
 					if (!scriptIsLoaded(jsUrl)) {
 						var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -2116,13 +2116,13 @@ ToProgress, unescape, verge, VK, Ya, ymaps*/
 							}
 						});
 					} catch (err) {
-						/* console.log("cannot reset DISQUS", err); */
+						/* console.log("cannot DISQUS.reset", err); */
 					}
 				}
 			};
 			if (btn && disqusThread && disqusThreadShortname && locationHref) {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
-					disqusThread[classList].add(isActiveClass);
+					disqusThread[classList].add("is-active-disqus-thread");
 					setStyleDisplayNone(btn);
 					var jsUrl = forcedHTTP + "://" + disqusThreadShortname + ".disqus.com/embed.js";
 					if (!scriptIsLoaded(jsUrl)) {

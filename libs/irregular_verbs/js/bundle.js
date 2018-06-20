@@ -770,7 +770,7 @@ ToProgress, unescape, VK, Ya*/
 			var btnShareButtons = document[getElementsByClassName]("btn-share-buttons")[0] || "";
 			var btnUiTotop = document[getElementsByClassName]("ui-totop")[0] || "";
 			var holderSearchForm = document[getElementsByClassName]("holder-search-form")[0] || "";
-			var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?122";
+			var jsUrl = getHTTP(true) + "://vk.com/js/api/openapi.js?154";
 			var f = false;
 			if (!f) {
 				f = true;
@@ -1091,7 +1091,7 @@ ToProgress, unescape, VK, Ya*/
 									});
 								}
 							} catch (err) {
-								/* console.log("cannot update or init Ya", err); */
+								/* console.log("cannot yshare.updateContent or Ya.share2", err); */
 							}
 						}
 					};
@@ -1130,22 +1130,20 @@ ToProgress, unescape, VK, Ya*/
 					holderVkLike[classList].toggle(isActiveClass);
 					hideOtherIsSocial(holderVkLike);
 					var initScript = function () {
-						if (root.VK) {
-							if (!vlike) {
-								try {
-									VK.init({
-										apiId: (vkLike[dataset].apiid || ""),
-										nameTransportPath: "/xd_receiver.htm",
-										onlyWidgets: true
-									});
-									VK.Widgets.Like(vkLikeId, {
-										type: "button",
-										height: 24
-									});
-									vlike = true;
-								} catch (err) {
-									/* console.log("cannot init VK", err); */
-								}
+						if (root.VK && !vlike) {
+							try {
+								VK.init({
+									apiId: (vkLike[dataset].apiid || ""),
+									nameTransportPath: "/xd_receiver.htm",
+									onlyWidgets: true
+								});
+								VK.Widgets.Like(vkLikeId, {
+									type: "button",
+									height: 24
+								});
+								vlike = true;
+							} catch (err) {
+								/* console.log("cannot VK.init", err); */
 							}
 						}
 					};

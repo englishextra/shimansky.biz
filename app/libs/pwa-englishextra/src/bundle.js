@@ -1,8 +1,9 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, Cookies, Carousel, DISQUS, doesFontExist,
-IframeLightbox, imagePromise, Kamil, loadCSS, loadJsCss, Masonry, Packery,
-Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
+IframeLightbox, imagePromise, Kamil, loadCSS, loadJsCss, Masonry, Mustache,
+Packery, Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK,
+Ya*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -1617,7 +1618,7 @@ Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
 			var locationHref = root.location.href || "";
 			var disqusThreadShortname = disqusThread ? (disqusThread[dataset].shortname || "") : "";
 			var hideDisqusButton = function () {
-				disqusThread[classList].add(isActiveClass);
+				disqusThread[classList].add("is-active-disqus-thread");
 				btn[style].display = "none";
 			};
 			var hideDisqusThread = function () {
@@ -1646,7 +1647,7 @@ Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
 									btn[_removeEventListener]("click", handleDisqusButton);
 									hideDisqusButton();
 								} catch (err) {
-									/* console.log("cannot reset DISQUS", err); */
+									/* console.log("cannot DISQUS.reset", err); */
 								}
 							}
 						};
@@ -2266,7 +2267,7 @@ Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
 									});
 								}
 							} catch (err) {
-								/* console.log("cannot update or init Ya", err); */
+								/* console.log("cannot yshare.updateContent or Ya.share2", err); */
 							}
 						}
 					};
@@ -2303,26 +2304,24 @@ Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK, Ya*/
 					holder[classList].add(isCollapsableClass);
 					handleOtherSocialButtons(holder);
 					var initScript = function () {
-						if (root.VK) {
-							if (!vlike) {
-								try {
-									VK.init({
-										apiId: (vkLike[dataset].apiid || ""),
-										nameTransportPath: "/xd_receiver.htm",
-										onlyWidgets: true
-									});
-									VK.Widgets.Like(vkLikeId, {
-										type: "button",
-										height: 24
-									});
-									vlike = true;
-								} catch (err) {
-									/* console.log("cannot init VK", err); */
-								}
+						if (root.VK && !vlike) {
+							try {
+								VK.init({
+									apiId: (vkLike[dataset].apiid || ""),
+									nameTransportPath: "/xd_receiver.htm",
+									onlyWidgets: true
+								});
+								VK.Widgets.Like(vkLikeId, {
+									type: "button",
+									height: 24
+								});
+								vlike = true;
+							} catch (err) {
+								/* console.log("cannot VK.init", err); */
 							}
 						}
 					};
-					var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?122";
+					var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?154";
 					if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
