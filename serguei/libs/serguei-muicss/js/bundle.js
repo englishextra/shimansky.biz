@@ -497,13 +497,14 @@ unescape, verge, VK, WheelIndicator, Ya*/
 		var styleSheets = "styleSheets";
 		var title = "title";
 		var _removeEventListener = "removeEventListener";
-
 		var isActiveClass = "is-active";
 		var isBindedClass = "is-binded";
 		var isFixedClass = "is-fixed";
 		var isHiddenClass = "is-hidden";
 		var isBindedIframeLightboxLinkClass = "is-binded-iframe-lightbox-link";
+		var isBindedMinigridCardClass = "is-binded-minigrid-card";
 		var isCollapsableClass = "is-collapsable";
+		var isActiveDisqusThreadClass = "is-active-disqus-thread";
 
 		/* progressBar.increase(20); */
 
@@ -1313,7 +1314,7 @@ unescape, verge, VK, WheelIndicator, Ya*/
 			var context = scope && scope.nodeName ? scope : "";
 			var options = settings || {};
 			options.disconnect = options.disconnect || false;
-			options.timeout = options.timeout || 0;
+			options.timeout = options.timeout || null;
 			options.childList = options.childList || true;
 			options.subtree = options.subtree || true;
 			options.attributes = options.attributes || false;
@@ -1337,13 +1338,10 @@ unescape, verge, VK, WheelIndicator, Ya*/
 						}
 						if (callback && "function" === typeof callback) {
 							if (options.timeout && "number" === typeof options.timeout) {
-								var timers = new Timers();
-								timers.timeout(function () {
-									timers.clear();
+								var timers = setTimeout(function () {
+									clearTimeout(timers);
 									timers = null;
-									if (mgrid) {
-										callback();
-									}
+									callback();
 								}, options.timeout);
 							} else {
 								callback();
@@ -1366,31 +1364,41 @@ unescape, verge, VK, WheelIndicator, Ya*/
 			}
 		};
 
-		var isBindedMinigridCardClass = "is-binded-minigrid-card";
-
 		var mgrid;
 
 		var updateMinigrid = function (parent) {
-			if (mgrid && parent && parent.nodeName) {
+			if (mgrid) {
 				var timers = setTimeout(function () {
 					clearTimeout(timers);
 					timers = null;
 					mgrid.mount();
-					parent[classList].add(isActiveClass);
 				}, 500);
+			}
+			/*!
+			 * dont put that together with mgrid check
+			 */
+			if (parent && parent.nodeName) {
+				parent[classList].add(isActiveClass);
 			}
 		};
 
 		var handleDisqusEmbedInMinigrid = function () {
 			var disqusThread = document[getElementById]("disqus_thread") || "";
-			if (disqusThread) {
+			if (disqusThread[parentNode]) {
 				if (!disqusThread[parentNode][classList].contains(isBindedMinigridCardClass)) {
 					observeMutations(disqusThread[parentNode], updateMinigrid.bind(null, disqusThread[parentNode]));
 					disqusThread[parentNode][classList].add(isBindedMinigridCardClass);
 				}
+				if (!disqusThread[classList].contains(isBindedMinigridCardClass)) {
+					observeMutations(disqusThread, updateMinigrid.bind(null, disqusThread));
+					disqusThread[classList].add(isBindedMinigridCardClass);
+				}
 			}
 		};
-		var manageDisqusEmbed = function () {
+		var manageDisqusEmbed = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var disqusThread = document[getElementById]("disqus_thread") || "";
 			var locationHref = root.location.href || "";
 			var disqusThreadShortname = disqusThread ? (disqusThread[dataset].shortname || "") : "";
@@ -1412,12 +1420,12 @@ unescape, verge, VK, WheelIndicator, Ya*/
 								this.page.url = locationHref;
 							}
 						});
-						disqusThread[classList].add("is-active-disqus-thread");
+						disqusThread[classList].add(isActiveDisqusThreadClass);
+						cb();
 					} catch (err) {
 						/* console.log("cannot DISQUS.reset", err); */
 					}
 				}
-
 			};
 			if (disqusThread && disqusThreadShortname && locationHref) {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
@@ -1429,6 +1437,13 @@ unescape, verge, VK, WheelIndicator, Ya*/
 					} else {
 						initScript();
 					}
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
+					} else {
+						initScript();
+					} */
 				} else {
 					hideDisqusThread();
 				}
@@ -1441,18 +1456,26 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				var i,
 				l;
 				for (i = 0, l = instagramMedia[_length]; i < l; i += 1) {
-					if (!instagramMedia[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
+					if (instagramMedia[i][parentNode] && !instagramMedia[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
 						observeMutations(instagramMedia[i][parentNode], updateMinigrid.bind(null, instagramMedia[i][parentNode]));
 						instagramMedia[i][parentNode][classList].add(isBindedMinigridCardClass);
 					}
 				}
 			}
 		};
-		var manageInstagramEmbeds = function () {
+		var manageInstagramEmbeds = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var instagramMedia = document[getElementsByClassName]("instagram-media")[0] || "";
 			var initScript = function () {
 				if (root.instgrm) {
-					instgrm.Embeds.process();
+					try {
+						instgrm.Embeds.process();
+						cb();
+					} catch (err) {
+						/* console.log("cannot instgrm.Embeds.process", err); */
+					}
 				}
 			};
 			if (instagramMedia) {
@@ -1464,6 +1487,13 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				} else {
 					initScript();
 				}
+				/* if (!scriptIsLoaded(jsUrl)) {
+					loadJsCssWithPromise([jsUrl]).then(function () {
+						initScript();
+					});
+				} else {
+					initScript();
+				} */
 			}
 		};
 
@@ -1473,18 +1503,26 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				var i,
 				l;
 				for (i = 0, l = twitterTweet[_length]; i < l; i += 1) {
-					if (!twitterTweet[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
+					if (twitterTweet[i][parentNode] && !twitterTweet[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
 						observeMutations(twitterTweet[i][parentNode], updateMinigrid.bind(null, twitterTweet[i][parentNode]));
 						twitterTweet[i][parentNode][classList].add(isBindedMinigridCardClass);
 					}
 				}
 			}
 		};
-		var manageTwitterEmbeds = function () {
+		var manageTwitterEmbeds = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var twitterTweet = document[getElementsByClassName]("twitter-tweet")[0] || "";
 			var initScript = function () {
 				if (root.twttr) {
-					twttr.widgets.load();
+					try {
+						twttr.widgets.load();
+						cb();
+					} catch (err) {
+						/* console.log("cannot twttr.widgets.load", err); */
+					}
 				}
 			};
 			if (twitterTweet) {
@@ -1496,6 +1534,13 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				} else {
 					initScript();
 				}
+				/* if (!scriptIsLoaded(jsUrl)) {
+					loadJsCssWithPromise([jsUrl]).then(function () {
+						initScript();
+					});
+				} else {
+					initScript();
+				} */
 			}
 		};
 
@@ -1505,14 +1550,17 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				var i,
 				l;
 				for (i = 0, l = vkPost[_length]; i < l; i += 1) {
-					if (!vkPost[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
+					if (vkPost[i][parentNode] && !vkPost[i][parentNode][classList].contains(isBindedMinigridCardClass)) {
 						observeMutations(vkPost[i][parentNode], updateMinigrid.bind(null, vkPost[i][parentNode]));
 						vkPost[i][parentNode][classList].add(isBindedMinigridCardClass);
 					}
 				}
 			}
 		};
-		var manageVkEmbeds = function () {
+		var manageVkEmbeds = function (callback) {
+			var cb = function () {
+				return callback && "function" === typeof callback && callback();
+			};
 			var vkPost = document[getElementsByClassName]("vk-post")[0] || "";
 			var initScript = function () {
 				var initVkPost = function (element_id, owner_id, post_id, hash) {
@@ -1521,16 +1569,21 @@ unescape, verge, VK, WheelIndicator, Ya*/
 					}
 				};
 				if (root.VK && VK.Widgets && VK.Widgets.Post) {
-					var vkPost = document[getElementsByClassName]("vk-post") || "";
-					if (vkPost) {
-						var i,
-						l;
-						for (i = 0, l = vkPost[_length]; i < l; i += 1) {
-							if (!vkPost[i][classList].contains(isBindedClass)) {
-								initVkPost(vkPost[i].id, vkPost[i][dataset].vkOwnerid, vkPost[i][dataset].vkPostid, vkPost[i][dataset].vkHash);
-								vkPost[i][classList].add(isBindedClass);
+					try {
+						var vkPost = document[getElementsByClassName]("vk-post") || "";
+						if (vkPost) {
+							var i,
+							l;
+							for (i = 0, l = vkPost[_length]; i < l; i += 1) {
+								if (!vkPost[i][classList].contains(isBindedClass)) {
+									initVkPost(vkPost[i].id, vkPost[i][dataset].vkOwnerid, vkPost[i][dataset].vkPostid, vkPost[i][dataset].vkHash);
+									vkPost[i][classList].add(isBindedClass);
+								}
 							}
 						}
+						cb();
+					} catch (err) {
+						/* console.log("cannot initVkPost", err); */
 					}
 				}
 			};
@@ -1543,65 +1596,84 @@ unescape, verge, VK, WheelIndicator, Ya*/
 				} else {
 					initScript();
 				}
+				/* if (!scriptIsLoaded(jsUrl)) {
+					loadJsCssWithPromise([jsUrl]).then(function () {
+						initScript();
+					});
+				} else {
+					initScript();
+				} */
 			}
 		};
 
-		var toDashedAll = function (str) {
-			return str.replace((/([A-Z])/g), function ($1) {
-				return "-" + $1.toLowerCase();
-			});
-		};
-		var cardGridClass = "card-grid";
 		var cardWrapClass = "card-wrap";
-		/*!
-		 * takes too much CPU
-		 */
-		var docElemStyle = docElem[style];
-		var transitionProperty = typeof docElemStyle.transition === "string" ?
-			"transition" : "WebkitTransition";
-		var transformProperty = typeof docElemStyle.transform === "string" ?
-			"transform" : "WebkitTransform";
-		var styleSheet = document[styleSheets][0] || "";
-		if (styleSheet) {
-			var cssRule;
-			cssRule = toDashedAll([".",
-						cardWrapClass,
-						"{",
-						transitionProperty,
-						": ",
-						transformProperty,
-						" 0.4s ease-out;",
-						"}"].join(""));
-			/* styleSheet.insertRule(cssRule, 0); */
-		}
-		var manageMinigrid = function (callback) {
-			var cb = function () {
-				return callback && "function" === typeof callback && callback();
+
+		var addCardWrapCssRule;
+		addCardWrapCssRule = function () {
+			var toDashedAll = function (str) {
+				return str.replace((/([A-Z])/g), function ($1) {
+					return "-" + $1.toLowerCase();
+				});
 			};
-			var cardGrid = document[getElementsByClassName](cardGridClass)[0] || "";
-			var onMinigridCreated = function () {
-				root[_addEventListener]("resize", updateMinigrid, {passive: true});
-				cb();
-				cardGrid[style].visibility = "visible";
-				cardGrid[style].opacity = 1;
-			};
-			var initMinigrid = function () {
-				if (mgrid) {
-					mgrid = null;
-					root[_removeEventListener]("resize", updateMinigrid);
-				}
-				mgrid = new Minigrid({
-						container: cardGridClass,
-						item: cardWrapClass,
-						gutter: 20/* ,
-						done: onMinigridCreated */
-					});
-				mgrid.mount();
-				onMinigridCreated();
-			};
-			if (cardGrid) {
-				initMinigrid();
+			var docElemStyle = docElem[style];
+			var transitionProperty = typeof docElemStyle.transition === "string" ?
+				"transition" : "WebkitTransition";
+			var transformProperty = typeof docElemStyle.transform === "string" ?
+				"transform" : "WebkitTransform";
+			var styleSheet = document[styleSheets][0] || "";
+			if (styleSheet) {
+				var cssRule;
+				cssRule = toDashedAll([".",
+							cardWrapClass,
+							"{",
+							transitionProperty,
+							": ",
+							transformProperty,
+							" 0.4s ease-out;",
+							"}"].join(""));
+				styleSheet.insertRule(cssRule, 0);
 			}
+		};
+
+		var cardGridClass = "card-grid";
+
+		var manageMinigrid = function (callback) {
+			return new Promise(function (resolve, reject) {
+				var cardGrid = document[getElementsByClassName](cardGridClass)[0] || "";
+				var cb = function () {
+					return callback && "function" === typeof callback && callback();
+				};
+				var onMinigridCreated = function () {
+					root[_addEventListener]("resize", updateMinigrid, {passive: true});
+					cardGrid[style].visibility = "visible";
+					cardGrid[style].opacity = 1;
+					/* addCardWrapCssRule(); */
+					cb();
+				};
+				var initMinigrid = function () {
+					try {
+						if (mgrid) {
+							mgrid = null;
+							root[_removeEventListener]("resize", updateMinigrid);
+						}
+						mgrid = new Minigrid({
+								container: cardGridClass,
+								item: cardWrapClass,
+								gutter: 20/* ,
+								done: onMinigridCreated */
+							});
+						mgrid.mount();
+						onMinigridCreated();
+						resolve();
+					} catch (err) {
+						reject(err);
+						throw new Error("cannot init initMinigrid", err);
+					}
+				};
+				if (cardGrid) {
+					initMinigrid();
+				}
+			});
 		};
 
 		var activeClass = "active";
@@ -1683,6 +1755,28 @@ unescape, verge, VK, WheelIndicator, Ya*/
 			}
 		};
 		manageSidedrawer();
+
+		var highlightSidedrawerItem = function () {
+			var sidedrawerCategoriesList = document[getElementById]("render_sitedrawer_categories") || "";
+			var items = sidedrawerCategoriesList ? sidedrawerCategoriesList[getElementsByTagName]("a") || "" : "";
+			var locationHref = root.location.href || "";
+			var addItemHandler = function (e) {
+				if (locationHref === e.href) {
+					e[classList].add(isActiveClass);
+				} else {
+					e[classList].remove(isActiveClass);
+				}
+			};
+			var addItemHandlerAll = function () {
+				for (var i = 0, l = items[_length]; i < l; i += 1) {
+					addItemHandler(items[i]);
+				}
+			};
+			if (sidedrawerCategoriesList && items && locationHref) {
+				addItemHandlerAll();
+			}
+		};
+		root[_addEventListener]("hashchange", highlightSidedrawerItem);
 
 		var appBar = document[getElementsByTagName]("header")[0] || "";
 		var appBarHeight = appBar.offsetHeight || 0;
@@ -1800,10 +1894,17 @@ unescape, verge, VK, WheelIndicator, Ya*/
 						removeChildren(holder);
 						appendFragment(newImg, holder);
 					};
-					/* var jsUrl = "./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js";
-					if (!scriptIsLoaded(jsUrl)) {
+					/* var jsUrl = "./cdn/qrjs2/0.1.6/js/qrjs2.fixed.min.js"; */
+					/* if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
+					} else {
+						initScript();
+					} */
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
 					} else {
 						initScript();
 					} */
@@ -1890,6 +1991,13 @@ unescape, verge, VK, WheelIndicator, Ya*/
 					} else {
 						initScript();
 					}
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
+					} else {
+						initScript();
+					} */
 				};
 				var debounceLogicHandleShareButton = debounce(logicHandleShareButton, 200);
 				debounceLogicHandleShareButton();
@@ -1940,6 +2048,13 @@ unescape, verge, VK, WheelIndicator, Ya*/
 					} else {
 						initScript();
 					}
+					/* if (!scriptIsLoaded(jsUrl)) {
+						loadJsCssWithPromise([jsUrl]).then(function () {
+							initScript();
+						});
+					} else {
+						initScript();
+					} */
 				};
 				var debounceLogicHandleVKLikeButton = debounce(logicHandleVKLikeButton, 200);
 				debounceLogicHandleVKLikeButton();
@@ -2105,11 +2220,22 @@ unescape, verge, VK, WheelIndicator, Ya*/
 						timers.timeout(function () {
 							timers.clear();
 							timers = null;
-							manageMinigrid(function () {
+							/* manageMinigrid(function () {
 								manageInstagramEmbeds();
 								manageTwitterEmbeds();
 								manageVkEmbeds();
 								manageDisqusEmbed();
+							}); */
+							manageMinigrid().then(function () {
+								manageDisqusEmbed();
+							}).then(function () {
+								manageInstagramEmbeds();
+							}).then(function () {
+								manageTwitterEmbeds();
+							}).then(function () {
+								manageVkEmbeds();
+							}).catch (function (err) {
+								console.log("fail: manageMinigrid", err);
 							});
 							handleDataSrcIframeAll(appContentParent);
 							handleDataSrcImageAll(appContentParent);
@@ -2119,6 +2245,7 @@ unescape, verge, VK, WheelIndicator, Ya*/
 							manageDropdownButtonAll(appContentParent);
 							manageHljsCodeAll(appContentParent);
 							manageRippleEffect();
+							highlightSidedrawerItem();
 						}, 500);
 					}
 					LoadingSpinner.hide();

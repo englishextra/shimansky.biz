@@ -677,6 +677,7 @@ button {
  */
 
 .mui-table-wrapper {
+	width: 100%;
 	overflow: auto;
 }
 
@@ -744,16 +745,19 @@ button {
 	.card-wrap .mui-table--bordered {
 		border: none;
 	}
+	
+	.card-wrap .mui-table--bordered td {
+		display: block;
+	}
 
 	.card-wrap .mui-table--bordered,
 	.card-wrap .mui-table--bordered tr,
 	.card-wrap .mui-table--bordered td {
-		display: block;
+		width: 100%;
 		box-sizing: border-box;
 	}
 
 	.card-wrap .mui-table--bordered tr {
-		width: 100%;
 		float: left;
 		position: relative;
 		border: 0.063rem solid rgba(0, 0, 0, 0.12);
@@ -778,16 +782,6 @@ button {
 		text-align: right;
 		padding-right: 0.625rem;
 	}
-}
-
-/*!
- * copyright
- */
-
-.copyright {
-	font-weight: 400;
-	font-size: 0.750rem;
-	line-height: 1.000rem;
 }
 
 /*!
@@ -870,15 +864,22 @@ button {
 
 @media (min-width: 640px) {
 	.card-wrap {
-		/* width: 600px; */
-		width: 37.500rem;;
+		/* width: 480px; */
+		width: 30.000rem;
+	}
+}
+
+@media (min-width: 960px) {
+	.card-wrap {
+		/* width: 440px; */
+		width: 27.500rem;
 	}
 }
 
 @media (min-width: 1024px) {
 	.card-wrap {
 		/* width: 480px; */
-		width: 30.000rem;;
+		width: 30.000rem;
 	}
 }
 
@@ -1342,7 +1343,7 @@ button {
 /* .ui-totop:focus,
 .ui-totop:hover,
 .ui-totop:active {
-	background-color: $color-rgba-page-overlay-bg;;
+	background-color: $color-rgba-page-overlay-bg;
 } */
 
 .ui-totop.mui-btn--fab {
@@ -1579,6 +1580,7 @@ button {
 #sidedrawer li a:focus,
 #sidedrawer li a:hover,
 #sidedrawer li a:active,
+#sidedrawer li a.is-active,
 #sidedrawer li > strong:focus,
 #sidedrawer li > strong:hover,
 #sidedrawer li > strong:active {
@@ -1691,6 +1693,7 @@ button {
 #sidedrawer li a:focus,
 #sidedrawer li a:hover,
 #sidedrawer li a:active,
+#sidedrawer li a.is-active,
 #sidedrawer li > strong:focus,
 #sidedrawer li > strong:hover,
 #sidedrawer li > strong:active {
