@@ -1005,10 +1005,10 @@ platform, Promise, t, ToProgress, VK, WheelIndicator, Ya */
 			var updateMinigrid = function () {
 				if (mgrid) {
 					var timers = setTimeout(function () {
-						clearTimeout(timers);
-						timers = null;
-						mgrid.mount();
-					}, 500);
+							clearTimeout(timers);
+							timers = null;
+							mgrid.mount();
+						}, 100);
 				}
 			};
 			initMinigrid();

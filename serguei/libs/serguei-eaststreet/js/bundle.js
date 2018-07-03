@@ -1609,12 +1609,11 @@ ToProgress, unescape, verge, VK, Ya, ymaps*/
 			root[_removeEventListener]("resize", handleDataSrcImageAllWindow);
 			root[_addEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_addEventListener]("resize", handleDataSrcImageAllWindow);
-			var timers = new Timers();
-			timers.timeout(function () {
-				timers.clear();
-				timers = null;
-				handleDataSrcImageAll();
-			}, 500);
+			var timers = setTimeout(function () {
+					clearTimeout(timers);
+					timers = null;
+					handleDataSrcImageAll();
+				}, 500);
 		};
 		manageDataSrcImageAll();
 		/* root[_addEventListener]("load", manageDataSrcImageAll); */
@@ -2401,19 +2400,18 @@ ToProgress, unescape, verge, VK, Ya, ymaps*/
 				 * hide loading spinner before scrolling
 				 */
 				document.title = (titleString ? titleString + " - " : "" ) + (initialDocumentTitle ? initialDocumentTitle + (userBrowsingDetails ? userBrowsingDetails : "") : "");
-				var timers = new Timers();
-				timers.timeout(function () {
-					timers.clear();
-					timers = null;
-					manageYandexMapButton("ymap");
-					manageDisqusButton(appContentParent);
-					manageExternalLinkAll(appContentParent);
-					manageDataTargetLinks(appContentParent);
-					manageImgLightboxLinkAll(appContentParent);
-					manageDataQrcodeImageAll(appContentParent);
-					manageChaptersSelect(appContentParent);
-					manageExpandingLayers(appContentParent);
-				}, 500);
+				var timers = setTimeout(function () {
+						clearTimeout(timers);
+						timers = null;
+						manageYandexMapButton("ymap");
+						manageDisqusButton(appContentParent);
+						manageExternalLinkAll(appContentParent);
+						manageDataTargetLinks(appContentParent);
+						manageImgLightboxLinkAll(appContentParent);
+						manageDataQrcodeImageAll(appContentParent);
+						manageChaptersSelect(appContentParent);
+						manageExpandingLayers(appContentParent);
+					}, 100);
 				LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));
 			};
 			var loadNotFoundPage = function (containerClass) {
