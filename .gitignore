@@ -18,3 +18,4 @@ xdk-publish-meta-data.json
 node_modules/
 *.ai
 *.psd
+/serguei/libs/serguei-muicss/img/sprite-english-through-movies
