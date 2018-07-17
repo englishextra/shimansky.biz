@@ -10,6 +10,7 @@
 /.url
 /inc/regional_localhost.inc
 /inc/regional_shimansky.biz.inc
+/serguei/libs/serguei-muicss/img/sprite-english-through-movies
 /sql
 /sqlite
 intelxdk.config.additions.xml
@@ -18,4 +19,3 @@ xdk-publish-meta-data.json
 node_modules/
 *.ai
 *.psd
-/serguei/libs/serguei-muicss/img/sprite-english-through-movies
