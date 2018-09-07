@@ -19,3 +19,4 @@ xdk-publish-meta-data.json
 node_modules/
 *.ai
 *.psd
+.GITHUB.md
