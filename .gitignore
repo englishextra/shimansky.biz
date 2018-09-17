@@ -20,3 +20,4 @@ node_modules/
 *.ai
 *.psd
 .GITHUB.md
+.src
