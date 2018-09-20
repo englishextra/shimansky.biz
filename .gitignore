@@ -1,9 +1,13 @@
+*.ai
 *.fw.png
 *.map
 *.npp
+*.psd
 *.URL
 *.xdk
 *.xdke
+.GITHUB.md
+.src
 /.idea
 /.pma
 /.settings
@@ -14,10 +18,6 @@
 /sql
 /sqlite
 intelxdk.config.additions.xml
+node_modules/
 project-info.json
 xdk-publish-meta-data.json
-node_modules/
-*.ai
-*.psd
-.GITHUB.md
-.src
