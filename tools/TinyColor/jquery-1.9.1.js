@@ -66,7 +66,7 @@ var
  rvalidchars = /^[\],:{}\s]*$/,
  rvalidbraces = /(?:^|:|,)(?:\s*\[)+/g,
  rvalidescape = /\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g,
- rvalidtokens = /"[^"\\\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,
+ rvalidtokens = /"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g,
  // Matches dashed string for camelizing
  rmsPrefix = /^-ms-/,
  rdashAlpha = /-([\da-z])/gi,
@@ -1688,8 +1688,8 @@ jQuery.fn.extend({
  }
 });
 var nodeHook, boolHook,
- rclass = /[\t\n]/g,
- rreturn = //g,
+ rclass = /[\t\r\n]/g,
+ rreturn = /\r/g,
  rfocusable = /^(?:input|select|textarea|button|object)$/i,
  rclickable = /^(?:a|area)$/i,
  rboolean = /^(?:checked|selected|autofocus|autoplay|async|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped)$/i,
@@ -3140,7 +3140,7 @@ var i,
  },
  // Regular expressions
  // Whitespace characters http://www.w3.org/TR/css3-selectors/#whitespace
- whitespace = "[\\x20\\t\\\n\\f]",
+ whitespace = "[\\x20\\t\\r\\n\\f]",
  // http://www.w3.org/TR/css3-syntax/#characters
  characterEncoding = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
  // Loosely modeled on CSS identifier characters
@@ -3161,7 +3161,7 @@ var i,
  // Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
  rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
  rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
- rcombinators = new RegExp( "^" + whitespace + "*([\\x20\\t\\\n\\f>+~])" + whitespace + "*" ),
+ rcombinators = new RegExp( "^" + whitespace + "*([\\x20\\t\\r\\n\\f>+~])" + whitespace + "*" ),
  rpseudo = new RegExp( pseudos ),
  ridentifier = new RegExp( "^" + identifier + "$" ),
  matchExpr = {
@@ -3179,16 +3179,16 @@ var i,
  "needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
  whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
  },
- rsibling = /[\x20\t\n\f]*[+~]/,
+ rsibling = /[\x20\t\r\n\f]*[+~]/,
  rnative = /^[^{]+\{\s*\[native code/,
  // Easily-parseable/retrievable ID or TAG or CLASS selectors
  rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
  rinputs = /^(?:input|select|textarea|button)$/i,
  rheader = /^h\d$/i,
  rescape = /'|\\/g,
- rattributeQuotes = /\=[\x20\t\n\f]*([^'"\]]*)[\x20\t\n\f]*\]/g,
+ rattributeQuotes = /\=[\x20\t\r\n\f]*([^'"\]]*)[\x20\t\r\n\f]*\]/g,
  // CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
- runescape = /\\([\da-fA-F]{1,6}[\x20\t\n\f]?|.)/g,
+ runescape = /\\([\da-fA-F]{1,6}[\x20\t\r\n\f]?|.)/g,
  funescape = function( _, escaped ) {
  var high = "0x" + escaped - 0x10000;
  // NaN means non-codepoint
@@ -6127,7 +6127,7 @@ jQuery.each({
 });
 var r20 = /%20/g,
  rbracket = /\[\]$/,
- rCRLF = /?\n/g,
+ rCRLF = /\r?\n/g,
  rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
  rsubmittable = /^(?:input|select|textarea|keygen)/i;
 jQuery.fn.extend({
@@ -6153,9 +6153,9 @@ jQuery.fn.extend({
  null :
  jQuery.isArray( val ) ?
  jQuery.map( val, function( val ){
- return { name: elem.name, value: val.replace( rCRLF, "\n" ) };
+ return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
  }) :
- { name: elem.name, value: val.replace( rCRLF, "\n" ) };
+ { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
  }).get();
  }
 });
@@ -6233,7 +6233,7 @@ var
  ajax_rquery = /\?/,
  rhash = /#.*$/,
  rts = /([?&])_=[^&]*/,
- rheaders = /^(.*?):[ \t]*([^\n]*)?$/mg, // IE leaves an  character at EOL
+ rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // IE leaves an \r character at EOL
  // #7653, #8125, #8152: local protocol detection
  rlocalProtocol = /^(?:about|app|app-storage|.+-extension|file|res|widget):$/,
  rnoContent = /^(?:GET|HEAD)$/,

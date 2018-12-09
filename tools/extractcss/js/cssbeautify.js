@@ -51,7 +51,7 @@
         }
 
         function isWhitespace(c) {
-            return (c === ' ') || (c === '\n') || (c === '\t') || (c === '') || (c === '\f');
+            return (c === ' ') || (c === '\n') || (c === '\t') || (c === '\r') || (c === '\f');
         }
 
         function isQuote(c) {
@@ -136,7 +136,7 @@
         blocks = [];
 
         // We want to deal with LF (\n) only
-        style = style.replace(/\n/g, '\n');
+        style = style.replace(/\r\n/g, '\n');
 
         while (index < length) {
             ch = style.charAt(index);

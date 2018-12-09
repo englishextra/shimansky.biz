@@ -51,7 +51,7 @@ jQuery.cookie = function(name, value, options) {
  '\t': '\\t',
  '\n': '\\n',
  '\f': '\\f',
- '': '\',
+ '\r': '\\r',
  '"' : '\\"',
  '\\': '\\\\'
  },
@@ -132,7 +132,7 @@ jQuery.cookie = function(name, value, options) {
 	
 	$.parseJSON = function(v, safe) {
 		if (safe === undefined) safe = $.parseJSON.safe;
-		if (safe && !/^("(\\.|[^"\\\n])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\t])+?$/.test(v))
+		if (safe && !/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(v))
 			return undefined;
 		return eval('('+v+')');
 	};

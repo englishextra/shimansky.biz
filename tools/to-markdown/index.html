@@ -241,8 +241,8 @@ function flankingWhitespace (node) {
  var leading = ''
  var trailing = ''
  if (!isBlock(node)) {
- var hasLeading = /^[ \n\t]/.test(node.innerHTML)
- var hasTrailing = /[ \n\t]$/.test(node.innerHTML)
+ var hasLeading = /^[ \r\n\t]/.test(node.innerHTML)
+ var hasTrailing = /[ \r\n\t]$/.test(node.innerHTML)
  if (hasLeading && !isFlankedByWhitespace('left', node)) {
  leading = ' '
  }
@@ -306,7 +306,7 @@ toMarkdown = function (input, options) {
  process(nodes[i])
  }
  output = getContent(clone)
- return output.replace(/^[\t\n]+|[\t\n\s]+$/g, '')
+ return output.replace(/^[\t\r\n]+|[\t\r\n\s]+$/g, '')
  .replace(/\n\s+\n/g, '\n\n')
  .replace(/\n{3,}/g, '\n\n')
 }
@@ -704,7 +704,7 @@ function collapseWhitespace(elem, isBlock) {
  while (node !== elem) {
  if (node.nodeType === 3) {
  // Node.TEXT_NODE
- var text = node.data.replace(/[ \n\t]+/g, ' ');
+ var text = node.data.replace(/[ \r\n\t]+/g, ' ');
  if ((!prevText || / $/.test(prevText.data)) && !prevVoid && text[0] === ' ') {
  text = text.substr(1);
  }

@@ -367,7 +367,7 @@ function escapeRE (str) {
  return str.replace(REGEXP_ESCAPE_RE, '\\$&');
 }
 ////////////////////////////////////////////////////////////////////////////////
-// Zs (unicode class) || [\t\f\v\n]
+// Zs (unicode class) || [\t\f\v\r\n]
 function isWhiteSpace(code) {
  if (code >= 0x2000 && code <= 0x200A) { return true; }
  switch (code) {
@@ -375,7 +375,7 @@ function isWhiteSpace(code) {
  case 0x0A: // \n
  case 0x0B: // \v
  case 0x0C: // \f
- case 0x0D: // 
+ case 0x0D: // \r
  case 0x20:
  case 0xA0:
  case 0x1680:
@@ -3138,7 +3138,7 @@ module.exports = function linkify(state) {
 // Normalize input string
 "use strict";
 var TABS_SCAN_RE = /[\n\t]/g;
-var NEWLINES_RE = /[\n\u0085]|[\u2424\u2028\u0085]/g;
+var NEWLINES_RE = /\r[\n\u0085]|[\u2424\u2028\u0085]/g;
 var NULL_RE = /\u0000/g;
 module.exports = function inline(state) {
  var str, lineStart, lastTabPos;
@@ -5636,7 +5636,7 @@ var protocolPattern = /^([a-z0-9.+-]+:)/i,
  simplePathPattern = /^(\/\/?(?!\/)[^\?\s]*)(\?[^\s]*)?$/,
  // RFC 2396: characters reserved for delimiting URLs.
  // We actually just auto-escape these.
- delims = [ '<', '>', '"', '`', ' ', '', '\n', '\t' ],
+ delims = [ '<', '>', '"', '`', ' ', '\r', '\n', '\t' ],
  // RFC 2396: characters not allowed for various reasons.
  unwise = [ '{', '}', '|', '\\', '^', '`' ].concat(delims),
  // Allowed by RFCs, but cause of XSS attacks. Always escape these.

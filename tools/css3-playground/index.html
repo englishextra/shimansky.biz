@@ -107,7 +107,7 @@ function OutputSource() {
 	}
 	
 	var styleHtml = styleSource;
-	styleHtml = "<p>" + styleHtml.replace(/\n/g, "</p><p>") + "</p>";
+	styleHtml = "<p>" + styleHtml.replace(/\r\n/g, "</p><p>") + "</p>";
 	dojo.byId("htmlSourceSet").innerHTML = styleHtml;
 }
 function OutputBrowserStyle() {
@@ -188,9 +188,9 @@ function EnsureVisible() {
 }
 function SetLongText() {
 	var content = dojo.byId("contentText");
-	content.value = "<p>Lorem ipsum malorum prompta voluptaria ne has, cum choro corrumpit ex. In delenit laoreet voluptatum sea. Cetero saperet percipit mei ad, eu diam eirmod eum.</p>\n";
-	content.value += "<p>Mucius sapientem sea ad, ei brute nemore deseruisse pri. Sed cu elit fierent. Pri in sapientem abhorreant, mea magna latine consequat at, nam choro delicatissimi ex. Curabitur in quam ac mauris lobortis commodo id nec dolor.</p>\n";
-	content.value += "<p>Vide autem eum id. Docendi singulis gubergren est ne, ne sed augue impedit. Ne partem accumsan usu, sed posse dicant accusata ea, te idque graeco mnesarchum eos.</p>\n";
+	content.value = "<p>Lorem ipsum malorum prompta voluptaria ne has, cum choro corrumpit ex. In delenit laoreet voluptatum sea. Cetero saperet percipit mei ad, eu diam eirmod eum.</p>\r\n";
+	content.value += "<p>Mucius sapientem sea ad, ei brute nemore deseruisse pri. Sed cu elit fierent. Pri in sapientem abhorreant, mea magna latine consequat at, nam choro delicatissimi ex. Curabitur in quam ac mauris lobortis commodo id nec dolor.</p>\r\n";
+	content.value += "<p>Vide autem eum id. Docendi singulis gubergren est ne, ne sed augue impedit. Ne partem accumsan usu, sed posse dicant accusata ea, te idque graeco mnesarchum eos.</p>\r\n";
 	content.value += "<p>Civibus repudiandae vis ut. Duo eu brute praesent mnesarchum. Ne putent legendos voluptaria sit, in tritani vivendum eam, animal inermis percipitur ad vix.</p>";
 	content.value += "<p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce et erat ligula, vel posuere lectus. Pellentesque habitant morbi tristique senectus et netus.</p>";
 	settings["content"].Update();

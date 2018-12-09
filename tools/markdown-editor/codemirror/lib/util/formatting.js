@@ -6,7 +6,7 @@
  commentEnd: "*/",
  wordWrapChars: [";", "\\{", "\\}"],
  autoFormatLineBreaks: function (text) {
- return text.replace(new RegExp("(;|\\{|\\})([^\n])", "g"), "$1\n$2");
+ return text.replace(new RegExp("(;|\\{|\\})([^\r\n])", "g"), "$1\n$2");
  }
  });
  function jsNonBreakableBlocks(text) {
@@ -43,7 +43,7 @@
  wordWrapChars: [";", "\\{", "\\}"],
  autoFormatLineBreaks: function (text) {
  var curPos = 0;
- var reLinesSplitter = /(;|\{|\})([^\n;])/g;
+ var reLinesSplitter = /(;|\{|\})([^\r\n;])/g;
  var nonBreakableBlocks = jsNonBreakableBlocks(text);
  if (nonBreakableBlocks != null) {
  var res = "";
@@ -74,7 +74,7 @@
  var lines = text.split("\n");
  var reProcessedPortion = new RegExp("(^\\s*?<|^[^<]*?)(.+)(>\\s*?$|[^>]*?$)");
  var reOpenBrackets = new RegExp("<", "g");
- var reCloseBrackets = new RegExp("(>)([^\n])", "g");
+ var reCloseBrackets = new RegExp("(>)([^\r\n])", "g");
  for (var i = 0; i < lines.length; i++) {
  var mToProcess = lines[i].match(reProcessedPortion);
  if (mToProcess != null && mToProcess.length > 3) { // The line starts with whitespaces and ends with whitespaces

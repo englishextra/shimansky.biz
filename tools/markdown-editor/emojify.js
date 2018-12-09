@@ -71,7 +71,7 @@
  };
  /* Returns true if the given char is whitespace */
  function isWhitespace(s) {
- return s === ' ' || s === '\t' || s === '' || s === '\n' || s === '';
+ return s === ' ' || s === '\t' || s === '\r' || s === '\n' || s === '';
  }
  /* Given a match in a node, replace the text with an image */
  function insertEmojicon(node, match, emojiName) {

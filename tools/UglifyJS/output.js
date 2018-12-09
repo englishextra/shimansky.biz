@@ -70,13 +70,13 @@ function OutputStream(options) {
  };
  function make_string(str) {
  var dq = 0, sq = 0;
- str = str.replace(/[\\\b\f\n\t\x22\x27\u2028\u2029\0]/g, function(s){
+ str = str.replace(/[\\\b\f\n\r\t\x22\x27\u2028\u2029\0]/g, function(s){
  switch (s) {
  case "\\": return "\\\\";
  case "\b": return "\\b";
  case "\f": return "\\f";
  case "\n": return "\\n";
- case "": return "\";
+ case "\r": return "\\r";
  case "\u2028": return "\\u2028";
  case "\u2029": return "\\u2029";
  case '"': ++dq; return '"';
@@ -92,7 +92,7 @@ function OutputStream(options) {
  function encode_string(str) {
  var ret = make_string(str);
  if (options.inline_script)
- ret = ret.replace(/<\x2fscript([>\/\t\n\f ])/gi, "<\\/script$1");
+ ret = ret.replace(/<\x2fscript([>\/\t\n\f\r ])/gi, "<\\/script$1");
  return ret;
  };
  function make_name(name) {
@@ -159,7 +159,7 @@ function OutputStream(options) {
  }
  might_need_space = false;
  }
- var a = str.split(/?\n/), n = a.length - 1;
+ var a = str.split(/\r?\n/), n = a.length - 1;
  current_line += n;
  if (n == 0) {
  current_col += a[n].length;
@@ -260,7 +260,7 @@ function OutputStream(options) {
  return OUTPUT;
  };
  if (options.preamble) {
- print(options.preamble.replace(/\n?|[\n\u2028\u2029]|\s*$/g, "\n"));
+ print(options.preamble.replace(/\r\n?|[\n\u2028\u2029]|\s*$/g, "\n"));
  }
  var stack = [];
  return {
@@ -1055,7 +1055,7 @@ function OutputStream(options) {
  0x7c , // |
  0x21 , // !
  0x0a , // \n
- 0x0d , // 
+ 0x0d , // \r
  0x00 , // \0
  0xfeff , // Unicode BOM
  0x2028 , // unicode "line separator"
