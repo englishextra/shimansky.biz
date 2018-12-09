@@ -88,15 +88,15 @@ PR['registerLangHandler'](
  // Shortcut patterns.
  [
  // The space production <s>
- [PR['PR_PLAIN'], /^[ \t\r\n\f]+/, null, ' \t\r\n\f']
+ [PR['PR_PLAIN'], /^[ \t\n\f]+/, null, ' \t\n\f']
  ],
  // Fall-through patterns.
  [
  // Quoted strings. <string1> and <string2>
  [PR['PR_STRING'],
- /^\"(?:[^\n\r\f\\\"]|\\(?:\r\n?|\n|\f)|\\[\s\S])*\"/, null],
+ /^\"(?:[^\n\f\\\"]|\\(?:\n?|\n|\f)|\\[\s\S])*\"/, null],
  [PR['PR_STRING'],
- /^\'(?:[^\n\r\f\\\']|\\(?:\r\n?|\n|\f)|\\[\s\S])*\'/, null],
+ /^\'(?:[^\n\f\\\']|\\(?:\n?|\n|\f)|\\[\s\S])*\'/, null],
  ['lang-css-str', /^url\(([^\)\"\']+)\)/i],
  [PR['PR_KEYWORD'],
  /^(?:url|rgb|\!important|@import|@page|@media|@charset|inherit)(?=[^\-\w]|$)/i,

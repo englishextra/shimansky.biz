@@ -26,7 +26,7 @@
  // whitespace
  ' \t\x0B\f\xA0\ufeff' +
  // line terminators
- '\n\r\u2028\u2029' +
+ '\n\u2028\u2029' +
  // unicode category "Zs" space separators
  '\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000'
  );
@@ -42,7 +42,7 @@
  /** Used to match regexp flags from their coerced string values */
  var reFlags = /\w*$/;
  /** Used to detected named functions */
- var reFuncName = /^\s*function[ \n\r\t]+\w/;
+ var reFuncName = /^\s*function[ \n\t]+\w/;
  /** Used to match "interpolate" template delimiters */
  var reInterpolate = /<%=([\s\S]+?)%>/g;
  /** Used to match leading whitespace and zeros to be removed */
@@ -52,7 +52,7 @@
  /** Used to detect functions containing a `this` reference */
  var reThis = /\bthis\b/;
  /** Used to match unescaped characters in compiled string literals */
- var reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
+ var reUnescapedString = /['\n\t\u2028\u2029\\]/g;
  /** Used to assign default `context` object properties */
  var contextProps = [
  'Array', 'Boolean', 'Date', "function", 'Math', 'Number', "object",
@@ -105,7 +105,7 @@
  '\\': '\\',
  "'": "'",
  '\n': 'n',
- '\r': 'r',
+ '': 'r',
  '\t': 't',
  '\u2028': 'u2028',
  '\u2029': 'u2029'

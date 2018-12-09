@@ -13,8 +13,8 @@ function SetStyleForAll(box, name, set) {
 	box.Element.style[capName.substring(0, 1).toLowerCase() + capName.substring(1)] = set;
 	
 	var styleStr = "-webkit-" + name + ": " + set;
-	styleStr += ";\r\n-moz-" + name + ": " + set;
-	styleStr += ";\r\n" + name + ": " + set;
+	styleStr += ";\n-moz-" + name + ": " + set;
+	styleStr += ";\n" + name + ": " + set;
 	return styleStr;
 }
 function BorderRadiusSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
@@ -34,8 +34,8 @@ function BorderRadiusSetting(elementName, getUpdateBoxDelegate, afterUpdateDeleg
 		if (borderRadius!=0) {
 			set = borderRadius + "px";
 			box.BorderRadiusSet = "-webkit-border-radius: " + set + ";";
-			box.BorderRadiusSet += "\r\n-moz-border-radius: " + set + ";";
-			box.BorderRadiusSet += "\r\nborder-radius: " + set;
+			box.BorderRadiusSet += "\n-moz-border-radius: " + set + ";";
+			box.BorderRadiusSet += "\nborder-radius: " + set;
 		}
 		else {
 			set = "";
@@ -54,7 +54,7 @@ function BorderRadiusSetting(elementName, getUpdateBoxDelegate, afterUpdateDeleg
 	
 	this.ToStyle = function(box) {
 		if (box.BorderRadiusSet.length > 0)
-			return box.BorderRadiusSet + ";\r\n";
+			return box.BorderRadiusSet + ";\n";
 		else
 			return "";
 	}
@@ -82,8 +82,8 @@ function BoxShadowSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate
 			var boxShadowColor = dojo.byId(this.ElementName + "ColorText").value;
 			set = boxShadowOffset+"px "+boxShadowOffset+"px "+boxShadowBlur+"px " + boxShadowColor;
 			box.BoxShadowSet = "-webkit-box-shadow: " + set + ";";
-			box.BoxShadowSet += "\r\n-moz-box-shadow: " + set + ";";
-			box.BoxShadowSet += "\r\nbox-shadow: " + set;
+			box.BoxShadowSet += "\n-moz-box-shadow: " + set + ";";
+			box.BoxShadowSet += "\nbox-shadow: " + set;
 			box.BoxShadowBlur = boxShadowBlur;
 			box.BoxShadowColor = boxShadowColor;
 		}
@@ -108,7 +108,7 @@ function BoxShadowSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate
 	
 	this.ToStyle = function(box) {
 		if (box.BoxShadowSet.length > 0)
-			return box.BoxShadowSet + ";\r\n";
+			return box.BoxShadowSet + ";\n";
 		else
 			return "";
 	}
@@ -160,7 +160,7 @@ function TextShadowSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegat
 	
 	this.ToStyle = function(box) {
 		if (box.TextShadowSet.length > 0)
-			return box.TextShadowSet + ";\r\n";
+			return box.TextShadowSet + ";\n";
 		else
 			return "";
 	}
@@ -229,8 +229,8 @@ function TransformSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate
 		box.Element.style.MozTransform = set;
 		box.Element.style.OTransform = set;
 		if (set.length > 0) {
-			box.TransformSet = "-webkit-transform: " + set + ";\r\n";
-			box.TransformSet += "-moz-transform: " + set + ";\r\n";
+			box.TransformSet = "-webkit-transform: " + set + ";\n";
+			box.TransformSet += "-moz-transform: " + set + ";\n";
 			box.TransformSet += "-o-transform: " + set;
 		}
 		else {
@@ -251,7 +251,7 @@ function TransformSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate
 	
 	this.ToStyle = function(box) {
 		if (box.TransformSet.length > 0)
-			return box.TransformSet + ";\r\n";
+			return box.TransformSet + ";\n";
 		else
 			return "";
 	}
@@ -302,7 +302,7 @@ function BorderSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
 	
 	this.ToStyle = function(box) {
 		if (box.BorderSet.length > 0)
-			return box.BorderSet + ";\r\n";
+			return box.BorderSet + ";\n";
 		else
 			return "";
 	}
@@ -338,7 +338,7 @@ function BackgroundSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegat
 	
 	this.ToStyle = function(box) {
 		if (box.BackgroundSet.length > 0)
-			return box.BackgroundSet + ";\r\n";
+			return box.BackgroundSet + ";\n";
 		else
 			return "";
 	}
@@ -378,7 +378,7 @@ function OpacitySetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) 
 	
 	this.ToStyle = function(box) {
 		if (box.OpacitySet.length > 0)
-			return box.OpacitySet + ";\r\n";
+			return box.OpacitySet + ";\n";
 		else
 			return "";
 	}
@@ -420,13 +420,13 @@ function TextSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
 		
 		var set = "";
 		if (fontFamily.length > 0)
-			set += "font-family: " + fontFamily + ";\r\n";
+			set += "font-family: " + fontFamily + ";\n";
 		if (textBold)
-			set += "font-weight: bold;\r\n";
+			set += "font-weight: bold;\n";
 		if (textItalic)
-			set += "font-style: italic;\r\n";
-		set += "font-size: " + textSize + "pt;\r\n";
-		set += "color: " + textColor + ";\r\n";
+			set += "font-style: italic;\n";
+		set += "font-size: " + textSize + "pt;\n";
+		set += "color: " + textColor + ";\n";
 		set += "text-align: " + textAlign.toLowerCase();
 		box.TextSet = set;
 		box.TextSize = textSize;
@@ -451,7 +451,7 @@ function TextSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
 	
 	this.ToStyle = function(box) {
 		if (box.TextSet.length > 0)
-			return box.TextSet + ";\r\n";
+			return box.TextSet + ";\n";
 		else
 			return "";
 	}
@@ -533,7 +533,7 @@ function SingleNumberSetting(styleName, minValue, maxValue, unitSuffix, elementN
 	
 	this.ToStyle = function(box) {
 		if (box[this.StyleName + "Set"].length > 0)
-			return box[this.StyleName + "Set"] + ";\r\n";
+			return box[this.StyleName + "Set"] + ";\n";
 		else
 			return "";
 	}
@@ -601,25 +601,25 @@ function GradientBackgroundSetting(elementName, getUpdateBoxDelegate, afterUpdat
 				box.Element.style.backgroundImage = "-moz-linear-gradient(left, " + mozColors + ")";
 				box.Element.style.backgroundImage = "-webkit-gradient(linear, left top, right top, " + webkitColors + ")";
 				set = "background-image: -moz-linear-gradient(left, " + mozColors + ")";
-				set += ";\r\nbackground-image: -webkit-gradient(linear, left top, right top, " + webkitColors + ")";
+				set += ";\nbackground-image: -webkit-gradient(linear, left top, right top, " + webkitColors + ")";
 				break;
 			case 2:
 				box.Element.style.backgroundImage = "-moz-linear-gradient(top, " + mozColors + ")";
 				box.Element.style.backgroundImage = "-webkit-gradient(linear, left top, left bottom, " + webkitColors + ")";
 				set = "background-image: -moz-linear-gradient(top, " + mozColors + ")";
-				set += ";\r\nbackground-image: -webkit-gradient(linear, left top, left bottom, " + webkitColors + ")";
+				set += ";\nbackground-image: -webkit-gradient(linear, left top, left bottom, " + webkitColors + ")";
 				break;
 			case 3:
 				box.Element.style.backgroundImage = "-moz-linear-gradient(-45deg, " + mozColors + ")";
 				box.Element.style.backgroundImage = "-webkit-gradient(linear, left top, right bottom, " + webkitColors + ")";
 				set = "background-image: -moz-linear-gradient(-45deg, " + mozColors + ")";
-				set += ";\r\nbackground-image: -webkit-gradient(linear, left top, right bottom, " + webkitColors + ")";
+				set += ";\nbackground-image: -webkit-gradient(linear, left top, right bottom, " + webkitColors + ")";
 				break;
 			case 4:
 				box.Element.style.backgroundImage = "-moz-linear-gradient(225deg, " + mozColors + ")";
 				box.Element.style.backgroundImage = "-webkit-gradient(linear, right top, left bottom, " + webkitColors +")";
 				set = "background-image: -moz-linear-gradient(225deg, " + mozColors + ")";
-				set += ";\r\nbackground-image: -webkit-gradient(linear, right top, left bottom, " + webkitColors + ")";
+				set += ";\nbackground-image: -webkit-gradient(linear, right top, left bottom, " + webkitColors + ")";
 				break;
 			}
 			box.GradientSet = set;
@@ -642,7 +642,7 @@ function GradientBackgroundSetting(elementName, getUpdateBoxDelegate, afterUpdat
 	
 	this.ToStyle = function(box) {
 		if (box.GradientSet.length > 0)
-			return box.GradientSet + ";\r\n";
+			return box.GradientSet + ";\n";
 		else
 			return "";
 	}
@@ -687,7 +687,7 @@ function OutlineSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) 
 			var offset = parseInt(dojo.byId(this.ElementName + "OffsetText").value);
 			if (offset!=0) {
 				box.Element.style.outlineOffset = offset + "px";
-				box.OutlineSet += ";\r\noutline-offset: " + offset + "px";
+				box.OutlineSet += ";\noutline-offset: " + offset + "px";
 				box.OutlineOffset = offset;
 			}
 			else {
@@ -715,7 +715,7 @@ function OutlineSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) 
 	
 	this.ToStyle = function(box) {
 		if (box.OutlineSet.length > 0)
-			return box.OutlineSet + ";\r\n";
+			return box.OutlineSet + ";\n";
 		else
 			return "";
 	}
@@ -749,7 +749,7 @@ function ColumnSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
 			var columnGap = parseInt(columnGapString);
 			if (columnGapString.length > 0 && !isNaN(columnGap)) {
 				set = columnGap + "px";
-				box.ColumnSet += ";\r\n" + SetStyleForAll(box, "column-gap", set);
+				box.ColumnSet += ";\n" + SetStyleForAll(box, "column-gap", set);
 				box.ColumnGap = columnGap;
 			}
 			else {
@@ -761,7 +761,7 @@ function ColumnSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
 			if (ruleWidth!=0 && !isNaN(ruleWidth)) {
 				var ruleColor = dojo.byId(this.ElementName + "RuleColorText").value;
 				set = ruleWidth + "px solid " + ruleColor;
-				box.ColumnSet += ";\r\n" + SetStyleForAll(box, "column-rule", set);
+				box.ColumnSet += ";\n" + SetStyleForAll(box, "column-rule", set);
 				box.ColumnRuleWidth = ruleWidth;
 				box.ColumnRuleColor = ruleColor;
 			}
@@ -793,7 +793,7 @@ function ColumnSetting(elementName, getUpdateBoxDelegate, afterUpdateDelegate) {
 	
 	this.ToStyle = function(box) {
 		if (box.ColumnSet.length > 0)
-			return box.ColumnSet + ";\r\n";
+			return box.ColumnSet + ";\n";
 		else
 			return "";
 	}

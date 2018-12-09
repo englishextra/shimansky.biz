@@ -91,7 +91,7 @@ var OPERATORS = makePredicate([
  "&&",
  "||"
 ]);
-var WHITESPACE_CHARS = makePredicate(characters(" \u00a0\n\r\t\f\u000b\u200b\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000"));
+var WHITESPACE_CHARS = makePredicate(characters(" \u00a0\n\t\f\u000b\u200b\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000"));
 var PUNC_BEFORE_EXPRESSION = makePredicate(characters("[{(,.;:"));
 var PUNC_CHARS = makePredicate(characters("[]{}(),;:"));
 var REGEXP_MODIFIERS = makePredicate(characters("gmsiy"));
@@ -167,7 +167,7 @@ function is_token(token, type, val) {
 var EX_EOF = {};
 function tokenizer($TEXT, filename, html5_comments) {
  var S = {
- text : $TEXT.replace(/\r\n?|[\n\u2028\u2029]/g, "\n").replace(/\uFEFF/g, ''),
+ text : $TEXT.replace(/\n?|[\n\u2028\u2029]/g, "\n").replace(/\uFEFF/g, ''),
  filename : filename,
  pos : 0,
  tokpos : 0,
@@ -279,7 +279,7 @@ function tokenizer($TEXT, filename, html5_comments) {
  var ch = next(true, in_string);
  switch (ch.charCodeAt(0)) {
  case 110 : return "\n";
- case 114 : return "\r";
+ case 114 : return "";
  case 116 : return "\t";
  case 98 : return "\b";
  case 118 : return "\u000b"; // \v

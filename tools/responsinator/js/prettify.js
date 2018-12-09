@@ -513,9 +513,9 @@ var prettyPrint;
  var text = node.nodeValue;
  if (text.length) {
  if (!isPreformatted) {
- text = text.replace(/[ \t\r\n]+/g, ' ');
+ text = text.replace(/[ \t\n]+/g, ' ');
  } else {
- text = text.replace(/\r\n?/g, '\n'); // Normalize newlines.
+ text = text.replace(/\n?/g, '\n'); // Normalize newlines.
  }
  // TODO: handle tabs here?
  chunks[k] = text;
@@ -765,7 +765,7 @@ var prettyPrint;
  // 'single-line-string', "single-line-string"
  shortcutStylePatterns.push(
  [PR_STRING,
- /^(?:\'(?:[^\\\'\r\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\r\n]|\\.)*(?:\"|$))/,
+ /^(?:\'(?:[^\\\'\n]|\\.)*(?:\'|$)|\"(?:[^\\\"\n]|\\.)*(?:\"|$))/,
  null, '"\'']);
  }
  if (options['verbatimStrings']) {
@@ -782,7 +782,7 @@ var prettyPrint;
  } else {
  // Stop C preprocessor declarations at an unclosed open comment
  shortcutStylePatterns.push(
- [PR_COMMENT, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\r\n]*)/,
+ [PR_COMMENT, /^#(?:(?:define|e(?:l|nd)if|else|error|ifn?def|include|line|pragma|undef|warning)\b|[^\n]*)/,
  null, '#']);
  }
  // #include <stdio.h>
@@ -791,11 +791,11 @@ var prettyPrint;
  /^<(?:(?:(?:\.\.\/)*|\/?)(?:[\w-]+(?:\/[\w-]+)+)?[\w-]+\.h(?:h|pp|\+\+)?|[a-z]\w*)>/,
  null]);
  } else {
- shortcutStylePatterns.push([PR_COMMENT, /^#[^\r\n]*/, null, '#']);
+ shortcutStylePatterns.push([PR_COMMENT, /^#[^\n]*/, null, '#']);
  }
  }
  if (options['cStyleComments']) {
- fallthroughStylePatterns.push([PR_COMMENT, /^\/\/[^\r\n]*/, null]);
+ fallthroughStylePatterns.push([PR_COMMENT, /^\/\/[^\n]*/, null]);
  fallthroughStylePatterns.push(
  [PR_COMMENT, /^\/\*[\s\S]*?(?:\*\/|$)/, null]);
  }
@@ -806,7 +806,7 @@ var prettyPrint;
  */
  var regexExcls = regexLiterals > 1
  ? '' // Multiline regex literals
- : '\n\r';
+ : '\n';
  /**
  * @const
  */
@@ -844,7 +844,7 @@ var prettyPrint;
  new RegExp('^(?:' + keywords.replace(/[\s,]+/g, '|') + ')\\b'),
  null]);
  }
- shortcutStylePatterns.push([PR_PLAIN, /^\s+/, null, ' \r\n\t\xA0']);
+ shortcutStylePatterns.push([PR_PLAIN, /^\s+/, null, ' \n\t\xA0']);
  var punctuation =
  // The Bash man page says
  // A word is a sequence of characters considered as a single
@@ -923,7 +923,7 @@ var prettyPrint;
  */
  function numberLines(node, opt_startLineNum, isPreformatted) {
  var nocode = /(?:^|\s)nocode(?:\s|$)/;
- var lineBreak = /\r\n?|\n/;
+ var lineBreak = /\n?|\n/;
  var document = node.ownerDocument;
  var li = document.createElement('li');
  while (node.firstChild) {
@@ -1113,7 +1113,7 @@ var prettyPrint;
  // space to appear at the beginning of every line but the first.
  // Emitting an old Mac OS 9 line separator makes everything spiffy.
  if (isIE8OrEarlier) {
- styledText = styledText.replace(newlineRe, '\r');
+ styledText = styledText.replace(newlineRe, '');
  }
  textNode.nodeValue = styledText;
  var document = textNode.ownerDocument;
@@ -1204,7 +1204,7 @@ var prettyPrint;
  registerLangHandler(
  createSimpleLexer(
  [
- [PR_PLAIN, /^[\s]+/, null, ' \t\r\n'],
+ [PR_PLAIN, /^[\s]+/, null, ' \t\n'],
  [PR_ATTRIB_VALUE, /^(?:\"[^\"]*\"?|\'[^\']*\'?)/, null, '\"\'']
  ],
  [
