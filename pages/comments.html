@@ -157,6 +157,8 @@
 			<a href="../contents.html" rel="contents" class="btn-nav-menu" onclick="return false;" title="Содержание"></a>
 		</div>
 		<script src="../libs/comments/js/bundle.min.js" async=""></script>
-		<script src="/companion.fixed.min.js" async="" data-service-worker="/service-worker.min.js"></script>
+		<script>
+			(function(root,document){"use strict";if(root.location.protocol!=="https:"&&root.location.protocol!=="http:"){return;}var s=document.createElement("script");s.async=true;document.body.appendChild(s);s.setAttribute("src","/sw-register.min.js");s.setAttribute("data-service-worker","/sw.min.js");})("undefined"!==typeof window?window:this,document);
+		</script>
 	</body>
 </html>
