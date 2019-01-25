@@ -1,8 +1,7 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global doesFontExist, Draggabilly, imagePromise, imagesLoaded, Isotope,
-loadCSS, loadJsCss, Masonry, Packery, Promise, require, Timers, ToProgress,
-verge*/
+loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 /*property console, split */
 /*!
  * safe way to handle console.log
@@ -760,10 +759,8 @@ verge*/
 				};
 				debounce(logic, 200).call(root);
 		};
-		var manageExternalLinkAll = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var linkTag = "a";
-			var link = ctx ? ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
 			var isBindedClass = "is-binded";
 			var arrange = function (e) {
 				if (!e[classList].contains(isBindedClass)) {
@@ -826,10 +823,9 @@ verge*/
 				/* forEach(img, arrange, false); */
 			}
 		};
-		var handleDataSrcImageAllWindow = function () {
-			var throttleHandleDataSrcImageAll = throttle(handleDataSrcImageAll, 100);
-			throttleHandleDataSrcImageAll();
-		};
+
+		var handleDataSrcImageAllWindow = throttle(handleDataSrcImageAll, 100);
+
 		var manageDataSrcImageAll = function () {
 			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcImageAllWindow);
@@ -1001,9 +997,9 @@ verge*/
 			};
 			if (grid && gridItem) {
 				/* var jsUrl = "./cdn/masonry/4.1.1/js/masonry.imagesloaded.pkgd.fixed.min.js"; */
-				/* var jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.min.js"; */
+				/* var jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.js"; */
 				/* var jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.draggabilly.pkgd.fixed.min.js"; */
-				/* var jsUrl = "./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.min.js";
+				/* var jsUrl = "./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -1024,7 +1020,7 @@ verge*/
 				scroll2Top(0, 20000);
 			};
 			var handleUiTotopWindow = function (_this) {
-				var logicHandleUiTotopWindow = function () {
+				var logic = function () {
 					var btn = document[getElementsByClassName](btnClass)[0] || "";
 					var scrollPosition = _this.pageYOffset || docElem.scrollTop || docBody.scrollTop || "";
 					var windowHeight = _this.innerHeight || docElem.clientHeight || docBody.clientHeight || "";
@@ -1036,8 +1032,7 @@ verge*/
 						}
 					}
 				};
-				var throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
-				throttleLogicHandleUiTotopWindow();
+				throttle(logic, 100).call(root);
 			};
 			anchor[classList].add(btnClass);
 			/* jshint -W107 */
@@ -1104,8 +1099,8 @@ verge*/
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 
-	/* var scripts = ["./cdn/verge/1.9.1/js/verge.fixed.min.js",
-		"./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.min.js"]; */
+	/* var scripts = ["./cdn/verge/1.9.1/js/verge.fixed.js",
+		"./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.js"]; */
 
 	scripts.push("./libs/sitemap/js/vendors.min.js");
 
@@ -1113,7 +1108,8 @@ verge*/
 	 * load scripts after webfonts loaded using doesFontExist
 	 */
 
-	var supportsCanvas = (function () {
+	var supportsCanvas;
+	supportsCanvas	= (function () {
 		var elem = document[createElement]("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
@@ -1131,7 +1127,8 @@ verge*/
 			load = new loadJsCss(scripts, run);
 		};
 
-		var checkFontIsLoaded = function () {
+		var checkFontIsLoaded;
+		checkFontIsLoaded = function () {
 			/*!
 			 * check only for fonts that are used in current page
 			 */

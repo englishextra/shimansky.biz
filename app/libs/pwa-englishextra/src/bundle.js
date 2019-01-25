@@ -1,9 +1,9 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, Cookies, Carousel, DISQUS, doesFontExist,
-IframeLightbox, imagePromise, Kamil, loadCSS, loadJsCss, Masonry, Mustache,
-Packery, Promise, QRCode, require, t, Timers, ToProgress, unescape, verge, VK,
-Ya*/
+IframeLightbox, imgLightbox, imagePromise, Kamil, loadCSS, loadJsCss, Masonry,
+Mustache, Packery, Promise, QRCode, require, t, ToProgress, unescape, verge,
+VK, Ya*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -1087,10 +1087,8 @@ Ya*/
 				};
 				debounce(logic, 200).call(root);
 		};
-		var manageExternalLinkAll = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var linkTag = "a";
-			var link = ctx ? ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
 			var arrange = function (e) {
 				var externalLinkIsBindedClass = "external-link--is-binded";
 				if (!e[classList].contains(externalLinkIsBindedClass)) {
@@ -1120,12 +1118,10 @@ Ya*/
 
 		var handleDataSrcImageAll = function () {
 			var img = document[getElementsByClassName]("data-src-img") || "";
+			var isActiveClass = "is-active";
+			var isBindedClass = "is-binded";
 			var arrange = function (e) {
-				/*!
-				 * true if elem is in same y-axis as the viewport or within 100px of it
-				 * @see {@link https://github.com/ryanve/verge}
-				 */
-				if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
+				if (verge.inY(e, 100)) {
 					if (!e[classList].contains(isBindedClass)) {
 						var srcString = e[dataset].src || "";
 						if (srcString) {
@@ -1148,13 +1144,11 @@ Ya*/
 				for (var i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
-				/* forEach(img, arrange, false); */
 			}
 		};
-		var handleDataSrcImageAllWindow = function () {
-			var throttleHandleDataSrcImageAll = throttle(handleDataSrcImageAll, 100);
-			throttleHandleDataSrcImageAll();
-		};
+
+		var handleDataSrcImageAllWindow = throttle(handleDataSrcImageAll, 100);
+
 		var manageDataSrcImageAll = function () {
 			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcImageAllWindow);
@@ -1167,16 +1161,13 @@ Ya*/
 				}, 100);
 		};
 		manageDataSrcImageAll();
-		/* root[_addEventListener]("load", manageDataSrcImageAll); */
 
 		var handleDataSrcIframeAll = function () {
-			var iframe = document[getElementsByClassName]("data-src-iframe") || "";
+			var ifrm = document[getElementsByClassName]("data-src-iframe") || "";
+			var isActiveClass = "is-active";
+			var isBindedClass = "is-binded";
 			var arrange = function (e) {
-				/*!
-				 * true if elem is in same y-axis as the viewport or within 100px of it
-				 * @see {@link https://github.com/ryanve/verge}
-				 */
-				if (verge.inY(e, 100) /* && 0 !== e.offsetHeight */) {
+				if (verge.inY(e, 100)) {
 					if (!e[classList].contains(isBindedClass)) {
 						var srcString = e[dataset].src || "";
 						if (srcString) {
@@ -1185,29 +1176,27 @@ Ya*/
 								srcString = e[dataset].src;
 							}
 							e.src = srcString;
-							e[classList].add(isActiveClass);
-							e[classList].add(isBindedClass);
 							e[setAttribute]("frameborder", "no");
 							e[setAttribute]("style", "border:none;");
 							e[setAttribute]("webkitallowfullscreen", "true");
 							e[setAttribute]("mozallowfullscreen", "true");
 							e[setAttribute]("scrolling", "no");
 							e[setAttribute]("allowfullscreen", "true");
+							e[classList].add(isActiveClass);
+							e[classList].add(isBindedClass);
 						}
 					}
 				}
 			};
-			if (iframe) {
-				for (var i = 0, l = iframe[_length]; i < l; i += 1) {
-					arrange(iframe[i]);
+			if (ifrm) {
+				for (var i = 0, l = ifrm[_length]; i < l; i += 1) {
+					arrange(ifrm[i]);
 				}
-				/* forEach(iframe, arrange, false); */
 			}
 		};
-		var handleDataSrcIframeAllWindow = function () {
-			var throttlehandleDataSrcIframeAll = throttle(handleDataSrcIframeAll, 100);
-			throttlehandleDataSrcIframeAll();
-		};
+
+		var handleDataSrcIframeAllWindow = throttle(handleDataSrcIframeAll, 100);
+
 		var manageDataSrcIframeAll = function () {
 			root[_removeEventListener]("scroll", handleDataSrcIframeAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcIframeAllWindow);
@@ -1220,146 +1209,68 @@ Ya*/
 				}, 100);
 		};
 		manageDataSrcIframeAll();
-		/* root[_addEventListener]("load", manageDataSrcIframeAll); */
 
-		var manageIframeLightboxLinkAll = function (linkClass) {
-			var link = document[getElementsByClassName](linkClass) || "";
-			var arrange = function (e) {
-				if (!e[classList].contains(isBindedClass)) {
-					e.lightbox = new IframeLightbox(e, {
-								touch: false
-							});
-					e[classList].add(isBindedClass);
-				}
-			};
-			if (link) {
-				var i,
-				l;
-				for (i = 0, l = link[_length]; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
-			}
-		};
-		manageIframeLightboxLinkAll();
+		var imgLightboxLinkClass = "img-lightbox-link";
 
-		var hideImgLightbox = function () {
-			var container = document[getElementsByClassName]("img-lightbox-container")[0] || "";
-			var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
-			var animatedClass = "animated";
-			var fadeInClass = "fadeIn";
-			var fadeInUpClass = "fadeInUp";
-			var fadeOutClass = "fadeOut";
-			var fadeOutDownClass = "fadeOutDown";
-			var dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-			var hideContainer = function () {
-				container[classList].remove(fadeInClass);
-				container[classList].add(fadeOutClass);
-				var hideImg = function () {
-					container[classList].remove(animatedClass);
-					container[classList].remove(fadeOutClass);
-					img[classList].remove(animatedClass);
-					img[classList].remove(fadeOutDownClass);
-					img.src = dummySrc;
-					container[style].display = "none";
-				};
-				var timer = setTimeout(function () {
-					clearTimeout(timer);
-					timer = null;
-					hideImg();
-				}, 400);
-			};
-			if (container && img) {
-				img[classList].remove(fadeInUpClass);
-				img[classList].add(fadeOutDownClass);
-				var timer = setTimeout(function () {
-					clearTimeout(timer);
-					timer = null;
-					hideContainer();
-				}, 400);
-			}
-		};
-		var handleImgLightboxContainer = function () {
-			var container = document[getElementsByClassName]("img-lightbox-container")[0] || "";
-			if (container) {
-				container[_removeEventListener]("click", handleImgLightboxContainer);
-				hideImgLightbox();
-			}
-		};
-		var handleImgLightboxWindow = function (ev) {
-			var _removeEventListener = "removeEventListener";
-			root[_removeEventListener]("keyup", handleImgLightboxWindow);
-			if (27 === (ev.which || ev.keyCode)) {
-				hideImgLightbox();
-			}
-		};
-		var manageImgLightboxLinkAll = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var linkClass = "img-lightbox-link";
-			var link = ctx ? ctx[getElementsByClassName](linkClass) || "" : document[getElementsByClassName](linkClass) || "";
-			var containerClass = "img-lightbox-container";
-			var container = document[getElementsByClassName](containerClass)[0] || "";
-			var img = container ? container[getElementsByTagName]("img")[0] || "" : "";
-			var animatedClass = "animated";
-			var fadeInClass = "fadeIn";
-			var fadeInUpClass = "fadeInUp";
-			var dummySrc = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-			if (!container) {
-				container = document[createElement]("div");
-				img = document[createElement]("img");
-				img.src = dummySrc;
-				img.alt = "";
-				container[appendChild](img);
-				container[classList].add(containerClass);
-				appendFragment(container, docBody);
-			}
-			var arrange = function (e) {
-				var handleImgLightboxLink = function (ev) {
-					ev.stopPropagation();
-					ev.preventDefault();
-					var _this = this;
-					var logicHandleImgLightboxLink = function () {
-						var hrefString = _this[getAttribute]("href") || "";
-						if (container && img && hrefString) {
-							LoadingSpinner.show();
-							container[classList].add(animatedClass);
-							container[classList].add(fadeInClass);
-							img[classList].add(animatedClass);
-							img[classList].add(fadeInUpClass);
-							if (parseLink(hrefString).isAbsolute && !parseLink(hrefString).hasHTTP) {
-								hrefString = hrefString.replace(/^/, forcedHTTP + ":");
-							}
-							imagePromise(hrefString).then(function () {
-								img.src = hrefString;
-							}).catch (function (err) {
-								console.log("cannot load image with imagePromise:", hrefString, err);
-							});
-							root[_addEventListener]("keyup", handleImgLightboxWindow);
-							container[_addEventListener]("click", handleImgLightboxContainer);
-							container[style].display = "block";
+		/*!
+		 * @see {@link https://github.com/englishextra/img-lightbox}
+		 */
+		var manageImgLightbox = function (imgLightboxLinkClass) {
+			var initScript = function () {
+				var link = document[getElementsByClassName](imgLightboxLinkClass) || "";
+				if (link) {
+					imgLightbox(imgLightboxLinkClass, {
+						onLoaded: function () {
 							LoadingSpinner.hide();
-						}
-					};
-					var debounceLogicHandleImgLightboxLink = debounce(logicHandleImgLightboxLink, 200);
-					debounceLogicHandleImgLightboxLink();
-				};
-				if (!e[classList].contains(isBindedClass)) {
-					var hrefString = e[getAttribute]("href") || "";
-					if (hrefString) {
-						if (parseLink(hrefString).isAbsolute && !parseLink(hrefString).hasHTTP) {
-							e.setAttribute("href", hrefString.replace(/^/, forcedHTTP + ":"));
-						}
-						e[_addEventListener]("click", handleImgLightboxLink);
-						e[classList].add(isBindedClass);
-					}
+						},
+						onClosed: function () {
+							LoadingSpinner.hide();
+						},
+						onCreated: function () {
+							LoadingSpinner.show();
+						},
+						touch: false
+					});
 				}
 			};
-			if (link) {
-				for (var j = 0, l = link[_length]; j < l; j += 1) {
-					arrange(link[j]);
-				}
-			}
+			initScript();
 		};
+		manageImgLightbox(imgLightboxLinkClass);
+
+		var iframeLightboxLinkClass = "iframe-lightbox-link";
+
+		/*!
+		 * @see {@link https://github.com/englishextra/iframe-lightbox}
+		 */
+		var manageIframeLightbox = function (iframeLightboxLinkClass) {
+			var initScript = function () {
+				var link = document[getElementsByClassName](iframeLightboxLinkClass) || "";
+				var arrange = function (e) {
+					e.lightbox = new IframeLightbox(e, {
+							onLoaded: function () {
+								LoadingSpinner.hide();
+							},
+							onClosed: function () {
+								LoadingSpinner.hide();
+							},
+							onOpened: function () {
+								LoadingSpinner.show();
+							},
+							touch: false
+						});
+				};
+				if (link) {
+					var i,
+					l;
+					for (i = 0, l = link[_length]; i < l; i += 1) {
+						arrange(link[i]);
+					}
+					i = l = null;
+				}
+			};
+			initScript();
+		};
+		manageIframeLightbox(iframeLightboxLinkClass);
 
 		var handleOtherDropdownLists = function (_self) {
 			var _this = _self || this;
@@ -1568,7 +1479,7 @@ Ya*/
 			};
 			if (grid && gridItem) {
 				/* var jsUrl = "./cdn/masonry/4.1.1/js/masonry.pkgd.fixed.min.js"; */
-				/* var jsUrl = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js";
+				/* var jsUrl = "./cdn/packery/2.1.1/js/packery.pkgd.fixed.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -1602,7 +1513,7 @@ Ya*/
 				var handleDisqusButton = function (ev) {
 					ev.stopPropagation();
 					ev.preventDefault();
-					var logicHandleDisqusButton = function () {
+					var logic = function () {
 						var initScript = function () {
 							if (root.DISQUS) {
 								try {
@@ -1628,8 +1539,7 @@ Ya*/
 							initScript();
 						}
 					};
-					var debounceLogicHandleDisqusButton = debounce(logicHandleDisqusButton, 200);
-					debounceLogicHandleDisqusButton();
+					debounce(logic, 200).call(root);
 				};
 				btn[_addEventListener]("click", handleDisqusButton);
 				btn[classList].add(isBindedClass);
@@ -1782,11 +1692,10 @@ Ya*/
 			var searchInput = document[getElementById]("text") || "";
 			var handleSearchInputValue = function () {
 				var _this = this;
-				var logicHandleSearchInputValue = function () {
+				var logic = function () {
 					_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
 				};
-				var debounceLogicHandleSearchInputValue = debounce(logicHandleSearchInputValue, 200);
-				debounceLogicHandleSearchInputValue();
+				debounce(logic, 200).call(root);
 			};
 			if (searchInput) {
 				searchInput.focus();
@@ -1874,7 +1783,7 @@ Ya*/
 					/*!
 					 * fix typo - non latin characters found
 					 */
-					var logicReplaceTypo = function () {
+					var logic = function () {
 						while (itemsLength < 1) {
 							var textInputValue = textInput.value || "";
 							if (/[^\u0000-\u007f]/.test(textInputValue)) {
@@ -1897,8 +1806,7 @@ Ya*/
 							itemsLength += 1;
 						}
 					};
-					var debounceLogicReplaceTypo = debounce(logicReplaceTypo, 200);
-					debounceLogicReplaceTypo();
+					debounce(logic, 200).call(root);
 					/*!
 					 * truncate text
 					 */
@@ -1959,7 +1867,7 @@ Ya*/
 				});
 			};
 			if (searchForm && textInput) {
-				/* var jsUrl = "./cdn/kamil/0.1.1/js/kamil.fixed.min.js";
+				/* var jsUrl = "./cdn/kamil/0.1.1/js/kamil.fixed.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -2039,9 +1947,7 @@ Ya*/
 					alignToMasterBottomLeft(showRenderNavbarMoreId, renderNavbarMoreId);
 				};
 				var handleShowNavbarListsWindow = function () {
-					var logicHandleShowNavbarListsWindow = alignNavbarListAll;
-					var throttleLogicHandleShowNavbarListsWindow = throttle(logicHandleShowNavbarListsWindow, 100);
-					throttleLogicHandleShowNavbarListsWindow();
+					throttle(alignNavbarListAll, 100).call(root);
 				};
 				if (popularTemplate && popularRender) {
 					insertFromTemplate(navigationJsonResponse, popularTemplateId, popularRenderId, function () {
@@ -2092,15 +1998,14 @@ Ya*/
 			var uiPanelContentsSelect = document[getElementsByClassName]("ui-panel-contents-select")[0] || "";
 			var criticalHeight = (uiPanelNavigation ? uiPanelNavigation.offsetHeight : 0) + (holderHero ? holderHero.offsetHeight : 0);
 			var handleUiPanelContentsSelect = function () {
-				var logicHandleUiPanelContentsSelect = function () {
+				var logic = function () {
 					if ((docBody.scrollTop || docElem.scrollTop || 0) > criticalHeight) {
 						uiPanelContentsSelect[classList].add(isFixedClass);
 					} else {
 						uiPanelContentsSelect[classList].remove(isFixedClass);
 					}
 				};
-				var throttleLogicHandleUiPanelContentsSelect = throttle(logicHandleUiPanelContentsSelect, 100);
-				throttleLogicHandleUiPanelContentsSelect();
+				throttle(logic, 100).call(root);
 			};
 			if (uiPanelContentsSelect) {
 				root[_addEventListener]("scroll", handleUiPanelContentsSelect, {passive: true});
@@ -2183,7 +2088,7 @@ Ya*/
 						removeChildren(holder);
 						appendFragment(newImg, holder);
 					};
-					/* var jsUrl = "./cdn/qrjs2/0.1.7/js/qrjs2.fixed.min.js";
+					/* var jsUrl = "./cdn/qrjs2/0.1.7/js/qrjs2.fixed.js";
 					if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
@@ -2544,8 +2449,8 @@ Ya*/
 								handleDataSrcIframeAll();
 								handleDataSrcImageAll();
 								manageExternalLinkAll();
-								manageImgLightboxLinkAll("img-lightbox-link");
-								manageIframeLightboxLinkAll("iframe-lightbox-link");
+								manageImgLightbox(imgLightboxLinkClass);
+								manageIframeLightbox(iframeLightboxLinkClass);
 								manageChaptersSelect(appContentParent);
 								manageExpandingLayers(appContentParent);
 							}, 100);
@@ -2802,7 +2707,7 @@ Ya*/
 				scroll2Top(0, 20000);
 			};
 			var handleUiTotopWindow = function (_this) {
-				var logicHandleUiTotopWindow = function () {
+				var logic = function () {
 					var btn = document[getElementsByClassName](btnClass)[0] || "";
 					var scrollPosition = _this.pageYOffset || docElem.scrollTop || docBody.scrollTop || "";
 					var windowHeight = _this.innerHeight || docElem.clientHeight || docBody.clientHeight || "";
@@ -2814,8 +2719,7 @@ Ya*/
 						}
 					}
 				};
-				var throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
-				throttleLogicHandleUiTotopWindow();
+				throttle(logic, 100).call(root);
 			};
 			anchor[classList].add(btnClass);
 			/* jshint -W107 */
@@ -2882,12 +2786,12 @@ Ya*/
 	}
 
 	/* var scripts = ["./cdn/t.js/0.1.0/js/t.fixed.min.js",
-		"./cdn/verge/1.9.1/js/verge.fixed.min.js",
-		"./cdn/iframe-lightbox/0.1.6/js/iframe-lightbox.fixed.min.js",
-		"./cdn/qrjs2/0.1.7/js/qrjs2.fixed.min.js",
-		"./cdn/js-cookie/2.1.3/js/js.cookie.fixed.min.js",
-		"./cdn/kamil/0.1.1/js/kamil.fixed.min.js",
-		"./cdn/packery/2.1.1/js/packery.pkgd.fixed.min.js"]; */
+		"./cdn/verge/1.9.1/js/verge.fixed.js",
+		"./cdn/iframe-lightbox/0.1.6/js/iframe-lightbox.fixed.js",
+		"./cdn/qrjs2/0.1.7/js/qrjs2.fixed.js",
+		"./cdn/js-cookie/2.1.3/js/js.cookie.fixed.js",
+		"./cdn/kamil/0.1.1/js/kamil.fixed.js",
+		"./cdn/packery/2.1.1/js/packery.pkgd.fixed.js"]; */
 
 	scripts.push("./libs/pwa-englishextra/js/vendors.min.js");
 
@@ -2895,7 +2799,8 @@ Ya*/
 	 * load scripts after webfonts loaded using doesFontExist
 	 */
 
-	var supportsCanvas = (function () {
+	var supportsCanvas;
+	supportsCanvas	= (function () {
 		var elem = document[createElement]("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
@@ -2913,7 +2818,8 @@ Ya*/
 			load = new loadJsCss(scripts, run);
 		};
 
-		var checkFontIsLoaded = function () {
+		var checkFontIsLoaded;
+		checkFontIsLoaded = function () {
 			/*!
 			 * check only for fonts that are used in current page
 			 */

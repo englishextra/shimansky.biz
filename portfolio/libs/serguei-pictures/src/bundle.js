@@ -813,10 +813,8 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 				};
 				debounce(logic, 200).call(root);
 		};
-		var manageExternalLinkAll = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var linkTag = "a";
-			var link = ctx ? ctx[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
 			var isBindedClass = "is-binded";
 			var arrange = function (e) {
 				if (!e[classList].contains(isBindedClass)) {
@@ -879,10 +877,9 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 				/* forEach(img, arrange, false); */
 			}
 		};
-		var handleDataSrcImageAllWindow = function () {
-			var throttleHandleDataSrcImageAll = throttle(handleDataSrcImageAll, 100);
-			throttleHandleDataSrcImageAll();
-		};
+		
+		var handleDataSrcImageAllWindow = throttle(handleDataSrcImageAll, 100);
+		
 		var manageDataSrcImageAll = function () {
 			root[_removeEventListener]("scroll", handleDataSrcImageAllWindow, {passive: true});
 			root[_removeEventListener]("resize", handleDataSrcImageAllWindow);
@@ -939,7 +936,7 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 			};
 			if (holder && locationHref) {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
-					/* var jsUrl = "../cdn/qrjs2/0.1.7/js/qrjs2.fixed.min.js";
+					/* var jsUrl = "./cdn/qrjs2/0.1.7/js/qrjs2.fixed.js";
 					if (!scriptIsLoaded(jsUrl)) {
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
@@ -1177,8 +1174,8 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 				}, 500);
 			};
 			if (grid && gridItem) {
-				/* var jsUrl = "../cdn/masonry/4.1.1/js/masonry.imagesloaded.pkgd.fixed.min.js"; */
-				/* var jsUrl = "../cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.min.js";
+				/* var jsUrl = "./cdn/masonry/4.1.1/js/masonry.imagesloaded.pkgd.fixed.min.js"; */
+				/* var jsUrl = "./cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -1459,7 +1456,7 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 				initPhotoSwipeFromDOM(pswpGallerySelector);
 			};
 			if (pswpGallery && pswpGalleryItems) {
-				/* var jsUrl = "../cdn/photoswipe/4.1.0/js/photoswipe.photoswipe-ui-default.fixed.min.js";
+				/* var jsUrl = "./cdn/photoswipe/4.1.0/js/photoswipe.photoswipe-ui-default.fixed.js";
 				if (!scriptIsLoaded(jsUrl)) {
 					var load;
 					load = new loadJsCss([jsUrl], initScript);
@@ -1531,8 +1528,7 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 						initScript();
 					}
 				};
-				var debounceLogic = debounce(logic, 200);
-				debounceLogic();
+				debounce(logic, 200).call(root);
 			};
 			if (btn && yaShare2) {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
@@ -1583,8 +1579,7 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 						initScript();
 					}
 				};
-				var debounceLogic = debounce(logic, 200);
-				debounceLogic();
+				debounce(logic, 200).call(root);
 			};
 			if (btn && vkLike) {
 				if ("undefined" !== typeof getHTTP && getHTTP()) {
@@ -1607,7 +1602,7 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 				scroll2Top(0, 20000);
 			};
 			var handleUiTotopWindow = function (_this) {
-				var logicHandleUiTotopWindow = function () {
+				var logic = function () {
 					var btn = document[getElementsByClassName](btnClass)[0] || "";
 					var scrollPosition = _this.pageYOffset || docElem.scrollTop || docBody.scrollTop || "";
 					var windowHeight = _this.innerHeight || docElem.clientHeight || docBody.clientHeight || "";
@@ -1619,8 +1614,7 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 						}
 					}
 				};
-				var throttleLogicHandleUiTotopWindow = throttle(logicHandleUiTotopWindow, 100);
-				throttleLogicHandleUiTotopWindow();
+				throttle(logic, 100).call(root);
 			};
 			anchor[classList].add(btnClass);
 			/* jshint -W107 */
@@ -1684,14 +1678,14 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 	})();
 
 	if (needsPolyfills) {
-		scripts.push("../cdn/polyfills/js/polyfills.fixed.min.js");
+		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 
-	/* var scripts = ["../cdn/verge/1.9.1/js/verge.fixed.min.js",
-		"../cdn/Tocca.js/2.0.1/js/Tocca.fixed.min.js",
-		"../cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.min.js",
-		"../cdn/qrjs2/0.1.7/js/qrjs2.fixed.min.js",
-		"../cdn/photoswipe/4.1.0/js/photoswipe.photoswipe-ui-default.fixed.min.js"]; */
+	/* var scripts = ["./cdn/verge/1.9.1/js/verge.fixed.js",
+		"./cdn/Tocca.js/2.0.1/js/Tocca.fixed.js",
+		"./cdn/packery/2.1.1/js/packery.imagesloaded.pkgd.fixed.js",
+		"./cdn/qrjs2/0.1.7/js/qrjs2.fixed.js",
+		"./cdn/photoswipe/4.1.0/js/photoswipe.photoswipe-ui-default.fixed.js"]; */
 
 	scripts.push("./libs/serguei-pictures/js/vendors.min.js");
 
@@ -1699,7 +1693,8 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 	 * load scripts after webfonts loaded using doesFontExist
 	 */
 
-	var supportsCanvas = (function () {
+	var supportsCanvas;
+	supportsCanvas	= (function () {
 		var elem = document[createElement]("canvas");
 		return !!(elem.getContext && elem.getContext("2d"));
 	})();
@@ -1717,7 +1712,8 @@ QRCode, require, Timers, ToProgress, unescape, verge, VK, Ya*/
 			load = new loadJsCss(scripts, run);
 		};
 
-		var checkFontIsLoaded = function () {
+		var checkFontIsLoaded;
+		checkFontIsLoaded = function () {
 			/*!
 			 * check only for fonts that are used in current page
 			 */
