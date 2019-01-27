@@ -439,7 +439,6 @@
 
             if (state === State.URL) {
 
-
                 // ')' finishes the URL (only if it is not escaped).
                 if (ch === ')' && formatted.charAt(formatted.length - 1 !== '\\')) {
                     formatted += ch;
