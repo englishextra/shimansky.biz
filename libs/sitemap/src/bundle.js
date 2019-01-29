@@ -389,6 +389,7 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 	var docImplem = document.implementation || "";
 	var docBody = document.body || "";
 
+	var classList = "classList";
 	var createElement = "createElement";
 	var createElementNS = "createElementNS";
 	var defineProperty = "defineProperty";
@@ -410,14 +411,16 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 		progressBar.hide();
 	};
 
-	/* progressBar.complete = function () {
-		return this.finish(),
-		this.hide();
-	}; */
-
 	progressBar.increase(20);
 
-	var getHTTP = function (force) {
+	var toStringFn = {}.toString;
+	var supportsSvgSmilAnimation = !!document[createElementNS] && (/SVGAnimate/).test(toStringFn.call(document[createElementNS]("http://www.w3.org/2000/svg", "animate"))) || "";
+
+	if (supportsSvgSmilAnimation && docElem) {
+		docElem[classList].add("svganimate");
+	}
+
+	var getHTTP = function(force) {
 		var any = force || "";
 		var locationProtocol = root.location.protocol || "";
 		return "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : any ? "http" : "";
@@ -425,11 +428,15 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 
 	var forcedHTTP = getHTTP(true);
 
+	var supportsCanvas;
+	supportsCanvas	= (function () {
+		var elem = document[createElement]("canvas");
+		return !!(elem.getContext && elem.getContext("2d"));
+	})();
+
 	var run = function () {
 
 		var appendChild = "appendChild";
-		var classList = "classList";
-		var createElement = "createElement";
 		var dataset = "dataset";
 		var getAttribute = "getAttribute";
 		var getElementsByClassName = "getElementsByClassName";
@@ -707,7 +714,18 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 		/*jshint bitwise: true */
 
 		var isNodejs = "undefined" !== typeof process && "undefined" !== typeof require || "";
-		var isElectron = "undefined" !== typeof root && root.process && "renderer" === root.process.type || "";
+		var isElectron = (function () {
+			if (typeof root !== "undefined" && typeof root.process === "object" && root.process.type === "renderer") {
+				return true;
+			}
+			if (typeof root !== "undefined" && typeof root.process !== "undefined" && typeof root.process.versions === "object" && !!root.process.versions.electron) {
+				return true;
+			}
+			if (typeof navigator === "object" && typeof navigator.userAgent === "string" && navigator.userAgent.indexOf("Electron") >= 0) {
+				return true;
+			}
+			return false;
+		})();
 		var isNwjs = (function () {
 			if ("undefined" !== typeof isNodejs && isNodejs) {
 				try {
@@ -730,9 +748,6 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 				var ns = isNwjs ? require("nw.gui").Shell : "";
 				return ns ? ns.openExternal(url) : "";
 			};
-			var triggerForHTTP = function () {
-				return true;
-			};
 			var triggerForLocal = function () {
 				return root.open(url, "_system", "scrollbars=1,location=no");
 			};
@@ -744,7 +759,7 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 				var locationProtocol = root.location.protocol || "",
 				hasHTTP = locationProtocol ? "http:" === locationProtocol ? "http" : "https:" === locationProtocol ? "https" : "" : "";
 				if (hasHTTP) {
-					triggerForHTTP();
+					return true;
 				} else {
 					triggerForLocal();
 				}
@@ -1048,7 +1063,6 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 		hideProgressBar();
 	};
 
-	/* var scripts = ["./libs/sitemap/css/bundle.min.css"]; */
 	var scripts = [];
 
 	var supportsPassive = (function () {
@@ -1072,8 +1086,6 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 		("undefined" === typeof root.Element && !("dataset" in docElem)) ||
 		!("classList" in document[createElement]("_")) ||
 		document[createElementNS] && !("classList" in document[createElementNS]("http://www.w3.org/2000/svg", "g")) ||
-		/* !document.importNode || */
-		/* !("content" in document[createElement]("template")) || */
 		(root.attachEvent && !root[_addEventListener]) ||
 		!("onhashchange" in root) ||
 		!Array.prototype.indexOf ||
@@ -1095,44 +1107,25 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 		scripts.push("./cdn/polyfills/js/polyfills.fixed.min.js");
 	}
 
-	/* var scripts = ["./cdn/verge/1.9.1/js/verge.fixed.js",
-		"./cdn/isotope/3.0.1/js/isotope.imagesloaded.pkgd.fixed.js"]; */
-
 	scripts.push("./libs/sitemap/js/vendors.min.js");
 
-	/*!
-	 * load scripts after webfonts loaded using doesFontExist
-	 */
-
-	var supportsCanvas;
-	supportsCanvas	= (function () {
-		var elem = document[createElement]("canvas");
-		return !!(elem.getContext && elem.getContext("2d"));
-	})();
-
 	var onFontsLoadedCallback = function () {
-
 		var slot;
 		var onFontsLoaded = function () {
 			clearInterval(slot);
 			slot = null;
-
-			progressBar.increase(20);
-
+			if (!supportsSvgSmilAnimation && "undefined" !== typeof progressBar) {
+				progressBar.increase(20);
+			}
 			var load;
 			load = new loadJsCss(scripts, run);
 		};
-
 		var checkFontIsLoaded;
 		checkFontIsLoaded = function () {
-			/*!
-			 * check only for fonts that are used in current page
-			 */
 			if (doesFontExist("Roboto") /* && doesFontExist("Roboto Mono") */) {
 				onFontsLoaded();
 			}
 		};
-
 		/* if (supportsCanvas) {
 			slot = setInterval(checkFontIsLoaded, 100);
 		} else {
@@ -1142,15 +1135,7 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 		onFontsLoaded();
 	};
 
-	loadCSS(
-			/* forcedHTTP + "://fonts.googleapis.com/css?family=Roboto:300,400,400i,700,700i%7CRoboto+Mono:400,700&subset=cyrillic,latin-ext", */
-			"./libs/sitemap/css/bundle.min.css",
-			onFontsLoadedCallback
-		);
-
-	/*!
-	 * load scripts after webfonts loaded using webfontloader
-	 */
+	loadCSS("./libs/sitemap/css/bundle.min.css", onFontsLoadedCallback);
 
 	/* root.WebFontConfig = {
 		google: {
@@ -1178,20 +1163,16 @@ loadCSS, loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 	};
 
 	var onFontsLoadedCallback = function () {
-
 		var onFontsLoaded = function () {
-			progressBar.increase(20);
-
+			if (!supportsSvgSmilAnimation && "undefined" !== typeof progressBar) {
+				progressBar.increase(20);
+			}
 			var load;
 			load = new loadJsCss(scripts, run);
 		};
-
 		root.WebFontConfig.ready(onFontsLoaded);
 	};
 
 	var load;
-	load = new loadJsCss(
-			[forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"],
-			onFontsLoadedCallback
-		); */
+	load = new loadJsCss([forcedHTTP + "://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js"], onFontsLoadedCallback); */
 })("undefined" !== typeof window ? window : this, document);

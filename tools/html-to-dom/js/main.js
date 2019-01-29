@@ -122,7 +122,6 @@ $(function () {
     });
     $('#fullscreen').click(showFullScreen);
 
-
     $("#submit").on('click', function() {
         if ( ! validateSource() || ! validatePrefix() )
             return false;
