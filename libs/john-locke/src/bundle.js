@@ -254,13 +254,13 @@ ToProgress, unescape, VK, WheelIndicator, Ya*/
 			link.rel = "stylesheet";
 			link.type = "text/css";
 			link.href = file;
-			/* _this.head[appendChild](link); */
 			link.media = "only x";
 			link.onload = function () {
 				this.onload = null;
 				this.media = "all";
 			};
 			link[setAttribute]("property", "stylesheet");
+			/* _this.head[appendChild](link); */
 			(_this.body || _this.head)[appendChild](link);
 		};
 		_this.loadScript = function (i) {
@@ -314,7 +314,7 @@ ToProgress, unescape, VK, WheelIndicator, Ya*/
 	var docElem = document.documentElement || "";
 
 	var alt = "alt";
-  var classList = "classList";
+	var classList = "classList";
 	var className = "className";
 	var createElement = "createElement";
 	var createElementNS = "createElementNS";
@@ -540,7 +540,6 @@ ToProgress, unescape, VK, WheelIndicator, Ya*/
 		var bounceOutDownClass = "bounceOutDown";
 
 		var isActiveClass = "is-active";
-		var isBindedClass = "is-binded";
 
 		var documentTitle = document[title] || "";
 		var locationHref = root.location[href] || "";
@@ -585,6 +584,30 @@ ToProgress, unescape, VK, WheelIndicator, Ya*/
 			(hasWheel ? " mousewheel" : "") +
 			"]";
 		}
+
+		var debounce = function (func, wait) {
+			var timeout;
+			var args;
+			var context;
+			var timestamp;
+			return function () {
+				context = this;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = (new Date()) - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
+				if (!timeout) {
+					timeout = setTimeout(later, wait);
+				}
+			};
+		};
 
 		/*jshint bitwise: false */
 		var parseLink = function (url, full) {
@@ -691,50 +714,21 @@ ToProgress, unescape, VK, WheelIndicator, Ya*/
 			}
 		};
 
-		var debounce = function (func, wait) {
-			var timeout;
-			var args;
-			var context;
-			var timestamp;
-			return function () {
-				context = this;
-				args = [].slice.call(arguments, 0);
-				timestamp = new Date();
-				var later = function () {
-					var last = (new Date()) - timestamp;
-					if (last < wait) {
-						timeout = setTimeout(later, wait - last);
-					} else {
-						timeout = null;
-						func.apply(context, args);
-					}
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
+			var handleExternalLink = function (url, ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				var logic = function () {
+					openDeviceBrowser(url);
 				};
-				if (!timeout) {
-					timeout = setTimeout(later, wait);
-				}
+				debounce(logic, 200).call(root);
 			};
-		};
-
-		var manageExternalLinkAll = function (scope) {
-			var context = scope && scope.nodeName ? scope : "";
-			var linkTag = "a";
-			var externalLinks = context ? context[getElementsByTagName](linkTag) || "" : document[getElementsByTagName](linkTag) || "";
 			var arrange = function (e) {
-				var handleExternalLink = function (url, evt) {
-					evt.stopPropagation();
-					evt.preventDefault();
-					var logic = function () {
-						openDeviceBrowser(url);
-					};
-					debounce(logic, 200).call(root);
-				};
-				if (!e[classList].contains(isBindedClass) &&
-						!e.target &&
-						!e.rel) {
+				var externalLinkIsBindedClass = "external-link--is-binded";
+				if (!e[classList].contains(externalLinkIsBindedClass)) {
 					var url = e[getAttribute]("href") || "";
-					if (url &&
-						parseLink(url).isCrossDomain &&
-						parseLink(url).hasHTTP) {
+					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
 						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 						if ("undefined" !== typeof getHTTP && getHTTP()) {
 							e.target = "_blank";
@@ -742,19 +736,20 @@ ToProgress, unescape, VK, WheelIndicator, Ya*/
 						} else {
 							e[_addEventListener]("click", handleExternalLink.bind(null, url));
 						}
-						e[classList].add(isBindedClass);
+						e[classList].add(externalLinkIsBindedClass);
 					}
 				}
 			};
-			if (externalLinks) {
-				var i;
-				var l;
-				for (i = 0, l = externalLinks[_length]; i < l; i += 1) {
-					arrange(externalLinks[i]);
+			if (link) {
+				var i,
+				l;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
 				}
 				i = l = null;
 			}
 		};
+		manageExternalLinkAll();
 
 		var wrapper = document[getElementsByClassName]("wrapper")[0] || "";
 

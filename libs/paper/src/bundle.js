@@ -307,13 +307,13 @@ ToProgress, unescape, verge, VK, Ya*/
 			link.rel = "stylesheet";
 			link.type = "text/css";
 			link.href = file;
-			/* _this.head[appendChild](link); */
 			link.media = "only x";
 			link.onload = function () {
 				this.onload = null;
 				this.media = "all";
 			};
 			link[setAttribute]("property", "stylesheet");
+			/* _this.head[appendChild](link); */
 			(_this.body || _this.head)[appendChild](link);
 		};
 		_this.loadScript = function (i) {
@@ -374,7 +374,8 @@ ToProgress, unescape, verge, VK, Ya*/
 	var defineProperty = "defineProperty";
 	var getOwnPropertyDescriptor = "getOwnPropertyDescriptor";
 	var querySelector = "querySelector";
-	var querySelectorAll = "querySelectorAll";	var _addEventListener = "addEventListener";
+	var querySelectorAll = "querySelectorAll";
+	var _addEventListener = "addEventListener";
 	var _length = "length";
 
 	var progressBar = new ToProgress({
@@ -431,6 +432,9 @@ ToProgress, unescape, verge, VK, Ya*/
 		var style = "style";
 		var title = "title";
 		var _removeEventListener = "removeEventListener";
+
+		var isActiveClass = "is-active";
+		var isBindedClass = "is-binded";
 
 		progressBar.increase(20);
 
@@ -683,6 +687,58 @@ ToProgress, unescape, verge, VK, Ya*/
 			};
 		};
 
+		var debounce = function (func, wait) {
+			var timeout;
+			var args;
+			var context;
+			var timestamp;
+			return function () {
+				context = this;
+				args = [].slice.call(arguments, 0);
+				timestamp = new Date();
+				var later = function () {
+					var last = (new Date()) - timestamp;
+					if (last < wait) {
+						timeout = setTimeout(later, wait - last);
+					} else {
+						timeout = null;
+						func.apply(context, args);
+					}
+				};
+				if (!timeout) {
+					timeout = setTimeout(later, wait);
+				}
+			};
+		};
+
+		var throttle = function (func, wait) {
+			var ctx;
+			var args;
+			var rtn;
+			var timeoutID;
+			var last = 0;
+			function call() {
+				timeoutID = 0;
+				last = +new Date();
+				rtn = func.apply(ctx, args);
+				ctx = null;
+				args = null;
+			}
+			return function throttled() {
+				ctx = this;
+				args = arguments;
+				var delta = new Date() - last;
+				if (!timeoutID) {
+					if (delta >= wait) {
+						call();
+					} else {
+						timeoutID = setTimeout(call, wait - delta);
+					}
+				}
+				return rtn;
+			};
+		};
+
 		/*jshint bitwise: false */
 		var parseLink = function (url, full) {
 			var _full = full || "";
@@ -788,57 +844,42 @@ ToProgress, unescape, verge, VK, Ya*/
 			}
 		};
 
-		var debounce = function (func, wait) {
-			var timeout;
-			var args;
-			var context;
-			var timestamp;
-			return function () {
-				context = this;
-				args = [].slice.call(arguments, 0);
-				timestamp = new Date();
-				var later = function () {
-					var last = (new Date()) - timestamp;
-					if (last < wait) {
-						timeout = setTimeout(later, wait - last);
-					} else {
-						timeout = null;
-						func.apply(context, args);
-					}
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
+			var handleExternalLink = function (url, ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				var logic = function () {
+					openDeviceBrowser(url);
 				};
-				if (!timeout) {
-					timeout = setTimeout(later, wait);
-				}
+				debounce(logic, 200).call(root);
 			};
-		};
-
-		var throttle = function (func, wait) {
-			var ctx;
-			var args;
-			var rtn;
-			var timeoutID;
-			var last = 0;
-			function call() {
-				timeoutID = 0;
-				last = +new Date();
-				rtn = func.apply(ctx, args);
-				ctx = null;
-				args = null;
-			}
-			return function throttled() {
-				ctx = this;
-				args = arguments;
-				var delta = new Date() - last;
-				if (!timeoutID) {
-					if (delta >= wait) {
-						call();
-					} else {
-						timeoutID = setTimeout(call, wait - delta);
+			var arrange = function (e) {
+				var externalLinkIsBindedClass = "external-link--is-binded";
+				if (!e[classList].contains(externalLinkIsBindedClass)) {
+					var url = e[getAttribute]("href") || "";
+					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
+						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
+						if ("undefined" !== typeof getHTTP && getHTTP()) {
+							e.target = "_blank";
+							e.rel = "noopener";
+						} else {
+							e[_addEventListener]("click", handleExternalLink.bind(null, url));
+						}
+						e[classList].add(externalLinkIsBindedClass);
 					}
 				}
-				return rtn;
 			};
+			if (link) {
+				var i,
+				l;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
+				}
+				i = l = null;
+			}
 		};
+		manageExternalLinkAll();
 
 		var scroll2Top = function (scrollTargetY, speed, easing) {
 			var scrollY = root.scrollY || docElem.scrollTop;
@@ -901,43 +942,6 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 		})();
-
-		var handleExternalLink = function (url, ev) {
-			ev.stopPropagation();
-			ev.preventDefault();
-			var logic = function () {
-					openDeviceBrowser(url);
-				};
-				debounce(logic, 200).call(root);
-		};
-		var manageExternalLinkAll = function () {
-			var link = document[getElementsByTagName]("a") || "";
-			var isBindedClass = "external-link--is-binded";
-			var arrange = function (e) {
-				if (!e[classList].contains(isBindedClass)) {
-					var url = e[getAttribute]("href") || "";
-					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
-						e[title] = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
-						if ("undefined" !== typeof getHTTP && getHTTP()) {
-							e.target = "_blank";
-							e.rel = "noopener";
-						} else {
-							e[_addEventListener]("click", handleExternalLink.bind(null, url));
-						}
-						e[classList].add(isBindedClass);
-					}
-				}
-			};
-			if (link) {
-				var i,
-				l;
-				for (i = 0, l = link[_length]; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
-			}
-		};
-		manageExternalLinkAll();
 
 		var Notifier42 = function (annonce, timeout, elemClass) {
 			var msgObj = annonce || "No message passed as argument";
@@ -1066,8 +1070,6 @@ ToProgress, unescape, verge, VK, Ya*/
 
 		var handleDataSrcImageAll = function () {
 			var img = document[getElementsByClassName]("data-src-img") || "";
-			var isActiveClass = "is-active";
-			var isBindedClass = "is-binded";
 			var arrange = function (e) {
 				if (verge.inY(e, 100)) {
 					if (!e[classList].contains(isBindedClass)) {
@@ -1112,8 +1114,6 @@ ToProgress, unescape, verge, VK, Ya*/
 
 		var handleDataSrcIframeAll = function () {
 			var ifrm = document[getElementsByClassName]("data-src-iframe") || "";
-			var isActiveClass = "is-active";
-			var isBindedClass = "is-binded";
 			var arrange = function (e) {
 				if (verge.inY(e, 100)) {
 					if (!e[classList].contains(isBindedClass)) {
@@ -1258,7 +1258,6 @@ ToProgress, unescape, verge, VK, Ya*/
 
 		var handleExpandingLayerAll = function () {
 			var _this = this;
-			var isActiveClass = "is-active";
 			var layer = _this[parentNode] ? _this[parentNode].nextElementSibling : "";
 			if (layer) {
 				_this[classList].toggle(isActiveClass);
@@ -1266,10 +1265,8 @@ ToProgress, unescape, verge, VK, Ya*/
 			}
 			return;
 		};
-		var manageExpandingLayers = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var btnClass = "btn-expand-hidden-layer";
-			var btn = ctx ? ctx[getElementsByClassName](btnClass) || "" : document[getElementsByClassName](btnClass) || "";
+		var manageExpandingLayers = function () {
+			var btn = document[getElementsByClassName]("btn-expand-hidden-layer") || "";
 			var addHandler = function (e) {
 				e[_addEventListener]("click", handleExpandingLayerAll);
 			};
@@ -1339,7 +1336,6 @@ ToProgress, unescape, verge, VK, Ya*/
 			var panelNavMenu = document[getElementsByClassName]("panel-nav-menu")[0] || "";
 			var panelNavMenuItems = panelNavMenu ? panelNavMenu[getElementsByTagName]("a") || "" : "";
 			var holderPanelMenuMore = document[getElementsByClassName]("holder-panel-menu-more")[0] || "";
-			var isActiveClass = "is-active";
 			var locationHref = root.location.href || "";
 			var removeAllActiveClass = function () {
 				page[classList].remove(isActiveClass);
@@ -1485,7 +1481,6 @@ ToProgress, unescape, verge, VK, Ya*/
 			var panelMenuMore = document[getElementsByClassName]("panel-menu-more")[0] || "";
 			var panelMenuMoreItems = panelMenuMore ? panelMenuMore[getElementsByTagName]("li") || "" : "";
 			var panelNavMenu = document[getElementsByClassName]("panel-nav-menu")[0] || "";
-			var isActiveClass = "is-active";
 			var handleItem = function () {
 				page[classList].remove(isActiveClass);
 				holderPanelMenuMore[classList].remove(isActiveClass);
@@ -1522,7 +1517,6 @@ ToProgress, unescape, verge, VK, Ya*/
 
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
-			var isActiveClass = "is-active";
 			var isSocialAll = document[getElementsByClassName]("is-social") || "";
 			if (isSocialAll) {
 				var k,
@@ -1544,7 +1538,6 @@ ToProgress, unescape, verge, VK, Ya*/
 			var yaShare2 = document[getElementById](yaShare2Id) || "";
 			var locationHref = root.location || "";
 			var documentTitle = document[title] || "";
-			var isActiveClass = "is-active";
 			var handleShareButton = function (ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
@@ -1600,7 +1593,6 @@ ToProgress, unescape, verge, VK, Ya*/
 			var vkLike = document[getElementById](vkLikeId) || "";
 			var holderVkLike = document[getElementsByClassName]("holder-vk-like")[0] || "";
 			var btn = document[getElementsByClassName]("btn-show-vk-like")[0] || "";
-			var isActiveClass = "is-active";
 			var handleVKLikeButton = function (ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
@@ -1716,7 +1708,6 @@ ToProgress, unescape, verge, VK, Ya*/
 			var btn = document[getElementsByClassName]("btn-show-disqus")[0] || "";
 			var locationHref = root.location.href || "";
 			var disqusThreadShortname = disqusThread ? (disqusThread[dataset].shortname || "") : "";
-			var isActiveClass = "is-active";
 			var loadDisqus = function () {
 				var initScript = function () {
 					if (!disqs) {
@@ -1879,7 +1870,6 @@ ToProgress, unescape, verge, VK, Ya*/
 		var initUiTotop = function () {
 			var btnClass = "ui-totop";
 			var btnTitle = "Наверх";
-			var isActiveClass = "is-active";
 			var anchor = document[createElement]("a");
 			var handleUiTotopAnchor = function (ev) {
 				ev.stopPropagation();

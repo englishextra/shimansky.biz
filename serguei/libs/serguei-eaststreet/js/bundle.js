@@ -307,13 +307,13 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 			link.rel = "stylesheet";
 			link.type = "text/css";
 			link.href = file;
-			/* _this.head[appendChild](link); */
 			link.media = "only x";
 			link.onload = function () {
 				this.onload = null;
 				this.media = "all";
 			};
 			link[setAttribute]("property", "stylesheet");
+			/* _this.head[appendChild](link); */
 			(_this.body || _this.head)[appendChild](link);
 		};
 		_this.loadScript = function (i) {
@@ -437,6 +437,9 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 		var title = "title";
 		var _addEventListener = "addEventListener";
 		var _removeEventListener = "removeEventListener";
+
+		var isActiveClass = "is-active";
+		var isBindedClass = "is-binded";
 
 		progressBar.increase(20);
 
@@ -799,6 +802,43 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 				}
 			}
 		};
+
+		var manageExternalLinkAll = function () {
+			var link = document[getElementsByTagName]("a") || "";
+			var handleExternalLink = function (url, ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				var logic = function () {
+					openDeviceBrowser(url);
+				};
+				debounce(logic, 200).call(root);
+			};
+			var arrange = function (e) {
+				var externalLinkIsBindedClass = "external-link--is-binded";
+				if (!e[classList].contains(externalLinkIsBindedClass)) {
+					var url = e[getAttribute]("href") || "";
+					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
+						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
+						if ("undefined" !== typeof getHTTP && getHTTP()) {
+							e.target = "_blank";
+							e.rel = "noopener";
+						} else {
+							e[_addEventListener]("click", handleExternalLink.bind(null, url));
+						}
+						e[classList].add(externalLinkIsBindedClass);
+					}
+				}
+			};
+			if (link) {
+				var i,
+				l;
+				for (i = 0, l = link[_length]; i < l; i += 1) {
+					arrange(link[i]);
+				}
+				i = l = null;
+			}
+		};
+		manageExternalLinkAll();
 
 		var loadUnparsedJSON = function (url, callback, onerror) {
 			var cb = function (string) {
@@ -1242,7 +1282,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 		var highlightSidepanelItem = function () {
 			var panel = document[getElementsByClassName]("ui-sidepanel-list")[0] || "";
 			var items = panel ? panel[getElementsByTagName]("a") || "" : "";
-			var isActiveClass = "is-active";
 			var locationHref = root.location.href || "";
 			var addItemHandler = function (e) {
 				if (locationHref === e.href) {
@@ -1322,47 +1361,8 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 		};
 		initMenuMore();
 
-		var handleExternalLink = function (url, ev) {
-			ev.stopPropagation();
-			ev.preventDefault();
-			var logic = function () {
-					openDeviceBrowser(url);
-				};
-				debounce(logic, 200).call(root);
-		};
-		var manageExternalLinkAll = function () {
-			var link = document[getElementsByTagName]("a") || "";
-			var arrange = function (e) {
-				var externalLinkIsBindedClass = "external-link--is-binded";
-				if (!e[classList].contains(externalLinkIsBindedClass)) {
-					var url = e[getAttribute]("href") || "";
-					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
-						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
-						if ("undefined" !== typeof getHTTP && getHTTP()) {
-							e.target = "_blank";
-							e.rel = "noopener";
-						} else {
-							e[_addEventListener]("click", handleExternalLink.bind(null, url));
-						}
-						e[classList].add(externalLinkIsBindedClass);
-					}
-				}
-			};
-			if (link) {
-				var i,
-				l;
-				for (i = 0, l = link[_length]; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
-			}
-		};
-		manageExternalLinkAll();
-
 		var handleDataSrcImageAll = function () {
 			var img = document[getElementsByClassName]("data-src-img") || "";
-			var isActiveClass = "is-active";
-			var isBindedClass = "is-binded";
 			var arrange = function (e) {
 				if (verge.inY(e, 100)) {
 					if (!e[classList].contains(isBindedClass)) {
@@ -1407,8 +1407,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 
 		var handleDataSrcIframeAll = function () {
 			var ifrm = document[getElementsByClassName]("data-src-iframe") || "";
-			var isActiveClass = "is-active";
-			var isBindedClass = "is-binded";
 			var arrange = function (e) {
 				if (verge.inY(e, 100)) {
 					if (!e[classList].contains(isBindedClass)) {
@@ -1607,7 +1605,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 
 		var handleExpandingLayerAll = function () {
 			var _this = this;
-			var isActiveClass = "is-active";
 			var layer = _this[parentNode] ? _this[parentNode].nextElementSibling : "";
 			if (layer) {
 				_this[classList].toggle(isActiveClass);
@@ -1615,10 +1612,8 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 			}
 			return;
 		};
-		var manageExpandingLayers = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var btnClass = "btn-expand-hidden-layer";
-			var btn = ctx ? ctx[getElementsByClassName](btnClass) || "" : document[getElementsByClassName](btnClass) || "";
+		var manageExpandingLayers = function () {
+			var btn = document[getElementsByClassName]("btn-expand-hidden-layer") || "";
 			var addHandler = function (e) {
 				e[_addEventListener]("click", handleExpandingLayerAll);
 			};
@@ -1673,10 +1668,8 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 			}
 		};
 
-		var manageDataTargetLinks = function (scope) {
-			var ctx = scope && scope.nodeName ? scope : "";
-			var linkClass = "data-target-link";
-			var link = ctx ? ctx[getElementsByClassName](linkClass) || "" : document[getElementsByClassName](linkClass) || "";
+		var manageDataTargetLinks = function () {
+			var link = document[getElementsByClassName]("data-target-link") || "";
 			var arrangeAll = function () {
 				var arrange = function (e) {
 					var includeUrl = e[dataset].include || "",
@@ -1989,7 +1982,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 
 		var loadRefreshDisqus = function () {
 			var disqusThread = document[getElementById]("disqus_thread") || "";
-			var isActiveClass = "is-active";
 			var btn = document[getElementsByClassName]("btn-show-disqus")[0] || "";
 			var locationHref = root.location.href || "";
 			var disqusThreadShortname = disqusThread ? (disqusThread[dataset].shortname || "") : "";
@@ -2049,7 +2041,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 			var btnDestroy = yandexMap ? (document[getElementById](yandexMap[dataset].btnDestroy) || "") : "";
 			var yandexMapCenter = yandexMap ? (yandexMap[dataset].center || "") : "";
 			var yandexMapZoom = yandexMap ? (yandexMap[dataset].zoom || "") : "";
-			var isActiveClass = "is-active";
 			var handleYandexMapBtnDestroy = function (ev) {
 				ev.stopPropagation();
 				ev.preventDefault();
@@ -2271,7 +2262,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 		var initRoutie = function () {
 			var appContentId = "app-content";
 			var appContent = document[getElementById](appContentId) || "";
-			var appContentParent = appContent[parentNode] || "";
 			var loadVirtualPage = function (c, h, f) {
 				if (c && h) {
 					LoadingSpinner.show();
@@ -2288,14 +2278,14 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 						clearTimeout(timer);
 						timer = null;
 						manageYandexMapButton("ymap");
-						manageDisqusButton(appContentParent);
+						manageDisqusButton();
 						manageExternalLinkAll();
-						manageDataTargetLinks(appContentParent);
+						manageDataTargetLinks();
 						manageImgLightbox(imgLightboxLinkClass);
 						manageIframeLightbox(iframeLightboxLinkClass);
 						manageDataQrcodeImageAll();
-						manageChaptersSelect(appContentParent);
-						manageExpandingLayers(appContentParent);
+						manageChaptersSelect();
+						manageExpandingLayers();
 						handleDataSrcImageAll();
 					}, 100);
 				LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));
@@ -2378,7 +2368,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 		var initUiTotop = function () {
 			var btnClass = "ui-totop";
 			var btnTitle = "Наверх";
-			var isActiveClass = "is-active";
 			var anchor = document[createElement]("a");
 			var handleUiTotopAnchor = function (ev) {
 				ev.stopPropagation();
