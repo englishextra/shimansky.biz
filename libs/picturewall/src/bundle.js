@@ -89,21 +89,25 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya, zoomwall */
 					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
-					for (var key in opt) {
+					var key;
+					for (key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
 						}
 					}
+					key = null;
 				}
 				this.options.opacityDuration = this.options.duration * 3;
 				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
-					for (var property in style) {
+					var property;
+					for (property in style) {
 						if (style[hasOwnProperty](property)) {
 							this.style[property] = style[property];
 						}
 					}
+					property = null;
 				};
 				this.progressBar.setCSS({
 					"position": selector ? "relative" : "fixed",
@@ -783,11 +787,13 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 		var countObjKeys = function (obj) {
 			var count = 0;
-			for (var prop in obj) {
+			var prop;
+			for (prop in obj) {
 				if (obj.hasOwnProperty(prop)) {
 					++count;
 				}
 			}
+			prop = null;
 			return count;
 		};
 
@@ -938,13 +944,13 @@ Promise, t, ToProgress, VK, WheelIndicator, Ya, zoomwall */
 
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
-			var isSocialAll = document[getElementsByClassName]("is-social") || "";
-			if (isSocialAll) {
+			var elem = document[getElementsByClassName]("is-social") || "";
+			if (elem) {
 				var k,
 				n;
-				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
-					if (_thisObj !== isSocialAll[k]) {
-						isSocialAll[k][classList].remove(isActiveClass);
+				for (k = 0, n = elem[_length]; k < n; k += 1) {
+					if (_thisObj !== elem[k]) {
+						elem[k][classList].remove(isActiveClass);
 					}
 				}
 				k = n = null;

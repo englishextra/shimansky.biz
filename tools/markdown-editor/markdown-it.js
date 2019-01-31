@@ -2412,7 +2412,7 @@ function skipOrderedListMarker(state, startLine) {
 function markTightParagraphs(state, idx) {
  var i, l,
  level = state.level + 2;
- for (i = idx + 2, l = state.tokens.length - 2; i < l; i++) {
+ for (i = idx + 2, l = state.tokens.length - 2; i < l; i += 1) {
  if (state.tokens[i].level === level && state.tokens[i].type === 'paragraph_open') {
  state.tokens[i + 2].hidden = true;
  state.tokens[i].hidden = true;

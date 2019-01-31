@@ -89,21 +89,25 @@ ToProgress, unescape, VK, Ya*/
 					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
-					for (var key in opt) {
+					var key;
+					for (key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
 						}
 					}
+					key = null;
 				}
 				this.options.opacityDuration = this.options.duration * 3;
 				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
-					for (var property in style) {
+					var property;
+					for (property in style) {
 						if (style[hasOwnProperty](property)) {
 							this.style[property] = style[property];
 						}
 					}
+					property = null;
 				};
 				this.progressBar.setCSS({
 					"position": selector ? "relative" : "fixed",
@@ -731,14 +735,20 @@ ToProgress, unescape, VK, Ya*/
 				 */
 				var args = [cdPrev, cdNext, btnNavMenu, btnMenuMore, btnShareButtons, btnUiTotop, holderSearchForm];
 				if ((root.navigator.standalone) || (screen.height === root.outerHeight) || (root.fullScreen) || (root.innerWidth === screen.width && root.innerHeight === screen.height)) {
-					for (var i = 0, l = args[_length]; i < l; i += 1) {
+					var i,
+					l;
+					for (i = 0, l = args[_length]; i < l; i += 1) {
 						setStyleDisplayNone(args[i]);
 					}
+					i = l = null;
 					setStyleDisplayNone(btnShowVKLike);
 				} else {
-					for (var j = 0, m = args[_length]; j < m; j += 1) {
+					var j,
+					m;
+					for (j = 0, m = args[_length]; j < m; j += 1) {
 						setStyleDisplayBlock(args[j]);
 					}
+					j = m = null;
 					if (!root.VK) {
 						setStyleDisplayBlock(btnShowVKLike);
 					}
@@ -887,10 +897,12 @@ ToProgress, unescape, VK, Ya*/
 				var addItemHandler = function (e) {
 					e[_addEventListener]("click", handleItem);
 				};
-				for (var i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
 					addItemHandler(panelMenuMoreItems[i]);
 				}
-				/* forEach(panelMenuMoreItems, addItemHandler, false); */
+				i = l = null;
 			};
 			if (page && container && holderPanelMenuMore && btnMenuMore && panelMenuMore && panelMenuMoreItems) {
 				/*!
@@ -972,13 +984,13 @@ ToProgress, unescape, VK, Ya*/
 
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
-			var isSocialAll = document[getElementsByClassName]("is-social") || "";
-			if (isSocialAll) {
+			var elem = document[getElementsByClassName]("is-social") || "";
+			if (elem) {
 				var k,
 				n;
-				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
-					if (_thisObj !== isSocialAll[k]) {
-						isSocialAll[k][classList].remove(isActiveClass);
+				for (k = 0, n = elem[_length]; k < n; k += 1) {
+					if (_thisObj !== elem[k]) {
+						elem[k][classList].remove(isActiveClass);
 					}
 				}
 				k = n = null;

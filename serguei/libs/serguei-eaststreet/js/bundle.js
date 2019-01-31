@@ -90,21 +90,25 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
-					for (var key in opt) {
+					var key;
+					for (key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
 						}
 					}
+					key = null;
 				}
 				this.options.opacityDuration = this.options.duration * 3;
 				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
-					for (var property in style) {
+					var property;
+					for (property in style) {
 						if (style[hasOwnProperty](property)) {
 							this.style[property] = style[property];
 						}
 					}
+					property = null;
 				};
 				this.progressBar.setCSS({
 					"position": selector ? "relative" : "fixed",
@@ -885,7 +889,8 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 				a = "f,dult`;pbqrkvyjghcnea[wxio]ms'.zF<DULT~:PBQRKVYJGHCNEA{WXIO}MS'>Z@#$^&|/?";
 				b = '\u0430\u0431\u0432\u0433\u0434\u0435\u0451\u0436\u0437\u0438\u0439\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044c\u044b\u044d\u044e\u044f\u0410\u0411\u0412\u0413\u0414\u0415\u0401\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042b\u042d\u042e\u042f"\u2116;:?/.,';
 			}
-			for (var d = 0; d < e[_length]; d++) {
+			var d;
+			for (d = 0; d < e[_length]; d += 1) {
 				var f = a.indexOf(e.charAt(d));
 				if (c > f) {
 					c += e.charAt(d);
@@ -893,6 +898,7 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					c += b.charAt(f);
 				}
 			}
+			d = null;
 			return c;
 		};
 
@@ -1046,11 +1052,13 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 				"datum": defaultDatum,
 				"days": 0,
 			};
-			for (var i in opt) {
+			var i;
+			for (i in opt) {
 				if (opt.hasOwnProperty(i)) {
 					settings[i] = opt[i];
 				}
 			}
+			i = null;
 			var cookieKey = Cookies.get(settings.key) || "";
 			if (cookieKey && cookieKey === decodeURIComponent(settings.datum)) {
 				return;
@@ -1266,10 +1274,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					var g = function (e) {
 						e[_addEventListener]("click", handleOverlaySidepanel);
 					};
-					for (var i = 0, l = items[_length]; i < l; i += 1) {
+					var i,
+					l;
+					for (i = 0, l = items[_length]; i < l; i += 1) {
 						g(items[i]);
 					}
-					/* forEach(items, g, false); */
+					i = l = null;
 				}
 				docBody[_addEventListener]("click", handleOverlaySidepanel);
 			};
@@ -1297,7 +1307,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					addItemHandler(items[i]);
 				}
 				i = l = null;
-				/* forEach(items, addItemHandler, false); */
 			};
 			if (panel && items && locationHref) {
 				addItemHandlerAll();
@@ -1349,10 +1358,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					var addItemHandler = function (e) {
 						e[_addEventListener]("click", handleItem);
 					};
-					for (var i = 0, l = items[_length]; i < l; i += 1) {
+					var i,
+					l;
+					for (i = 0, l = items[_length]; i < l; i += 1) {
 						addItemHandler(items[i]);
 					}
-					/* forEach(items, addItemHandler, false); */
+					i = l = null;
 				}
 			};
 			if (btn && page) {
@@ -1384,9 +1395,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 				}
 			};
 			if (img) {
-				for (var i = 0, l = img[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
+				i = l = null;
 			}
 		};
 
@@ -1430,9 +1444,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 				}
 			};
 			if (ifrm) {
-				for (var i = 0, l = ifrm[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = ifrm[_length]; i < l; i += 1) {
 					arrange(ifrm[i]);
 				}
+				i = l = null;
 			}
 		};
 
@@ -1618,10 +1635,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 				e[_addEventListener]("click", handleExpandingLayerAll);
 			};
 			if (btn) {
-				for (var i = 0, l = btn[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = btn[_length]; i < l; i += 1) {
 					addHandler(btn[i]);
 				}
-				/* forEach(btn, addHandler, false); */
+				i = l = null;
 			}
 		};
 
@@ -1691,7 +1710,6 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					arrange(link[i]);
 				}
 				i = l = null;
-				/* forEach(a, arrange, false); */
 			};
 			if (link) {
 				arrangeAll();
@@ -1720,10 +1738,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 						debugMessage.push((e.className ? "." + e.className : e.id ? "#" + e.id : e.tagName), " ", root.getComputedStyle(e).getPropertyValue("font-size"), " ", root.getComputedStyle(e).getPropertyValue("line-height"), " ", e.offsetWidth, "x", e.offsetHeight, " \u003e ");
 					}
 				};
-				for (var i = 0, l = elements[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = elements[_length]; i < l; i += 1) {
 					renderElementsInfo(elements[i]);
 				}
-				/* forEach(elements, renderElementsInfo, false); */
+				i = l = null;
 				debugMessage = debugMessage.join("");
 				debugMessage = debugMessage.slice(0, debugMessage.lastIndexOf(" \u003e "));
 				notiBar({
@@ -2163,12 +2183,11 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 						}
 					};
 					if (items) {
-						for (var i = 0; i < itemsLength; i += 1) {
+						var i;
+						for (i = 0; i < itemsLength; i += 1) {
 							limitKamilOutput(items[i], i);
 						}
-						/* forEach(items, function (e, i) {
-							limitKamilOutput(e, i);
-						}, false); */
+						i = null;
 					}
 					/*!
 					 * fix typo - non latin characters found
@@ -2202,10 +2221,12 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 						e.title = "" + truncText;
 					};
 					if (lis) {
-						for (var j = 0, m = lis[_length]; j < m; j += 1) {
+						var j,
+						m;
+						for (j = 0, m = lis[_length]; j < m; j += 1) {
 							truncateKamilText(lis[j]);
 						}
-						/* forEach(lis, truncateKamilText, false); */
+						j = m = null;
 					}
 				};
 				/*!

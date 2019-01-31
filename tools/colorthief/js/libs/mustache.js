@@ -319,7 +319,7 @@ var Mustache = function () {
  } else {
  var r = [];
  var l = array.length;
- for(var i = 0; i < l; i++) {
+ for(var i = 0; i < l; i += 1) {
  r.push(fn(array[i]));
  }
  return r;

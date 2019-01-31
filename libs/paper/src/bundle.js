@@ -90,21 +90,25 @@ ToProgress, unescape, verge, VK, Ya*/
 					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
-					for (var key in opt) {
+					var key;
+					for (key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
 						}
 					}
+					key = null;
 				}
 				this.options.opacityDuration = this.options.duration * 3;
 				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
-					for (var property in style) {
+					var property;
+					for (property in style) {
 						if (style[hasOwnProperty](property)) {
 							this.style[property] = style[property];
 						}
 					}
+					property = null;
 				};
 				this.progressBar.setCSS({
 					"position": selector ? "relative" : "fixed",
@@ -610,7 +614,8 @@ ToProgress, unescape, verge, VK, Ya*/
 				a = "f,dult`;pbqrkvyjghcnea[wxio]ms'.zF<DULT~:PBQRKVYJGHCNEA{WXIO}MS'>Z@#$^&|/?";
 				b = '\u0430\u0431\u0432\u0433\u0434\u0435\u0451\u0436\u0437\u0438\u0439\u043a\u043b\u043c\u043d\u043e\u043f\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044a\u044c\u044b\u044d\u044e\u044f\u0410\u0411\u0412\u0413\u0414\u0415\u0401\u0416\u0417\u0418\u0419\u041a\u041b\u041c\u041d\u041e\u041f\u0420\u0421\u0422\u0423\u0424\u0425\u0426\u0427\u0428\u0429\u042a\u042c\u042b\u042d\u042e\u042f"\u2116;:?/.,';
 			}
-			for (var d = 0; d < e[_length]; d++) {
+			var d;
+			for (d = 0; d < e[_length]; d += 1) {
 				var f = a.indexOf(e.charAt(d));
 				if (c > f) {
 					c += e.charAt(d);
@@ -618,6 +623,7 @@ ToProgress, unescape, verge, VK, Ya*/
 					c += b.charAt(f);
 				}
 			}
+			d = null;
 			return c;
 		};
 
@@ -1057,9 +1063,12 @@ ToProgress, unescape, verge, VK, Ya*/
 							tblsort = new Tablesort(table);
 						}
 					};
-					for (var i = 0, l = tableSort[_length]; i < l; i += 1) {
+					var i,
+					l;
+					for (i = 0, l = tableSort[_length]; i < l; i += 1) {
 						arrange(tableSort[i]);
 					}
+					i = l = null;
 				}
 			};
 			if (tableSort && root.Tablesort) {
@@ -1091,9 +1100,12 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (img) {
-				for (var i = 0, l = img[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
+				i = l = null;
 			}
 		};
 
@@ -1137,9 +1149,12 @@ ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (ifrm) {
-				for (var i = 0, l = ifrm[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = ifrm[_length]; i < l; i += 1) {
 					arrange(ifrm[i]);
 				}
+				i = l = null;
 			}
 		};
 
@@ -1271,9 +1286,12 @@ ToProgress, unescape, verge, VK, Ya*/
 				e[_addEventListener]("click", handleExpandingLayerAll);
 			};
 			if (btn) {
-				for (var i = 0, l = btn[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = btn[_length]; i < l; i += 1) {
 					addHandler(btn[i]);
 				}
+				i = l = null;
 			}
 		};
 		manageExpandingLayers();
@@ -1403,9 +1421,12 @@ ToProgress, unescape, verge, VK, Ya*/
 						if (panelNavMenu[classList].contains(isActiveClass)) {
 							removeHolderAndAllActiveClass();
 						}
-						for (var j = 0, l = panelNavMenuItems[_length]; j < l; j += 1) {
-							removeActiveClass(panelNavMenuItems[j]);
+						var i,
+						l;
+						for (i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
+							removeActiveClass(panelNavMenuItems[i]);
 						}
+						i = l = null;
 						addActiveClass(e);
 					};
 					e[_addEventListener]("click", handleItem);
@@ -1415,9 +1436,12 @@ ToProgress, unescape, verge, VK, Ya*/
 						removeActiveClass(e);
 					}
 				};
-				for (var i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
 					addItemHandler(panelNavMenuItems[i]);
 				}
+				i = l = null;
 			};
 			if (page && container && btnNavMenu && panelNavMenu && panelNavMenuItems) {
 				addContainerHandler();
@@ -1503,9 +1527,12 @@ ToProgress, unescape, verge, VK, Ya*/
 				var addItemHandler = function (e) {
 					e[_addEventListener]("click", handleItem);
 				};
-				for (var i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
 					addItemHandler(panelMenuMoreItems[i]);
 				}
+				i = l = null;
 			};
 			if (page && container && holderPanelMenuMore && btnMenuMore && panelMenuMore && panelMenuMoreItems) {
 				addContainerHandler();
@@ -1517,13 +1544,13 @@ ToProgress, unescape, verge, VK, Ya*/
 
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
-			var isSocialAll = document[getElementsByClassName]("is-social") || "";
-			if (isSocialAll) {
+			var elem = document[getElementsByClassName]("is-social") || "";
+			if (elem) {
 				var k,
 				n;
-				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
-					if (_thisObj !== isSocialAll[k]) {
-						isSocialAll[k][classList].remove(isActiveClass);
+				for (k = 0, n = elem[_length]; k < n; k += 1) {
+					if (_thisObj !== elem[k]) {
+						elem[k][classList].remove(isActiveClass);
 					}
 				}
 				k = n = null;
@@ -1797,9 +1824,11 @@ ToProgress, unescape, verge, VK, Ya*/
 						}
 					};
 					if (items) {
-						for (var i = 0; i < itemsLength; i += 1) {
+						var i;
+						for (i = 0; i < itemsLength; i += 1) {
 							limitKamilOutput(items[i], i);
 						}
+						i = null;
 					}
 					while (itemsLength < 1) {
 						var textValue = textInput.value;
@@ -1827,9 +1856,12 @@ ToProgress, unescape, verge, VK, Ya*/
 						e.title = "" + truncText;
 					};
 					if (lis) {
-						for (var j = 0, m = lis[_length]; j < m; j += 1) {
+						var j,
+						m;
+						for (j = 0, m = lis[_length]; j < m; j += 1) {
 							truncateKamilText(lis[j]);
 						}
+						j = m = null;
 					}
 				};
 				var handleSuggestionLi = function (ev) {

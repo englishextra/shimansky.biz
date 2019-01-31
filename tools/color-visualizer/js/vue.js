@@ -776,7 +776,7 @@ Dep.prototype.depend = function depend () {
 Dep.prototype.notify = function notify () {
  // stabilize the subscriber list first
  var subs = this.subs.slice();
- for (var i = 0, l = subs.length; i < l; i++) {
+ for (var i = 0, l = subs.length; i < l; i += 1) {
   subs[i].update();
  }
 };
@@ -889,7 +889,7 @@ Observer.prototype.walk = function walk (obj) {
  * Observe a list of Array items.
  */
 Observer.prototype.observeArray = function observeArray (items) {
- for (var i = 0, l = items.length; i < l; i++) {
+ for (var i = 0, l = items.length; i < l; i += 1) {
   observe(items[i]);
  }
 };
@@ -912,7 +912,7 @@ function protoAugment (target, src, keys) {
  */
 /* istanbul ignore next */
 function copyAugment (target, src, keys) {
- for (var i = 0, l = keys.length; i < l; i++) {
+ for (var i = 0, l = keys.length; i < l; i += 1) {
   var key = keys[i];
   def(target, key, src[key]);
  }
@@ -1067,7 +1067,7 @@ function del (target, key) {
  * we cannot intercept array element access like property getters.
  */
 function dependArray (value) {
- for (var e = (void 0), i = 0, l = value.length; i < l; i++) {
+ for (var e = (void 0), i = 0, l = value.length; i < l; i += 1) {
   e = value[i];
   e && e.__ob__ && e.__ob__.dep.depend();
   if (Array.isArray(e)) {
@@ -1377,7 +1377,7 @@ function mergeOptions (
   parent = mergeOptions(parent, extendsFrom, vm);
  }
  if (child.mixins) {
-  for (var i = 0, l = child.mixins.length; i < l; i++) {
+  for (var i = 0, l = child.mixins.length; i < l; i += 1) {
    parent = mergeOptions(parent, child.mixins[i], vm);
   }
  }
@@ -2108,7 +2108,7 @@ function resolveAsyncComponent (
   var sync = true;
 
   var forceRender = function () {
-   for (var i = 0, l = contexts.length; i < l; i++) {
+   for (var i = 0, l = contexts.length; i < l; i += 1) {
     contexts[i].$forceUpdate();
    }
   };
@@ -2246,7 +2246,7 @@ function eventsMixin (Vue) {
 
   var vm = this;
   if (Array.isArray(event)) {
-   for (var i = 0, l = event.length; i < l; i++) {
+   for (var i = 0, l = event.length; i < l; i += 1) {
     this$1.$on(event[i], fn);
    }
   } else {
@@ -2282,7 +2282,7 @@ function eventsMixin (Vue) {
   }
   // array of events
   if (Array.isArray(event)) {
-   for (var i = 0, l = event.length; i < l; i++) {
+   for (var i = 0, l = event.length; i < l; i += 1) {
     this$1.$off(event[i], fn);
    }
    return vm
@@ -2329,7 +2329,7 @@ function eventsMixin (Vue) {
   if (cbs) {
    cbs = cbs.length > 1 ? toArray(cbs) : cbs;
    var args = toArray(arguments, 1);
-   for (var i = 0, l = cbs.length; i < l; i++) {
+   for (var i = 0, l = cbs.length; i < l; i += 1) {
     try {
      cbs[i].apply(vm, args);
     } catch (e) {
@@ -2355,7 +2355,7 @@ function resolveSlots (
   return slots
  }
  var defaultSlot = [];
- for (var i = 0, l = children.length; i < l; i++) {
+ for (var i = 0, l = children.length; i < l; i += 1) {
   var child = children[i];
   var data = child.data;
   // remove slot attribute if the node is resolved as a Vue slot node
@@ -3881,7 +3881,7 @@ function applyNS (vnode, ns) {
   return
  }
  if (isDef(vnode.children)) {
-  for (var i = 0, l = vnode.children.length; i < l; i++) {
+  for (var i = 0, l = vnode.children.length; i < l; i += 1) {
    var child = vnode.children[i];
    if (isDef(child.tag) && isUndef(child.ns)) {
     applyNS(child, ns);
@@ -3902,7 +3902,7 @@ function renderList (
  var ret, i, l, keys, key;
  if (Array.isArray(val) || typeof val === 'string') {
   ret = new Array(val.length);
-  for (i = 0, l = val.length; i < l; i++) {
+  for (i = 0, l = val.length; i < l; i += 1) {
    ret[i] = render(val[i], i);
   }
  } else if (typeof val === 'number') {
@@ -3913,7 +3913,7 @@ function renderList (
  } else if (isObject(val)) {
   keys = Object.keys(val);
   ret = new Array(keys.length);
-  for (i = 0, l = keys.length; i < l; i++) {
+  for (i = 0, l = keys.length; i < l; i += 1) {
    key = keys[i];
    ret[i] = render(val[key], key, i);
   }
@@ -4816,7 +4816,7 @@ function stringifyClass (value) {
 function stringifyArray (value) {
  var res = '';
  var stringified;
- for (var i = 0, l = value.length; i < l; i++) {
+ for (var i = 0, l = value.length; i < l; i += 1) {
   if (isDef(stringified = stringifyClass(value[i])) && stringified !== '') {
    if (res) { res += ' '; }
    res += stringified;
@@ -6174,7 +6174,7 @@ function getAndRemoveAttr (el, name) {
  var val;
  if ((val = el.attrsMap[name]) != null) {
   var list = el.attrsList;
-  for (var i = 0, l = list.length; i < l; i++) {
+  for (var i = 0, l = list.length; i < l; i += 1) {
    if (list[i].name === name) {
     list.splice(i, 1);
     break
@@ -7466,7 +7466,7 @@ function actuallySetSelected (el, binding, vm) {
   return
  }
  var selected, option;
- for (var i = 0, l = el.options.length; i < l; i++) {
+ for (var i = 0, l = el.options.length; i < l; i += 1) {
   option = el.options[i];
   if (isMultiple) {
    selected = looseIndexOf(value, getValue(option)) > -1;
@@ -8431,7 +8431,7 @@ function parseHTML (html, options) {
 
   var l = match.attrs.length;
   var attrs = new Array(l);
-  for (var i = 0; i < l; i++) {
+  for (var i = 0; i < l; i += 1) {
    var args = match.attrs[i];
    // hackish work around FF bug https://bugzilla.mozilla.org/show_bug.cgi?id=369778
    if (IS_REGEX_CAPTURING_BROKEN && args[0].indexOf('""') === -1) {
@@ -8793,7 +8793,7 @@ function processRawAttrs (el) {
  var l = el.attrsList.length;
  if (l) {
   var attrs = el.attrs = new Array(l);
-  for (var i = 0; i < l; i++) {
+  for (var i = 0; i < l; i += 1) {
    attrs[i] = {
     name: el.attrsList[i].name,
     value: JSON.stringify(el.attrsList[i].value)
@@ -8949,7 +8949,7 @@ function processComponent (el) {
 function processAttrs (el) {
  var list = el.attrsList;
  var i, l, name, rawName, value, modifiers, isProp;
- for (i = 0, l = list.length; i < l; i++) {
+ for (i = 0, l = list.length; i < l; i += 1) {
   name = rawName = list[i].name;
   value = list[i].value;
   if (dirRE.test(name)) {
@@ -9044,7 +9044,7 @@ function parseModifiers (name) {
 
 function makeAttrsMap (attrs) {
  var map = {};
- for (var i = 0, l = attrs.length; i < l; i++) {
+ for (var i = 0, l = attrs.length; i < l; i += 1) {
   if (
    "development" !== 'production' &&
    map[attrs[i].name] && !isIE && !isEdge
@@ -9151,7 +9151,7 @@ function markStatic$1 (node) {
   ) {
    return
   }
-  for (var i = 0, l = node.children.length; i < l; i++) {
+  for (var i = 0, l = node.children.length; i < l; i += 1) {
    var child = node.children[i];
    markStatic$1(child);
    if (!child.static) {
@@ -9188,7 +9188,7 @@ function markStaticRoots (node, isInFor) {
    node.staticRoot = false;
   }
   if (node.children) {
-   for (var i = 0, l = node.children.length; i < l; i++) {
+   for (var i = 0, l = node.children.length; i < l; i += 1) {
     markStaticRoots(node.children[i], isInFor || !!node.for);
    }
   }
@@ -9621,7 +9621,7 @@ function genDirectives (el, state) {
  var res = 'directives:[';
  var hasRuntime = false;
  var i, l, dir, needRuntime;
- for (i = 0, l = dirs.length; i < l; i++) {
+ for (i = 0, l = dirs.length; i < l; i += 1) {
   dir = dirs[i];
   needRuntime = true;
   var gen = state.directives[dir.name];

@@ -89,21 +89,25 @@ require, ToProgress, unescape, verge, VK, Ya*/
 					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
-					for (var key in opt) {
+					var key;
+					for (key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
 						}
 					}
+					key = null;
 				}
 				this.options.opacityDuration = this.options.duration * 3;
 				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
-					for (var property in style) {
+					var property;
+					for (property in style) {
 						if (style[hasOwnProperty](property)) {
 							this.style[property] = style[property];
 						}
 					}
+					property = null;
 				};
 				this.progressBar.setCSS({
 					"position": selector ? "relative" : "fixed",
@@ -864,9 +868,12 @@ require, ToProgress, unescape, verge, VK, Ya*/
 				}
 			};
 			if (img) {
-				for (var i = 0, l = img[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
+				i = l = null;
 			}
 		};
 
@@ -975,10 +982,12 @@ require, ToProgress, unescape, verge, VK, Ya*/
 							e[_addEventListener]("click", handleSuperboxExternalLink);
 						}
 					};
-					for (var j = 0, l = link[_length]; j < l; j += 1) {
+					var j,
+					m;
+					for (j = 0, m = link[_length]; j < m; j += 1) {
 						trackClicks(link[j]);
 					}
-					/* forEach(link, trackClicks, false); */
+					j = m = null;
 				}
 				/*!
 				 * hide description
@@ -1020,10 +1029,12 @@ require, ToProgress, unescape, verge, VK, Ya*/
 				e[_addEventListener]("click", handleSuperboxListItem);
 			};
 			if (lists) {
-				for (var i = 0, l = lists[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = lists[_length]; i < l; i += 1) {
 					addItemHandler(lists[i]);
 				}
-				/* forEach(lists, addItemHandler, false); */
+				i = l = null;
 			}
 		};
 		initSuperBox();
@@ -1153,9 +1164,12 @@ require, ToProgress, unescape, verge, VK, Ya*/
 						if (panelNavMenu[classList].contains(isActiveClass)) {
 							removeHolderAndAllActiveClass();
 						}
-						for (var j = 0, l = panelNavMenuItems[_length]; j < l; j += 1) {
-							removeActiveClass(panelNavMenuItems[j]);
+						var i,
+						l;
+						for (i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
+							removeActiveClass(panelNavMenuItems[i]);
 						}
+						i = l = null;
 						addActiveClass(e);
 					};
 					e[_addEventListener]("click", handleItem);
@@ -1165,9 +1179,12 @@ require, ToProgress, unescape, verge, VK, Ya*/
 						removeActiveClass(e);
 					}
 				};
-				for (var i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = panelNavMenuItems[_length]; i < l; i += 1) {
 					addItemHandler(panelNavMenuItems[i]);
 				}
+				i = l = null;
 			};
 			if (page && container && btnNavMenu && panelNavMenu && panelNavMenuItems) {
 				addContainerHandler();
@@ -1253,9 +1270,12 @@ require, ToProgress, unescape, verge, VK, Ya*/
 				var addItemHandler = function (e) {
 					e[_addEventListener]("click", handleItem);
 				};
-				for (var i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = panelMenuMoreItems[_length]; i < l; i += 1) {
 					addItemHandler(panelMenuMoreItems[i]);
 				}
+				i = l = null;
 			};
 			if (page && container && holderPanelMenuMore && btnMenuMore && panelMenuMore && panelMenuMoreItems) {
 				addContainerHandler();
@@ -1267,13 +1287,13 @@ require, ToProgress, unescape, verge, VK, Ya*/
 
 		var hideOtherIsSocial = function (thisObj) {
 			var _thisObj = thisObj || this;
-			var isSocialAll = document[getElementsByClassName]("is-social") || "";
-			if (isSocialAll) {
+			var elem = document[getElementsByClassName]("is-social") || "";
+			if (elem) {
 				var k,
 				n;
-				for (k = 0, n = isSocialAll[_length]; k < n; k += 1) {
-					if (_thisObj !== isSocialAll[k]) {
-						isSocialAll[k][classList].remove(isActiveClass);
+				for (k = 0, n = elem[_length]; k < n; k += 1) {
+					if (_thisObj !== elem[k]) {
+						elem[k][classList].remove(isActiveClass);
 					}
 				}
 				k = n = null;

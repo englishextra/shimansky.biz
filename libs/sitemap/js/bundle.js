@@ -89,21 +89,25 @@ loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 					zIndex: "auto"
 				};
 				if (opt && typeof opt === "object") {
-					for (var key in opt) {
+					var key;
+					for (key in opt) {
 						if (opt[hasOwnProperty](key)) {
 							this.options[key] = opt[key];
 						}
 					}
+					key = null;
 				}
 				this.options.opacityDuration = this.options.duration * 3;
 				this.progressBar = document[createElement]("div");
 				this.progressBar.id = this.options.id;
 				this.progressBar.setCSS = function (style) {
-					for (var property in style) {
+					var property;
+					for (property in style) {
 						if (style[hasOwnProperty](property)) {
 							this.style[property] = style[property];
 						}
 					}
+					property = null;
 				};
 				this.progressBar.setCSS({
 					"position": selector ? "relative" : "fixed",
@@ -812,10 +816,12 @@ loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 				}
 			};
 			if (img) {
-				for (var i = 0, l = img[_length]; i < l; i += 1) {
+				var i,
+				l;
+				for (i = 0, l = img[_length]; i < l; i += 1) {
 					arrange(img[i]);
 				}
-				/* forEach(img, arrange, false); */
+				i = l = null;
 			}
 		};
 
@@ -870,16 +876,22 @@ loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 						iso.arrange({
 							filter: _this.dataset.filter
 						});
-						for (var i = 0, l = btn.length; i < l; i += 1) {
-							btn[i].classList.remove("is-active");
+						var i,
+						l;
+						for (i = 0, l = btn.length; i < l; i += 1) {
+							btn[i].classList.remove(isActiveClass);
 						}
-						_this.classList.add("is-active");
-						for (var j = 0, m = sel.options.length; j < m; j += 1) {
+						_this.classList.add(isActiveClass);
+						i = l = null;
+						var j,
+						m;
+						for (j = 0, m = sel.options.length; j < m; j += 1) {
 							if (sel.options[j].value === _this.dataset.filter) {
 								sel.selectedIndex = j;
 								break;
 							}
 						}
+						j = m = null;
 						var timer = setTimeout(function () {
 								clearTimeout(timer);
 								timer = null;
@@ -887,27 +899,36 @@ loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 							}, 500);
 					};
 					if (btn) {
-						for (var i = 0, l = btn.length; i < l; i += 1) {
-							if (!btn[i].classList.contains("is-binded")) {
+						var i,
+						l;
+						for (i = 0, l = btn.length; i < l; i += 1) {
+							if (!btn[i].classList.contains(isBindedClass)) {
 								btn[i].addEventListener("click", handleFilterButtonAll);
-								btn[i].classList.add("is-binded");
+								btn[i].classList.add(isBindedClass);
 							}
 						}
+						i = l = null;
 					}
 					var handleFilterSelect = function () {
 						var _this = this;
 						iso.arrange({
 							filter: _this.options[_this.selectedIndex].value
 						});
-						for (var i = 0, l = btn.length; i < l; i += 1) {
-							btn[i].classList.remove("is-active");
+						var i,
+						l;
+						for (i = 0, l = btn.length; i < l; i += 1) {
+							btn[i].classList.remove(isActiveClass);
 						}
-						for (var j = 0, m = btn.length; j < m; j += 1) {
+						i = l = null;
+						var j,
+						m;
+						for (j = 0, m = btn.length; j < m; j += 1) {
 							if (btn[j].dataset.filter === _this.options[_this.selectedIndex].value) {
-								btn[j].classList.add("is-active");
+								btn[j].classList.add(isActiveClass);
 								break;
 							}
 						}
+						j = m = null;
 						var timer = setTimeout(function () {
 								clearTimeout(timer);
 								timer = null;
@@ -915,9 +936,9 @@ loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 							}, 500);
 					};
 					if (sel) {
-						if (!sel.classList.contains("is-binded")) {
+						if (!sel.classList.contains(isBindedClass)) {
 							sel.addEventListener("change", handleFilterSelect);
-							sel.classList.add("is-binded");
+							sel.classList.add(isBindedClass);
 						}
 					}
 					if (controls) {
@@ -962,10 +983,12 @@ loadJsCss, Masonry, Packery, Promise, require, ToProgress, verge*/
 									draggie = new Draggabilly(draggableElem, {});
 									draggies.push(draggie);
 								};
-								for (var j = 0, m = gridItem.length; j < m; j += 1) {
+								var j,
+								m;
+								for (j = 0, m = gridItem.length; j < m; j += 1) {
 									f(gridItem[j]);
 								}
-								/* forEach(gridItem, f, false); */
+								j = m = null;
 								if (pckry && draggie) {
 									pckry.bindDraggabillyEvents(draggie);
 								}
