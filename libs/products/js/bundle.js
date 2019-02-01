@@ -965,7 +965,7 @@ ToProgress, unescape, VK, Ya*/
 					yaShare2[classList].toggle(isActiveClass);
 					hideOtherIsSocial(yaShare2);
 					var initScript = function () {
-						if (root.Ya.share2) {
+						if (root.Ya && Ya.share2) {
 							try {
 								if (yshare) {
 									yshare.updateContent({
@@ -987,7 +987,7 @@ ToProgress, unescape, VK, Ya*/
 							}
 						}
 					};
-					if (!root.Ya.share2) {
+					if (!(root.Ya && Ya.share2)) {
 						var jsUrl = forcedHTTP + "://yastatic.net/share2/share.js";
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
@@ -1037,7 +1037,7 @@ ToProgress, unescape, VK, Ya*/
 							}
 						}
 					};
-					if (!root.VK) {
+					if (!(root.VK && VK.init && VK.Widgets && VK.Widgets.Like)) {
 						var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?154";
 						var load;
 						load = new loadJsCss([jsUrl], initScript);

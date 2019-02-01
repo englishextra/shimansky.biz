@@ -1895,7 +1895,7 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					page[classList].remove(isActiveMenumoreClass);
 				}
 				var initScript = function () {
-					if (root.Ya.share2) {
+					if (root.Ya && Ya.share2) {
 						/*!
 						 * remove ya-share2 class in html markup
 						 * or you will end up with two copies of Ya.share2
@@ -1918,7 +1918,7 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					}
 				};
 				if (page[classList].contains(isActiveShareClass)) {
-					if (!root.Ya.share2) {
+					if (!(root.Ya && Ya.share2)) {
 						var jsUrl = forcedHTTP + "://yastatic.net/share2/share.js";
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
@@ -1963,7 +1963,7 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					page[classList].remove(isActiveMenumoreClass);
 				}
 				var initScript = function () {
-					if (root.VK) {
+					if (root.VK && VK.init && VK.Widgets && VK.Widgets.Like) {
 						if (!vlike) {
 							try {
 								VK.init({
@@ -1983,7 +1983,7 @@ require, routie, ToProgress, unescape, verge, VK, Ya, ymaps*/
 					}
 				};
 				if (page[classList].contains(isActiveVKLikeClass)) {
-					if (!root.VK) {
+					if (!(root.VK && VK.init && VK.Widgets && VK.Widgets.Like)) {
 						var jsUrl = forcedHTTP + "://vk.com/js/api/openapi.js?154";
 						var load;
 						load = new loadJsCss([jsUrl], initScript);
