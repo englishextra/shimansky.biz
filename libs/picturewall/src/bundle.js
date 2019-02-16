@@ -466,6 +466,7 @@
 		var getElementsByTagName = "getElementsByTagName";
 		var innerHTML = "innerHTML";
 		var parentNode = "parentNode";
+		var querySelectorAll = "querySelectorAll";
 		var style = "style";
 		var title = "title";
 
@@ -745,9 +746,15 @@
 			}
 		};
 
+		var anyResizeEventIsBindedClass = "any-resize-event--is-binded";
+
 		var zoomwallClass = "zoomwall";
 
 		var zoomwallIsActiveClass = "zoomwall--is-active";
+
+		var zoomwallItemClass = "zoomwall__item";
+
+		var zoomwallItemIsBindedClass = "zoomwall__item--is-binded";
 
 		var zoomwall = getByClass(document, zoomwallClass)[0] || "";
 
@@ -952,7 +959,7 @@
 
 		var jsonUrl = "./libs/contents-cards/json/contents.json";
 
-		var wrapper = getByClass(document, "wrapper")[0] || "";
+		var container = getByClass(document, "container")[0] || "";
 
 		var manageZoomwall = function () {
 			var generate = function (text) {
@@ -989,8 +996,13 @@
 					 * to fix that select elemnts in a container that doesnt have source template
 					 */
 					var pagesKeysNumber = countObjKeys(jsonObj.pages);
-					insertFromTemplate(jsonObj, "template_zoomwall", "target_zoomwall", function () {
-						if (getByClass(wrapper, dataSrcImgClass)[pagesKeysNumber - 1]) {
+					insertFromTemplate(jsonObj, "template_zoomwall", "render_zoomwall", function () {
+						var zoomwallLastItem = container ?
+							getByClass(container, zoomwallItemClass) ?
+							getByClass(container, zoomwallItemClass)[pagesKeysNumber - 1] :
+							"" :
+							"";
+						if (zoomwallLastItem) {
 							resolve();
 						} else {
 							reject();
@@ -1058,12 +1070,27 @@
 				clearTimeout(timerCreate);
 				timerCreate = null;
 
+				root.zoomwallInstance = null;
+
 				var onZoomwallCreated = function () {
 					zoomwall[style].visibility = "visible";
 					zoomwall[style].opacity = 1;
-				};
+					var zoomwallItems = zoomwall ? (zoomwall.children || zoomwall[querySelectorAll]("." + zoomwallClass + " > *") || "") : "";
+					if (zoomwallItems) {
+						var i,
+						l;
+						for (i = 0, l = zoomwallItems[_length]; i < l; i += 1) {
+							if (!hasClass(zoomwallItems[i], zoomwallItemIsBindedClass)) {
+								addClass(zoomwallItems[i], zoomwallItemIsBindedClass);
+							}
+							if (!hasClass(zoomwallItems[i], anyResizeEventIsBindedClass)) {
+								addClass(zoomwallItems[i], anyResizeEventIsBindedClass);
 
-				root.zoomwallInstance = null;
+							}
+						}
+						i = l = null;
+					}
+				};
 
 				var initZoomwall = function () {
 					try {
@@ -1299,7 +1326,7 @@
 			};
 			throttle(logic, 100).call(root);
 		};
-		if (wrapper && titleBar) {
+		if (container && titleBar) {
 			addClass(titleBar, animatedClass);
 			addClass(titleBar, duration4msClass);
 			if (hasTouch) {
