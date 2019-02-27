@@ -449,15 +449,15 @@
 		caller(data);
 	};
 
-	var setStyleDisplayBlock = function setStyleDisplayBlock(a) {
-		if (a) {
-			a.style.display = "block";
+	var setDisplayBlock = function (e) {
+		if (e) {
+			e.style.display = "block";
 		}
 	};
 
-	var setStyleDisplayNone = function setStyleDisplayNone(a) {
-		if (a) {
-			a.style.display = "none";
+	var setDisplayNone = function (e) {
+		if (e) {
+			e.style.display = "none";
 		}
 	};
 
@@ -483,7 +483,7 @@
 				};
 
 				img.src = dummySrc;
-				setStyleDisplayNone(container);
+				setDisplayNone(container);
 				callCallback(callback, root);
 			};
 
@@ -603,7 +603,7 @@
 					};
 
 					img.src = hrefString;
-					setStyleDisplayBlock(container);
+					setDisplayBlock(container);
 				};
 
 				debounce(logic, rate).call();
@@ -4876,19 +4876,19 @@ function _typeof(obj) {
 		this.unstamp(item.element);
 	};
 
-	proto.bindDraggabillyEvents = function(draggie) {
-		this._bindDraggabillyEvents(draggie, "on");
+	proto.bindDraggabillyEvents = function(root.draggabillyInstance) {
+		this._bindDraggabillyEvents(root.draggabillyInstance, "on");
 	};
 
-	proto.unbindDraggabillyEvents = function(draggie) {
-		this._bindDraggabillyEvents(draggie, "off");
+	proto.unbindDraggabillyEvents = function(root.draggabillyInstance) {
+		this._bindDraggabillyEvents(root.draggabillyInstance, "off");
 	};
 
-	proto._bindDraggabillyEvents = function(draggie, method) {
+	proto._bindDraggabillyEvents = function(root.draggabillyInstance, method) {
 		var handlers = this.handleDraggabilly;
-		draggie[method]("dragStart", handlers.dragStart);
-		draggie[method]("dragMove", handlers.dragMove);
-		draggie[method]("dragEnd", handlers.dragEnd);
+		root.draggabillyInstance[method]("dragStart", handlers.dragStart);
+		root.draggabillyInstance[method]("dragMove", handlers.dragMove);
+		root.draggabillyInstance[method]("dragEnd", handlers.dragEnd);
 	};
 
 	proto.bindUIDraggableEvents = function($elems) {
