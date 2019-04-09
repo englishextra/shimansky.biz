@@ -1,15 +1,18 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, addClass, addListener, appendFragment, Cookies,
-debounce, DISQUS, doesFontExist, earlySvgSupport, earlySvgasimgSupport,
-earlyHasTouch, earlyDeviceType, earlyDeviceFormfactor,  findPos, fixEnRuTypo,
-forcedHTTP, getByClass, getHumanDate, hasClass, IframeLightbox, imgLightbox,
-includeHTMLintoTarget, insertExternalHTML, insertTextAsFragment, isNodejs,
-isElectron, isNwjs, isValidId, Kamil, LazyLoad, loadDeferred,
-loadExternalHTML, LoadingSpinner, loadJsCss, loadJsonResponse, needsPolyfills,
-notiBar, Notifier42, openDeviceBrowser, parseLink, QRCode, removeChildren,
-removeClass, removeElement, removeListener, require, routie, safelyParseJSON,
-scroll2Top, setDisplayBlock, setDisplayNone, supportsCanvas, supportsPassive,
+dataSrcImgClass, dataSrcIframeClass, debounce, DISQUS, doesFontExist,
+earlySvgSupport, earlySvgasimgSupport, earlyHasTouch, earlyDeviceType,
+earlyDeviceFormfactor, findPos, fixEnRuTypo, forcedHTTP, getByClass,
+getHumanDate, hasClass, IframeLightbox, imgLightbox, includeHTMLintoTarget,
+insertExternalHTML, insertTextAsFragment, isNodejs, isElectron, isNwjs,
+isValidId, Kamil, LazyLoad, loadDeferred, loadExternalHTML, LoadingSpinner,
+loadJsCss, loadJsonResponse, manageImgLightbox, manageIframeLightbox,
+manageExternalLinkAll, manageDataQrcodeImgAll, manageDataSrcImgAll,
+manageDataSrcIframeAll, needsPolyfills, notiBar, Notifier42,
+openDeviceBrowser, parseLink, QRCode, removeChildren, removeClass,
+removeElement, removeListener, require, routie, safelyParseJSON, scroll2Top,
+setDisplayBlock, setDisplayNone, supportsCanvas, supportsPassive,
 supportsSvgSmilAnimation, throttle, toggleClass, ToProgress, truncString,
 unescape, VK, Ya, ymaps*/
 /*property console, join, split */
@@ -1054,6 +1057,231 @@ unescape, VK, Ya, ymaps*/
 	})();
 
 	/*!
+	 * manageExternalLinkAll
+	 */
+	root.manageExternalLinkAll = function () {
+		var link = document.getElementsByTagName("a") || "";
+		var arrange = function (e) {
+			var handleLink = function (url, ev) {
+				ev.stopPropagation();
+				ev.preventDefault();
+				var logic = function () {
+					openDeviceBrowser(url);
+				};
+				debounce(logic, 200).call(root);
+			};
+			var externalLinkIsBindedClass = "external-link--is-binded";
+			if (!hasClass(e, externalLinkIsBindedClass)) {
+				var url = e.getAttribute("href") || "";
+				if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
+					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
+					if (root.getHTTP && root.getHTTP()) {
+						e.target = "_blank";
+						e.rel = "noopener";
+					} else {
+						addListener(e, "click", handleLink.bind(null, url));
+					}
+					addClass(e, externalLinkIsBindedClass);
+				}
+			}
+		};
+		if (link) {
+			var i,
+			l;
+			for (i = 0, l = link.length; i < l; i += 1) {
+				arrange(link[i]);
+			}
+			i = l = null;
+		}
+	};
+
+	/*!
+	 * manageDataSrcImgAll
+	 * @see {@link https://github.com/verlok/lazyload}
+	 */
+	root.dataSrcImgClass = "data-src-img";
+
+	root.lazyLoadDataSrcImgInstance = null;
+	root.manageDataSrcImgAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
+		};
+		var isActiveClass = "is-active";
+		var dataSrcImgIsBindedClass = "data-src-img--is-binded";
+		var images = getByClass(document, dataSrcImgClass) || "";
+		var i = images.length;
+		while (i--) {
+			if (!hasClass(images[i], dataSrcImgIsBindedClass)) {
+				addClass(images[i], dataSrcImgIsBindedClass);
+				addClass(images[i], isActiveClass);
+				addListener(images[i], "load", cb);
+			}
+		}
+		i = null;
+		if (root.LazyLoad) {
+			if (root.lazyLoadDataSrcImgInstance) {
+				root.lazyLoadDataSrcImgInstance.destroy();
+			}
+			root.lazyLoadDataSrcImgInstance = new LazyLoad({
+					elements_selector: "." + dataSrcImgClass
+				});
+		}
+	};
+
+	/*!
+	 * manageDataSrcIframeAll
+	 * @see {@link https://github.com/verlok/lazyload}
+	 */
+	root.dataSrcIframeClass = "data-src-iframe";
+
+	root.lazyLoadDataSrcIframeInstance = null;
+	root.manageDataSrcIframeAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
+		};
+		var isActiveClass = "is-active";
+		var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
+		var iframes = getByClass(document, dataSrcIframeClass) || "";
+		var i = iframes.length;
+		while (i--) {
+			if (!hasClass(iframes[i], dataSrcIframeIsBindedClass)) {
+				addClass(iframes[i], dataSrcIframeIsBindedClass);
+				addClass(iframes[i], isActiveClass);
+				addListener(iframes[i], "load", cb);
+				iframes[i].setAttribute("frameborder", "no");
+				iframes[i].setAttribute("style", "border:none;");
+				iframes[i].setAttribute("webkitallowfullscreen", "true");
+				iframes[i].setAttribute("mozallowfullscreen", "true");
+				iframes[i].setAttribute("scrolling", "no");
+				iframes[i].setAttribute("allowfullscreen", "true");
+			}
+		}
+		i = null;
+		if (root.LazyLoad) {
+			if (root.lazyLoadDataSrcIframeInstance) {
+				root.lazyLoadDataSrcIframeInstance.destroy();
+			}
+			root.lazyLoadDataSrcIframeInstance = new LazyLoad({
+					elements_selector: "." + dataSrcIframeClass
+				});
+		}
+	};
+
+	/*!
+	 * manageImgLightbox
+	 * @see {@link https://github.com/englishextra/img-lightbox}
+	 */
+	root.manageImgLightbox = function () {
+		var imgLightboxLinkClass = "img-lightbox-link";
+		var link = getByClass(document, imgLightboxLinkClass) || "";
+		var initScript = function () {
+			imgLightbox(imgLightboxLinkClass, {
+				onLoaded: function () {
+					LoadingSpinner.hide();
+				},
+				onClosed: function () {
+					LoadingSpinner.hide();
+				},
+				onCreated: function () {
+					LoadingSpinner.show();
+				},
+				touch: false
+			});
+		};
+		if (root.imgLightbox && link) {
+			initScript();
+		}
+	};
+
+	/*!
+	 * manageIframeLightbox
+	 * @see {@link https://github.com/englishextra/iframe-lightbox}
+	 */
+	root.manageIframeLightbox = function () {
+		var link = getByClass(document, "iframe-lightbox-link") || "";
+		var initScript = function () {
+			var arrange = function (e) {
+				e.lightbox = new IframeLightbox(e, {
+						onLoaded: function () {
+							LoadingSpinner.hide();
+						},
+						onClosed: function () {
+							LoadingSpinner.hide();
+						},
+						onOpened: function () {
+							LoadingSpinner.show();
+						},
+						touch: false
+					});
+			};
+			var i,
+			l;
+			for (i = 0, l = link.length; i < l; i += 1) {
+				arrange(link[i]);
+			}
+			i = l = null;
+		};
+		if (root.IframeLightbox && link) {
+			initScript();
+		}
+	};
+
+	/*!
+	 * manageDataQrcodeImgAll
+	 */
+	root.manageDataQrcodeImgAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
+		};
+		var img = getByClass(document, "data-qrcode-img") || "";
+		var generateImg = function (e) {
+			var qrcode = e.dataset.qrcode || "";
+			qrcode = decodeURIComponent(qrcode);
+			if (qrcode) {
+				var imgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=512x512&chl=" + encodeURIComponent(qrcode);
+				e.title = qrcode;
+				e.alt = qrcode;
+				if (root.QRCode) {
+					if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
+						imgSrc = QRCode.generateSVG(qrcode, {
+								ecclevel: "M",
+								fillcolor: "#F3F3F3",
+								textcolor: "#191919",
+								margin: 4,
+								modulesize: 8
+							});
+						var XMLS = new XMLSerializer();
+						imgSrc = XMLS.serializeToString(imgSrc);
+						imgSrc = "data:image/svg+xml;base64," + root.btoa(unescape(encodeURIComponent(imgSrc)));
+						e.src = imgSrc;
+					} else {
+						imgSrc = QRCode.generatePNG(qrcode, {
+								ecclevel: "M",
+								format: "html",
+								fillcolor: "#F3F3F3",
+								textcolor: "#191919",
+								margin: 4,
+								modulesize: 8
+							});
+						e.src = imgSrc;
+					}
+				} else {
+					e.src = imgSrc;
+				}
+				cb();
+			}
+		};
+		if (img) {
+			var i,
+			l;
+			for (i = 0, l = img.length; i < l; i += 1) {
+				generateImg(img[i]);
+			}
+			i = l = null;
+		}
+	};
+
+	/*!
 	 * LoadingSpinner
 	 */
 	root.LoadingSpinner = (function () {
@@ -1367,41 +1595,6 @@ unescape, VK, Ya, ymaps*/
 			document.title = document.title + userBrowser;
 		}
 
-		var manageExternalLinkAll = function () {
-			var link = document.getElementsByTagName("a") || "";
-			var arrange = function (e) {
-				var handle = function (url, ev) {
-					ev.stopPropagation();
-					ev.preventDefault();
-					var logic = function () {
-						openDeviceBrowser(url);
-					};
-					debounce(logic, 200).call(root);
-				};
-				var externalLinkIsBindedClass = "external-link--is-binded";
-				if (!hasClass(e, externalLinkIsBindedClass)) {
-					var url = e.getAttribute("href") || "";
-					if (url && parseLink(url).isCrossDomain && parseLink(url).hasHTTP) {
-						e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
-						if (root.getHTTP && root.getHTTP()) {
-							e.target = "_blank";
-							e.rel = "noopener";
-						} else {
-							addListener(e, "click", handle.bind(null, url));
-						}
-						addClass(e, externalLinkIsBindedClass);
-					}
-				}
-			};
-			if (link) {
-				var i,
-				l;
-				for (i = 0, l = link.length; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
-			}
-		};
 		manageExternalLinkAll();
 
 		var initNotifier42WriteMe = function () {
@@ -1581,183 +1774,6 @@ unescape, VK, Ya, ymaps*/
 			}
 		};
 		manageMenuMore();
-
-		root.lazyLoadDataSrcImgInstance = null;
-
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-		var manageDataSrcImgAll = function (callback) {
-			var cb = function () {
-				return callback && "function" === typeof callback && callback();
-			};
-			var dataSrcImgClass = "data-src-img";
-			var dataSrcImgIsBindedClass = "data-src-img--is-binded";
-			var images = getByClass(document, dataSrcImgClass) || "";
-			var i = images.length;
-			while (i--) {
-				if (!hasClass(images[i], dataSrcImgIsBindedClass)) {
-					addClass(images[i], dataSrcImgIsBindedClass);
-					addClass(images[i], isActiveClass);
-					addListener(images[i], "load", cb);
-				}
-			}
-			i = null;
-			if (root.LazyLoad) {
-				if (root.lazyLoadDataSrcImgInstance) {
-					root.lazyLoadDataSrcImgInstance.destroy();
-				}
-				root.lazyLoadDataSrcImgInstance = new LazyLoad({
-						elements_selector: "." + dataSrcImgClass
-					});
-			}
-		};
-
-		root.lazyLoadDataSrcIframeInstance = null;
-
-		/*!
-		 * @see {@link https://github.com/verlok/lazyload}
-		 */
-		var manageDataSrcIframeAll = function (callback) {
-			var cb = function () {
-				return callback && "function" === typeof callback && callback();
-			};
-			var dataSrcIframeClass = "data-src-iframe";
-			var dataSrcIframeIsBindedClass = "data-src-iframe--is-binded";
-			var iframes = getByClass(document, dataSrcIframeClass) || "";
-			var i = iframes.length;
-			while (i--) {
-				if (!hasClass(iframes[i], dataSrcIframeIsBindedClass)) {
-					addClass(iframes[i], dataSrcIframeIsBindedClass);
-					addClass(iframes[i], isActiveClass);
-					addListener(iframes[i], "load", cb);
-					iframes[i].setAttribute("frameborder", "no");
-					iframes[i].setAttribute("style", "border:none;");
-					iframes[i].setAttribute("webkitallowfullscreen", "true");
-					iframes[i].setAttribute("mozallowfullscreen", "true");
-					iframes[i].setAttribute("scrolling", "no");
-					iframes[i].setAttribute("allowfullscreen", "true");
-				}
-			}
-			i = null;
-			if (root.LazyLoad) {
-				if (root.lazyLoadDataSrcIframeInstance) {
-					root.lazyLoadDataSrcIframeInstance.destroy();
-				}
-				root.lazyLoadDataSrcIframeInstance = new LazyLoad({
-						elements_selector: "." + dataSrcIframeClass
-					});
-			}
-		};
-
-		/*!
-		 * @see {@link https://github.com/englishextra/img-lightbox}
-		 */
-		var manageImgLightbox = function () {
-			var imgLightboxLinkClass = "img-lightbox-link";
-			var link = getByClass(document, imgLightboxLinkClass) || "";
-			var initScript = function () {
-				imgLightbox(imgLightboxLinkClass, {
-					onLoaded: function () {
-						LoadingSpinner.hide();
-					},
-					onClosed: function () {
-						LoadingSpinner.hide();
-					},
-					onCreated: function () {
-						LoadingSpinner.show();
-					},
-					touch: false
-				});
-			};
-			if (root.imgLightbox && link) {
-				initScript();
-			}
-		};
-
-		/*!
-		 * @see {@link https://github.com/englishextra/iframe-lightbox}
-		 */
-		var manageIframeLightbox = function () {
-			var iframeLightboxLinkClass = "iframe-lightbox-link";
-			var link = getByClass(document, iframeLightboxLinkClass) || "";
-			var initScript = function () {
-				var arrange = function (e) {
-					e.lightbox = new IframeLightbox(e, {
-							onLoaded: function () {
-								LoadingSpinner.hide();
-							},
-							onClosed: function () {
-								LoadingSpinner.hide();
-							},
-							onOpened: function () {
-								LoadingSpinner.show();
-							},
-							touch: false
-						});
-				};
-				var i,
-				l;
-				for (i = 0, l = link.length; i < l; i += 1) {
-					arrange(link[i]);
-				}
-				i = l = null;
-			};
-			if (root.IframeLightbox && link) {
-				initScript();
-			}
-		};
-
-		var manageDataQrcodeImgAll = function () {
-			var img = getByClass(document, "data-qrcode-img") || "";
-			var generateImg = function (e) {
-				var qrcode = e.dataset.qrcode || "";
-				qrcode = decodeURIComponent(qrcode);
-				if (qrcode) {
-					var imgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=512x512&chl=" + encodeURIComponent(qrcode);
-					e.title = qrcode;
-					e.alt = qrcode;
-					if (root.QRCode) {
-						if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
-							imgSrc = QRCode.generateSVG(qrcode, {
-									ecclevel: "M",
-									fillcolor: "#F3F3F3",
-									textcolor: "#191919",
-									margin: 4,
-									modulesize: 8
-								});
-							var XMLS = new XMLSerializer();
-							imgSrc = XMLS.serializeToString(imgSrc);
-							imgSrc = "data:image/svg+xml;base64," + root.btoa(unescape(encodeURIComponent(imgSrc)));
-							e.src = imgSrc;
-						} else {
-							imgSrc = QRCode.generatePNG(qrcode, {
-									ecclevel: "M",
-									format: "html",
-									fillcolor: "#F3F3F3",
-									textcolor: "#191919",
-									margin: 4,
-									modulesize: 8
-								});
-							e.src = imgSrc;
-						}
-					} else {
-						e.src = imgSrc;
-					}
-				}
-			};
-			var initScript = function () {
-				var i,
-				l;
-				for (i = 0, l = img.length; i < l; i += 1) {
-					generateImg(img[i]);
-				}
-				i = l = null;
-			};
-			if (root.QRCode && img) {
-				initScript();
-			}
-		};
 
 		var manageChaptersSelect = function () {
 			var chaptersSelect = document.getElementById("chapters-select") || "";
@@ -1955,31 +1971,27 @@ unescape, VK, Ya, ymaps*/
 				var imgTitle = document.title ? ("Ссылка на страницу «" + document.title.replace(/\[[^\]]*?\]/g, "").trim() + "»") : "";
 				var imgSrc = forcedHTTP + "://chart.googleapis.com/chart?cht=qr&chld=M%7C4&choe=UTF-8&chs=512x512&chl=" + encodeURIComponent(locHref);
 				img.alt = imgTitle;
-				if (root.QRCode) {
-					if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
-						imgSrc = QRCode.generateSVG(locHref, {
-								ecclevel: "M",
-								fillcolor: "#FFFFFF",
-								textcolor: "#191919",
-								margin: 4,
-								modulesize: 8
-							});
-						var XMLS = new XMLSerializer();
-						imgSrc = XMLS.serializeToString(imgSrc);
-						imgSrc = "data:image/svg+xml;base64," + root.btoa(unescape(encodeURIComponent(imgSrc)));
-						img.src = imgSrc;
-					} else {
-						imgSrc = QRCode.generatePNG(locHref, {
-								ecclevel: "M",
-								format: "html",
-								fillcolor: "#FFFFFF",
-								textcolor: "#191919",
-								margin: 4,
-								modulesize: 8
-							});
-						img.src = imgSrc;
-					}
+				if ("undefined" !== typeof earlySvgSupport && "svg" === earlySvgSupport) {
+					imgSrc = QRCode.generateSVG(locHref, {
+							ecclevel: "M",
+							fillcolor: "#FFFFFF",
+							textcolor: "#191919",
+							margin: 4,
+							modulesize: 8
+						});
+					var XMLS = new XMLSerializer();
+					imgSrc = XMLS.serializeToString(imgSrc);
+					imgSrc = "data:image/svg+xml;base64," + root.btoa(unescape(encodeURIComponent(imgSrc)));
+					img.src = imgSrc;
 				} else {
+					imgSrc = QRCode.generatePNG(locHref, {
+							ecclevel: "M",
+							format: "html",
+							fillcolor: "#FFFFFF",
+							textcolor: "#191919",
+							margin: 4,
+							modulesize: 8
+						});
 					img.src = imgSrc;
 				}
 				addClass(img, "qr-code-img");
@@ -1987,15 +1999,18 @@ unescape, VK, Ya, ymaps*/
 				removeChildren(holder);
 				appendFragment(img, holder);
 			};
-			var initScript = function () {
+			if (root.QRCode &&
+				btn &&
+				page &&
+				holder &&
+				locHref &&
+				root.getHTTP && root.getHTTP()) {
+
 				removePageIsActiveClass();
 				addListener(btn, "click", generateLocationQrCodeImg);
 				addListener(btn, "click", handleGenerateLocationQrCodeImgBtn);
 				addListener(root, "hashchange", generateLocationQrCodeImg);
 				addListener(holder, "click", handleGenerateLocationQrCodeImgHolder);
-			};
-			if (root.QRCode && btn && page && holder && locHref && root.getHTTP && root.getHTTP()) {
-				initScript();
 			}
 		};
 		manageLocationQrcode();
