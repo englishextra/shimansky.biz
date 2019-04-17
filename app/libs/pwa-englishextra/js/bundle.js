@@ -1,16 +1,17 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, addClass, addListener, appendFragment, Carousel,
-Cookies, dataSrcImgClass, dataSrcIframeClass, debounce, DISQUS, doesFontExist,
+Cookies, dataSrcIframeClass, dataSrcImgClass, debounce, DISQUS, doesFontExist,
 earlySvgSupport, earlySvgasimgSupport, earlyHasTouch, earlyDeviceType,
 earlyDeviceFormfactor, findPos, fixEnRuTypo, forcedHTTP, getByClass,
 getHumanDate, hasClass, IframeLightbox, imgLightbox, insertExternalHTML,
 insertFromTemplate, insertTextAsFragment, isNodejs, isElectron, isNwjs,
 isValidId, Kamil, LazyLoad, loadDeferred, LoadingSpinner, loadJsCss,
 loadJsonResponse, manageImgLightbox, manageIframeLightbox,
-manageExternalLinkAll, manageDataSrcImgAll, manageDataSrcIframeAll, Masonry,
-Mustache, needsPolyfills, notiBar, openDeviceBrowser, Packery, parseLink,
-QRCode, removeChildren, removeClass, removeListener, renderTemplate, require,
+manageExpandingLayerAll, manageSearchInput, manageExternalLinkAll,
+manageDataSrcImgAll, manageDataSrcIframeAll, Masonry, Mustache,
+needsPolyfills, notiBar, openDeviceBrowser, Packery, parseLink, QRCode,
+removeChildren, removeClass, removeListener, renderTemplate, require,
 safelyParseJSON, scroll2Top, setDisplayBlock, setDisplayNone, supportsCanvas,
 supportsPassive, supportsSvgSmilAnimation, t, throttle, toggleClass,
 ToProgress, truncString, unescape, VK, Ya*/
@@ -129,7 +130,7 @@ ToProgress, truncString, unescape, VK, Ya*/
 	 * Does not handle differences in the Event-objects.
 	 * @see {@link https://github.com/finn-no/eventlistener}
 	 */
-	var wrapListener = function (standard, fallback) {
+	var setListener = function (standard, fallback) {
 		return function (el, type, listener, useCapture) {
 			if (el[standard]) {
 				el[standard](type, listener, useCapture);
@@ -140,8 +141,8 @@ ToProgress, truncString, unescape, VK, Ya*/
 			}
 		};
 	};
-	root.addListener = wrapListener("addEventListener", "attachEvent");
-	root.removeListener = wrapListener("removeEventListener", "detachEvent");
+	root.addListener = setListener("addEventListener", "attachEvent");
+	root.removeListener = setListener("removeEventListener", "detachEvent");
 
 	/*!
 	 * get elements by class name wrapper
@@ -1147,6 +1148,60 @@ ToProgress, truncString, unescape, VK, Ya*/
 	};
 
 	/*!
+	 * manageExpandingLayerAll
+	 */
+	root.manageExpandingLayerAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
+		};
+		var btn = getByClass(document, "btn-expand-hidden-layer") || "";
+		var isActiveClass = "is-active";
+		var isBindedClass = "is-binded";
+		var arrange = function (e) {
+			var handle = function () {
+				var _this = this;
+				var layer = _this.parentNode ? _this.parentNode.nextElementSibling : "";
+				if (layer) {
+					toggleClass(_this, isActiveClass);
+					toggleClass(layer, isActiveClass);
+					cb();
+				}
+				return;
+			};
+			if (!hasClass(e, isBindedClass)) {
+				addListener(e, "click", handle);
+				addClass(e, isBindedClass);
+			}
+		};
+		if (btn) {
+			var i,
+			l;
+			for (i = 0, l = btn.length; i < l; i += 1) {
+				arrange(btn[i]);
+			}
+			i = l = null;
+		}
+	};
+
+	/*!
+	 * manageSearchInput
+	 */
+	root.manageSearchInput = function () {
+		var text = document.getElementById("text") || "";
+		var handle = function () {
+			var _this = this;
+			var logic = function () {
+				_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
+			};
+			debounce(logic, 200).call(root);
+		};
+		if (text) {
+			text.focus();
+			addListener(text, "input", handle);
+		}
+	};
+
+	/*!
 	 * LoadingSpinner
 	 */
 	root.LoadingSpinner = (function () {
@@ -1482,7 +1537,6 @@ ToProgress, truncString, unescape, VK, Ya*/
 	var run = function () {
 
 		var isActiveClass = "is-active";
-		var isBindedClass = "is-binded";
 		var isDropdownClass = "is-dropdown";
 		var isFixedClass = "is-fixed";
 		var isCollapsableClass = "is-collapsable";
@@ -1509,6 +1563,8 @@ ToProgress, truncString, unescape, VK, Ya*/
 		}
 
 		manageExternalLinkAll();
+
+		manageSearchInput();
 
 		var alignToMasterBottomLeft = function (masterId, servantId, sameWidth) {
 			sameWidth = sameWidth || "";
@@ -1662,33 +1718,6 @@ ToProgress, truncString, unescape, VK, Ya*/
 			}
 		};
 
-		var manageExpandingLayerAll = function () {
-			var btn = getByClass(document, "btn-expand-hidden-layer") || "";
-			var arrange = function (e) {
-				var handleBtn = function () {
-					var _this = this;
-					var s = _this.parentNode ? _this.parentNode.nextElementSibling : "";
-					if (s) {
-						toggleClass(_this, isActiveClass);
-						toggleClass(s, isActiveClass);
-					}
-					return;
-				};
-				if (!hasClass(e, isBindedClass)) {
-					addListener(e, "click", handleBtn);
-					addClass(e, isBindedClass);
-				}
-			};
-			if (btn) {
-				var i,
-				l;
-				for (i = 0, l = btn.length; i < l; i += 1) {
-					arrange(btn[i]);
-				}
-				i = l = null;
-			}
-		};
-
 		root.masonryInstance = null;
 		root.packeryInstance = null;
 		var initMasonry = function () {
@@ -1833,22 +1862,6 @@ ToProgress, truncString, unescape, VK, Ya*/
 			}
 		};
 		initNotibarMsg();
-
-		var manageSearchInput = function () {
-			var searchInput = document.getElementById("text") || "";
-			var handleSearchInput = function () {
-				var _this = this;
-				var logic = function () {
-					_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
-				};
-				debounce(logic, 200).call(root);
-			};
-			if (searchInput) {
-				searchInput.focus();
-				addListener(searchInput, "input", handleSearchInput);
-			}
-		};
-		manageSearchInput();
 
 		root.kamilInstance = null;
 		var manageKamil = function (jsonObj) {
@@ -2589,16 +2602,16 @@ ToProgress, truncString, unescape, VK, Ya*/
 					 * put when templates rendered
 					 */
 					if (appContentParent) {
+						manageExternalLinkAll();
+						manageImgLightbox();
+						manageIframeLightbox();
+						manageChaptersSelect();
+						manageExpandingLayerAll();
 						var timer = setTimeout(function () {
 								clearTimeout(timer);
 								timer = null;
 								manageDataSrcIframeAll();
 								manageDataSrcImgAll();
-								manageExternalLinkAll();
-								manageImgLightbox();
-								manageIframeLightbox();
-								manageChaptersSelect();
-								manageExpandingLayerAll();
 							}, 100);
 					}
 					LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));

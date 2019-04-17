@@ -1,20 +1,20 @@
 /*jslint browser: true */
 /*jslint node: true */
 /*global ActiveXObject, addClass, addListener, appendFragment, Cookies,
-dataSrcImgClass, dataSrcIframeClass, debounce, DISQUS, doesFontExist,
+dataSrcIframeClass, dataSrcImgClass, debounce, DISQUS, doesFontExist,
 earlySvgSupport, earlySvgasimgSupport, earlyHasTouch, earlyDeviceType,
 earlyDeviceFormfactor, findPos, fixEnRuTypo, forcedHTTP, getByClass,
 getHumanDate, hasClass, IframeLightbox, imgLightbox, includeHTMLintoTarget,
 insertExternalHTML, insertTextAsFragment, isNodejs, isElectron, isNwjs,
 isValidId, Kamil, LazyLoad, loadDeferred, loadExternalHTML, LoadingSpinner,
 loadJsCss, loadJsonResponse, manageImgLightbox, manageIframeLightbox,
-manageExternalLinkAll, manageDataQrcodeImgAll, manageDataSrcImgAll,
-manageDataSrcIframeAll, needsPolyfills, notiBar, Notifier42,
-openDeviceBrowser, parseLink, QRCode, removeChildren, removeClass,
-removeElement, removeListener, require, routie, safelyParseJSON, scroll2Top,
-setDisplayBlock, setDisplayNone, supportsCanvas, supportsPassive,
-supportsSvgSmilAnimation, throttle, toggleClass, ToProgress, truncString,
-unescape, VK, Ya, ymaps*/
+manageExpandingLayerAll, manageExternalLinkAll, manageDataQrcodeImgAll,
+manageDataSrcImgAll, manageDataSrcIframeAll, manageSearchInput,
+needsPolyfills, notiBar, Notifier42, openDeviceBrowser, parseLink, QRCode,
+removeChildren, removeClass, removeElement, removeListener, require, routie,
+safelyParseJSON, scroll2Top, setDisplayBlock, setDisplayNone, supportsCanvas,
+supportsPassive, supportsSvgSmilAnimation, throttle, toggleClass, ToProgress,
+truncString, unescape, VK, Ya, ymaps*/
 /*property console, join, split */
 /*!
  * safe way to handle console.log
@@ -130,7 +130,7 @@ unescape, VK, Ya, ymaps*/
 	 * Does not handle differences in the Event-objects.
 	 * @see {@link https://github.com/finn-no/eventlistener}
 	 */
-	var wrapListener = function (standard, fallback) {
+	var setListener = function (standard, fallback) {
 		return function (el, type, listener, useCapture) {
 			if (el[standard]) {
 				el[standard](type, listener, useCapture);
@@ -141,8 +141,8 @@ unescape, VK, Ya, ymaps*/
 			}
 		};
 	};
-	root.addListener = wrapListener("addEventListener", "attachEvent");
-	root.removeListener = wrapListener("removeEventListener", "detachEvent");
+	root.addListener = setListener("addEventListener", "attachEvent");
+	root.removeListener = setListener("removeEventListener", "detachEvent");
 
 	/*!
 	 * get elements by class name wrapper
@@ -1282,6 +1282,60 @@ unescape, VK, Ya, ymaps*/
 	};
 
 	/*!
+	 * manageExpandingLayerAll
+	 */
+	root.manageExpandingLayerAll = function (callback) {
+		var cb = function () {
+			return callback && "function" === typeof callback && callback();
+		};
+		var btn = getByClass(document, "btn-expand-hidden-layer") || "";
+		var isActiveClass = "is-active";
+		var isBindedClass = "is-binded";
+		var arrange = function (e) {
+			var handle = function () {
+				var _this = this;
+				var layer = _this.parentNode ? _this.parentNode.nextElementSibling : "";
+				if (layer) {
+					toggleClass(_this, isActiveClass);
+					toggleClass(layer, isActiveClass);
+					cb();
+				}
+				return;
+			};
+			if (!hasClass(e, isBindedClass)) {
+				addListener(e, "click", handle);
+				addClass(e, isBindedClass);
+			}
+		};
+		if (btn) {
+			var i,
+			l;
+			for (i = 0, l = btn.length; i < l; i += 1) {
+				arrange(btn[i]);
+			}
+			i = l = null;
+		}
+	};
+
+	/*!
+	 * manageSearchInput
+	 */
+	root.manageSearchInput = function () {
+		var text = document.getElementById("text") || "";
+		var handle = function () {
+			var _this = this;
+			var logic = function () {
+				_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
+			};
+			debounce(logic, 200).call(root);
+		};
+		if (text) {
+			text.focus();
+			addListener(text, "input", handle);
+		}
+	};
+
+	/*!
 	 * LoadingSpinner
 	 */
 	root.LoadingSpinner = (function () {
@@ -1597,6 +1651,8 @@ unescape, VK, Ya, ymaps*/
 
 		manageExternalLinkAll();
 
+		manageSearchInput();
+
 		var initNotifier42WriteMe = function () {
 			if (root.getHTTP && !root.getHTTP()) {
 				return;
@@ -1794,56 +1850,16 @@ unescape, VK, Ya, ymaps*/
 			}
 		};
 
-		var manageSearchInput = function () {
-			var searchInput = document.getElementById("text") || "";
-			var handleSearchInput = function () {
-				var _this = this;
-				var logic = function () {
-					_this.value = _this.value.replace(/\\/g, "").replace(/ +(?= )/g, " ").replace(/\/+(?=\/)/g, "/") || "";
-				};
-				debounce(logic, 200).call(root);
-			};
-			if (searchInput) {
-				searchInput.focus();
-				addListener(searchInput, "input", handleSearchInput);
-			}
-		};
-		manageSearchInput();
-
-		var manageExpandingLayerAll = function () {
-			var btn = getByClass(document, "btn-expand-hidden-layer") || "";
-			var handleBtn = function () {
-				var _this = this;
-				var layer = _this.parentNode ? _this.parentNode.nextElementSibling : "";
-				if (layer) {
-					toggleClass(_this, isActiveClass);
-					toggleClass(layer, isActiveClass);
-				}
-				return;
-			};
-			var arrange = function (e) {
-				addListener(e, "click", handleBtn);
-			};
-			if (btn) {
-				var i,
-				l;
-				for (i = 0, l = btn.length; i < l; i += 1) {
-					arrange(btn[i]);
-				}
-				i = l = null;
-			}
-		};
-
 		var manageDataTargetLinks = function () {
 			var link = getByClass(document, "data-target-link") || "";
 			var arrange = function (e) {
 				var onIncluded = function () {
+					manageExternalLinkAll();
+					manageImgLightbox();
+					manageIframeLightbox();
 					var timer = setTimeout(function () {
 							clearTimeout(timer);
 							timer = null;
-							manageExternalLinkAll();
-							manageImgLightbox();
-							manageIframeLightbox();
 							manageDataSrcImgAll();
 							manageDataSrcIframeAll();
 						}, 100);
@@ -2433,18 +2449,18 @@ unescape, VK, Ya, ymaps*/
 				 * hide loading spinner before scrolling
 				 */
 				document.title = (titleString ? titleString + " - " : "" ) + (initialDocTitle ? initialDocTitle + (userBrowser ? userBrowser : "") : "");
+				manageYandexMapButton("ymap");
+				manageDisqusBtn();
+				manageExternalLinkAll();
+				manageDataTargetLinks();
+				manageImgLightbox();
+				manageIframeLightbox();
+				manageDataQrcodeImgAll();
+				manageChaptersSelect();
+				manageExpandingLayerAll();
 				var timer = setTimeout(function () {
 						clearTimeout(timer);
 						timer = null;
-						manageYandexMapButton("ymap");
-						manageDisqusBtn();
-						manageExternalLinkAll();
-						manageDataTargetLinks();
-						manageImgLightbox();
-						manageIframeLightbox();
-						manageDataQrcodeImgAll();
-						manageChaptersSelect();
-						manageExpandingLayerAll();
 						manageDataSrcImgAll();
 					}, 100);
 				LoadingSpinner.hide(scroll2Top.bind(null, 0, 20000));
