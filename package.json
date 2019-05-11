@@ -2,9 +2,11 @@
 	"name": "englishextra",
 	"version": "0.1.0",
 	"description": "English Grammar for Russian-Speakers",
-	"keywords": ["spa",
-	"pwa",
-	"webapp"],
+	"keywords": [
+		"spa",
+		"pwa",
+		"webapp"
+	],
 	"main": "main.js",
 	"window": {
 		"icon": "favicon-32x32.png"
@@ -14,7 +16,7 @@
 		"url": "https://github.com/englishextra/shimansky.biz.git"
 	},
 	"dependencies": {
-		"npm": "^6.7.0"
+		"npm": "^6.9.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.2.2",
