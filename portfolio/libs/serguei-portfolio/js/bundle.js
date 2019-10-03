@@ -698,7 +698,7 @@ supportsSvgSmilAnimation, throttle, toggleClass, ToProgress, unescape, VK, Ya*/
 					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 					if (root.getHTTP && root.getHTTP()) {
 						e.target = "_blank";
-						e.rel = "noopener";
+						e.setAttribute("rel", "noopener noreferrer");
 					} else {
 						addListener(e, "click", handleLink.bind(null, url));
 					}
@@ -1201,7 +1201,7 @@ supportsSvgSmilAnimation, throttle, toggleClass, ToProgress, unescape, VK, Ya*/
 						};
 						if (root.getHTTP && root.getHTTP()) {
 							e.target = "_blank";
-							e.rel = "noopener";
+							e.setAttribute("rel", "noopener noreferrer");
 							addListener(e, "click", handleCounterImg);
 						} else {
 							addListener(e, "click", handleExternalLink);
@@ -1399,7 +1399,7 @@ supportsSvgSmilAnimation, throttle, toggleClass, ToProgress, unescape, VK, Ya*/
 				};
 				if (root.getHTTP && root.getHTTP()) {
 					link.target = "_blank";
-					link.rel = "noopener";
+					link.setAttribute("rel", "noopener noreferrer");
 				} else {
 					/* jshint -W107 */
 					link.href = "javascript:void(0);";

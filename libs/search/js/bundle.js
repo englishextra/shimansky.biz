@@ -636,7 +636,7 @@ throttle, toggleClass, ToProgress*/
 					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 					if (root.getHTTP && root.getHTTP()) {
 						e.target = "_blank";
-						e.rel = "noopener";
+						e.setAttribute("rel", "noopener noreferrer");
 					} else {
 						addListener(e, "click", handleLink.bind(null, url));
 					}

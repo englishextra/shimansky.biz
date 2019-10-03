@@ -855,7 +855,7 @@ truncString, unescape, VK, Ya*/
 					e.title = "" + (parseLink(url).hostname || "") + " откроется в новой вкладке";
 					if (root.getHTTP && root.getHTTP()) {
 						e.target = "_blank";
-						e.rel = "noopener";
+						e.setAttribute("rel", "noopener noreferrer");
 					} else {
 						addListener(e, "click", handleLink.bind(null, url));
 					}
@@ -1671,7 +1671,7 @@ truncString, unescape, VK, Ya*/
 				};
 				if (root.getHTTP && root.getHTTP()) {
 					link.target = "_blank";
-					link.rel = "noopener";
+					link.setAttribute("rel", "noopener noreferrer");
 				} else {
 					/* jshint -W107 */
 					link.href = "javascript:void(0);";
@@ -1882,7 +1882,7 @@ truncString, unescape, VK, Ya*/
 				btn.href = linkHref;
 				if (root.getHTTP && root.getHTTP()) {
 					btn.target = "_blank";
-					btn.rel = "noopener";
+					btn.setAttribute("rel", "noopener noreferrer");
 				} else {
 					addListener(btn, "click", handleBtn);
 				}
