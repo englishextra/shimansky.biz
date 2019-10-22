@@ -1,7 +1,6 @@
 {
-	"name": "serguei",
-	"short_name": "serguei",
-	"manifest_version": 2,
+	"name": "englishextra",
+	"short_name": "englishextra",
 	"icons": [{
 		"src": "/android-chrome-192x192.png",
 		"sizes": "192x192",
@@ -17,14 +16,10 @@
 		"sizes": "512x512",
 		"type": "image/png"
 	}],
-	"scope": "/serguei/",
-	"mjs_access_whitelist": [{
-		"url": "https://englishextra.github.io/serguei/"
-	}],
-	"start_url": "https://englishextra.github.io/serguei/",
+	"scope": "/app/",
+	"start_url": "https://englishextra.github.io/app/",
 	"display": "standalone",
 	"orientation": "any",
-	"ms_TileColor": "#F03B4C",
 	"theme_color": "#F03B4C",
 	"background_color": "#F03B4C"
 }

@@ -1,7 +1,6 @@
 {
 	"name": "englishextra",
 	"short_name": "englishextra",
-	"manifest_version": 2,
 	"icons": [{
 		"src": "/android-chrome-192x192.png",
 		"sizes": "192x192",
@@ -17,14 +16,10 @@
 		"sizes": "512x512",
 		"type": "image/png"
 	}],
-	"scope": "/app/",
-	"mjs_access_whitelist": [{
-		"url": "https://englishextra.github.io/app/"
-	}],
-	"start_url": "https://englishextra.github.io/app/",
+	"scope": "/",
+	"start_url": "https://englishextra.github.io/",
 	"display": "standalone",
 	"orientation": "any",
-	"ms_TileColor": "#F03B4C",
 	"theme_color": "#F03B4C",
 	"background_color": "#F03B4C"
 }
