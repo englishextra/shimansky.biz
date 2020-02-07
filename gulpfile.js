@@ -111,7 +111,7 @@ var eslint = require("gulp-eslint");
 
 var options = {
 	libbundle: {
-		src: "**/libs/**/src/*.js"
+		src: ["**/libs/**/src/*.js", "!**/node_modules/**"]
 	},
 	pwabuilderServiceworkers: {
 		src: "./cdn/pwabuilder-serviceworkers/1.1.1/serviceWorker2/src/*.js",
