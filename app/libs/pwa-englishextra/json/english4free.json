@@ -1,7 +1,7 @@
 {
 	"items": [{
 			"src": "./libs/pwa-englishextra/img/sprite-english4free-banner/english4free-banner-odo-640x480.png",
-			"href": "https://en.oxforddictionaries.com/",
+			"href": "https://www.lexico.com/",
 			"title": "Oxford Dictionaries",
 			"text": "Словарь современных значений английских слов, синонимов и антонимов, а также вопросники, игры и видео, статьи по грамматике."
 		}, {
@@ -36,12 +36,12 @@
 			"text": "Интерактивная карта вариаций английского произношения с примерами."
 		}, {
 			"src": "./libs/pwa-englishextra/img/sprite-english4free-banner/english4free-banner-ege-640x480.png",
-			"href": "http://fipi.ru/ege-i-gve-11/demoversii-specifikacii-kodifikatory",
+			"href": "https://fipi.ru/ege/demoversii-specifikacii-kodifikatory#!/tab/151883967-11",
 			"title": "Демо-КИМы ЕГЭ",
 			"text": "Задания демонстрационных вариантов не используются на экзаменах, но они имеют аналогичную структуру, ознакомление с которой позволяет выпускникам и абитуриентам выработать стратегию подготовки к ЕГЭ."
 		}, {
 			"src": "./libs/pwa-englishextra/img/sprite-english4free-banner/english4free-banner-yandex-640x480.png",
-			"href": "http://ege.yandex.ru/english/",
+			"href": "https://yandex.ru/tutor/subject/?subject_id=12",
 			"title": "ЕГЭ на Яндексе",
 			"text": "На Яндексе можно выполнять задания из демонстрационных вариантов ЕГЭ в режиме онлайн-тренировки."
 		}, {
