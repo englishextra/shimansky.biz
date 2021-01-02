@@ -19,9 +19,6 @@ xdk-publish-meta-data.json
 .*.md
 *.sublime-project
 *.sublime-workspace
-sw-register.min.js
-sw-register.min.js.map
 sw.js
 sw.min.js
 sw.min.js.map
-sw-register.js
