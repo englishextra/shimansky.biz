@@ -401,7 +401,7 @@ ob_end_flush();
 				</div>
 			</div>
 			<ul id="panel-nav-menu" class="panel-nav-menu">
-				<li><a href="../contents.html">Содержание</a></li>
+				<li><a href="../pages/contents.html">Содержание</a></li>
 				<li><a href="../pages/articles/articles_reading_rules_utf.html">Правила чтения</a></li>
 				<li><a href="../pages/grammar/grammar_usage_of_articles_a_the.html">Артикли a&#160;/ an и&#160;the</a></li>
 				<li><a href="../pages/grammar/grammar_usage_of_tenses.html">Употребление времен</a></li>
@@ -412,7 +412,7 @@ ob_end_flush();
 				<li><a href="../pages/tests/tests_ege_essay_sample.html">ЕГЭ: Задание&#160;40</a></li>
 				<li><a href="../sitemap.html">Карта сайта</a></li>
 			</ul>
-			<a href="../contents.html" class="btn-nav-menu" id="btn-nav-menu" onclick="return false;" title="Содержание"></a>
+			<a href="../pages/contents.html" class="btn-nav-menu" id="btn-nav-menu" onclick="return false;" title="Содержание"></a>
 		</div>
 		<script src="../libs/admin/js/bundle.min.js" type="application/javascript" async=""></script>
 	</body>
