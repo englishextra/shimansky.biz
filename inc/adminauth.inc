@@ -18,7 +18,7 @@ if (!isset($pt_regional) || empty($pt_regional)) {
 	include $relpa . 'inc/regional.inc';
 }
 
-$r = '';
+/* $r = '';
 
 if (isset($_SERVER['PHP_AUTH_USER']) &&
 		isset($_SERVER['PHP_AUTH_PW'])) {
@@ -29,7 +29,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) &&
 }
 
 if (!$r) {
-	header("WWW-Authenticate: Basic realm=\"PrivateTeacherAdminCenter\"");
+	header('WWW-Authenticate: Basic realm="PrivateTeacherAdminCenter"');
 	header("HTTP/1.0 401 Unauthorized");
 	die('Unauthorized');
-}
+} */
